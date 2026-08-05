@@ -1,69 +1,128 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { Suspense, useEffect, useState, useCallback } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, AdaptiveDpr, AdaptiveEvents, Preload } from '@react-three/drei';
+import SpaceBackground from './components/SpaceBackground';
+import SkillStation from './components/SkillStation';
+import Rocket from './components/Rocket';
+import HUD from './components/HUD';
+import CoursePanel from './components/CoursePanel';
+import './globals.css';
+
+// Positions for up to 6 courses in a nice arc
+const POSITIONS = [
+  [-9,  0,  0],
+  [-3,  1, -2],
+  [ 3,  1, -2],
+  [ 9,  0,  0],
+  [-6, -2,  2],
+  [ 6, -2,  2],
+];
+
+function stationPosition(index, total) {
+  if (total <= 6) return POSITIONS[index] || [index * 8 - 4, 0, 0];
+  const spread = total * 4;
+  const angle  = (index / total) * Math.PI * 2;
+  return [Math.cos(angle) * spread * 0.5, Math.sin(angle) * 2, 0];
+}
+
+function Scene({ courses, onSelect, selectedCourse }) {
+  const selectedIndex = courses.findIndex(c => selectedCourse && c.name === selectedCourse.name);
+  const targetPos = selectedIndex >= 0 ? stationPosition(selectedIndex, courses.length) : null;
+
+  return (
+    <>
+      <SpaceBackground />
+      {courses.map((course, i) => (
+        <SkillStation
+          key={i}
+          course={course}
+          position={stationPosition(i, courses.length)}
+          courseIndex={i}
+          onSelect={onSelect}
+          isSelected={selectedCourse?.name === course.name}
+        />
+      ))}
+      <Rocket targetPosition={targetPos} />
+    </>
+  );
+}
 
 export default function Home() {
+  const [courses, setCourses]             = useState([]);
+  const [loading, setLoading]             = useState(true);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectedIndex, setSelectedIndex]   = useState(0);
+
+  useEffect(() => {
+    fetch('/api/courses')
+      .then((r) => r.json())
+      .then((d) => { setCourses(d.courses || []); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const handleSelect = useCallback((course) => {
+    const idx = courses.findIndex((c) => c.name === course.name);
+    setSelectedIndex(idx >= 0 ? idx : 0);
+    setSelectedCourse((prev) => (prev?.name === course.name ? null : course));
+  }, [courses]);
+
+  const handleClose = useCallback(() => setSelectedCourse(null), []);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.js</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+    <main style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: '#050510' }}>
+      {/* 3D Canvas */}
+      <Canvas
+        camera={{ position: [0, 3, 18], fov: 55 }}
+        gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
+        dpr={[1, 1.2]}
+        frameloop="always"
+        style={{ position: 'absolute', top: 0, left: 0 }}
+      >
+        <Suspense fallback={null}>
+          {!loading && (
+            <Scene
+              courses={courses}
+              onSelect={handleSelect}
+              selectedCourse={selectedCourse}
             />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          )}
+          <OrbitControls
+            enablePan={false}
+            enableZoom
+            enableRotate
+            maxDistance={30}
+            minDistance={5}
+            autoRotate={!selectedCourse && !loading}
+            autoRotateSpeed={0.25}
+            makeDefault
+          />
+          <AdaptiveDpr pixelated />
+          <AdaptiveEvents />
+          <Preload all />
+        </Suspense>
+      </Canvas>
+
+      {/* HTML HUD overlay */}
+      <HUD courses={courses} loading={loading} onCourseClick={handleSelect} />
+
+      {/* Course detail panel */}
+      {selectedCourse && (
+        <CoursePanel
+          course={selectedCourse}
+          courseIndex={selectedIndex}
+          onClose={handleClose}
+        />
+      )}
+
+      {/* Loading splash */}
+      {loading && (
+        <div className="splash-loader">
+          <div className="splash-ring" />
+          <div className="splash-text">Inicializando Academia...</div>
         </div>
-      </main>
-    </div>
+      )}
+    </main>
   );
 }
