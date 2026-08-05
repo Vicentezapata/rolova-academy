@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Slide 17 — Cierre Unidad 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tight',sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 50% 120%, #064e3b 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(16,185,129,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(16,185,129,0.2);filter:blur(80px);top:-100px;right:-100px;z-index:0;}
+.glow2{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(16,185,129,0.2);filter:blur(70px);bottom:-60px;left:100px;z-index:0;}
+.corner-br{position:absolute;bottom:32px;left:32px;z-index:10;opacity:0.35;}
+.content{position:relative;z-index:10;padding:48px 60px;display:flex;flex-direction:column;height:100%;gap:0;}
+.top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--accent1);text-transform:uppercase;}
+.title{font-family:'Inter Tight','Inter',sans-serif;font-size:38px;font-weight:800;color:var(--text);letter-spacing:-0.04em;margin-bottom:20px;line-height:1.15;}
+.title em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;color:var(--accent1);}
+.achievements-grid{display:grid;grid-template:repeat(3,1fr) / repeat(2,1fr);gap:12px;flex:1;}
+.achievement{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:linear-gradient(135deg,rgba(34,211,238,0.07),rgba(99,102,241,0.03));border:1px solid rgba(255,255,255,0.08);border-radius:7px;}
+.ach-check{width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.5);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.ach-check svg{width:28px;height:28px;}
+.ach-text{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.ach-text strong{color:var(--text);}
+.next-card{background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(34,211,238,0.06));border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:18px 22px;display:flex;align-items:center;gap:16px;margin-top:14px;}
+.next-icon{width:44px;height:44px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.next-text h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.next-text p{font-size:12px;color:var(--text-sec);line-height:1.55;}
+.next-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent2);letter-spacing:0.15em;text-transform:uppercase;display:block;margin-bottom:5px;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+</style>
+
+<style>
+.lucide-animate {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  animation: drawIcon 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.lucide-delay-1 { animation-delay: 0.1s; }
+.lucide-delay-2 { animation-delay: 0.2s; }
+.lucide-delay-3 { animation-delay: 0.3s; }
+.lucide-delay-4 { animation-delay: 0.4s; }
+.lucide-delay-5 { animation-delay: 0.5s; }
+.lucide-delay-6 { animation-delay: 0.6s; }
+
+@keyframes drawIcon {
+  0% { stroke-dashoffset: 1; opacity: 0; }
+  5% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+
+<body>
+<div class="slide">
+  <div class="grid-texture"></div>
+  <div class="glow1"></div>
+  <div class="glow2"></div>
+  <div class="corner-br">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+      <path d="M40 0 L40 40 L0 40" stroke="#22D3EE" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="content">
+    <div class="top-row">
+      <span class="label">Cierre — Unidad 2</span>
+      <span class="label">IF203IINF · IPSS · 2026</span>
+    </div>
+    <h2 class="title">¿Qué <em>logramos</em> en esta Unidad?</h2>
+    <div class="achievements-grid">
+      <div class="achievement">
+        <div class="ach-check"><lord-icon src="https://cdn.lordicon.com/egiwmiit.json" trigger="loop" delay="1500" colors="primary:#10b981" style="width:24px;height:24px"></lord-icon></div>
+        <div class="ach-text">Seleccionar <strong>tipos de prueba</strong> basándonos en evaluación real de riesgo de negocio (Impacto × Probabilidad).</div>
+      </div>
+      <div class="achievement">
+        <div class="ach-check"><lord-icon src="https://cdn.lordicon.com/egiwmiit.json" trigger="loop" delay="1500" colors="primary:#10b981" style="width:24px;height:24px"></lord-icon></div>
+        <div class="ach-text">Transformar requisitos monolíticos en <strong>Historias de Usuario</strong> con metodología INVEST y lenguaje orientado al valor.</div>
+      </div>
+      <div class="achievement">
+        <div class="ach-check"><lord-icon src="https://cdn.lordicon.com/egiwmiit.json" trigger="loop" delay="1500" colors="primary:#10b981" style="width:24px;height:24px"></lord-icon></div>
+        <div class="ach-text">Redactar <strong>Criterios de Aceptación</strong> estructurados y testeables en sintaxis Gherkin BDD (DADO/CUANDO/ENTONCES).</div>
+      </div>
+      <div class="achievement">
+        <div class="ach-check"><lord-icon src="https://cdn.lordicon.com/egiwmiit.json" trigger="loop" delay="1500" colors="primary:#10b981" style="width:24px;height:24px"></lord-icon></div>
+        <div class="ach-text">Diseñar <strong>Casos de Prueba formales</strong> con los 5 campos: ID, Precondiciones, Pasos, Resultado Esperado y Datos.</div>
+      </div>
+      <div class="achievement">
+        <div class="ach-check"><lord-icon src="https://cdn.lordicon.com/egiwmiit.json" trigger="loop" delay="1500" colors="primary:#10b981" style="width:24px;height:24px"></lord-icon></div>
+        <div class="ach-text">Implementar <strong>Matrices de Trazabilidad (RTM)</strong> para auditar cobertura y gestionar el impacto de cambios en requisitos.</div>
+      </div>
+      <div class="achievement">
+        <div class="ach-check"><lord-icon src="https://cdn.lordicon.com/egiwmiit.json" trigger="loop" delay="1500" colors="primary:#10b981" style="width:24px;height:24px"></lord-icon></div>
+        <div class="ach-text">Construir un <strong>Test Plan estratégico maestro</strong> con los 3 pilares IEEE 829: Alcance, Estrategia y Criterios de Entrada/Salida.</div>
+      </div>
+    </div>
+    <div class="next-card">
+      <div class="next-icon"><lord-icon src="https://cdn.lordicon.com/wxnxiano.json" trigger="loop" delay="1500" colors="primary:#ffffff" style="width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;"></lord-icon></div>
+      <div class="next-text">
+        <span class="next-label">Próxima Unidad</span>
+        <h4>Unidad 3 — Ejecución, Automatización y Gestión de Defectos</h4>
+        <p>Bug Tracking con Jira, frameworks de automatización (Selenium, Playwright), reportes de calidad y métricas de cobertura de código.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">17 / 20</div>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    lucide.createIcons();
+  });
+</script>
+</body>
+
+</html>

@@ -85,8 +85,8 @@ async function scanFolder(currentPath, basePath) {
 
 export async function GET() {
   try {
-    // La raíz de los cursos es el directorio padre de `academy-portal`
-    const rootPath = path.join(process.cwd(), '..');
+    // La raíz de los cursos es la carpeta `cursos` dentro del proyecto (para Vercel)
+    const rootPath = path.join(process.cwd(), 'cursos');
     
     const entries = await fs.readdir(rootPath, { withFileTypes: true });
     

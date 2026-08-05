@@ -1,0 +1,1024 @@
+
+--- 0.0Apunte 1.pdf ---
+ 
+  
+ 
+ 
+ 
+ 
+ 
+  
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Desarrollo de Software Web I  
+Código : IF204IINF  
+ 
+Apunte N° 1  
+Introducción a los framework s modernos  
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+Introducción  
+ 
+El presente documento tiene como finalidad presentar al  y la estudiante acerca  los Framework 
+modernos que han revolucionado el desarrollo de software al proporcionar estructuras robustas 
+y herramientas eficientes que facilitan la creación de aplicaciones web complejas y escalables. 
+Uno de los Framework más destacados en el ámbito del desarrollo web es Laravel , basado en 
+PHP y conocido por su elegancia, facilidad de uso y potencia.  
+Además,  verán  el patrón  MVC que promueve una separación clara de responsabilidades dentro 
+de una aplicación web, mejorando así la organización del código y facilitando el mantenimiento 
+y la escalabilidad. Este enfoque permite que los desarrolladores trabajen de manera más 
+eficiente, cent rando sus esfuerzos en áreas específicas de la aplicación sin mezclar la lógica 
+de presentación con la lógica de negocio y los datos.  
+Junto a lo anterior, verán, a  lo largo del documento , algunas  preguntas de análisis para 
+corroborar la comprensión de los contenidos presentados, las cuales son útiles para el 
+desarrollo de esos conocimientos en el ambiente laboral.  
+Éxito en el estudio de est e apunte, el cual es clave para profundizar a ún más en el uso de las 
+tecnologías.  
+  
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+Título de la temática Principal  
+ 
+En el ámbito del desarrollo de software, especialmente en el desarrollo web, conceptos como 
+framework, Laravel y el patrón MVC (Modelo -Vista -Controlador) juegan un papel crucial. Estos 
+elementos no solo facilitan la creación de aplicaciones robustas y esca lables, sino que también 
+promueven buenas prácticas de desarrollo y organización del código. En este apunte, 
+exploraremos en profundidad cada uno de estos conceptos, su significado, importancia y cómo 
+se interrelacionan para proporcionar herramientas efect ivas a los desarrolladores.  
+1. Framework   
+Un framework  puede definirse como una estructura o plataforma de desarrollo que proporciona 
+a los desarrolladores herramientas y bibliotecas para facilitar la creación y el mantenimiento de 
+aplicaciones. Es decir, un framework establece una arquitectura básica sobre l a cual se pueden 
+construir diferentes tipos de aplicaciones.  
+1.1 Características de un Framework  
+• Organización y estructura : Los frameworks  proporcionan una estructura organizada 
+para el desarrollo de aplicaciones, lo que ayuda a mantener un código limpio y 
+estructurado.  
+ 
+• Componentes reutilizables : Incluyen bibliotecas, módulos y herramientas que 
+permiten a los desarrolladores reutilizar código para tareas comunes como manejo de 
+sesiones, acceso a bases de datos, validación de formularios, entre otros.  
+ 
+• Patrones de diseño : Frecuentemente están basados en patrones de diseño 
+reconocidos como MVC, lo que facilita la implementación de buenas prácticas de 
+desarrollo.  
+1.2 Características de un Framework  
+Las principales ventajas de utilizar un framework son la velocidad y la eficiencia. Los 
+frameworks  permiten a los desarrolladores trabajar de manera más rápida y eficiente, ya que 
+no tienen que escribir todo el código desde cero. Además, los frameworks proporcionan una 
+estructura de código predefinida y pautas para el desarrollo de aplicaciones, lo que  puede 
+ayudar a reducir los errores y mejorar la calidad del código.  
+Otra ventaja importante de los frameworks es que facilitan el trabajo en equipo. Al utilizar un 
+framework, los desarrolladores pueden trabajar juntos en un proyecto y compartir el código de 
+manera más fácil y eficiente. Además, los frameworks pueden ayudar  a mantener la 
+consistencia y la coherencia en el código, lo que puede ser especialmente útil cuando se trabaja 
+en proyectos a gran escala.  
+ 
+ 
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+2.  MVC  
+Imagen 1: Diagrama MVC  
+Fuente de la imagen: https://developer.mozilla.org/  
+COMPRUEBO MI APRENDIZAJE  
+1.Imagina que estás desarrollando una aplicación web de comercio electrónico. 
+¿Qué framework te resultaría más útil y por qué? Considera las características 
+mencionadas (organización, componentes reutilizables, patrones de diseño) y las 
+ventajas del uso de u n framework (velocidad, eficiencia, trabajo en equipo).   
+2.Estás planeando desarrollar una aplicación móvil para una plataforma específica 
+(Android o iOS). ¿Qué factores tomarías en cuenta para elegir el framework más 
+adecuado para tu proyecto? Justifica tu elección considerando las características 
+y ventajas de l os frameworks.  
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+El patrón Modelo -Vista -Controlador (MVC) es un patrón arquitectónico ampliamente utilizado 
+en el desarrollo de software, especialmente en aplicaciones web, para separar la 
+representación de la información de la manera en que ésta se maneja y manipula. Esta  
+separación permite una modularidad y un mantenimiento más sencillos del código.  
+ 
+2.1 Componentes de MVC  
+2.1.1 Modelo (Model):  
+El Modelo representa la estructura de datos de la aplicación y contiene la lógica de negocio.  
+ 
+Tiene como función  manejar  la lógica de la aplicación y gestiona el acceso a los datos, 
+respondiendo a las consultas sobre los datos y las instrucciones para cambiarlos.  
+ 
+Un e jemplo  de la implementación de un modelo  En una aplicación de gestión de usuarios, el 
+Modelo podría incluir clases para usuarios, roles y métodos para interactuar con una base de 
+datos.  
+2.1.2  Vista (View) : 
+La Vista es la interfaz de usuario que muestra los datos al usuario y con la que el usuario 
+interactúa.  
+ 
+Su función es la presentación de la información, determinando cómo se muestran los datos al 
+usuario final.  
+ 
+Como ejemplo usando la misma aplicación de gestión de usuarios, la Vista podría ser la página 
+web o la aplicación móvil donde se muestran formularios para registro, perfiles de usuario, etc.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+2.1.3 Controlador (Controller) : 
+El Controlador actúa como intermediario entre el Modelo y la Vista, gestionando las solicitudes 
+del usuario y actualizando el Modelo según sea necesario.  
+La principal responsabilidad es  Responde r a los eventos de usuario, realiza la lógica de 
+aplicación y determina qué Vista mostrar basándose en las interacciones del usuario.  
+ 
+Información complementaria  
+Link 1:  Para mayor información de MVC puedes visir el siguiente enlace: 
+https://developer.mozilla.org/es/docs/Glossary/MVC  
+  
+  
+  
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+Como ejemplo un Controlador podría manejar las solicitudes de inicio de sesión, registro de 
+usuarios, actualización de perfiles, etc.  
+ 
+ 
+2.3 Beneficios  del MVC  
+• Separación de preocupaciones: Permite dividir la aplicación en componentes que se 
+ocupan de aspectos específicos (datos, presentación, control) sin que uno afecte al otro.  
+ 
+• Facilita el mantenimiento : Al separar los componentes, facilita las modificaciones y 
+actualizaciones en la aplicación sin afectar otras partes.  
+ 
+• Reutilización de código : Los componentes pueden ser reutilizados en diferentes 
+partes de la aplicación o en diferentes proyectos.  
+ 
+2.4 Ejemplo de Flujo de Trabajo MVC:  
+1. El usuario realiza una acción en la Vista, como hacer clic en un botón de "Enviar"  en 
+un formulario de registro.  
+ 
+2. El Controlador recibe la solicitud del usuario, procesa los datos del formulario y decide 
+qué acción tomar en función de la solicitud (por ejemplo, guardar los datos en la base 
+de datos).  
+ 
+3. El Controlador interactúa con el Modelo para realizar operaciones relacionadas con los 
+datos, como consultar o actualizar la base de datos.  
+ 
+4. Una vez que se completa la operación en el Modelo, el Controlador selecciona la Vista 
+apropiada para mostrar al usuario, como una página de confirmación o un mensaje de 
+error.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+COMPRUEBO MI APRENDIZAJE  
+1.¿Describe cómo se puede utilizar el patrón MVC en diferentes tipos 
+de aplicaciones, como aplicaciones web, aplicaciones móviles y 
+aplicaciones de escritorio.   
+2.Menciona algunos ejemplos de frameworks populares que 
+implementan el patrón MVC.  
+  
+  
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+3. Laravel como Framework moderno  
+Laravel es un framework  de desarrollo web PHP de código abierto y altamente utilizado que 
+sigue el patrón arquitectónico MVC (Modelo -Vista -Controlador). Fue creado por Taylor Otwell y 
+lanzado inicialmente en 2011. Laravel se destaca por su sintaxis elegante y expresiva que 
+busca  facilitar el desarrollo rápido y eficiente de aplicaciones web modernas.  
+3.1 Ventajas de usar Laravel  
+Laravel se ha convertido en uno de los frameworks PHP más populares debido a su potencia, 
+flexibilidad y facilidad de uso. Es ideal para desarrolladores que buscan construir aplicaciones 
+web robustas y modernas de manera eficiente,  
+A continuación, se listan alguna de las ventajas de usar Laravel  
+• Desarrollo rápido : Laravel facilita el desarrollo ágil de aplicaciones web con su sintaxis 
+clara y sus numerosas características listas para usar.  
+ 
+• Escabilidad : Permite escalar desde proyectos pequeños hasta aplicaciones 
+empresariales complejas.  
+ 
+• Comunidad activa : Cuenta con una gran comunidad de desarrolladores que 
+contribuyen con paquetes, tutoriales y soporte.  
+3.2 Componentes  
+3.2.1 Routing (Enrutamiento) : 
+Laravel proporciona un enrutador potente y flexible que permite definir rutas de manera sencilla 
+y clara, asociando cada ruta con una acción del controlador.  
+ 
+El componente routing  tiene como función dirigir  las solicitudes HTTP entrantes a la acción 
+correspondiente del controlador o a una función de cierre (closure), permitiendo gestionar la 
+navegación y la lógica de la aplicación de manera estructurada.  
+3.2.2 Controladores (Controllers) : 
+Los controladores en Laravel son clases que agrupan la lógica de manejo de solicitudes 
+relacionadas. Cada método de un controlador puede manejar una acción específica, como 
+mostrar una página, procesar un formulario, etc.  
+ 
+Los controladores permiten mantener la lógica de la aplicación separada de la lógica de 
+presentación, facilitando así la reutilización del código y el mantenimiento.  
+3.2.3 Eloquent ORM : 
+Eloquent es el ORM (Object -Relational Mapping) incluido en Laravel, que simplifica la 
+interacción con bases de datos relacionales utilizando modelos de datos en lugar de escribir 
+consultas SQL directamente.  
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+El ORM de Laravel Permite definir modelos PHP para representar tablas de bases de datos y 
+establecer relaciones entre ellos, facilitando la creación, consulta, actualización y eliminación 
+(CRUD) de registros de manera intuitiva.  
+3.2.4 Blade Templating Engine : 
+Blade es el motor de plantillas de Laravel que proporciona una sintaxis simple y poderosa para 
+definir las vistas de la aplicación , adicionalmente nos  permite incluir estructuras de control 
+(como bucles y condicionales), herencia de plantillas, y directivas que facilitan la inclusión de 
+contenido dinámico y la reutilización de código HTML.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+3.2.5 Migraciones y Esquemas (Migrations y Schemas) : 
+Laravel incluye un sistema de migraciones que permite gestionar la estructura de la base de 
+datos mediante código PHP, manteniendo control de versiones y facilitando la colaboración en 
+equipos de desarrollo.  
+ 
+Las migraciones permiten crear y modificar tablas de base de datos de manera programática, 
+evitando el uso de SQL directo y asegurando que todos los miembros del equipo de desarrollo 
+tengan la misma estructura de base de datos.  
+ 
+3.2.3 Creación de un Proyecto Laravel  
+La siguiente lista muestra un conjunto de pasos para la creación  de un proyecto con Laravel  
+ 
+1. Verificación de la Instalación de PHP : 
+a. Antes de instalar Laravel, verifica que PHP esté instalado y configurado 
+correctamente en tu sistema. Puedes verificar la versión de PHP ejecutando el 
+siguiente comando en tu terminal:  
+ 
+ 
+ 
+Asegúrate de tener al menos PHP 7.3 o superior instalado para la compatibilidad con 
+Laravel.  
+ 
+ 
+ 
+Información complementaria  
+Link 1:  Para mayor información acerca de Laravel puede ver el siguiente video: 
+https://www.youtube.com/watch?v=eLI8c_NtkBk&pp=ygUXaW50cm9kdWNjaW9uIGRlIGx
+hcmF2ZWw%3D   
+  
+  
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+2. Instalación de Composer : 
+a. Antes de instalar Laravel, es fundamental asegurarse de que Composer  esté 
+instalado correctamente en tu sistema. Composer es una herramienta esencial 
+para administrar las dependencias de PHP y es requerido por Laravel.  
+b. Puedes descargar Composer desde getcomposer.org  y seguir las instrucciones 
+de instalación específicas para tu sistema operativo.  
+ 
+3. Instalación de Laravel : 
+o Abre tu terminal o línea de comandos y ejecuta el siguiente comando para 
+instalar Laravel globalmente en tu sistema (asegúrate de tener permisos 
+suficientes):  
+ 
+ 
+ 
+Esto instalará Laravel globalmente y te permitirá crear nuevos proyectos Laravel desde 
+cualquier directorio en tu sistema.  
+ 
+4. Creación del Proyecto : 
+o Ejecuta el siguiente comando para crear un nuevo proyecto Laravel:  
+ 
+ 
+Reemplaza nombre_del_proyecto con el nombre deseado para tu proyecto.  
+ 
+5. Ejecución del Servidor de Desarrollo : 
+• Una vez que Laravel se haya instalado correctamente, navega hacia el directorio de tu 
+proyecto recién creado:  
+ 
+ 
+Luego, inicia el servidor de desarrollo de Laravel usando Artisan, la interfaz de línea de 
+comandos incluida:  
+ 
+ 
+Esto iniciará un servidor de desarrollo local en http://localhost:8000. Puedes acceder a 
+tu aplicación Laravel desde tu navegador web visitando esta dirección.  
+
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+4. Entorno de Desarrollo Integrado  (IDE) 
+ 
+ 
+ 
+Un entorno de desarrollo integrado (IDE) es una aplicación de software que ayuda a los 
+programadores a desarrollar código de software de manera eficiente. Aumenta la productividad 
+de los desarrolladores al combinar capacidades como editar, crear, probar y empaquetar 
+software en una aplicación fácil de usar. Así como los escritores utilizan editores de texto y los 
+contables, hojas de cálculo, los desarrolladores de software utilizan IDE par a facilitar su trabajo.  
+ 
+ 
+4.1 ¿Cómo elijo un IDE? 
+Puede encontrar varios entornos de desarrollo integrado (IDE) modernos en el mercado con 
+una variedad de funciones y precios de referencia. Muchos IDE son de código abierto o se 
+pueden utilizar y configurar con total libertad. Estos son algunos requisitos que se deben tener 
+en cuenta para elegir un IDE:  
+ 
+• Lenguaje de programación . 
+• Sistema operativo . 
+• Funciones de automatización . 
+COMPRUEBO MI APRENDIZAJE  
+1. Analice los beneficios de usar Laravel para el desarrollo de 
+API. 
+2. Explique cómo la función de inyección de dependencia de 
+Laravel facilita la reutilización y el mantenimiento del 
+código.   
+  
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+• Personalización de IDE . 
+ 
+ 
+4.2 Visual Studio Code  
+ 
+ 
+ 
+Es un IDE y editor de texto que se puede usar para editar, depurar y compilar código, y luego 
+publicar una aplicación. Además del editor y depurador estándar que proporciona la mayoría 
+de los IDE, Visual Studio incluye compiladores, herramientas de finaliz ación de código, 
+diseñadores gráficos y muchas más funciones para mejorar el proceso de desarrollo de 
+software.  
+Viene con soporte integrado para JavaScript, TypeScript  y Node.js y tiene un rico ecosistema 
+de extensiones para otros lenguajes y tiempos de ejecución (como C++, C#, Java, Python, 
+PHP, Go, .NET).    
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+COMPRUEBO MI APRENDIZAJE  
+1. Analice las ventajas de utilizar un IDE en lugar de un simple editor 
+de texto para el desarrollo de software.  
+2. Compare y contraste IDE populares como Visual Studio Code, 
+IntelliJ IDEA y PyCharm, destacando sus fortalezas y debilidades.  
+3. Explique cómo los IDE pueden ayudar a mejorar la calidad y la 
+capacidad de mantenimiento del código.   
+  
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Conclusión  
+ 
+En el desarrollo moderno de aplicaciones web, comprender y aplicar los principios de MVC, 
+Laravel, migraciones y el uso efectivo de un IDE de programación son esenciales para crear 
+soluciones robustas y escalables.  
+ El patrón MVC organiza el código separando la lógica de la aplicación, la interfaz de usuario y 
+el flujo de control, lo que facilita el mantenimiento y la colaboración. Laravel, un framework de 
+PHP que sigue el patrón MVC, proporciona herramientas que sim plifican el desarrollo web, 
+permitiendo construir aplicaciones complejas de manera eficiente. Las migraciones en Laravel 
+gestionan la base de datos de manera estructurada y versionada, esenciales para la gestión de 
+cambios en diferentes entornos. Además, u n IDE de programación adecuado mejora la 
+productividad y la calidad del código con funcionalidades como autocompletado, depuración y 
+soporte para frameworks específicos.  
+Dominar estos temas no solo mejora la capacidad técnica de los desarrolladores, sino que 
+también les proporciona una comprensión profunda de las mejores prácticas en el desarrollo 
+de software, preparándolos para enfrentar los desafíos del desarrollo web mo derno y entregar 
+soluciones innovadoras y eficientes . 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Información complementaria  
+1.Foros comunitarios y de soporte:  
+https://www.forosdelweb.com/  
+https://www.reddit.com/r/webdev / 
+2.Código de Visual Studio, TUTORIALES: https://code.visualstudio.com/docs/  
+3.PyCharm: https://www.jetbrains.com/help/pycharm/  
+4.Tormenta web: https://www.jetbrains.com/help/webstorm/  
+5.IDEA de IntelliJ: https://www.jetbrains.com/help/idea/  
+6.Eclipse: https://www.eclipse.org/documentation/   
+ 
+Apunte 1 – Introducción a los frameworks modernos  
+Desarrollo de Software Web I -IF204IINF  
+Referencia Bibliogr áfica 
+ 
+Drishti  Jain (2023). Ultimate Laravel for Modern Web Development: Build Robust and 
+Interactive Enterprise -Grade Web Apps using Laravel's MVC, Authentication, APIs, and Cloud 
+Deployment. Editorial Orange Education Pvt Ltd.  
+Ver en: https://ciisa.odilotk.es/info/ultimate -laravel -for-modern -web-development -build -robust -
+and-interactive -enterprise -grade -web-apps -using -laravels -mvc-authentication -apis-and-cloud -
+deployment -english -edition -02625186  
+ 
+ 
+Referencia del presente documento:  
+Instituto Profesional San Sebastián , Tecnología ed ucativa (2024). Apunte 1: – Introducción a los 
+frameworks modernos . Desarrollo de Software Web I . Santiago.  
+ 
+
+--- Cuaderno de Ejercitación 1_DESARROLLO SOFT WEB I.pdf ---
+ 
+ 
+ 
+ 
+  
+ 
+ 
+ 
+  
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Desarrollo de Software Web I  
+IF204IINF   
+ 
+Cuaderno de Ejercitación N° 1  
+Introducción a los framework s modernos  
+ 
+ 2 Cuaderno de Ejercitación N°  1 
+Desarrollo de Software Web I - IF204IINF  
+Instrucciones  
+ 
+Estimad o/a estudiante : 
+Te invitamos a poner a prueba tus conocimientos y habilidades en relación a los contenidos de esta 
+Unidad  1 “Introducción a los framework modernos ”. Si bien el desarrollo de este  recurso formativo es 
+opcional , te será muy útil par a consolidar los aprendizajes adquiridos . Si decides ocuparlo, t e 
+recomendamos que vayas  completando las actividades semana a semana, de acuerdo con lo indicado 
+en cada apartado. Así podrás avanzar de forma paulatina , para una mejor  comprensión y aplicación 
+práctica de los distintos contenidos . 
+En esta ocasión, podrás  ejercitar los contenidos y habilidades asociados a  los siguientes indicadores de 
+logro de l a unidad . 
+ 
+Resultado de Aprendizaje:  Analiza los conceptos básicos del Framework seleccionado para el 
+desarrollo web, incluyendo su estructura y patrones de diseño.  
+Los indicadores de logro que se ejercitarán son  los siguientes:  
+• Identifica los componentes principales del Framework de acuerdo con la problemática propuesta.  
+• Describe la arquitectura del Framework en función al requerimiento.  
+• Explica los patrones de diseño utilizados en el framework según estándares de desarrollo web.  
+ 
+Resultado de Aprendizaje:  Construye componentes de software utilizando el framework definido 
+considerando las interfaces de usuario y funcionalidades.  
+ 
+Los indicadores de logro que se ejercitarán son los siguientes:  
+• Desarrolla componentes reutilizables  en función al requerimiento.  
+• Implementa la interacción de la interfaz de usuario utilizando estándares de desarrollo web.  
+• Conecta los componentes con servicios siguiendo los requerimientos solicitados.  
+ 
+Recuerda  que puedes revisar  las claves  de respuesta  de cada actividad a l final de  este recurso , 
+comproba ndo cuáles fueron  tus aciertos y en qué podrías  mejorar.  Esperamos que puedas aprovechar 
+al máximo este recurso para el aprendizaje y que sea de utilidad  para tu proceso formativo.  
+ 
+¡Adelante y mucho é xito! 
+  
+ 
+ 3 Cuaderno de Ejercitación N°  1 
+Desarrollo de Software Web I - IF204IINF  
+1. Resumen  de la unidad  (semana 2) 
+ 
+Para  realizar  esta primera actividad , es importante que leas  comprensivamente el Apunte Activador  y 
+luego  registres  tus propi as anotaciones  utilizando  el método Cornell . Los componentes de este método 
+son tres: ideas o conceptos clave, tus notas  sobre estos conceptos  y finalmente un breve  resumen.  
+ 
+• Ideas  o conceptos  clave:  Selecciona l os términos o puntos más importantes  de la unidad . 
+• Notas:  Anota la información  más re levante asociada a estos conceptos clave. También puedes 
+desarrollar organizadores gráficos, tales como esquema s, mapa s mental es o mapa s 
+conceptual es, que te ayude n a recordar las conexiones entre l as ideas clave seleccionad as. 
+• Resumen:  Expone de la forma más breve posible lo desarrollado en  torno a  las ideas clave  y tus 
+anotaciones (notas) . 
+ 
+ 
+ 
+Fuente:  Adaptado de https://www.educalive.com/blog/metodo -cornell -tomar -apuntes  
+Para el desarrollo de este resumen según el método Cornell , completa la plantilla  disponible en la página 
+siguiente . A continuación, te dejamos también información  complementari a donde podrás profundizar 
+en la elaboración de un mapa conceptual, un mapa mental y un esquema, por si decides ocupar algun a 
+de estas  técnica s de estudio  dentro del apartado de “Notas” . 
+ 
+ 
+ 
+ 
+
+ 
+ 4 Cuaderno de Ejercitación N°  1 
+Desarrollo de Software Web I - IF204IINF  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Plantilla  a completar  para el resumen de la unidad, según el método Cornell:  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Información complementaria  
+ 
+Link 1:  ¿Qué es un Mapa Mental y cómo hacer uno para tu proyecto?  
+https://asana.com/es/resources/what -is-mindmap   
+ 
+Link 2:  Concepto de Esquema.  
+https://concepto.de/esquema/   
+ 
+Link 3:  Concepto de Mapa Conceptual.  
+https://concepto.de/mapa -conceptual/   
+  
+
+ 
+ 5 Cuaderno de Ejercitación N°  1 
+Desarrollo de Software Web I - IF204IINF  
+2. Investigación y manejo de contenidos  (semana 2)  
+ 
+2.1. Desarrolle mapa conceptual que ilustre la comunicación de los diferentes componentes que 
+forman parte de un patrón  MVC . 
+ 
+2.2. Complete el siguiente cuadro comparativo que le permitirá apreciar las principales similitudes 
+y diferencias entre las diferentes partes de MVC . 
+ 
+Componente  Descripción  Responsabilidades  Ejemplo en Laravel  
+ 
+Controlador   
+ 
+ 
+   
+ 
+Modelo   
+ 
+ 
+   
+ 
+Vista  
+  
+ 
+ 
+   
+ 
+2.3. Asocie cada término con su definición.  
+ 
+1. Eloquent ORM   __ Intermediario que filtra las solicitudes HTTP, proporcionando un  
+    mecanismo para analizar y manipular las solicitudes entrantes antes de 
+    que lleguen al controlador.   
+2. Middleware    __ Definen las URL de la aplicación y las enlazan con controladores o  
+    acciones específicas.  
+3. Routes     __ Gestiona la lógica de la aplicación y actúa como intermediario entre  
+    el modelo y la vista.  
+4. Controller    __ Permite la interacción con la base de datos usando un enfoque de  
+         mapeo objeto -relacional.  
+ 
+ 
+ 
+ 
+ 
+ 6 Cuaderno de Ejercitación N°  1 
+Desarrollo de Software Web I - IF204IINF  
+2.4. Considerando los pasos necesarios para configurar  un proyecto con Laravel , indique cuál 
+debería ser  el orden correcto.  
+___ Crear modelos y migraciones.   
+___ Configurar el entorno de desarrollo.  
+___ Probar la aplicación y depurar errores.  
+___ Desarrollar las vistas utilizando Blade.  
+___ Configurar la base de datos en el archivo .env.  
+___ Crear controladores y rutas.  
+___ Ejecutar las migraciones para crear tablas en la base de datos.  
+___ Crear un nuevo proyecto Laravel.  
+___ Implementar la lógica de negocio en los controladores.  
+___ Configurar y aplicar middleware . 
+ 
+ 
+3. Análisis y aplicación  (semana 3) 
+ 
+Desarrollo de una Plataforma de Gestión de Cursos en Laravel  
+Una pequeña empresa de formación en línea quiere desarrollar una plataforma de gestión de cursos 
+utilizando el framework Laravel. La plataforma debe permitir a los administradores gestionar cursos, 
+estudiantes e instructores. Cada curso debe tener un títul o, descripción, fecha de inicio y fin, y debe 
+estar asociado a uno o más instructores. Los estudiantes deben poder registrarse en los cursos y dejar 
+comentarios. Además, la plataforma debe incluir un sistema de autenticación y autorización para 
+asegurar qu e solo los usuarios registrados puedan acceder a ciertas funcionalidades.  
+El proyecto tiene los siguientes requisitos:  
+1. Autenticación y autorización:  Implementar un sistema para asegurar que solo los 
+administradores puedan gestionar cursos e instructores, mientras que los estudiantes pueden 
+registrarse y dejar comentarios.  
+2. Gestión de cursos:  Crear, leer, actualizar y eliminar (CRUD) cursos.  
+3. Gestión de usuarios:  CRUD para estudiantes e instructores.  
+4. Comentarios:  Permitir que los estudiantes registrados dejen comentarios en los cursos.  
+5. Interfaces de usuario:  Desarrollar una interfaz intuitiva para que los administradores gestionen 
+la plataforma y para que los estudiantes interactúen con los cursos.  
+ 
+(Exponga los detalles del caso o situación problemática, recuerde indicar las fuentes o referencias ). 
+ 
+ 
+ 7 Cuaderno de Ejercitación N°  1 
+Desarrollo de Software Web I - IF204IINF  
+3.1. Analiza los componentes principales de Laravel que utilizarías para desarrollar el sistema de 
+autenticación y autorización de la plataforma de gestión de cursos. Explica cómo estos componentes 
+contribuyen a la seguridad de la aplicación.  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+ 
+3.2. Describe cómo estructurarías los modelos y explica cómo usarías Laravel migrations para crear 
+estas tablas.  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+ 
+3.3. Explica cómo implementarías las rutas para la implementación de un CRUD (Crear, Leer, 
+Actualizar y Eliminar) para los cursos en Laravel.  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+ 
+3.4. ¿Como permitirías que otros desarrolladores colaboren con el proyecto, que herramientas usarías ? 
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+__________________________________________________________________________________  
+  
+ 
+ 8 Cuaderno de Ejercitación N°  1 
+Desarrollo de Software Web I - IF204IINF  
+ 
+Claves de Respuesta  
+ 
+1. Resumen de la unidad  
+ 
+Entre los conceptos claves, deberías considerar  algunos de  los siguientes términos:  
+• Modelo  
+• Vista  
+• Controlador  
+• MVC  
+• Laravel  
+• Blade  
+• Middleware  
+ 
+Como resumen de la unidad , debería s incluir, al menos, la siguiente información esencial: Laravel es 
+un framework de desarrollo web basado en PHP que sigue el patrón arquitectónico Modelo -Vista -
+Controlador (MVC). Es conocido por su elegancia y simplicidad, facilitando el desarrollo de aplicaciones 
+web robustas y escalables.  
+ 
+ 
+2. Investigación y manejo de contenidos  
+ 
+2.1. Definiciones de MVC  
+2.2. Definiciones de componentes de Laravel  
+2.3. Componentes de Laravel  
+2.4. Setup Laravel  
+ 
+ 
+3. Análisis y aplicación  
+ 
+3.1. MVC  
+3.2. Base de Datos  
+3.3. Métodos  HTTP  
+3.4. Repositorios  
+ 
+ 
+ 
+ 
+Referencia del presente documento:  
+Instituto Profesional San Sebasti án, Dirección de innovación académica  (2024). Cuaderno de 
+Ejercitación  1: Desarrollo de Software Web I . Santiago.   
+ 
+ 
+
+--- Evaluación u1_DESARROLLO SOFT WEB I.pdf ---
+ 
+ 
+  Evaluación sumativa  UNIDAD Nº 1 
+ 
+Resultados de Aprendizaje  de la unidad : 
+ 
+1.1.- Analiza los conceptos básicos del Framework seleccionado para el desarrollo web, 
+incluyendo su estructura y patrones de diseño.  
+1.2.- Construye componentes de software utilizando el framework definido 
+considerando las interfaces de usuario y funcionalidades.  
+ 
+ 
+  En esta situación evaluativa, se espera evidenciar que los estudiantes:   
+1. Identifica los componentes principales del Framework de acuerdo con la 
+problemática propuesta.  
+2. Describe la arquitectura del Framework en función al requerimiento.  
+3. Explica los patrones de diseño utilizados en el framework según estándares de 
+desarrollo web.  
+4. Desarrolla componentes reutilizables  en función al requerimiento.  
+5. Implementa la interacción de la interfaz de usuario utilizando estándares de 
+desarrollo web.  
+6. Conecta los componentes con servicios siguiendo los requerimientos solicitados.  
+ 
+ 
+ 
+  Tiempo:   Según se indica en la plataforma.  
+  Puntaje:  100 puntos.   
+.  
+s/proyecto  
+  Características de la evaluación  
+ 
+• Esta es una actividad calificada  de la unidad y es de carácter grupal  de máximo 3 
+integrantes.  
+• Para conocer cómo serás evaluado, revisa la rúbrica disponible en plataforma.  
+•  Esta es una actividad evaluativa de desarrollo extendida donde se debe resolver un 
+caso de estudio . 
+•  Esta actividad evaluativa implicará la entrega de un producto  que deberá cargar a 
+la plataforma .  
+• La evaluación corresponde al 10% de la nota final de la asignatura.  
+•  Se evalúa al 60% de exigencia, como nota 4,0, con un puntaje total en la evaluación 
+del 100%  
+ 
+ 
+ 
+   
+Situación Desarrollo  Software de Gestión de Proyectos  
+https://www.techsolutiongroups.com/  
+La empresa Tech Solutions  ha decidido modernizar su sistema de gestión de proyectos. Para ello, 
+han optado por utilizar un framework moderno para el desarrollo web. El equipo de desarrollo 
+necesita familiarizarse con los conceptos básicos del framework elegido y ser capaz de const ruir 
+componentes de software eficientes que se integren con las interfaces de usuario y las 
+funcionalidades requeridas.  
+Los requerimientos se definen a continuación:  
+• Definición de las siguientes rutas que serán  manejadas por la API:  
+1. Listar  todos los proyectos . 
+2. Agregar Proyecto . 
+3. Eliminar proyecto por su Id . 
+4. Actualizar proyecto por su id . 
+5. Obtener un proyecto por su id . 
+• Generar los  siguientes  controladores que conectaran cada una de las  rutas definida s con los 
+modelo s definidos : 
+1. Controlador para crear un proyecto . 
+2. Controlador para obtener los proyectos . 
+3. Controlador para actualizar un proyecto por id . 
+4. Controlador para eliminar un proyecto por id . 
+5. Controlador para obtener un proyecto por id . 
+• Genera los siguientes modelos que serán  usados por el controlador con datos estáticos con 
+los siguientes campos : 
+1. Proyecto  
+▪ Id. 
+▪ Nombre . 
+▪ Fecha de Inicio . 
+▪ Estado . 
+▪ Responsable . 
+▪ Monto . 
+• Construir las siguientes vistas con estilos básicos  que muestren la información retornada por 
+el controlador : 
+1. Vista para crear un proyecto . 
+2. Vista para obtener los proyectos . 
+3. Vista para actualizar un proyecto por id . 
+4. Vista para eliminar un proyecto por id . 
+5. Vista para obtener un proyecto por id . 
+ 
+• Genera un componente reutilizable que consuma un servicio externo que extraiga el valor 
+de la UF del día. 
+ 
+ 
+   Instrucciones  
+ 
+  Portada: título del trabajo, datos identificación (asignatura, logo, nombre del profesor y de los y las 
+estudiantes).  
+•       Desarrollo de los ítems temáticos o instrucciones de la tarea.  
+•       Archivo formato Word o PDF para evitar desconfiguración de tablas, imágenes o mapas: 
+comprimidos.  
+•       Número de páginas:  máximo 4.  
+•       Tipo de letra: Arial, tamaño 12.  
+•       Interlineado: 1,15 líneas  
+•       Alineación: justificada.  
+•       Páginas numeradas.  
+•       El nombre a dar al archivo es el siguiente:  EVU1_APELLIDO_NOMBRE  
+   Formato de entrega  
+
+--- Rúbrica_EVAL U1.pdf ---
+Rúbrica evaluación unidad X  
+NOMBRE ASIGNATURA  
+                                                                                                                      
+                                                                                                                                                                                                                                                               
+  Rúbrica evaluación de unidad 1  
+ 
+ 
+DESCRIPCIÓN DE LOS NIVELES DE DESEMPEÑO  
+Nivel  Bajo  Medio  Alto Sobresaliente  
+Porcentaje de logro  Menos del 59%  60% - 69%  80% - 89%  90% - 100%  
+Descripción  Demuestra un dominio 
+limitado del indicador. Su 
+desempeño es impreciso, 
+incompleto e inconsistente.  Demuestra un dominio 
+básico del indicador. Su 
+desempeño es 
+parcialmente preciso y 
+completo.  Demuestra un buen 
+dominio del indicador. Su 
+desempeño es preciso, 
+completo y generalmente 
+consistente.  Demuestra un dominio 
+excepcional del indicador. 
+Su desempeño es preciso, 
+completo y consistente.  
+ 
+ 
+INDICADOR   Niveles de desempeño  
+Bajo  Medio  Alto  Sobresaliente  
+Menos del 59%  60% - 69% 80% - 89% 90% - 100%  
+Identifica los 
+componentes principales 
+del Framework de 
+acuerdo con la 
+problemática propuesta.  No se evidencia la correcta 
+utilización de rutas en el 
+proyecto  Crea menos de tres rutas  
+ Crea menos de cinco rutas  
+ Realiza la construcción de todas las 
+rutas solicitadas  
+0 puntos    10 puntos   14 puntos   18 puntos    
+Describe la arquitectura 
+del Framework en función 
+al requerimiento.  
+ No se evidencia construcción 
+de la arquitectura del proyecto  Se evidencia construcción de la 
+arquitectura del proyecto, pero 
+con errores en la estructura de 
+este  
+ Se evidencia construcción de 
+la arquitectura del proyecto, 
+pero los nombres de los 
+archivos no son descriptivos  
+ Se evidencia construcción de la 
+arquitectura del proyecto  de 
+forma descriptiva  
+ 
+0 puntos     8 puntos   10 puntos   18 puntos   
+Rúbrica evaluación unidad X  
+NOMBRE ASIGNATURA  
+Explica los patrones de 
+diseño utilizados en el 
+framework según 
+estándares de desarrollo 
+web.  No se evidencia construcción de 
+todos los modelos, controladores y 
+vistas . Se evidencia construcción de 
+controladores y vistas pero no 
+se incluyen todos los 
+solicitados . Se evidencia construcción de 
+controladores y vistas  pero no 
+hay conexión  entre ellas  Se evidencia construcción de todos 
+los modelos, controladores y vistas  
+y su conexión  entre ellas . 
+ 
+0 puntos     10 puntos   12 puntos   14 puntos   
+Desarrolla componentes 
+reutilizables  en función al 
+requerimiento.  No presenta evidencia de creación 
+de componentes reutilizables  
+ Se presenta evidencia de creación 
+de componentes reutilizables pero 
+los mismos presentan fallas de 
+ejecución  
+ Se presenta evidencia de creación 
+de componentes reutilizables, 
+pero no realizan el consumo del 
+servicio externo  
+ Se presenta evidencia de creación 
+de componentes reutilizables con 
+consumo de servicio externo  
+ 
+0 puntos  10 puntos  12 puntos  14puntos  
+Implementa la interacción 
+de la interfaz de usuario 
+utilizando estándares de 
+desarrollo web.  
+ No presenta evidencia de la 
+interacción de las interfaces de 
+usuario  según  requerimiento  Desarrolla menos de tres vistas 
+de usuario . Desarrolla menos de cinco 
+vistas de usuario . Desarrolla todas las vitas de 
+usuario . 
+0 puntos     12 puntos   16 puntos   18 puntos   
+Conecta los componentes 
+con servicios siguiendo los 
+requerimientos solicitados.  
+ No presenta evidencia de la 
+comunicación  entre componentes 
+en base a los requerimientos 
+solicitados  Conecta menos de tres 
+controladores con los servicios 
+creados  
+ 
+ Conecta menos de cinco 
+controladores con los servicios 
+creados  
+ Conecta todos los controladores 
+con los servicios creados  
+0 puntos     12 puntos   16 puntos   18 puntos   
+TOTALES  0 PUNTOS  62 PUNTOS  80 PUNTOS  100 PUNTOS  
+ 
+ 
+ 
+ 
+ 
+ 
+Rúbrica evaluación unidad X  
+NOMBRE ASIGNATURA  
+Escala de notas  según puntaje obtenido  al 60 % exigencia  
+ 
+ 
+

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidad 0 — Programa de Asignatura | IF203IINF</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --p:#6366f1;--pl:#818cf8;--pd:#4f46e5;--c2:#06b6d4;--acc:#f59e0b;
+  --ok:#10b981;--err:#ef4444;--warn:#f59e0b;
+  --bg:#0a0a15;--bg2:#111120;--bg3:#1a1a2e;--card:#16162a;
+  --border:rgba(99,102,241,.25);--text:#f8fafc;--muted:#cbd5e1;--dim:#94a3b8;
+  --glass:rgba(255,255,255,.05);--gb:rgba(255,255,255,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:11px;} 
+.deck{width:100vw;height:100vh;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transform:translateX(80px);
+  transition:opacity .5s cubic-bezier(0.4, 0, 0.2, 1),transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+  background:var(--bg);overflow:hidden;
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.prev{transform:translateX(-80px);}
+.slide::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(99,102,241,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.06) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+/* Flex layouts to fill screen */
+.slide-inner{
+    position:relative;z-index:1;flex:1;
+    display:flex;flex-direction:column;
+    padding:4rem 6rem;
+    padding-bottom:100px;
+    overflow-y:auto;
+}
+.slide-inner.centered {
+    justify-content: center;
+}
+.slide-inner::-webkit-scrollbar{width:8px;}
+.slide-inner::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px;}
+
+/* Orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;}
+.orb1{width:700px;height:700px;background:rgba(99,102,241,.12);top:-150px;right:-150px;}
+.orb2{width:500px;height:500px;background:rgba(6,182,212,.08);bottom:-100px;left:-100px;}
+
+/* Nav */
+.nav-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(10,10,21,.95);backdrop-filter:blur(24px);
+  border-top:1px solid var(--gb);height:80px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 3rem;
+}
+.nav-info{display:flex;align-items:center;gap:1.5rem;}
+.session-badge{background:var(--p);color:#fff;padding:.4rem 1rem;border-radius:10px;font-size:1rem;font-weight:800;letter-spacing:.05em;}
+.slide-counter{font-size:1rem;color:var(--muted);font-weight:600;}
+.nav-title{font-size:1.1rem;color:var(--dim);max-width:600px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
+.nav-controls{display:flex;align-items:center;gap:1rem;}
+.btn-nav{background:var(--glass);border:1px solid var(--gb);color:var(--text);padding:.75rem 1.75rem;border-radius:10px;cursor:pointer;font-size:1.1rem;font-weight:700;transition:all .2s;font-family:inherit;}
+.btn-nav:hover{background:rgba(99,102,241,.2);border-color:var(--border);}
+.btn-nav:disabled{opacity:.3;cursor:not-allowed;}
+.btn-nav.primary{background:linear-gradient(135deg,var(--p),var(--pd));border-color:transparent;box-shadow:0 8px 24px rgba(99,102,241,.4);display:flex;align-items:center;gap:0.5rem;}
+.btn-nav.primary:hover{box-shadow:0 12px 32px rgba(99,102,241,.6);transform:translateY(-2px);}
+
+.progress-track{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,.08);z-index:200;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--c2));transition:width .4s ease;}
+.session-tabs{position:fixed;top:0;left:0;right:0;z-index:150;display:flex;background:rgba(10,10,21,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--gb);height:60px;padding-top:4px;}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:var(--dim);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;letter-spacing:.05em;text-transform:uppercase;}
+.tab:hover{color:var(--muted);}
+.tab.active{color:var(--text);border-bottom-color:var(--p);background:rgba(99,102,241,.1);}
+
+/* Typography scaled up */
+.slide-tag{font-size:1.3rem;font-weight:800;color:var(--pl);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;margin-top:60px;}
+.slide h1{font-size:clamp(3rem, 4.5vw, 4rem);font-weight:900;line-height:1.15;margin-bottom:1.25rem;}
+.slide h2{font-size:clamp(2.2rem, 3vw, 2.8rem);font-weight:900;color:#fff;margin-bottom:1.25rem;line-height:1.2;}
+.slide h3{font-size:2rem;font-weight:800;color:var(--pl);margin-bottom:1rem;margin-top:1rem;}
+.slide p{color:var(--muted);line-height:1.6;font-size:1.6rem;}
+.gradient-text{background:linear-gradient(135deg,#fff 0%,var(--pl) 50%,var(--c2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* Flexible Content Blocks */
+.content-area {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-evenly;
+}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--gb);border-radius:16px;padding:1.5rem 2rem;display:flex;flex-direction:column;justify-content:center;}
+.card-grid{display:grid;gap:1.5rem;flex:1;}
+.card-grid-2{grid-template-columns:1fr 1fr;}
+.card-grid-3{grid-template-columns:repeat(3,1fr);}
+.card.accent-p{border-left:5px solid var(--p);}
+.card.accent-c{border-left:5px solid var(--c2);}
+.card.accent-g{border-left:5px solid var(--ok);}
+.card.accent-y{border-left:5px solid var(--acc);}
+.card.accent-r{border-left:5px solid var(--err);}
+.card-icon{display:inline-flex;color:var(--text);margin-bottom:0.75rem;}
+.card-icon svg {width:42px;height:42px;stroke-width:1.5px;}
+.card-title{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:0.5rem;}
+.card-body{font-size:1.4rem;color:var(--muted);line-height:1.6;}
+.card-num{font-size:1.4rem;font-weight:900;color:var(--pl);letter-spacing:.1em;margin-bottom:.5rem;opacity:0.8;}
+
+.quote{background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-left:6px solid var(--p);border-radius:0 16px 16px 0;padding:1.5rem 2rem;font-size:1.4rem;color:var(--text);line-height:1.6;font-style:italic;margin:1rem 0;box-shadow: 0 10px 20px rgba(0,0,0,0.15);}
+.quote strong{color:var(--pl);font-style:normal;}
+
+pre,code{font-family:'JetBrains Mono',monospace;}
+.code-block{background:#0d0d1f;border:1px solid var(--gb);border-radius:12px;padding:1.5rem;font-size:1.4rem;color:#a5b4fc;line-height:1.6;overflow-x:auto;white-space:pre;box-shadow:inset 0 2px 10px rgba(0,0,0,0.3);}
+.code-block .kw{color:#c084fc;font-weight:700;}.code-block .fn{color:#67e8f9;}.code-block .ok{color:#4ade80;}.code-block .er{color:#f87171;}.code-block .cm{color:#6b7280;font-style:italic;}.code-block .st{color:#fbbf24;}
+
+/* Tables scaled */
+.tbl{width:100%;border-collapse:collapse;font-size:1.4rem;}
+.tbl th{text-align:left;padding:1rem 1.5rem;background:var(--bg3);color:var(--pl);font-size:1.2rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid var(--p);}
+.tbl td{padding:1.2rem 1.5rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top;line-height:1.6;}
+.tbl tr:hover td{background:rgba(255,255,255,.03);color:var(--text);}
+.tbl code{background:rgba(99,102,241,.15);color:#a5b4fc;padding:.2rem .5rem;border-radius:6px;font-size:1.3rem;}
+
+.tag{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:8px;font-size:1.1rem;font-weight:700;letter-spacing:0.03em;}
+.tag svg{width:16px;height:16px;}
+.tag-p{background:rgba(99,102,241,.2);color:#c7d2fe;border:1px solid rgba(99,102,241,.4);}
+.tag-g{background:rgba(16,185,129,.2);color:#6ee7b7;border:1px solid rgba(16,185,129,.4);}
+.tag-y{background:rgba(245,158,11,.2);color:#fde68a;border:1px solid rgba(245,158,11,.4);}
+.tag-r{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.4);}
+.tag-c{background:rgba(6,182,212,.2);color:#a5f3fc;border:1px solid rgba(6,182,212,.4);}
+
+.check-list{list-style:none;display:flex;flex-direction:column;gap:.8rem;}
+.check-list li{display:flex;align-items:flex-start;gap:.8rem;font-size:1.6rem;color:var(--muted);line-height:1.5;}
+.check-list li::before{content:'';display:inline-block;width:24px;height:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:2px;}
+
+.dot-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+.dot-list li{display:flex;align-items:flex-start;gap:.7rem;font-size:1.55rem;color:var(--muted);line-height:1.5;}
+.dot-list li::before{content:'';display:inline-block;width:20px;height:20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23818cf8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:3px;}
+
+.cols{display:grid;gap:2rem;flex:1;}
+.cols-2{grid-template-columns:1fr 1fr;}
+.cols-3{grid-template-columns:1fr 1fr 1fr;}
+
+.hdiv{height:2px;background:linear-gradient(90deg, var(--p), transparent);margin:1.5rem 0;opacity:0.6;}
+
+/* Principles layout */
+.principle{display:flex;gap:1.5rem;padding:2rem;border-radius:16px;background:var(--card);border:1px solid var(--gb);align-items:center;box-shadow: 0 4px 15px rgba(0,0,0,0.2);}
+.principle-num{font-size:4rem;font-weight:900;color:var(--pl);opacity:.4;min-width:80px;text-align:center;}
+.principle-text{flex:1;}
+.principle-text .ptitle{font-size:22px;font-weight:800;color:#fff;margin-bottom:.5rem;}
+.principle-text .pdesc{font-size:18px;color:var(--muted);line-height:1.6;}
+
+/* Cover layout */
+.cover{justify-content:center;align-items:center;text-align:center;}
+.cover-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.4);color:var(--pl);padding:.6rem 1.5rem;border-radius:999px;font-size:1rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem;}
+.cover-sub{font-size:1.4rem;color:var(--muted);max-width:800px;margin:0 auto;line-height:1.6;}
+
+/* Activity Slide styling */
+.activity-banner {
+    background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(99,102,241,0.2));
+    border: 2px solid rgba(139,92,246,0.4);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(139,92,246,0.15);
+    flex: 1;
+    justify-content: center;
+}
+.activity-icon {
+    display:flex;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 15px rgba(139,92,246,0.5));
+    color: var(--pl);
+}
+.activity-icon svg{width:80px;height:80px;stroke-width:1.5px;}
+.activity-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+.activity-desc {
+    font-size: 1.6rem;
+    color: var(--muted);
+    max-width: 800px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.check-item{background:var(--card);border:1px solid var(--gb);border-radius:14px;padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;font-size:1.6rem;color:var(--muted);line-height:1.6;box-shadow: 0 4px 15px rgba(0,0,0,0.15);}
+.check-item::before{content:'';display:inline-block;width:24px;height:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'/%3E%3Cpolyline points='22 4 12 14.01 9 11.01'/%3E%3C/svg%3E");flex-shrink:0;margin-top:2px;}
+
+.kbd-hint{position:fixed;bottom:90px;right:2.5rem;font-size:.9rem;color:var(--dim);display:flex;gap:.5rem;align-items:center;z-index:201;font-weight:600;}
+.kbd{background:var(--bg3);border:1px solid var(--gb);border-radius:6px;padding:.2rem .6rem;font-size:.85rem;font-family:'JetBrains Mono',monospace;color:var(--text);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .6s cubic-bezier(0.4, 0, 0.2, 1) both;}
+</style>
+</head>
+<body>
+<div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+<div class="session-tabs" id="tabs">
+  <div class="tab active" data-ses="0" onclick="jumpSession(0)">S1 — Ficha Técnica</div>
+  <div class="tab" data-ses="1" onclick="jumpSession(1)">S2 — Mapa de Ruta (Unidades)</div>
+  <div class="tab" data-ses="2" onclick="jumpSession(2)">S3 — Sistema de Evaluación</div>
+  <div class="tab" data-ses="3" onclick="jumpSession(3)">S4 — Actividad de Inicio</div>
+</div>
+<div class="deck" id="deck">
+
+<div class="slide cover" data-session="0">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in"><i data-lucide="book-open" style="width:18px;height:18px;"></i>&nbsp;IF203IINF · INSTITUTO PROFESIONAL SAN SEBASTIÁN</div>
+        <div class="slide-tag fade-in" style="margin-top:0;">UNIDAD 0 — ENCUADRE</div>
+        <h1 class="gradient-text fade-in">Testing Aplicado al<br>Desarrollo de Sistemas</h1>
+        <p class="cover-sub fade-in">Presentación del Programa de Asignatura. Objetivos, Metodología "Aprender Haciendo", Evaluaciones y Mapa de Ruta para el trimestre.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 1</div>
+    <h2>Ficha Técnica y Competencias</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:2rem;">
+        <div class="card accent-p">
+            <div class="card-title">Datos Generales</div>
+            <div class="card-body">
+                <ul class="dot-list" style="margin-top:1rem;">
+                    <li><strong>Código:</strong> IF203IINF</li>
+                    <li><strong>Carrera:</strong> Ingeniería en Informática</li>
+                    <li><strong>Nivel:</strong> 5° Trimestre</li>
+                    <li><strong>Horas Totales:</strong> 72h (24h Teóricas / 48h Laboratorio)</li>
+                </ul>
+            </div>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:2rem;">
+        <div class="quote" style="margin-top:0;"><strong>Competencia a desarrollar:</strong> Construye en un nivel intermedio una aplicación de software integrando el diseño de interfaz y la experiencia de usuario con la programación, arquitectura y <strong>su calidad</strong> de acuerdo a las necesidades del cliente. (Nivel de Dominio 4).</div>
+        
+        <div class="card accent-c">
+            <div class="card-title">Metodología: Aprender Haciendo</div>
+            <div class="card-body">
+                Aprendizaje Basado en Problemas (ABP). Clases combinadas con análisis de situaciones problemáticas reales en laboratorio. La nota se gana programando, analizando y auditando, no memorizando.
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="1">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 2</div>
+    <h2>El Mapa de Ruta: ¿Qué aprenderemos?</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+            <div class="card accent-c">
+                <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1rem;">
+                    <div class="card-icon" style="color:var(--c2);margin:0;"><i data-lucide="target"></i></div>
+                    <div class="card-title" style="margin:0;">Unidad 1: Principios y Objetivos</div>
+                </div>
+                <div class="card-body">
+                    <strong>Competencia en Testing de Software (20h)</strong><br><br>
+                    <ul class="dot-list">
+                        <li>Detección temprana y mejora continua.</li>
+                        <li>Los 7 Principios Fundamentales (ISTQB).</li>
+                        <li>Taxonomía: Error vs Defecto vs Falla.</li>
+                        <li>Tipos y Niveles de Prueba.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card accent-p">
+                <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1rem;">
+                    <div class="card-icon" style="color:var(--pl);margin:0;"><i data-lucide="map-pin"></i></div>
+                    <div class="card-title" style="margin:0;">Unidad 2: Planificación y Diseño</div>
+                </div>
+                <div class="card-body">
+                    <strong>Selección de Pruebas en Desarrollo (20h)</strong><br><br>
+                    <ul class="dot-list">
+                        <li>Requerimientos vs Historias de Usuario.</li>
+                        <li>Criterios de Aceptación (Gherkin/BDD).</li>
+                        <li>Diseño forense de Casos de Prueba.</li>
+                        <li>Matrices de Trazabilidad (RTM) y Test Plan.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="1">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 2</div>
+    <h2>El Mapa de Ruta (Continuación)</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <div class="quote" style="margin-top:0;">La Unidad 3 es donde la planificación estratégica se convierte en código y ejecución. Pasamos del documento al script.</div>
+      </div>
+      <div style="display:flex; align-items:center;">
+        <div class="card accent-g" style="width:100%;">
+            <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1rem;">
+                <div class="card-icon" style="color:var(--ok);margin:0;"><i data-lucide="cpu"></i></div>
+                <div class="card-title" style="margin:0;">Unidad 3: Aplicación y Automatización</div>
+            </div>
+            <div class="card-body">
+                <strong>(20h Prácticas)</strong><br><br>
+                <ul class="dot-list">
+                    <li>Pruebas Manuales y registro de resultados.</li>
+                    <li>Gestión de Defectos (Bug Tracking y ciclo de vida).</li>
+                    <li>Introducción a la Automatización (Frameworks como Selenium/Cypress).</li>
+                    <li>Ejecución de scripts para pruebas repetitivas.</li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="2">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 3</div>
+    <h2>Evaluación y Aprobación</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <table class="tbl" style="margin-top:1rem;">
+            <thead>
+                <tr>
+                    <th style="width:25%">Unidad</th>
+                    <th style="width:40%">Tipo de Evidencia</th>
+                    <th style="width:20%">Instrumento</th>
+                    <th>Ponderación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>U1: Principios y Tipos</strong></td>
+                    <td>Desarrollo de situación problemática</td>
+                    <td>Rúbrica (Práctica)</td>
+                    <td><span class="tag tag-p" style="font-size:1.15rem;">10%</span></td>
+                </tr>
+                <tr>
+                    <td><strong>U2: Plan de Pruebas</strong></td>
+                    <td>Diseño de Plan basado en un problema</td>
+                    <td>Rúbrica (Práctica)</td>
+                    <td><span class="tag tag-y" style="font-size:1.15rem;">20%</span></td>
+                </tr>
+                <tr>
+                    <td><strong>U3: Automatización</strong></td>
+                    <td>Desarrollo de Scripts/Reportes</td>
+                    <td>Rúbrica (Práctica)</td>
+                    <td><span class="tag tag-c" style="font-size:1.15rem;">30%</span></td>
+                </tr>
+                <tr>
+                    <td style="color:#fff;"><strong>EVALUACIÓN FINAL</strong></td>
+                    <td style="color:#fff;">Resolución integral de proyecto (6 horas)</td>
+                    <td style="color:#fff;">Rúbrica Final</td>
+                    <td><span class="tag tag-r" style="font-size:1.15rem; background:rgba(239,68,68,.3);">40%</span></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="quote" style="margin-top:2rem; border-left-color:var(--ok); background:rgba(16,185,129,.1);">
+            <strong>Evaluación Formativa:</strong> Antes de cada nota sumativa, recibirás retroalimentación constante. La nota evalúa el logro; la retroalimentación mejora tu habilidad para el mundo laboral.
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="3">
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Sesion 4 — Recursos y Actividad Inicial</div>
+    <div class="activity-banner" style="background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(99,102,241,0.2)); border-color: rgba(6,182,212,0.4);">
+        <div class="activity-icon" style="color:var(--c2);"><i data-lucide="monitor-play" style="width:80px;height:80px;"></i></div>
+        <div class="activity-title">El QA del Día a Día</div>
+        <div class="activity-desc">Todos hemos sufrido bugs. Para empezar a desarrollar el "ojo crítico" (mindset de QA), hagamos un análisis grupal.</div>
+        
+        <div class="card" style="width:100%; text-align:left; background:rgba(0,0,0,0.5); border:1px solid var(--c2); margin-top:1.5rem;">
+            <div class="card-title" style="color:var(--c2); margin-bottom:1rem;"><i data-lucide="book-open-check"></i> Dinámica Rompehielo:</div>
+            <div class="card-body">
+                1. Reúnete con 2 compañeros.<br>
+                2. Recuerden y expongan el "bug" o fallo de software más frustrante que hayan vivido recientemente (un juego, banco, app de comida).<br>
+                3. Especulen: ¿Por qué creen que a los programadores originales se les escapó ese error antes de salir a producción?
+            </div>
+        </div>
+        
+        <div style="margin-top:2.5rem; display:flex; gap:1rem; justify-content:center;">
+            <span class="tag tag-p"><i data-lucide="book"></i> Matthew Heusser (2023) - Testing Strategies</span> 
+            <span class="tag tag-y"><i data-lucide="globe"></i> Syllabus Oficial ISTQB</span> 
+            <span class="tag tag-c"><i data-lucide="users"></i> Salas Breakout</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav-bar">
+  <div class="nav-info">
+    <span class="session-badge" id="sess-label">S1</span>
+    <span class="slide-counter" id="counter">1 / 1</span>
+    <span class="nav-title" id="slide-title"></span>
+  </div>
+  <div class="nav-controls">
+    <button class="btn-nav" id="btn-prev" onclick="go(-1)"><i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Anterior</button>
+    <button class="btn-nav primary" id="btn-next" onclick="go(1)">Siguiente <i data-lucide="arrow-right" style="width:18px;height:18px;"></i></button>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  <span class="kbd"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i></span> o <span class="kbd"><i data-lucide="arrow-right" style="width:14px;height:14px;"></i></span> para navegar &nbsp;&nbsp;|&nbsp;&nbsp; <span class="kbd">F</span> pantalla completa
+</div>
+
+<script>
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0;
+
+const sessionStarts = {};
+const sessionNames = ["S1","S2","S3","S4"];
+slides.forEach(function(s,i){
+  const ses = s.dataset.session;
+  if (sessionStarts[ses] === undefined) sessionStarts[ses] = i;
+});
+
+const slideTitles = slides.map(function(s){
+  const h = s.querySelector('h1,h2');
+  return h ? h.textContent.replace(/\s+/g,' ').trim() : '';
+});
+
+function update(){
+  slides.forEach(function(s,i){
+    s.classList.remove('active','prev');
+    if (i === cur) s.classList.add('active');
+    else if (i < cur) s.classList.add('prev');
+  });
+  document.getElementById('prog').style.width = ((cur+1)/total*100)+'%';
+  document.getElementById('counter').textContent = (cur+1)+' / '+total;
+  const t = slideTitles[cur] || '';
+  document.getElementById('slide-title').textContent = t.substring(0,60);
+  const ses = slides[cur].dataset.session;
+  document.getElementById('sess-label').textContent = sessionNames[parseInt(ses)] || 'S1';
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = cur === total-1;
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.classList.toggle('active', t.dataset.ses == ses);
+  });
+}
+
+function go(d){
+  cur = Math.max(0, Math.min(total-1, cur+d));
+  update();
+}
+
+function jumpSession(ses){
+  if (sessionStarts[ses] !== undefined){
+    cur = sessionStarts[ses];
+    update();
+  }
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' '){ e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp'){ e.preventDefault(); go(-1); }
+  if (e.key === 'f' || e.key === 'F'){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+  if (e.key === 'Home'){ cur=0; update(); }
+  if (e.key === 'End'){ cur=total-1; update(); }
+});
+
+var tx = 0;
+document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; });
+document.addEventListener('touchend', function(e){
+  var dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+});
+
+update();
+
+lucide.createIcons();
+</script>
+</body>
+</html>

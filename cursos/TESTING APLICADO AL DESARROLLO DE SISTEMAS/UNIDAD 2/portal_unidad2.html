@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unidad 2 — Testing Aplicado al Desarrollo de Sistemas | IF203IINF</title>
+  <meta name="description" content="Portal educativo Unidad 2 — Testing de Software IF203IINF IPSS">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #10b981; --primary-light: #34d399; --primary-dark: #059669;
+      --secondary: #f59e0b; --accent: #f59e0b; --success: #10b981;
+      --bg: #0f0f1a; --bg2: #151528; --bg3: #1e1e35; --card: #1a1a2e;
+      --border: rgba(99,102,241,0.2); --text: #e2e8f0; --text-muted: #94a3b8;
+      --text-dim: #64748b; --glass: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.08);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; font-size:22px; }
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+    .bg-grid {
+      position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image: linear-gradient(rgba(99,102,241,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.06) 1px, transparent 1px);
+      background-size:40px 40px;
+    }
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      background:rgba(15,15,26,0.88); backdrop-filter:blur(20px);
+      border-bottom:1px solid var(--glass-border);
+      padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px;
+    }
+    .nav-brand { display:flex; align-items:center; gap:.75rem; font-weight:700; font-size:.9rem; }
+    .badge { background:var(--primary); color:#fff; padding:.25rem .6rem; border-radius:6px; font-size:.75rem; font-weight:600; }
+    .nav-links { display:flex; gap:2rem; }
+    .nav-links a { color:var(--text-muted); text-decoration:none; font-size:.875rem; font-weight:500; transition:color .2s; }
+    .nav-links a:hover { color:var(--primary-light); }
+    .hero {
+      position:relative; z-index:1; min-height:100vh;
+      display:flex; align-items:center; justify-content:center;
+      text-align:center; padding:5rem 2rem 3rem;
+    }
+    .hero-content { max-width:800px; }
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.3);
+      color:var(--primary-light); padding:.4rem 1rem; border-radius:999px;
+      font-size:.8rem; font-weight:600; margin-bottom:2rem; letter-spacing:.05em; text-transform:uppercase;
+    }
+    .hero h1 {
+      font-size:clamp(2.5rem,6vw,4.5rem); font-weight:900; line-height:1.1;
+      background:linear-gradient(135deg,#fff 0%,var(--primary-light) 50%,var(--secondary) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:1.5rem;
+    }
+    .hero-subtitle { font-size:1.1rem; color:var(--text-muted); line-height:1.7; margin-bottom:2.5rem; }
+    .hero-stats { display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:3rem; }
+    .stat-item { background:var(--glass); border:1px solid var(--glass-border); padding:1rem 1.5rem; border-radius:12px; text-align:center; }
+    .stat-num { font-size:2rem; font-weight:800; color:var(--primary-light); }
+    .stat-label { font-size:.75rem; color:var(--text-dim); margin-top:.25rem; letter-spacing:.05em; }
+    .hero-cta { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+    .btn { padding:.875rem 2rem; border-radius:10px; border:none; cursor:pointer; font-size:.9rem; font-weight:600; text-decoration:none; transition:all .2s; display:inline-flex; align-items:center; gap:.5rem; }
+    .btn-primary { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff; box-shadow:0 4px 20px rgba(99,102,241,0.4); }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(99,102,241,0.5); }
+    .btn-outline { background:transparent; color:var(--text); border:1px solid var(--glass-border); }
+    .btn-outline:hover { background:var(--glass); }
+    main { position:relative; z-index:1; }
+    .container { max-width:1200px; margin:0 auto; padding:0 2rem; }
+    .section { padding:5rem 0; }
+    .section-header { text-align:center; margin-bottom:3.5rem; }
+    .section-tag { display:inline-block; color:var(--primary-light); font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:.75rem; }
+    .section-title { font-size:clamp(1.8rem,4vw,2.5rem); font-weight:800; color:#fff; margin-bottom:.75rem; }
+    .section-subtitle { color:var(--text-muted); font-size:1.05rem; max-width:600px; margin:0 auto; }
+    .sessions-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.5rem; }
+    .session-card {
+      background:var(--card); border:1px solid var(--glass-border);
+      border-radius:16px; padding:1.75rem; transition:all .3s; position:relative; overflow:hidden;
+    }
+    .session-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--g,linear-gradient(90deg,var(--primary),var(--secondary))); }
+    .session-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(99,102,241,0.15); border-color:var(--border); }
+    .session-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem; }
+    .session-num { font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-dim); }
+    .session-mode { font-size:.7rem; padding:.25rem .6rem; border-radius:999px; font-weight:600; }
+    .mode-async { background:rgba(16,185,129,0.15); color:#34d399; }
+    .mode-sync { background:rgba(99,102,241,0.15); color:#a5b4fc; }
+    .mode-eval { background:rgba(245,158,11,0.15); color:#fcd34d; }
+    .session-title { font-size:1rem; font-weight:700; color:#fff; margin-bottom:.5rem; line-height:1.3; }
+    .session-week { font-size:.8rem; color:var(--text-dim); margin-bottom:1rem; }
+    .session-topics { display:flex; flex-direction:column; gap:.35rem; margin-bottom:1.25rem; }
+    .topic-item { display:flex; align-items:center; gap:.5rem; font-size:.82rem; color:var(--text-muted); }
+    .topic-dot { width:6px; height:6px; border-radius:50%; background:var(--primary-light); flex-shrink:0; }
+    .tag { display:inline-block; padding:.2rem .6rem; border-radius:6px; font-size:.7rem; font-weight:600; }
+    .tag-blue { background:rgba(99,102,241,0.15); color:#a5b4fc; }
+    .tag-green { background:rgba(16,185,129,0.15); color:#34d399; }
+    .tag-yellow { background:rgba(245,158,11,0.15); color:#fcd34d; }
+    .tag-cyan { background:rgba(6,182,212,0.15); color:#67e8f9; }
+    .outcomes-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.25rem; }
+    .outcome-card { background:var(--card); border:1px solid var(--glass-border); border-radius:14px; padding:1.5rem; transition:all .3s; }
+    .outcome-card:hover { border-color:var(--border); box-shadow:0 8px 30px rgba(99,102,241,0.1); }
+    .outcome-icon { font-size:2rem; margin-bottom:.75rem; }
+    .outcome-num { font-size:.7rem; font-weight:700; color:var(--primary-light); letter-spacing:.08em; margin-bottom:.5rem; }
+    .outcome-title { font-size:.95rem; font-weight:600; color:#fff; margin-bottom:.5rem; line-height:1.4; }
+    .indicator { display:flex; align-items:flex-start; gap:.5rem; font-size:.78rem; color:var(--text-muted); margin-bottom:.4rem; }
+    .indicator::before { content:'→'; color:var(--primary-light); flex-shrink:0; font-weight:700; }
+    .pyramid-container { display:flex; flex-direction:column; align-items:center; gap:.5rem; padding:2rem 0; }
+    .pyramid-level { border-radius:12px; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:1rem 2rem; transition:all .3s; text-align:center; }
+    .pyramid-level:hover { transform:scale(1.02); }
+    .pyr-4 { width:95%; background:linear-gradient(135deg,rgba(239,68,68,0.18),rgba(239,68,68,0.08)); border:1px solid rgba(239,68,68,0.3); }
+    .pyr-3 { width:75%; background:linear-gradient(135deg,rgba(245,158,11,0.18),rgba(245,158,11,0.08)); border:1px solid rgba(245,158,11,0.3); }
+    .pyr-2 { width:55%; background:linear-gradient(135deg,rgba(99,102,241,0.18),rgba(99,102,241,0.08)); border:1px solid rgba(99,102,241,0.3); }
+    .pyr-1 { width:35%; background:linear-gradient(135deg,rgba(16,185,129,0.18),rgba(16,185,129,0.08)); border:1px solid rgba(16,185,129,0.3); }
+    .pyr-title { font-size:.95rem; font-weight:700; color:#fff; }
+    .pyr-desc { font-size:.75rem; color:var(--text-muted); margin-top:.2rem; }
+    .accordion { display:flex; flex-direction:column; gap:1rem; }
+    .acc-item { background:var(--card); border:1px solid var(--glass-border); border-radius:12px; overflow:hidden; }
+    .acc-header { padding:1.25rem 1.5rem; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:background .2s; }
+    .acc-header:hover { background:#202040; }
+    .acc-header-left { display:flex; align-items:center; gap:1rem; }
+    .acc-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+    .acc-title { font-size:1rem; font-weight:600; color:#fff; }
+    .acc-subtitle { font-size:.8rem; color:var(--text-dim); margin-top:.15rem; }
+    .acc-arrow { color:var(--text-dim); transition:transform .3s; }
+    .acc-item.open .acc-arrow { transform:rotate(180deg); }
+    .acc-body { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+    .acc-item.open .acc-body { max-height:2000px; }
+    .acc-content { padding:0 1.5rem 1.5rem; }
+    .content-table { width:100%; border-collapse:collapse; margin-top:1rem; }
+    .content-table th { text-align:left; padding:.75rem 1rem; font-size:.72rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--text-dim); background:var(--bg3); border-bottom:1px solid var(--glass-border); }
+    .content-table td { padding:.875rem 1rem; font-size:.875rem; color:var(--text-muted); border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:top; }
+    .content-table tr:hover td { background:rgba(255,255,255,0.02); color:var(--text); }
+    .resources-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; }
+    .resource-card { background:var(--card); border:1px solid var(--glass-border); border-radius:12px; padding:1.25rem; display:flex; gap:1rem; align-items:flex-start; transition:all .2s; }
+    .resource-card:hover { background:#202040; border-color:var(--border); transform:translateY(-2px); }
+    .resource-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
+    .res-pdf { background:rgba(239,68,68,0.15); } .res-ppt { background:rgba(245,158,11,0.15); }
+    .res-link { background:rgba(6,182,212,0.15); }
+    .resource-name { font-size:.875rem; font-weight:600; color:#fff; margin-bottom:.25rem; line-height:1.3; }
+    .resource-meta { font-size:.75rem; color:var(--text-dim); }
+    .eval-card { background:var(--card); border:1px solid var(--glass-border); border-radius:16px; padding:2rem; margin-bottom:1.5rem; }
+    .eval-weight { font-size:2rem; font-weight:900; background:linear-gradient(135deg,var(--accent),#f97316); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .rubric-table { width:100%; border-collapse:collapse; font-size:.8rem; }
+    .rubric-table th { padding:.75rem; text-align:left; background:var(--bg3); font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--text-dim); border-bottom:1px solid var(--glass-border); }
+    .rubric-table td { padding:.75rem; color:var(--text-muted); border-bottom:1px solid rgba(255,255,255,0.03); vertical-align:top; line-height:1.5; }
+    .score-100 { color:#34d399; font-weight:700; } .score-60 { color:#fcd34d; font-weight:700; } .score-0 { color:#f87171; font-weight:700; }
+    .timeline { position:relative; padding-left:2rem; }
+    .timeline::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--primary),var(--secondary),transparent); }
+    .tl-item { position:relative; margin-bottom:2rem; }
+    .tl-dot { position:absolute; left:-2.5rem; top:.25rem; width:14px; height:14px; border-radius:50%; background:var(--primary); border:2px solid var(--bg); box-shadow:0 0 12px var(--primary); }
+    .tl-week { font-size:.7rem; font-weight:700; color:var(--primary-light); letter-spacing:.08em; margin-bottom:.25rem; }
+    .tl-title { font-size:1rem; font-weight:600; color:#fff; margin-bottom:.25rem; }
+    .tl-desc { font-size:.82rem; color:var(--text-muted); }
+    footer { position:relative; z-index:1; background:var(--bg2); border-top:1px solid var(--glass-border); padding:3rem 2rem; text-align:center; margin-top:4rem; }
+    .footer-logo { font-size:1.1rem; font-weight:800; color:#fff; margin-bottom:.5rem; }
+    .footer-sub { font-size:.8rem; color:var(--text-dim); }
+    .footer-links { display:flex; gap:1.5rem; justify-content:center; margin-top:1.5rem; flex-wrap:wrap; }
+    .footer-links a { color:var(--text-dim); font-size:.8rem; text-decoration:none; transition:color .2s; }
+    .footer-links a:hover { color:var(--primary-light); }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .fade-up { animation:fadeUp .6s ease both; }
+    .delay-1{animation-delay:.1s} .delay-2{animation-delay:.2s} .delay-3{animation-delay:.3s}
+    @keyframes pulse-glow { 0%,100%{opacity:.5} 50%{opacity:1} }
+    .pulse { animation:pulse-glow 2s ease-in-out infinite; }
+    @media(max-width:768px) { nav{padding:0 1rem} .nav-links{display:none} .hero-stats{gap:1rem} }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+
+  <nav>
+    <div class="nav-brand">
+      <span class="badge">IF203IINF</span>
+      <span>Testing Aplicado</span>
+    </div>
+    <div class="nav-links">
+      <a href="#sesiones">Sesiones</a>
+      <a href="#contenidos">Contenidos</a>
+      <a href="#evaluacion">Evaluacion</a>
+      <a href="#recursos">Recursos</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge fade-up"><span class="pulse">●</span> Unidad 2 · 2026 · IPSS</div>
+      <h1 class="fade-up delay-1">Competencia en<br>Testing de Software</h1>
+      <p class="hero-subtitle fade-up delay-2">Aplica los principios, objetivos, niveles y tipos de pruebas de software para garantizar la calidad en el ciclo de vida del desarrollo.</p>
+      <div class="hero-stats fade-up delay-3">
+        <div class="stat-item"><div class="stat-num">20</div><div class="stat-label">Horas Totales</div></div>
+        <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Sesiones</div></div>
+        <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Niveles de Prueba</div></div>
+        <div class="stat-item"><div class="stat-num">10%</div><div class="stat-label">Ponderacion</div></div>
+      </div>
+      <div class="hero-cta fade-up delay-3">
+        <a href="#sesiones" class="btn btn-primary">&#128203; Plan de Clases</a>
+        <a href="#contenidos" class="btn btn-outline">&#128218; Contenidos</a>
+      </div>
+    </div>
+  </section>
+
+  <main>
+
+    <!-- RESULTADOS DE APRENDIZAJE -->
+    <section class="section" style="background:var(--bg2);">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">&#127919; Resultados de Aprendizaje</div>
+          <h2 class="section-title">¿Que lograras en esta unidad?</h2>
+          <p class="section-subtitle">Al completar la Unidad 2 habras desarrollado las siguientes competencias clave.</p>
+        </div>
+        <div class="outcomes-grid">
+          <div class="outcome-card">
+            <div class="outcome-icon">&#128269;</div>
+            <div class="outcome-num">RA 2.1</div>
+            <div class="outcome-title">Diseño Estratégico de Pruebas</div>
+            <div>
+              <div class="indicator">Traduce requerimientos vagos a Historias de Usuario claras</div>
+              <div class="indicator">Construye Criterios de Aceptación medibles (BDD)</div>
+              <div class="indicator">Diseña un Plan de Pruebas integral</div>
+            </div>
+          </div>
+          <div class="outcome-card">
+            <div class="outcome-icon">&#127959;&#65039;</div>
+            <div class="outcome-num">RA 2.2</div>
+            <div class="outcome-title">Niveles de prueba: unitaria, integracion, sistema, aceptacion</div>
+            <div>
+              <div class="indicator">Distingue pruebas unitarias, de integracion, sistema y aceptacion</div>
+              <div class="indicator">Determina la idoneidad de cada nivel segun las necesidades del proyecto</div>
+              <div class="indicator">Analiza resultados para proponer ajustes en las estrategias de testing</div>
+            </div>
+          </div>
+          <div class="outcome-card">
+            <div class="outcome-icon">&#11036;&#11035;</div>
+            <div class="outcome-num">RA 2.3</div>
+            <div class="outcome-title">Ejecución y Documentación (Gherkin)</div>
+            <div>
+              <div class="indicator">Maneja sintaxis Dado/Cuando/Entonces</div>
+              <div class="indicator">Redacta Casos de Prueba profesionales y reproducibles</div>
+              <div class="indicator">Documenta hallazgos con precisión técnica</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SESIONES -->
+    <section id="sesiones" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">&#128197; Plan de Clases</div>
+          <h2 class="section-title">Ruta de Aprendizaje U2</h2>
+          <p class="section-subtitle">Planificacion detallada del modulo de documentacion y diseno de pruebas.</p>
+        </div>
+        
+        <div class="sessions-grid">
+          <div class="session-card">
+            <div class="session-header">
+              <span class="session-num">Sesion 1</span>
+              <span class="session-mode mode-async">Asincronica</span>
+            </div>
+            <div class="session-week">Semana 1 (EVA)</div>
+            <h3 class="session-title">El Plan de Pruebas y Historias de Usuario</h3>
+            <div class="session-topics">
+              <div class="topic-item"><div class="topic-dot"></div> Concepto de Plan de Pruebas (Test Plan)</div>
+              <div class="topic-item"><div class="topic-dot"></div> Estructura y componentes clave</div>
+              <div class="topic-item"><div class="topic-dot"></div> Historias de Usuario e INVEST</div>
+            </div>
+            <div><span class="tag tag-blue">Teoria</span></div>
+          </div>
+          
+          <div class="session-card">
+            <div class="session-header">
+              <span class="session-num">Sesion 2</span>
+              <span class="session-mode mode-async">Asincronica</span>
+            </div>
+            <div class="session-week">Semana 2 (EVA)</div>
+            <h3 class="session-title">Casos de Prueba y Criterios BDD</h3>
+            <div class="session-topics">
+              <div class="topic-item"><div class="topic-dot"></div> Diseno de Casos de Prueba</div>
+              <div class="topic-item"><div class="topic-dot"></div> BDD y lenguaje Gherkin</div>
+              <div class="topic-item"><div class="topic-dot"></div> Sintaxis Dado / Cuando / Entonces</div>
+            </div>
+            <div><span class="tag tag-green">Herramientas</span></div>
+          </div>
+          
+          <div class="session-card">
+            <div class="session-header">
+              <span class="session-num">Sesion 3</span>
+              <span class="session-mode mode-async">Asincronica</span>
+            </div>
+            <div class="session-week">Semana 3 (EVA)</div>
+            <h3 class="session-title">Matriz de Trazabilidad (RTM)</h3>
+            <div class="session-topics">
+              <div class="topic-item"><div class="topic-dot"></div> Que es la RTM y para que sirve</div>
+              <div class="topic-item"><div class="topic-dot"></div> Vinculacion Requisitos -> Casos</div>
+              <div class="topic-item"><div class="topic-dot"></div> Analisis de Cobertura</div>
+            </div>
+            <div><span class="tag tag-cyan">Gestion</span></div>
+          </div>
+
+          <div class="session-card">
+            <div class="session-header">
+              <span class="session-num">Sesion 4</span>
+              <span class="session-mode mode-sync">Sincronica</span>
+            </div>
+            <div class="session-week">Semana 4 (Teams)</div>
+            <h3 class="session-title">Taller Practico Documental</h3>
+            <div class="session-topics">
+              <div class="topic-item"><div class="topic-dot"></div> Taller: Redactar Gherkin en vivo</div>
+              <div class="topic-item"><div class="topic-dot"></div> Taller: Auditoria de Casos de Prueba</div>
+              <div class="topic-item"><div class="topic-dot"></div> QA Audit Roleplay</div>
+            </div>
+            <div><span class="tag tag-blue">Taller Practico</span> <span class="tag tag-yellow">Interactivo</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECURSOS -->
+    <section class="section" id="recursos">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">&#128193; Recursos</div>
+          <h2 class="section-title">Materiales de la Unidad 2</h2>
+          <p class="section-subtitle">Todos los recursos disponibles en EVA para apoyar tu aprendizaje.</p>
+        </div>
+        <div class="resources-grid">
+          <div class="resource-card"><div class="resource-icon res-pdf">&#128196;</div><div><div class="resource-name">Apunte N°1 — Niveles de Prueba</div><div class="resource-meta">PDF · 10 paginas · Sesiones 1, 2, 3</div></div></div>
+          <div class="resource-card"><div class="resource-icon res-pdf">&#128196;</div><div><div class="resource-name">Apunte N°2 — Tipos de Pruebas</div><div class="resource-meta">PDF · 20 paginas · Sesiones 3, 4</div></div></div>
+          <div class="resource-card"><div class="resource-icon res-ppt">&#128202;</div><div><div class="resource-name">Presentacion Sesion Sincronica S3</div><div class="resource-meta">PPTX · Sesion 4 · Teams</div></div></div>
+          <div class="resource-card"><div class="resource-icon res-pdf">&#128203;</div><div><div class="resource-name">Cuaderno de Ejercitacion U1</div><div class="resource-meta">PDF · Sesiones 2, 3</div></div></div>
+          <div class="resource-card"><div class="resource-icon res-pdf">&#128203;</div><div><div class="resource-name">Requerimientos Funcionales — Software</div><div class="resource-meta">PDF · Sesion 3 · Analisis practico</div></div></div>
+          <div class="resource-card"><div class="resource-icon res-pdf">&#128203;</div><div><div class="resource-name">Rubrica Evaluacion U1</div><div class="resource-meta">PDF · Semana 5</div></div></div>
+          <div class="resource-card"><div class="resource-icon res-pdf">&#128203;</div><div><div class="resource-name">Evaluacion U1 — Enunciado</div><div class="resource-meta">PDF · Semana 5 · EVA</div></div></div>
+          <div class="resource-card"><div class="resource-icon res-link">&#128279;</div><div><div class="resource-name">ISTQB — Certified Tester Foundation</div><div class="resource-meta">Enlace externo · Referencia oficial</div></div></div>
+          <div class="resource-card"><div class="resource-icon res-link">&#128279;</div><div><div class="resource-name">Platzi — Niveles de Prueba</div><div class="resource-meta">Enlace externo · Complementario</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRONOGRAMA -->
+    <section class="section" style="background:var(--bg2);">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">&#128197; Cronograma</div>
+          <h2 class="section-title">Linea de Tiempo — Unidad 2</h2>
+        </div>
+        <div style="max-width:600px;margin:0 auto;">
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-week">SEMANA 1</div><div class="tl-title">S1 — Introduccion al Testing</div><div class="tl-desc">Principios, objetivos, tipos de errores. Asincrona EVA.</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-week">SEMANA 2</div><div class="tl-title">S2 — Pruebas Unitarias e Integracion</div><div class="tl-desc">JUnit, pytest, estrategias. Cuaderno de ejercitacion. Asincrona EVA.</div></div>
+            <div class="tl-item"><div class="tl-dot"></div><div class="tl-week">SEMANA 3</div><div class="tl-title">S3 — Pruebas de Sistema y Aceptacion</div><div class="tl-desc">UAT/BAT, criterios de aceptacion, requerimientos. Asincrona EVA.</div></div>
+            <div class="tl-item"><div class="tl-dot" style="background:#8b5cf6;box-shadow:0 0 12px #8b5cf6"></div><div class="tl-week">SEMANA 4 — SINCRONICA</div><div class="tl-title">S4 — Tipos de Pruebas (Teams)</div><div class="tl-desc">Caja Blanca, Negra, Funcionales, No Funcionales, Regresion. Actividad grupal. Instrucciones evaluacion.</div></div>
+            <div class="tl-item"><div class="tl-dot" style="background:#f59e0b;box-shadow:0 0 12px #f59e0b"></div><div class="tl-week">SEMANA 5 — EVALUACION</div><div class="tl-title">S5 — Evaluacion Sumativa U1</div><div class="tl-desc">Situacion problematica. Rubrica. 10% ponderacion. Plataforma EVA.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-logo">Testing Aplicado al Desarrollo de Sistemas</div>
+    <div class="footer-sub">IF203IINF · Instituto Profesional San Sebastian · Ingenieria en Informatica · 5° Trimestre · 2026</div>
+    <div class="footer-links">
+      <a href="plan_de_clases_U1.md">Plan de Clases (.md)</a>
+      <a href="template_presentacion_U1.md">Template Presentacion (.md)</a>
+      <a href="https://www.istqb.org" target="_blank">ISTQB</a>
+      <a href="https://eva.ipss.cl" target="_blank">Plataforma EVA</a>
+    </div>
+  </footer>
+
+  <script>
+    function tog(id) {
+      var el = document.getElementById(id);
+      el.classList.toggle('open');
+    }
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.session-card,.outcome-card,.resource-card').forEach(function(el) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity .5s ease, transform .5s ease';
+      obs.observe(el);
+    });
+  </script>
+</body>
+</html>

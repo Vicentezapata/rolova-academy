@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación Unidad 2 | TESTING APLICADO</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --p:#10b981;--pl:#34d399;--pd:#059669;--c2:#f59e0b;--acc:#06b6d4;
+  --ok:#10b981;--err:#ef4444;--warn:#f59e0b;
+  --bg:#0a0a15;--bg2:#111120;--bg3:#1a1a2e;--card:#16162a;
+  --border:rgba(16,185,129,.25);--text:#f8fafc;--muted:#cbd5e1;--dim:#94a3b8;
+  --glass:rgba(255,255,255,.05);--gb:rgba(255,255,255,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:13px;}
+.deck{width:100vw;height:100vh;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transform:translateX(80px);
+  transition:opacity .5s cubic-bezier(0.4, 0, 0.2, 1),transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+  background:var(--bg);overflow:hidden;
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.prev{transform:translateX(-80px);}
+.slide::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(16,185,129,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,.06) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+.slide-inner{
+    position:relative;z-index:1;flex:1;
+    display:flex;flex-direction:column;
+    padding:4rem 6rem;
+    padding-bottom:100px;
+    overflow-y:auto;
+}
+.slide-inner::-webkit-scrollbar { width:8px; }
+.slide-inner::-webkit-scrollbar-track { background:transparent; }
+.slide-inner::-webkit-scrollbar-thumb { background:var(--gb); border-radius:4px; }
+.slide.centered .slide-inner{justify-content:center;}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);z-index:0;opacity:0.4;pointer-events:none;}
+.orb1{top:-100px;right:-100px;width:400px;height:400px;background:var(--p);}
+.orb2{bottom:-100px;left:-100px;width:350px;height:350px;background:var(--c2);}
+
+.slide-tag{font-size:1.3rem;font-weight:800;color:var(--pl);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;margin-top:60px;}
+.slide h1{font-size:clamp(3rem, 4.5vw, 4rem);font-weight:900;line-height:1.15;margin-bottom:1.25rem;}
+.slide h2{font-size:clamp(2.2rem, 3vw, 2.8rem);font-weight:900;color:#fff;margin-bottom:1.25rem;line-height:1.2;}
+.slide h3{font-size:2rem;font-weight:800;color:var(--pl);margin-bottom:1rem;margin-top:1rem;}
+.slide p{color:var(--muted);line-height:1.6;font-size:1.6rem;}
+.gradient-text{background:linear-gradient(135deg,#fff 0%,var(--pl) 50%,var(--c2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hdiv{width:60px;height:4px;background:linear-gradient(90deg,var(--p),var(--c2));border-radius:2px;margin:1.5rem 0 2rem;}
+
+.content-area { display: flex; flex-direction: column; flex: 1; justify-content: space-evenly; }
+.cols{display:grid;gap:2rem;width:100%;}
+.cols-2{grid-template-columns:1fr 1fr;}
+
+.card{background:var(--card);border:1px solid var(--gb);border-radius:16px;padding:1.5rem 2rem;display:flex;flex-direction:column;justify-content:center;}
+.card.accent-p{border-left:5px solid var(--p);}
+.card.accent-c{border-left:5px solid var(--c2);}
+.card.accent-g{border-left:5px solid var(--ok);}
+.card.accent-y{border-left:5px solid var(--acc);}
+.card-icon{display:inline-flex;color:var(--text);margin-bottom:0.75rem;}
+.card-icon svg {width:42px;height:42px;stroke-width:1.5px;}
+.card-title{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:0.5rem;}
+.card-body{font-size:1.4rem;color:var(--muted);line-height:1.6;}
+
+.nav-bar{position:absolute;bottom:0;left:0;right:0;height:70px;background:var(--bg2);border-top:1px solid var(--gb);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;z-index:100;}
+.nav-info{display:flex;align-items:center;gap:1.5rem;}
+.session-badge{background:var(--p);color:#fff;font-weight:800;padding:.3rem .8rem;border-radius:6px;letter-spacing:.1em;font-size:1rem;}
+.slide-counter{color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:600;}
+.nav-title{color:var(--muted);font-weight:600;font-size:1rem;border-left:1px solid var(--gb);padding-left:1.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px;}
+.nav-controls{display:flex;gap:1rem;}
+.btn-nav{background:transparent;border:1px solid var(--gb);color:var(--text);padding:.5rem 1.2rem;border-radius:8px;cursor:pointer;font-weight:600;font-size:1rem;display:flex;align-items:center;gap:.5rem;transition:all .2s;}
+.btn-nav:hover:not(:disabled){background:var(--glass);border-color:var(--border);}
+.btn-nav.primary{background:var(--p);border-color:var(--p);color:#fff;}
+.btn-nav.primary:hover:not(:disabled){background:var(--pd);box-shadow:0 0 15px rgba(16,185,129,.4);}
+.btn-nav:disabled{opacity:0.3;cursor:not-allowed;}
+
+.tag{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:8px;font-size:1.1rem;font-weight:700;letter-spacing:0.03em;}
+.tag-p{background:rgba(16,185,129,.2);color:#6ee7b7;border:1px solid rgba(16,185,129,.4);}
+.tag-c{background:rgba(245,158,11,.2);color:#fde68a;border:1px solid rgba(245,158,11,.4);}
+
+.floating-teacher{position:absolute;top:2rem;right:2rem;z-index:9000;}
+.teacher-btn{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fcd34d;padding:0.6rem 1.2rem;border-radius:99px;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:0.5rem;transition:all 0.3s;box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+.teacher-btn:hover{background:rgba(245,158,11,0.3);transform:scale(1.05);}
+.teacher-panel{position:absolute;top:3.5rem;right:0;width:350px;background:#1e1e2e;border:1px solid var(--gb);border-radius:12px;padding:1.5rem;box-shadow:0 15px 40px rgba(0,0,0,0.5);opacity:0;pointer-events:none;transform:translateY(10px);transition:all 0.3s;z-index:9001;}
+.teacher-panel.open{opacity:1;pointer-events:all;transform:translateY(0);}
+.tp-title{font-size:1.2rem;font-weight:800;color:#fcd34d;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--gb);padding-bottom:0.5rem;}
+.tp-content{font-size:1.1rem;color:var(--muted);line-height:1.5;}
+
+.rubric-table{width:100%;border-collapse:collapse;font-size:1.2rem;}
+.rubric-table th{text-align:left;padding:1rem 1.5rem;background:var(--bg3);color:var(--pl);font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid var(--p);}
+.rubric-table td{padding:1.2rem 1.5rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top;line-height:1.6;}
+
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- SLIDE 0: COVER -->
+<div class="slide active centered" data-session="0">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner" style="align-items:center; text-align:center;">
+    <div style="background:rgba(16,185,129,.15); color:#34d399; border:1px solid #34d399; padding:0.4rem 1rem; border-radius:99px; font-weight:700; font-size:1.1rem; margin-bottom:2rem;"><i data-lucide="file-text" style="width:16px;height:16px;vertical-align:middle;margin-right:0.5rem;"></i>EVALUACION UNIDAD 2</div>
+    <h1 class="gradient-text" style="font-size:5rem;">Proyecto: Matriz & BDD</h1>
+    <p style="font-size:2rem; max-width:800px; color:var(--muted);">Diseño del Plan de Pruebas, Matriz de Trazabilidad y Casos Gherkin.</p>
+  </div>
+</div>
+
+<!-- SLIDE 1: CONTEXTO Y MISIÓN -->
+<div class="slide" data-session="1">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    
+    <div class="floating-teacher">
+      <button class="teacher-btn" onclick="toggleTeacher(1)"><i data-lucide="info"></i> Ayuda al Profesor</button>
+      <div class="teacher-panel" id="tp-1">
+        <div class="tp-title"><i data-lucide="lightbulb"></i> Tips de Evaluación</div>
+        <div class="tp-content">
+          <strong>Contexto:</strong> Explícales que en el mundo real, los QAs no programan de inmediato, sino que auditan documentos.<br><br>
+          Recuérdales que deben usar la <strong>RTM (Matriz)</strong> para vincular cada historia de usuario provista en el PDF con al menos un caso de prueba lógico.
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-tag">El Encargo</div>
+    <h2>El Contexto de tu Evaluación</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <p style="margin-bottom:2rem;">Te han asignado como el <strong>QA Lead</strong> para un nuevo sistema en construcción. El cliente ha entregado los <i>Documentos de Requerimientos Funcionales</i> y el <i>Documento de Historias de Usuario</i>. Tu misión es estructurar la documentación técnica antes de escribir una sola línea de código.</p>
+      
+      <div class="cols cols-2">
+          <div class="card accent-c">
+              <div class="card-title"><i data-lucide="book-open"></i> Archivos Base</div>
+              <div class="card-body">
+                  Debes utilizar los 2 documentos PDF que están en el Portal de la Unidad:<br><br>
+                  <span class="tag tag-p"><i data-lucide="file"></i> Requerimientos Funcionales</span><br><br>
+                  <span class="tag tag-c"><i data-lucide="file"></i> Historias de Usuario</span>
+              </div>
+          </div>
+          <div class="card accent-p">
+              <div class="card-title"><i data-lucide="target"></i> Tu Entregable</div>
+              <div class="card-body">
+                  Un archivo comprimido NO permitido. Entregarás:<br><br>
+                  <strong>1. Hoja de Cálculo (.xls):</strong> Matriz RTM y Plan de Pruebas clásico.<br><br>
+                  <strong>2. Archivo PDF (max 10 pág):</strong> Todos los escenarios Gherkin (BDD) aplicables.
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: PARTE 1 MATRIZ -->
+<div class="slide" data-session="2">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    
+    <div class="floating-teacher">
+      <button class="teacher-btn" onclick="toggleTeacher(2)"><i data-lucide="info"></i> Ayuda al Profesor</button>
+      <div class="teacher-panel" id="tp-2">
+        <div class="tp-title"><i data-lucide="check-square"></i> Criterio Esperado</div>
+        <div class="tp-content">
+          <strong>Matriz RTM (35 pts):</strong> Se espera que el excel tenga columnas como "ID Requisito", "Descripción", "ID Caso Prueba".<br><br>
+          Si dejan un requisito sin un caso de prueba asociado, significa que hay un "hueco de cobertura" y se descuentan puntos.
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-tag">PARTE 1 (35 pts)</div>
+    <h2>Matriz de Pruebas (RTM)</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <p style="margin-bottom:2rem;">El equipo de desarrollo necesita saber exactamente qué pruebas cubren qué requisitos para asegurar que nada se quede fuera.</p>
+      
+      <div class="card accent-p" style="background:#0a0a15;">
+          <div class="card-title">Instrucciones de Construcción:</div>
+          <div class="card-body">
+              <ul style="list-style:none; display:flex; flex-direction:column; gap:1.5rem; margin-top:1rem;">
+                  <li style="display:flex; gap:1rem;"><i data-lucide="check-circle-2" style="color:var(--ok); flex-shrink:0;"></i> <strong>Extracción:</strong> Identifica y enlista cada uno de los requerimientos y/o Historias de Usuario de los documentos provistos.</li>
+                  <li style="display:flex; gap:1rem;"><i data-lucide="check-circle-2" style="color:var(--ok); flex-shrink:0;"></i> <strong>Vinculación:</strong> Crea identificadores únicos (ej. <code>REQ-01</code>, <code>CP-01</code>) y asocia cada requisito con su(s) respectivo(s) caso(s) de prueba.</li>
+                  <li style="display:flex; gap:1rem;"><i data-lucide="check-circle-2" style="color:var(--ok); flex-shrink:0;"></i> <strong>Auditoría:</strong> Asegúrate visualmente (mediante la matriz) de que existe un 100% de cobertura teórica.</li>
+              </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: PARTE 2 PLAN -->
+<div class="slide" data-session="3">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    
+    <div class="floating-teacher">
+      <button class="teacher-btn" onclick="toggleTeacher(3)"><i data-lucide="info"></i> Ayuda al Profesor</button>
+      <div class="teacher-panel" id="tp-3">
+        <div class="tp-title"><i data-lucide="check-square"></i> Criterio Esperado</div>
+        <div class="tp-content">
+          <strong>Casos de Prueba (35 pts):</strong> Deberán usar la plantilla vista en clases.<br><br>
+          Evalúa que no solo hagan escenarios de <em>"Happy Path"</em> (positivos). Para tener los 35 puntos deben incluir escenarios negativos (ej. qué pasa si falta un dato o ingresan un tipo erróneo).
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-tag">PARTE 2 (35 pts)</div>
+    <h2>Diseño del Plan y Casos</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <p style="margin-bottom:2rem;">Basándote en la matriz RTM, es momento de diseñar los casos de prueba tácticos en la misma Hoja de Cálculo.</p>
+      
+      <div class="card accent-c" style="background:#0a0a15;">
+          <div class="card-title">Instrucciones de Construcción:</div>
+          <div class="card-body">
+              <ul style="list-style:none; display:flex; flex-direction:column; gap:1.5rem; margin-top:1rem;">
+                  <li style="display:flex; gap:1rem;"><i data-lucide="check-circle-2" style="color:var(--c2); flex-shrink:0;"></i> <strong>Estructura Formal:</strong> Cada caso debe tener: ID, Precondiciones, Pasos, Datos y Resultado Esperado.</li>
+                  <li style="display:flex; gap:1rem;"><i data-lucide="check-circle-2" style="color:var(--c2); flex-shrink:0;"></i> <strong>Exhaustividad:</strong> No pruebes solo cuando todo sale bien. ¿Qué pasa si el sistema falla? Diseña escenarios negativos.</li>
+                  <li style="display:flex; gap:1rem;"><i data-lucide="check-circle-2" style="color:var(--c2); flex-shrink:0;"></i> <strong>Claridad Táctica:</strong> Los pasos deben ser lo suficientemente claros para que cualquier otra persona del equipo los ejecute.</li>
+              </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: PARTE 3 BDD -->
+<div class="slide" data-session="4">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    
+    <div class="floating-teacher">
+      <button class="teacher-btn" onclick="toggleTeacher(4)"><i data-lucide="info"></i> Ayuda al Profesor</button>
+      <div class="teacher-panel" id="tp-4">
+        <div class="tp-title"><i data-lucide="check-square"></i> Criterio Esperado</div>
+        <div class="tp-content">
+          <strong>Gherkin (30 pts):</strong> Este es un documento PDF aparte.<br><br>
+          La sintaxis debe ser estrictamente DADO/CUANDO/ENTONCES. Se castiga el uso de lenguaje técnico (ej. "DADO que el objeto JSON tiene id=1"). Debe ser lenguaje de Negocio.
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-tag">PARTE 3 (30 pts)</div>
+    <h2>Criterios de Aceptación (Gherkin)</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <p style="margin-bottom:2rem;">El cliente quiere estar seguro de que entendimos el comportamiento esperado del sistema (BDD) antes de programarlo.</p>
+      
+      <div class="card accent-y" style="background:#0a0a15;">
+          <div class="card-title">Instrucciones de Construcción:</div>
+          <div class="card-body">
+              <ul style="list-style:none; display:flex; flex-direction:column; gap:1.5rem; margin-top:1rem;">
+                  <li style="display:flex; gap:1rem;"><i data-lucide="check-circle-2" style="color:var(--acc); flex-shrink:0;"></i> <strong>Traducción a BDD:</strong> Genera todos los escenarios lógicos posibles para aplicar BDD en este software.</li>
+                  <li style="display:flex; gap:1rem;"><i data-lucide="check-circle-2" style="color:var(--acc); flex-shrink:0;"></i> <strong>Sintaxis Estricta:</strong> Utiliza el estándar <code>DADO</code> (estado inicial), <code>CUANDO</code> (acción) y <code>ENTONCES</code> (resultado medible).</li>
+                  <li style="display:flex; gap:1rem;"><i data-lucide="check-circle-2" style="color:var(--acc); flex-shrink:0;"></i> <strong>Formato:</strong> Entregar en el archivo PDF (Max 10 páginas, Arial 12, justificado).</li>
+              </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SLIDE 5: RUBRICA -->
+<div class="slide" data-session="5">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Criterios Formales</div>
+    <h2>Rúbrica de Evaluación Final</h2><div class="hdiv"></div>
+    <div class="content-area" style="overflow-y:auto; padding-right:1rem;">
+      <table class="rubric-table" style="background:rgba(0,0,0,0.4); border-radius:12px; overflow:hidden;">
+        <thead>
+          <tr>
+            <th width="25%">Dimensión</th>
+            <th width="35%">Excelente (100%)</th>
+            <th width="25%">Suficiente (60%)</th>
+            <th width="15%">Puntaje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Matriz RTM</strong><br><span style="font-size:1.1rem; color:var(--text-dim); font-weight:normal;">Trazabilidad</span></td>
+            <td>Identifica correctamente todos los requerimientos e H.U. y los vincula con precisión.</td>
+            <td>Identifica la mayoría, vinculación presenta vacíos menores.</td>
+            <td style="color:var(--p); font-weight:800;">35 pts</td>
+          </tr>
+          <tr>
+            <td><strong>Plan de Pruebas</strong><br><span style="font-size:1.1rem; color:var(--text-dim); font-weight:normal;">Exhaustividad</span></td>
+            <td>Define casos detallados (positivos/negativos) asegurando cobertura total.</td>
+            <td>Falta profundidad o escenarios clave (negativos).</td>
+            <td style="color:var(--p); font-weight:800;">35 pts</td>
+          </tr>
+          <tr>
+            <td><strong>Gherkin (BDD)</strong><br><span style="font-size:1.1rem; color:var(--text-dim); font-weight:normal;">Sintaxis</span></td>
+            <td>Estructura todos los escenarios usando correctamente Dado/Cuando/Entonces.</td>
+            <td>Redacción ambigua o omisión de escenarios lógicos.</td>
+            <td style="color:var(--p); font-weight:800;">30 pts</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div style="margin-top:2rem; font-size:1.3rem; color:var(--muted); border-left:4px solid var(--err); padding-left:1rem;">
+        <strong>RESTRICCIONES IMPORTANTES:</strong><br>
+        1. Formato Archivos: <code>.xls</code> para Matriz/Casos. <code>.pdf</code> para Gherkin.<br>
+        2. Prohibido formatos comprimidos (.zip, .rar). Implica nota mínima.<br>
+        3. Nombre: <code>EVU2_APELLIDO_NOMBRE</code>.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- deck -->
+
+<div class="nav-bar">
+  <div class="nav-info">
+    <span class="session-badge" id="sess-label">EVAL</span>
+    <span class="slide-counter" id="counter">1 / 6</span>
+    <span class="nav-title" id="slide-title">Proyecto: Matriz & BDD</span>
+  </div>
+  <div class="nav-controls">
+    <button class="btn-nav" id="btn-prev" onclick="go(-1)"><i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Anterior</button>
+    <button class="btn-nav primary" id="btn-next" onclick="go(1)">Siguiente <i data-lucide="arrow-right" style="width:18px;height:18px;"></i></button>
+  </div>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0;
+
+const slideTitles = slides.map(s => {
+  const h = s.querySelector('h1,h2');
+  return h ? h.textContent.replace(/\s+/g,' ').trim() : '';
+});
+
+function update(){
+  slides.forEach((s,i) => {
+    s.classList.remove('active','prev');
+    if (i === cur) s.classList.add('active');
+    else if (i < cur) s.classList.add('prev');
+  });
+  document.getElementById('counter').textContent = (cur+1)+' / '+total;
+  document.getElementById('slide-title').textContent = slideTitles[cur] || '';
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = cur === total-1;
+  
+  document.querySelectorAll('.teacher-panel').forEach(p => p.classList.remove('open'));
+}
+
+function go(d){
+  cur = Math.max(0, Math.min(total-1, cur+d));
+  update();
+}
+
+function toggleTeacher(id) {
+  const p = document.getElementById('tp-'+id);
+  if(p) p.classList.toggle('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' '){ e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp'){ e.preventDefault(); go(-1); }
+  if (e.key === 'f' || e.key === 'F'){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+});
+
+lucide.createIcons();
+update();
+</script>
+</body>
+</html>

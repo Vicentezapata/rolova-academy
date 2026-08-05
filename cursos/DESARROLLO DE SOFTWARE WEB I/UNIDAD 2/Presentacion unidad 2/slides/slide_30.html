@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Slide 30</title>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Bowlby+One&family=Inter+Tight:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+<style>
+:root {
+  --bg-cream: #f4e9d0;
+  --brown: #6b4423;
+  --orange: #e07a3e;
+  --mustard: #d4a82a;
+  --vermilion: #c14d3f;
+  --ink: #2a1810;
+  --ink-soft: rgba(42, 24, 16, 0.62);
+  --ink-faint: rgba(42, 24, 16, 0.38);
+
+  --display-font: 'Bagel Fat One', 'Bowlby One', 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+  --body-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono-font: 'JetBrains Mono', 'DM Mono', 'Courier New', monospace;
+
+  --p: var(--vermilion);
+  --p-glow: rgba(193, 77, 63, .35);
+  --c2: var(--orange);
+  --c3: var(--mustard);
+  --c4: var(--bg-cream);
+  --bg: var(--bg-cream);
+  --bg2: #ebdcb2;
+  --bg3: #e0cf9b;
+  --surface: rgba(107, 68, 35, .04);
+  --surface-h: rgba(107, 68, 35, .08);
+  --border: rgba(107, 68, 35, .15);
+  --border-h: rgba(107, 68, 35, .25);
+  --text: var(--ink);
+  --text2: var(--ink-soft);
+  --text3: var(--ink-faint);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font: var(--body-font);
+  --mono: var(--mono-font);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body {
+  background: var(--bg-cream);
+  color: var(--ink);
+  font-family: var(--body-font);
+  position: relative;
+}
+
+.warm-wash { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 45% at 18% 22%, rgba(212, 168, 42, 0.18) 0%, transparent 60%), radial-gradient(ellipse 55% 40% at 86% 84%, rgba(224, 122, 62, 0.14) 0%, transparent 65%); pointer-events: none; z-index: 0; }
+.stripe-band { position: absolute; left: 0; right: 0; height: 14px; background: repeating-linear-gradient(90deg, var(--brown) 0 36px, var(--orange) 36px 72px, var(--mustard) 72px 108px, var(--vermilion) 108px 144px); opacity: 0.78; z-index: 1; }
+.stripe-top { top: 0; }
+.stripe-bottom { bottom: 0; }
+.sun-orange { position: absolute; right: 96px; top: 96px; width: 148px; height: 148px; border-radius: 50%; background: radial-gradient(circle at 35% 32%, #ec946a 0%, var(--orange) 48%, #b75a23 100%); box-shadow: 0 0 0 8px rgba(244, 233, 208, 1), 0 0 0 9px rgba(107, 68, 35, 0.55); z-index: 2; }
+.sun-orange-ring { position: absolute; right: 76px; top: 76px; width: 188px; height: 188px; border-radius: 50%; border: 2px dashed rgba(107, 68, 35, 0.42); z-index: 2; }
+.sun-mustard { position: absolute; left: 78px; bottom: 110px; width: 96px; height: 96px; border-radius: 50%; background: radial-gradient(circle at 38% 35%, #ecc35a 0%, var(--mustard) 55%, #9a7813 100%); box-shadow: 0 0 0 6px rgba(244, 233, 208, 1), 0 0 0 7px rgba(107, 68, 35, 0.45); z-index: 2; }
+.arc-half { position: absolute; left: 60px; top: 290px; width: 78px; height: 156px; border-radius: 0 156px 156px 0; background: var(--vermilion); z-index: 2; }
+.vinyl { position: absolute; right: 96px; bottom: 96px; width: 168px; height: 168px; border-radius: 50%; background: radial-gradient(circle at center, var(--vermilion) 0 18px, var(--ink) 18px 22px, #1d100a 22px 36px, var(--ink) 36px 38px, #1d100a 38px 56px, var(--ink) 56px 58px, #1d100a 58px 78px, var(--ink) 78px 80px, #1d100a 80px 84px); box-shadow: 0 0 0 4px rgba(244, 233, 208, 1), 0 0 0 6px rgba(107, 68, 35, 0.55); z-index: 4; }
+.vinyl-center-dot { position: absolute; right: 174px; bottom: 174px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg-cream); z-index: 5; }
+.grain { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.08; pointer-events: none; z-index: 9; }
+.slide-num { position:absolute; bottom:24px; right:48px; font-family:var(--mono); font-size:11px; font-weight:700; color:var(--brown); z-index:10; }
+
+::selection{background:var(--p);color:#fff}
+.gradient-text{background:linear-gradient(135deg,var(--p),var(--c2),var(--c3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.slide{position:absolute;inset:auto;display:flex;align-items:center;justify-content:center;padding:4rem 5rem;opacity:1;transform:none;pointer-events:all;height:100vh;overflow:hidden;background:transparent}
+.slide-inner{max-width:1150px;width:100%;position:relative;z-index:10}
+.text-sm{font-size:.85rem;line-height:1.6}
+.text-xs{font-size:.78rem;line-height:1.5}
+.text-muted{color:var(--text2)}
+.mt-2{margin-top:.75rem}
+.mt-4{margin-top:1.5rem}
+.mb-2{margin-bottom:.75rem}
+.text-center{text-align:center}
+.block{display:block}
+
+.cover-title, .s-title { font-family: var(--display-font); color: var(--brown); text-shadow: 2px 2px 0 rgba(193, 77, 63, 0.18); }
+.s-title{font-size:clamp(1.75rem,3.5vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.s-lead{font-size:1.05rem;color:var(--text2);margin-bottom:2rem;max-width:750px;line-height:1.7}
+.cards-grid{display:grid;gap:1.5rem;margin-top:1rem}
+.cards-grid.three{grid-template-columns:repeat(3,1fr)}
+.cards-grid.two{grid-template-columns:repeat(2,1fr)}
+.cards-grid.four{grid-template-columns:repeat(4,1fr)}
+.s-card, .info-card { background: rgba(255,255,255,0.4); box-shadow: 4px 4px 0 rgba(42, 24, 16, 0.85); border: 2px solid var(--ink); border-radius: 10px; transition:all .3s; padding: 1.5rem; }
+.s-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(42, 24, 16, 0.85); }
+.s-card.glow{border-color:rgba(108,59,255,.25)}
+.s-card-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,rgba(108,59,255,.15),rgba(157,107,255,.08));border:1px solid rgba(108,59,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:.75rem}
+.s-card-icon svg{width:20px;height:20px;color:var(--p)}
+.s-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.s-split{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;margin-top:1.5rem}
+.s-split.align-center{align-items:center}
+.info-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.s-list{list-style:none;display:flex;flex-direction:column;gap:1rem}
+.s-list li{display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:var(--text2);line-height:1.6}
+.s-list li svg{width:20px;height:20px;color:var(--p);flex-shrink:0;margin-top:3px}
+code{font-family:var(--mono);background:rgba(224, 122, 62, 0.15);border:1px solid rgba(224, 122, 62, 0.3);padding:.2rem .45rem;border-radius:4px;font-size:.83em;color:var(--vermilion);font-weight:700;}
+.code-window{background:rgba(255,255,255,0.6);border:2px solid var(--ink);border-radius:var(--radius);overflow:hidden;box-shadow:4px 4px 0 rgba(42,24,16,0.85);width:100%}
+.cw-header{display:flex;align-items:center;gap:.4rem;padding:.75rem 1rem;background:rgba(255,255,255,.03);border-bottom:2px solid var(--ink)}
+.cw-dot{width:10px;height:10px;border-radius:50%}
+.cw-dot.r{background:#FF5F57}.cw-dot.y{background:#FFBD2E}.cw-dot.g{background:#28CA41}
+.cw-title{margin-left:.75rem;font-family:var(--mono);font-size:.7rem;color:var(--text3)}
+.cw-body { color: var(--ink); font-weight: 600; padding:1rem; font-family:var(--mono); font-size:0.85rem; white-space:pre-wrap; line-height:1.6; }
+.cw-body .c-c{color:rgba(42,24,16,0.4);font-style:italic}
+.cw-body .c-p{color:var(--brown)}
+.cw-body .c-s{color:var(--vermilion)}
+.cw-body .c-f{color:var(--orange)}
+.cw-body .c-k{color:var(--mustard)}
+.cw-body .c-n{color:var(--ink)}
+.step-flow{display:flex;flex-direction:column;gap:.75rem;margin-top:1rem}
+.step-item{display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.25rem;background:rgba(255,255,255,0.4);border:1px solid var(--ink);border-radius:var(--radius-sm);box-shadow: 2px 2px 0 rgba(42,24,16,0.4);}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--vermilion);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0;color:#fff;border:2px solid var(--ink)}
+.step-content{flex:1}
+.step-content strong{display:block;font-size:.9rem;margin-bottom:.25rem}
+.step-content p{font-size:.82rem;color:var(--text2)}
+table { width:100%; border-collapse:collapse; margin-top:1rem; }
+table th, table td { border:1px solid var(--ink); padding:0.5rem; text-align:left; }
+table th { background:rgba(107, 68, 35, .1); font-weight:bold; }
+</style>
+</head>
+<body>
+<div class="warm-wash"></div>
+<div class="stripe-band stripe-top"></div>
+<div class="stripe-band stripe-bottom"></div>
+<div class="sun-orange-ring"></div>
+<div class="sun-orange"></div>
+<div class="sun-mustard"></div>
+<div class="arc-half"></div>
+<div class="vinyl"></div>
+<div class="vinyl-center-dot"></div>
+<svg class="grain" preserveAspectRatio="none">
+  <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/></filter>
+  <rect width="100%" height="100%" filter="url(#grain)" fill="#6b4423"/>
+</svg>
+
+<div class="slide content" data-idx="30"><div class="slide-inner">
+  <h1 class="s-title">Evaluación U2: <span class="gradient-text">Rúbrica Oficial</span></h1>
+<p class="s-lead">Su nota (100 puntos = nota 7.0) dependerá de implementar correctamente estos 3 indicadores clave.</p>
+<div class="s-split">
+  <div>
+    <div class="step-flow">
+      <div class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Base de Datos y Modelos (33 pts)</strong><p>Configurar <code>.env</code> y crear los Modelos con todos los campos y relaciones.</p></div></div>
+      <div class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Login y Middleware (34 pts)</strong><p>Controlador de Inicio de Sesión y uso de Middleware para validar datos.</p></div></div>
+      <div class="step-item"><div class="step-num">3</div><div class="step-content"><strong>Registro y Cifrado (33 pts)</strong><p>Controlador de Registro de Usuario con cifrado de clave (<code>Hash::make</code>).</p></div></div>
+    </div>
+  </div>
+  <div>
+    <div class="info-card glow">
+      <h3><lord-icon src="https://cdn.lordicon.com/pbrgfeij.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon> Niveles de Desempeño</h3>
+      <table style="width:100%; border-collapse: collapse; margin-top:1rem; font-size:0.85rem;">
+        <tr>
+          <th style="padding:0.5rem; border: 1px solid var(--border); color:var(--text2);">Nivel</th>
+          <th style="padding:0.5rem; border: 1px solid var(--border); color:var(--text2);">Descripción</th>
+        </tr>
+        <tr>
+          <td style="padding:0.5rem; border: 1px solid var(--border);"><strong>Sobresaliente (90-100%)</strong></td>
+          <td style="padding:0.5rem; border: 1px solid var(--border);">Dominio excepcional, completo y consistente del indicador. Implementación sin errores.</td>
+        </tr>
+        <tr>
+          <td style="padding:0.5rem; border: 1px solid var(--border);"><strong>Alto (80-89%)</strong></td>
+          <td style="padding:0.5rem; border: 1px solid var(--border);">Buen dominio, preciso y completo, faltan detalles menores (ej. algún campo faltante).</td>
+        </tr>
+        <tr>
+          <td style="padding:0.5rem; border: 1px solid var(--border);"><strong>Medio (60-69%)</strong></td>
+          <td style="padding:0.5rem; border: 1px solid var(--border);">Errores en ejecución, falta cifrado de clave, o modelos incompletos.</td>
+        </tr>
+        <tr>
+          <td style="padding:0.5rem; border: 1px solid var(--border);"><strong>Bajo (< 59%)</strong></td>
+          <td style="padding:0.5rem; border: 1px solid var(--border);">Inconsistente, impreciso, sin evidencia de controladores o middleware.</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+</div></div>
+
+<div class="slide-num">30 / 33</div>
+
+<script>
+  
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', ' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

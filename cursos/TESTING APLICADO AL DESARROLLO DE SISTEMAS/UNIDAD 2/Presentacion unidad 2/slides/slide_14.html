@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Slide 14 — Sección 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+
+:root{--bg:#050b1f;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent4:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tight',sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 90% 110%, #451a03 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(245,158,11,0.08) 1px,transparent 1px);background-size:60px 60px;z-index:0;}
+.glow-center{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(245,158,11,0.15);filter:blur(80px);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;}
+.live-badge{position:absolute;top:40px;right:60px;display:flex;align-items:center;gap:8px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);color:var(--accent4);padding:8px 16px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;z-index:10;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--accent4);animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:60px;}
+.part-label{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.25em;color:var(--accent4);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.part-label::before,.part-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--accent4),transparent);max-width:80px;}
+.title{font-family:'Inter Tight','Inter',sans-serif;font-size:46px;font-weight:800;line-height:1.15;letter-spacing:-0.045em;color:var(--text);margin-bottom:20px;}
+.title em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;color:var(--accent4);}
+.subtitle{font-size:17px;color:var(--text-sec);max-width:680px;line-height:1.7;margin-bottom:44px;}
+.agenda-row{display:flex;gap:16px;justify-content:center;}
+.agenda-chip{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);padding:10px 20px;border-radius:6px;font-size:12px;color:var(--text-sec);}
+.agenda-chip strong{color:var(--accent4);display:block;font-size:11px;letter-spacing:0.1em;margin-bottom:3px;text-transform:uppercase;}
+.slide-num{position:absolute;bottom:20px;right:36px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.2);z-index:10;}
+
+
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="grid-texture"></div>
+  <div class="glow-center"></div>
+  <div class="live-badge"><div class="live-dot"></div>Sesión Sincrónica · Teams</div>
+  <div class="content">
+    <div class="part-label">Sesión 04</div>
+    <h1 class="title">El Plan de Pruebas <em>Maestro</em><br>y Dinámicas Finales</h1>
+    <p class="subtitle">Cómo unificar requerimientos, estrategias, casos y recursos en el documento rector. Estándar IEEE 829. Dinámicas de auditoría y roleplay en vivo.</p>
+    <div class="agenda-row">
+      <div class="agenda-chip"><strong>Documento</strong>Test Plan IEEE 829 — 3 Pilares</div>
+      <div class="agenda-chip"><strong>Roleplay</strong>Defendiendo el Plan (20 min)</div>
+      <div class="agenda-chip"><strong>Dinámica</strong>QA Audit — Auditoría Cruzada</div>
+    </div>
+  </div>
+  <div class="slide-num">14 / 20</div>
+</div>
+</body>
+</html>

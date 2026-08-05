@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación Unidad 1 | TESTING APLICADO</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --p:#6366f1;--pl:#818cf8;--pd:#4f46e5;--c2:#06b6d4;--acc:#f59e0b;
+  --ok:#10b981;--err:#ef4444;--warn:#f59e0b;
+  --bg:#0a0a15;--bg2:#111120;--bg3:#1a1a2e;--card:#16162a;
+  --border:rgba(99,102,241,.25);--text:#f8fafc;--muted:#cbd5e1;--dim:#94a3b8;
+  --glass:rgba(255,255,255,.05);--gb:rgba(255,255,255,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:13px;}
+.deck{width:100vw;height:100vh;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transform:translateX(80px);
+  transition:opacity .5s cubic-bezier(0.4, 0, 0.2, 1),transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+  background:var(--bg);overflow:hidden;
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.prev{transform:translateX(-80px);}
+.slide::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(99,102,241,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.06) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+.slide-inner{
+    position:relative;z-index:1;flex:1;
+    display:flex;flex-direction:column;
+    padding:4rem 6rem;
+    padding-bottom:100px;
+    overflow-y:auto;
+}
+.slide-inner.centered {
+    justify-content: center;
+}
+.slide-inner::-webkit-scrollbar{width:8px;}
+.slide-inner::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px;}
+
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;}
+.orb1{width:700px;height:700px;background:rgba(99,102,241,.12);top:-150px;right:-150px;}
+.orb2{width:500px;height:500px;background:rgba(6,182,212,.08);bottom:-100px;left:-100px;}
+
+.nav-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(10,10,21,.95);backdrop-filter:blur(24px);
+  border-top:1px solid var(--gb);height:80px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 3rem;
+}
+.nav-info{display:flex;align-items:center;gap:1.5rem;}
+.session-badge{background:var(--err);color:#fff;padding:.4rem 1rem;border-radius:10px;font-size:1rem;font-weight:800;letter-spacing:.05em;}
+.slide-counter{font-size:1rem;color:var(--muted);font-weight:600;}
+.nav-title{font-size:1.1rem;color:var(--dim);max-width:600px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
+.nav-controls{display:flex;align-items:center;gap:1rem;}
+.btn-nav{background:var(--glass);border:1px solid var(--gb);color:var(--text);padding:.75rem 1.75rem;border-radius:10px;cursor:pointer;font-size:1.1rem;font-weight:700;transition:all .2s;font-family:inherit;}
+.btn-nav:hover{background:rgba(99,102,241,.2);border-color:var(--border);}
+.btn-nav:disabled{opacity:.3;cursor:not-allowed;}
+.btn-nav.primary{background:linear-gradient(135deg,var(--p),var(--pd));border-color:transparent;box-shadow:0 8px 24px rgba(99,102,241,.4);display:flex;align-items:center;gap:0.5rem;}
+
+.progress-track{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,.08);z-index:200;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--err),var(--warn));transition:width .4s ease;}
+
+.slide-tag{font-size:1.3rem;font-weight:800;color:var(--err);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;margin-top:60px;}
+.slide h1{font-size:clamp(3rem, 4.5vw, 4rem);font-weight:900;line-height:1.15;margin-bottom:1.25rem;}
+.slide h2{font-size:clamp(2.2rem, 3vw, 2.8rem);font-weight:900;color:#fff;margin-bottom:1.25rem;line-height:1.2;}
+.slide p{color:var(--muted);line-height:1.6;font-size:1.6rem;}
+.gradient-text{background:linear-gradient(135deg,#fff 0%,var(--err) 50%,var(--warn) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+.content-area {display: flex; flex-direction: column; flex: 1; justify-content: space-evenly;}
+.card{background:var(--card);border:1px solid var(--gb);border-radius:16px;padding:1.5rem 2rem;display:flex;flex-direction:column;justify-content:center;}
+.card-grid{display:grid;gap:1.5rem;flex:1;}
+.card-grid-2{grid-template-columns:1fr 1fr;}
+.card-grid-3{grid-template-columns:repeat(3,1fr);}
+.card.accent-p{border-left:5px solid var(--p);}
+.card.accent-c{border-left:5px solid var(--c2);}
+.card.accent-g{border-left:5px solid var(--ok);}
+.card.accent-y{border-left:5px solid var(--acc);}
+.card.accent-r{border-left:5px solid var(--err);}
+.card-icon{display:inline-flex;color:var(--text);margin-bottom:0.75rem;}
+.card-icon svg {width:42px;height:42px;}
+.card-title{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:0.5rem;}
+.card-body{font-size:1.4rem;color:var(--muted);line-height:1.6;}
+
+.quote{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-left:6px solid var(--err);border-radius:0 16px 16px 0;padding:1.5rem 2rem;font-size:1.4rem;color:var(--text);line-height:1.6;font-style:italic;margin:1rem 0;box-shadow: 0 10px 20px rgba(0,0,0,0.15);}
+
+.tbl{width:100%;border-collapse:collapse;font-size:1.4rem;}
+.tbl th{text-align:left;padding:1rem 1.5rem;background:var(--bg3);color:var(--err);font-size:1.2rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid var(--err);}
+.tbl td{padding:1.2rem 1.5rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top;line-height:1.6;}
+.tbl tr:hover td{background:rgba(255,255,255,.03);color:var(--text);}
+.tbl code{background:rgba(239,68,68,.15);color:#fca5a5;padding:.2rem .5rem;border-radius:6px;font-size:1.3rem;font-family:'JetBrains Mono', monospace;}
+
+.hdiv{height:2px;background:linear-gradient(90deg, var(--err), transparent);margin:1.5rem 0;opacity:0.6;}
+.cover{justify-content:center;align-items:center;text-align:center;}
+.cover-sub{font-size:1.4rem;color:var(--muted);max-width:800px;margin:0 auto;line-height:1.6;}
+
+.kbd-hint{position:fixed;bottom:90px;right:2.5rem;font-size:.9rem;color:var(--dim);display:flex;gap:.5rem;align-items:center;z-index:201;font-weight:600;}
+.kbd{background:var(--bg3);border:1px solid var(--gb);border-radius:6px;padding:.2rem .6rem;font-size:.85rem;font-family:'JetBrains Mono',monospace;color:var(--text);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .6s cubic-bezier(0.4, 0, 0.2, 1) both;}
+
+.teacher-btn{position:absolute;top:75px;right:2rem;z-index:100;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#fbbf24;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;}
+.teacher-btn:hover{background:rgba(245,158,11,.3);transform:scale(1.1);box-shadow:0 0 20px rgba(245,158,11,.3);}
+.teacher-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:500;justify-content:center;align-items:center;}
+.teacher-modal-overlay.open{display:flex;}
+.teacher-modal{background:var(--bg2);border:1px solid rgba(245,158,11,.3);border-radius:20px;padding:2.5rem;max-width:800px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.5);position:relative;}
+.teacher-modal-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(245,158,11,.2);}
+.teacher-modal-title{font-size:1.6rem;font-weight:800;color:#fbbf24;}
+.teacher-modal-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--muted);cursor:pointer;padding:.5rem;border-radius:8px;}
+.teacher-modal-close:hover{background:rgba(255,255,255,.1);color:#fff;}
+.teacher-modal-body{font-size:1.35rem;color:var(--muted);line-height:1.8;}
+.teacher-note-section{margin-bottom:1.25rem;padding-left:1rem;border-left:3px solid rgba(245,158,11,.3);}
+.teacher-note-section h4{font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:.5rem;}
+.dot-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+.dot-list li{display:flex;align-items:flex-start;gap:.7rem;font-size:1.55rem;color:var(--muted);line-height:1.5;}
+.dot-list li::before{content:'';display:inline-block;width:20px;height:20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23818cf8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:3px;}
+.check-list{list-style:none;display:flex;flex-direction:column;gap:.8rem;}
+.check-list li{display:flex;align-items:flex-start;gap:.8rem;font-size:1.6rem;color:var(--muted);line-height:1.5;}
+.check-list li::before{content:'';display:inline-block;width:24px;height:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:2px;}
+.cols{display:grid;gap:2rem;flex:1;}
+.cols-2{grid-template-columns:1fr 1fr;}
+</style>
+</head>
+<body>
+<div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+<div class="deck" id="deck">
+\n
+<div class="slide cover active">
+  <button class="teacher-btn" onclick="showTeacherNote(0)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered">
+    <div>
+        <div style="display:inline-flex;align-items:center;gap:.6rem;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.4);color:#fca5a5;padding:.6rem 1.5rem;border-radius:999px;font-size:1rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem;"><i data-lucide="award" style="width:18px;height:18px;"></i>&nbsp;EVALUACIÓN SUMATIVA</div>
+        <h1 class="gradient-text fade-in">Unidad 1:<br>Proyecto de QA Testing</h1>
+        <p class="cover-sub fade-in" style="font-size:1.6rem; max-width: 900px;">Diseño de estrategia de calidad y Casos de Prueba aplicados a un repositorio de código real.</p>
+        <div style="margin-top: 3rem; display:flex; justify-content:center; gap: 2rem;">
+            <div class="card" style="padding: 1rem 2rem; border-color: rgba(255,255,255,0.1);"><span style="color:var(--muted); font-size:1.2rem;">Ponderación</span><br><span style="font-size:2rem; font-weight:800; color:#fff;">10%</span></div>
+            <div class="card" style="padding: 1rem 2rem; border-color: rgba(255,255,255,0.1);"><span style="color:var(--muted); font-size:1.2rem;">Modalidad</span><br><span style="font-size:2rem; font-weight:800; color:#fff;">Individual / Presentación</span></div>
+            <div class="card" style="padding: 1rem 2rem; border-color: rgba(255,255,255,0.1);"><span style="color:var(--muted); font-size:1.2rem;">Tiempo</span><br><span style="font-size:2rem; font-weight:800; color:#fff;">4 Horas</span></div>
+        </div>
+    </div>
+  </div>
+</div>
+\n
+<div class="slide">
+  <button class="teacher-btn" onclick="showTeacherNote(1)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Contexto de la Evaluación</div>
+    <h2>Análisis de Repositorio de Código</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <div class="card accent-c">
+            <div class="card-icon" style="color:var(--c2)"><i data-lucide="github"></i></div>
+            <div class="card-title">El Código a Probar</div>
+            <div class="card-body">
+                Se te ha asignado como <strong>QA Engineer</strong> para evaluar el repositorio de un estudiante que contiene soluciones a diversos ejercicios de algoritmos de <i>LeetCode</i> (CS50).<br><br>
+                🔗 <strong>Repositorio Objetivo:</strong><br>
+                <code style="display:inline-block; margin-top:10px; font-size:1.2rem; background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">https://github.com/camilo-lavado/mi-leet-code-cs50</code>
+            </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:1.5rem;">
+        <div class="quote" style="border-color:var(--c2); border-left-color:var(--c2); background:rgba(6,182,212,.05);">
+            "El objetivo es que selecciones un <strong>Tipo de Prueba</strong> de la Tabla Periódica, armes una estrategia para evaluar los algoritmos de este repositorio, y realices una <strong>presentación detallando la prueba y cómo se implementaría</strong>."
+        </div>
+        <p style="font-size:1.4rem; padding: 1rem 2rem;">Deberás entregar una <strong>presentación visual</strong> (PPT/HTML) y realizar una exposición frente a tus compañeros cubriendo los 4 puntos de la rúbrica.</p>
+      </div>
+    </div>
+  </div>
+</div>
+\n
+<div class="slide">
+  <button class="teacher-btn" onclick="showTeacherNote(2)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Ponderación: 30 pts</div>
+    <h2>Parte 1: Niveles y Tipo de Prueba</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <p>Analiza el repositorio asignado y selecciona <strong>un tipo de prueba</strong> (ej. Pruebas Unitarias, de Rendimiento, de Mutación, etc.) que tenga mayor sentido para un repositorio de algoritmos.</p>
+        <br>
+        <table class="tbl">
+            <tr>
+                <th style="width:30%;">Elemento a Evaluar</th>
+                <th>Requisito en la Presentación</th>
+            </tr>
+            <tr>
+                <td><strong>Selección del Tipo</strong></td>
+                <td>Explica a detalle qué es el tipo de prueba que seleccionaste de la Tabla Periódica. ¿Qué mide? ¿Qué herramientas existen en la industria para ejecutarla?</td>
+            </tr>
+            <tr>
+                <td><strong>Nivel en la Pirámide</strong></td>
+                <td>Identifica a qué nivel de la pirámide de testing corresponde (Unitaria, Integración, Sistema, etc.) y justifica.</td>
+            </tr>
+            <tr>
+                <td><strong>Justificación Técnica</strong></td>
+                <td>¿Por qué este tipo de prueba es el MÁS adecuado para evaluar código de algoritmos matemáticos/lógicos (como los de LeetCode)? Fundamenta tu respuesta.</td>
+            </tr>
+        </table>
+    </div>
+  </div>
+</div>
+\n
+<div class="slide">
+  <button class="teacher-btn" onclick="showTeacherNote(3)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Ponderación: 40 pts</div>
+    <h2>Parte 2: Diseño de Casos de Prueba</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+        <div>
+            <p style="margin-bottom:1.5rem;">Diseña <strong>4 Casos de Prueba Formales</strong> aplicados específicamente al código o archivos dentro del repositorio objetivo.</p>
+            <ul class="check-list" style="margin-bottom:2rem;">
+                <li>Usa la plantilla formal (ID, Nombre, Técnica, Datos, Pasos, Resultado Esperado).</li>
+                <li>Deben ser medibles y reproducibles.</li>
+                <li><strong>Obligatorio:</strong> Al menos 1 caso debe probar un <i>escenario de error</i> (ej. timeout, input negativo, array vacío).</li>
+                <li>Explica en tu presentación cómo se implementarían de forma automatizada o manual en el repo.</li>
+            </ul>
+        </div>
+        <div class="card accent-r" style="background:#000;">
+            <div class="card-title" style="font-size:1.3rem;">Ejemplo de Plantilla (CP)</div>
+            <pre style="font-size:1rem; color:#a5b4fc; line-height:1.4;">ID: CP-01 | Nivel: Unitario | Técnica: C. Negra
+Precondición: Tener clonado el repositorio.
+Datos: array = [-1, 2, -3]
+Pasos:
+ 1. Invocar algoritmo max_subarray(array)
+ 2. Registrar el output
+Resultado Esperado:
+ Debe retornar -1. Tiempo de ejecución < 50ms.</pre>
+        </div>
+    </div>
+  </div>
+</div>
+\n
+<div class="slide">
+  <button class="teacher-btn" onclick="showTeacherNote(4)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Ponderación: 20 pts</div>
+    <h2>Parte 3: Criterios de Aceptación (BDD)</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <p>Un reclutador técnico que evaluará este repositorio indica el siguiente requerimiento funcional general:</p>
+        <div class="quote" style="border-color:var(--warn); border-left-color:var(--warn); background:rgba(245,158,11,.05);">
+            "El código debe ser a prueba de fallos. Si le paso parámetros vacíos no debe caerse. Además, no aceptaremos ninguna solución de LeetCode que tarde más de 1 segundo en procesar 1 millón de registros (Time Limit Exceeded)."
+        </div>
+        <p style="margin-top:2rem;">Basado en esto, redacta en tu presentación <strong>5 Criterios de Aceptación</strong> formales utilizando el formato de comportamiento (BDD).</p>
+        <br>
+        <div class="card accent-y">
+            <div class="card-title" style="color:var(--warn);">Formato Requerido: DADO / CUANDO / ENTONCES</div>
+            <div class="card-body">Asegúrate de que los criterios sean <strong>específicos</strong>, <strong>medibles</strong> y no dejen lugar a ambigüedades. (Ej: "DADO un arreglo vacío, CUANDO la función es llamada, ENTONCES debe retornar False").</div>
+        </div>
+    </div>
+  </div>
+</div>
+\n
+<div class="slide">
+  <button class="teacher-btn" onclick="showTeacherNote(5)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Ponderación: 10 pts</div>
+    <h2>Parte 4: Análisis y Priorización Estratégica</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <div class="card accent-p">
+            <div class="card-icon" style="color:var(--p)"><i data-lucide="timer"></i></div>
+            <div class="card-title">Situación Crítica</div>
+            <div class="card-body">
+                Faltan solo <strong>48 horas</strong> para que el estudiante deba presentar este repositorio en una entrevista técnica crucial para conseguir trabajo.<br><br>
+                Hay docenas de archivos y no hay tiempo para testearlos todos a fondo.
+            </div>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <p style="margin-bottom:1.5rem;">Responde en tu presentación (o en el documento adjunto):</p>
+        <ul class="dot-list">
+            <li>¿Qué algoritmos, scripts o tipos de prueba priorizarías evaluar en estas últimas 48 horas?</li>
+            <li>¿Por qué? Argumenta con <strong>criterio técnico QA</strong>.</li>
+            <li>¿Asumirías el riesgo de no probar todo el código? ¿Bajo qué principio del Testing ISTQB fundamentas esta decisión? (Ej. Principio de agrupación de defectos, o imposibilidad de pruebas exhaustivas).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+\n
+<div class="slide">
+  <button class="teacher-btn" onclick="showTeacherNote(6)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Criterios de Evaluación</div>
+    <h2>Rúbrica Final y Entregables</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <table class="tbl">
+            <tr>
+                <th style="width:20%;">Criterio</th>
+                <th style="width:30%;">Logrado (100%)</th>
+                <th style="width:25%;">Med. Logrado (60%)</th>
+                <th style="width:25%;">No Logrado (0%)</th>
+            </tr>
+            <tr>
+                <td><strong>P1 — Tipo y Niveles (30pts)</strong></td>
+                <td>Tipo de prueba y nivel correctamente identificados. Justificación técnica profunda basada en el repo asignado.</td>
+                <td>Identificación básica, justificación superficial o genérica.</td>
+                <td>Identificación errónea y sin justificación asociada al repositorio.</td>
+            </tr>
+            <tr>
+                <td><strong>P2 — Casos (40pts)</strong></td>
+                <td>4 casos formales, completos y medibles. Incluye escenario de error validable.</td>
+                <td>4 casos pero incompletos (faltan precondiciones o resultados) o sin escenario de error.</td>
+                <td>Menos de 4 casos o sin el formato formal requerido.</td>
+            </tr>
+            <tr>
+                <td><strong>P3 — UAT (20pts)</strong></td>
+                <td>5 criterios en formato DADO/CUANDO/ENTONCES, específicos, lógicos y sin ambigüedades.</td>
+                <td>Criterios en formato correcto pero vagos, o falta 1 criterio.</td>
+                <td>Sin formato BDD o no resuelven la necesidad del usuario final.</td>
+            </tr>
+            <tr>
+                <td><strong>P4 — Análisis (10pts)</strong></td>
+                <td>Argumenta priorización con excelente criterio de riesgos y cita un principio ISTQB.</td>
+                <td>Priorización lógica pero argumento débil o sin base teórica.</td>
+                <td>No hay estrategia de priorización clara frente a la restricción de tiempo.</td>
+            </tr>
+        </table>
+        
+        <div style="margin-top:2rem; padding: 1.5rem; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.4); border-radius: 12px;">
+            <strong style="color:var(--ok); font-size:1.4rem;">Entregable:</strong> Documento PDF o PPT con las respuestas y Casos de Prueba. Deberás <strong>exponerlo</strong> frente al curso (Tiempo de exposición a coordinar con el docente).
+        </div>
+    </div>
+  </div>
+</div>
+\n
+</div>
+<div class="kbd-hint">
+  Navegación: <span class="kbd">&larr;</span> <span class="kbd">&rarr;</span> <span class="kbd">Espacio</span>
+  <span style="margin-left:10px;">Pantalla Completa:</span> <span class="kbd">F</span>
+</div>
+<div class="nav-bar">
+  <div class="nav-info">
+    <div class="session-badge" id="sess-label">EVALUACIÓN</div>
+    <div class="nav-title" id="slide-title">Unidad 1</div>
+  </div>
+  <div class="nav-controls">
+    <div class="slide-counter" id="counter">1 / 10</div>
+    <button class="btn-nav" id="btn-prev" onclick="go(-1)"><i data-lucide="chevron-left"></i></button>
+    <button class="btn-nav primary" id="btn-next" onclick="go(1)">Siguiente <i data-lucide="chevron-right"></i></button>
+  </div>
+</div>
+
+<div class="teacher-modal-overlay" id="t-modal" onclick="if(event.target===this)closeTeacherNote()">
+    <div class="teacher-modal">
+        <button class="teacher-modal-close" onclick="closeTeacherNote()"><i data-lucide="x"></i></button>
+        <div class="teacher-modal-header">
+            <i data-lucide="lightbulb"></i>
+            <div class="teacher-modal-title">Ayuda al Profesor</div>
+        </div>
+        <div class="teacher-modal-body" id="t-modal-content"></div>
+    </div>
+</div>
+
+<script>
+const teacherNotesData = ["<div class='teacher-note-section'><h4>Instrucciones Generales</h4>Esta evaluación cambia el contexto de la empresa de salud a un repositorio real de código. Enfatiza que los alumnos deben analizar el repositorio provisto y basar toda su evaluación en ese código (ejercicios de LeetCode).</div>", "<div class='teacher-note-section'><h4>Sobre el contexto</h4>Asegúrate de que todos los alumnos tengan acceso al repositorio de GitHub indicado. El objetivo es que simulen ser el QA que va a evaluar los algoritmos resueltos.</div>", "<div class='teacher-note-section'><h4>Pauta Parte 1</h4>Se espera que seleccionen pruebas como Unitarias o de Performance (por ser algoritmos de LeetCode). Tienen que justificar por qué una prueba E2E web no tendría mucho sentido aquí.</div>", "<div class='teacher-note-section'><h4>Pauta Parte 2</h4>Deben redactar casos de prueba formales. Como es LeetCode, los datos de entrada y salida esperados (casos borde, entradas gigantes) son fundamentales. Exigir al menos un test que provoque un error o timeout.</div>", "<div class='teacher-note-section'><h4>Pauta Parte 3</h4>UAT (Dado/Cuando/Entonces). Ejemplo: DADO un input de un millón de elementos, CUANDO ejecuto el algoritmo, ENTONCES debe retornar en menos de 1 segundo sin errores de memoria.</div>", "<div class='teacher-note-section'><h4>Pauta Parte 4</h4>Priorización: Deben entender que ante la falta de tiempo, se priorizan las pruebas a algoritmos de complejidad mayor (Hard) o los unitarios básicos que cubren casos límite (timeout).</div>", "<div class='teacher-note-section'><h4>Rúbrica</h4>Esta rúbrica es idéntica a la original en puntajes, pero el contexto es el repositorio. Deben entregar la PPT y presentarla frente al curso.</div>"];
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0;
+
+const slideTitles = slides.map(s => {
+  const h = s.querySelector('h1,h2');
+  return h ? h.textContent.replace(/\s+/g,' ').trim() : '';
+});
+
+function update(){
+  slides.forEach((s,i) => {
+    s.classList.remove('active','prev');
+    if (i === cur) s.classList.add('active');
+    else if (i < cur) s.classList.add('prev');
+  });
+  document.getElementById('prog').style.width = ((cur+1)/total*100)+'%';
+  document.getElementById('counter').textContent = (cur+1)+' / '+total;
+  document.getElementById('slide-title').textContent = (slideTitles[cur] || '').substring(0,60);
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = cur === total-1;
+}
+
+function go(d){
+  cur = Math.max(0, Math.min(total-1, cur+d));
+  update();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); go(-1); }
+  if (e.key === 'f' || e.key === 'F'){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+  if (e.key === 'Home') { cur=0; update(); }
+  if (e.key === 'End') { cur=total-1; update(); }
+});
+
+update();
+
+function showTeacherNote(i) {
+    const data = teacherNotesData[i];
+    if(!data) return;
+    document.getElementById('t-modal-content').innerHTML = data;
+    document.getElementById('t-modal').classList.add('open');
+}
+function closeTeacherNote() {
+    document.getElementById('t-modal').classList.remove('open');
+}
+
+lucide.createIcons();
+</script>
+</body>
+</html>

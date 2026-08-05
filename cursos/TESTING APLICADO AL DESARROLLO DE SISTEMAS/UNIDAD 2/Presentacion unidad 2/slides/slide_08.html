@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Slide 08 — INVEST + Gherkin BDD</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tight',sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 50% 120%, #3b0764 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(168,85,247,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(168,85,247,0.2);filter:blur(70px);bottom:-60px;right:200px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent2);text-transform:uppercase;}
+.h2{font-family:'Inter Tight','Inter',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent2),transparent);opacity:0.35;z-index:10;}
+/* Primary-secondary layout 2fr + 1fr */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:1fr / 3fr 2fr;gap:20px;z-index:10;}
+.main-card{background:linear-gradient(135deg,rgba(34,211,238,0.07),rgba(99,102,241,0.03));border:1px solid var(--border);border-radius:8px;padding:24px 28px;display:flex;flex-direction:column;gap:12px;}
+.card-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:4px;}
+.card h3{font-family:'Inter Tight','Inter',sans-serif;font-size:17px;font-weight:700;color:var(--text);letter-spacing:-0.015em;margin-bottom:6px;}
+.code-block{background:#020614;border:1px solid rgba(34,211,238,0.2);border-radius:6px;padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;color:#e2e8f0;flex:1;}
+.kw{color:#a78bfa;font-weight:700;}
+.fn{color:var(--accent1);}
+.ok-kw{color:#4ade80;}
+.when-kw{color:var(--accent1);}
+.then-kw{color:#c084fc;}
+.st{color:var(--accent3);}
+.cm{color:#475569;font-style:italic;}
+.side-col{display:flex;flex-direction:column;gap:16px;}
+.invest-card{background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(6,182,212,0.05));border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:22px 24px;}
+.invest-card h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;letter-spacing:-0.01em;}
+.invest-items{display:flex;flex-direction:column;gap:6px;}
+.invest-item{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:5px;background:rgba(255,255,255,0.04);}
+.invest-letter{font-family:'Inter Tight','Inter',sans-serif;font-size:18px;font-weight:900;color:var(--ok);min-width:22px;letter-spacing:-0.02em;}
+.invest-word{font-size:12px;color:var(--text);}
+.invest-desc{font-size:11px;color:var(--text-sec);margin-left:auto;}
+.bdd-card{background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(34,211,238,0.04));border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:20px 22px;flex:1;}
+.bdd-card h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.bdd-card p{font-size:12px;color:var(--text-sec);line-height:1.65;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="grid-texture"></div>
+  <div class="glow1"></div>
+  <div class="header">
+    <span class="tag">Sesión 02 · Requerimientos</span>
+    <span class="h2">Criterios de Aceptación — INVEST + Gherkin BDD</span>
+    <span class="tag">S2</span>
+  </div>
+  <div class="divider"></div>
+  <div class="content-area">
+    <!-- Main: Gherkin code -->
+    <div class="main-card">
+      <div class="card-tag" style="color:var(--accent1)">Sintaxis Gherkin (BDD)</div>
+      <h3>Criterios de Aceptación — Estándar de facto en Agile</h3>
+      <div class="code-block"><span class="kw">Funcionalidad:</span> <span class="fn">Suscripción al Newsletter</span>
+
+<span class="kw">Escenario:</span> <span class="fn">Suscripción exitosa con correo válido y nuevo</span>
+  <span class="ok-kw">DADO</span> que el usuario está en la página principal
+  <span class="ok-kw">Y</span>   el correo <span class="st">"ana@empresa.cl"</span> no existe en la base de datos
+  <span class="when-kw">CUANDO</span> el usuario ingresa <span class="st">"ana@empresa.cl"</span> y hace clic en Suscribir
+  <span class="then-kw">ENTONCES</span> el sistema muestra <span class="st">"¡Te has suscrito con éxito!"</span>
+  <span class="then-kw">Y</span>    el correo queda registrado en la tabla newsletters
+
+<span class="kw">Escenario:</span> <span class="fn">Rechazo por correo ya registrado</span>
+  <span class="ok-kw">DADO</span> que <span class="st">"juan@empresa.cl"</span> ya existe en la base de datos
+  <span class="when-kw">CUANDO</span> el usuario intenta suscribirse con ese correo
+  <span class="then-kw">ENTONCES</span> el sistema muestra <span class="st">"Este correo ya está registrado"</span>
+
+<span class="kw">Escenario:</span> <span class="fn">Rechazo por formato inválido</span>
+  <span class="ok-kw">DADO</span> que el usuario ingresa <span class="st">"correo-sin-arroba"</span>
+  <span class="when-kw">CUANDO</span> hace clic en Suscribir
+  <span class="then-kw">ENTONCES</span> el sistema muestra <span class="st">"Formato de correo inválido"</span>
+  <span class="then-kw">Y</span>    no realiza ninguna inserción en la base de datos</div>
+    </div>
+    <!-- Side col -->
+    <div class="side-col">
+      <div class="invest-card">
+        <h4>Criterio INVEST para User Stories</h4>
+        <div class="invest-items">
+          <div class="invest-item"><span class="invest-letter">I</span><span class="invest-word">Independiente</span><span class="invest-desc">Sin dependencias rígidas</span></div>
+          <div class="invest-item"><span class="invest-letter">N</span><span class="invest-word">Negociable</span><span class="invest-desc">Sujeta a conversación</span></div>
+          <div class="invest-item"><span class="invest-letter">V</span><span class="invest-word">Valiosa</span><span class="invest-desc">Valor para el usuario</span></div>
+          <div class="invest-item"><span class="invest-letter">E</span><span class="invest-word">Estimable</span><span class="invest-desc">El equipo puede estimarla</span></div>
+          <div class="invest-item"><span class="invest-letter">S</span><span class="invest-word">Small (Pequeña)</span><span class="invest-desc">Cabe en un sprint</span></div>
+          <div class="invest-item" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:5px;"><span class="invest-letter">T</span><span class="invest-word">Testeable ★</span><span class="invest-desc">Base del Gherkin</span></div>
+        </div>
+      </div>
+      <div class="bdd-card">
+        <h4>¿Por qué Gherkin?</h4>
+        <p>Permite que <strong>Negocio, Desarrollo y QA</strong> hablen exactamente el mismo idioma. Los escenarios Gherkin son directamente ejecutables con frameworks como <strong>Cucumber</strong>, <strong>Behave</strong> o <strong>SpecFlow</strong>.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">08 / 20</div>
+</div>
+</body>
+</html>

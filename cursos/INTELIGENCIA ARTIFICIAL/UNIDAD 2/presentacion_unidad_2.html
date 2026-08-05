@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Unidad 2 — Algoritmos de Machine Learning | IPSS 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --p: #0ea5e9;
+      --pl: #38bdf8;
+      --pd: #0284c7;
+      --c2: #8b5cf6;
+      --acc: #f59e0b;
+      --ok: #10b981;
+      --err: #ef4444;
+      --warn: #f59e0b;
+      --bg: #0f172a;
+      --bg2: #1e293b;
+      --bg3: #334155;
+      --card: #1e293b;
+      --border: rgba(14, 165, 233, 0.3);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --dim: #94a3b8;
+      --glass: rgba(255, 255, 255, 0.05);
+      --gb: rgba(255, 255, 255, 0.1);
+      --purple: #a855f7;
+      --rose: #f43f5e;
+      --lime: #84cc16;
+      --sky: #0ea5e9;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); font-size: 11px; }
+    .deck { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+    
+    .slide { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; pointer-events: none; transform: scale(.96) translateY(30px); transition: opacity .65s cubic-bezier(.4, 0, .2, 1), transform .65s cubic-bezier(.4, 0, .2, 1); background: var(--bg); overflow: hidden; }
+    .slide.active { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
+    .slide.prev { transform: scale(.96) translateY(-30px); }
+    .slide::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: linear-gradient(rgba(14, 165, 233, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(14, 165, 233, .05) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; }
+    
+    .slide.active .reveal { animation: revealUp .7s cubic-bezier(.16, 1, .3, 1) both; }
+    .slide.active .reveal-d1 { animation-delay: .1s; }
+    .slide.active .reveal-d2 { animation-delay: .2s; }
+    .slide.active .reveal-d3 { animation-delay: .3s; }
+    .slide.active .reveal-d4 { animation-delay: .4s; }
+    
+    @keyframes revealUp { from { opacity: 0; transform: translateY(40px) scale(.97) } to { opacity: 1; transform: translateY(0) scale(1) } }
+    @keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 20px rgba(14, 165, 233, .3) } 50% { box-shadow: 0 0 40px rgba(14, 165, 233, .6) } }
+    @keyframes float { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-10px) } }
+    
+    .slide-inner { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; padding: 4rem 6rem; padding-bottom: 100px; overflow-y: auto; }
+    .slide-inner.centered { justify-content: center; }
+    .slide-inner::-webkit-scrollbar { width: 8px; }
+    .slide-inner::-webkit-scrollbar-thumb { background: var(--p); border-radius: 4px; }
+    
+    .orb { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; z-index: 0; }
+    .orb1 { width: 700px; height: 700px; background: rgba(14, 165, 233, .12); top: -150px; right: -150px; }
+    .orb2 { width: 500px; height: 500px; background: rgba(139, 92, 246, .08); bottom: -100px; left: -100px; }
+    .orb3 { width: 400px; height: 400px; background: rgba(16, 185, 129, .08); bottom: -100px; right: -100px; }
+    
+    .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: rgba(15, 23, 42, .95); backdrop-filter: blur(24px); border-top: 1px solid var(--gb); height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; }
+    .nav-info { display: flex; align-items: center; gap: 1.5rem; }
+    .session-badge { background: var(--p); color: #fff; padding: .4rem 1rem; border-radius: 10px; font-size: 1rem; font-weight: 800; letter-spacing: .05em; }
+    .slide-counter { font-size: 1rem; color: var(--muted); font-weight: 600; }
+    .nav-title { font-size: 1.1rem; color: var(--dim); max-width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+    .nav-controls { display: flex; align-items: center; gap: 1rem; }
+    .btn-nav { background: var(--glass); border: 1px solid var(--gb); color: var(--text); padding: .75rem 1.75rem; border-radius: 10px; cursor: pointer; font-size: 1.1rem; font-weight: 700; transition: all .2s; font-family: inherit; display: flex; align-items: center; gap: .5rem; }
+    .btn-nav:hover { background: rgba(14, 165, 233, .2); border-color: var(--border); }
+    .btn-nav:disabled { opacity: .3; cursor: not-allowed; }
+    .btn-nav.primary { background: linear-gradient(135deg, var(--p), var(--pd)); border-color: transparent; box-shadow: 0 8px 24px rgba(14, 165, 233, .4); }
+    .btn-nav.primary:hover { box-shadow: 0 12px 32px rgba(14, 165, 233, .6); transform: translateY(-2px); }
+    .btn-notes { background: linear-gradient(135deg, rgba(14, 165, 233, .3), rgba(139, 92, 246, .3)); border: 1px solid rgba(14, 165, 233, .5); color: #7dd3fc; padding: .6rem 1.2rem; border-radius: 10px; cursor: pointer; font-size: 1rem; font-weight: 700; transition: all .3s; font-family: inherit; display: flex; align-items: center; gap: .5rem; }
+    .btn-notes:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(14, 165, 233, .4); }
+    
+    .progress-track { position: fixed; top: 0; left: 0; right: 0; height: 4px; background: rgba(255, 255, 255, .08); z-index: 200; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--p), var(--c2), var(--ok)); transition: width .4s ease; border-radius: 0 2px 2px 0; }
+    
+    .session-tabs { position: fixed; top: 0; left: 0; right: 0; z-index: 150; display: flex; background: rgba(15, 23, 42, .92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--gb); height: 60px; padding-top: 4px; }
+    .tab { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: var(--dim); cursor: pointer; border-bottom: 3px solid transparent; transition: all .2s; letter-spacing: .05em; text-transform: uppercase; gap: .5rem; }
+    .tab:hover { color: var(--muted); }
+    .tab.active { color: var(--text); border-bottom-color: var(--p); background: rgba(14, 165, 233, .1); }
+    
+    .slide-tag { font-size: 1.3rem; font-weight: 800; color: var(--pl); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 1rem; margin-top: 60px; }
+    .slide h1 { font-size: clamp(3rem, 4.5vw, 4rem); font-weight: 900; line-height: 1.15; margin-bottom: 1.25rem; }
+    .slide h2 { font-size: clamp(2.2rem, 3vw, 2.8rem); font-weight: 900; color: #fff; margin-bottom: 1.25rem; line-height: 1.2; }
+    .slide h3 { font-size: 2rem; font-weight: 800; color: var(--pl); margin-bottom: 1rem; margin-top: 1rem; }
+    .slide p { color: var(--muted); line-height: 1.6; font-size: 1.6rem; }
+    .gradient-text { background: linear-gradient(135deg, #fff 0%, var(--pl) 50%, var(--c2) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    
+    .content-area { display: flex; flex-direction: column; flex: 1; justify-content: space-evenly; }
+    .card { background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 1.5rem 2rem; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 5px 20px rgba(0, 0, 0, .1); transition: transform .3s, box-shadow .3s; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0, 0, 0, .25); }
+    .card-grid { display: grid; gap: 1.5rem; flex: 1; }
+    .card-grid-2 { grid-template-columns: 1fr 1fr; }
+    .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .card.accent-p { border-left: 5px solid var(--p); }
+    .card.accent-c { border-left: 5px solid var(--c2); }
+    .card.accent-g { border-left: 5px solid var(--ok); }
+    .card.accent-y { border-left: 5px solid var(--acc); }
+    .card.accent-r { border-left: 5px solid var(--err); }
+    .card.accent-purple { border-left: 5px solid var(--purple); }
+    .card-icon { display: inline-flex; margin-bottom: .75rem; font-size: 2.5rem; }
+    .card-title { font-size: 1.8rem; font-weight: 800; color: #fff; margin-bottom: .5rem; }
+    .card-body { font-size: 1.4rem; color: var(--muted); line-height: 1.6; }
+    
+    .quote { background: rgba(14, 165, 233, .1); border: 1px solid rgba(14, 165, 233, .25); border-left: 6px solid var(--p); border-radius: 0 16px 16px 0; padding: 1.5rem 2rem; font-size: 1.4rem; color: var(--text); line-height: 1.6; font-style: italic; margin: 1rem 0; box-shadow: 0 10px 20px rgba(0, 0, 0, .15); }
+    .quote strong { color: var(--pl); font-style: normal; }
+    
+    .tag { display: inline-flex; align-items: center; gap: .4rem; padding: .3rem .8rem; border-radius: 8px; font-size: 1.1rem; font-weight: 700; letter-spacing: .03em; }
+    .tag-p { background: rgba(14, 165, 233, .2); color: #7dd3fc; border: 1px solid rgba(14, 165, 233, .4); }
+    .tag-g { background: rgba(16, 185, 129, .2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, .4); }
+    
+    .check-list { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
+    .check-list li { display: flex; align-items: flex-start; gap: .8rem; font-size: 1.5rem; color: var(--muted); line-height: 1.5; }
+    .check-list li::before { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--ok); font-size: 1.2rem; margin-top: 3px; flex-shrink: 0; }
+    
+    .dot-list { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .dot-list li { display: flex; align-items: flex-start; gap: .7rem; font-size: 1.5rem; color: var(--muted); line-height: 1.5; }
+    .dot-list li::before { content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--pl); font-size: 1.2rem; margin-top: 3px; flex-shrink: 0; }
+    
+    .num-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; counter-reset: num-counter; }
+    .num-list li { display: flex; align-items: flex-start; gap: 1rem; font-size: 1.4rem; color: var(--muted); line-height: 1.5; counter-increment: num-counter; }
+    .num-list li::before { content: counter(num-counter); background: var(--p); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; flex-shrink: 0; }
+    
+    .cols { display: grid; gap: 2rem; flex: 1; }
+    .cols-2 { grid-template-columns: 1fr 1fr; }
+    .cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    
+    .cover { justify-content: center; align-items: center; text-align: center; }
+    .cover-badge { display: inline-flex; align-items: center; gap: .6rem; background: rgba(14, 165, 233, .15); border: 1px solid rgba(14, 165, 233, .4); color: var(--pl); padding: .6rem 1.5rem; border-radius: 999px; font-size: 1rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 2rem; animation: pulseGlow 3s infinite; }
+    .cover-sub { font-size: 1.4rem; color: var(--muted); max-width: 800px; margin: 0 auto; line-height: 1.6; }
+    
+    .kbd-hint { position: fixed; bottom: 90px; right: 3rem; font-size: 1rem; color: var(--dim); z-index: 200; display: flex; align-items: center; gap: .5rem; }
+    .kbd { background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .2); padding: .2rem .5rem; border-radius: 4px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+    
+    .activity-banner { background: linear-gradient(135deg, rgba(14, 165, 233, .15), rgba(139, 92, 246, .15)); border: 2px solid rgba(14, 165, 233, .4); border-radius: 20px; padding: 2.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; box-shadow: 0 10px 40px rgba(14, 165, 233, .1); flex: 1; justify-content: center; }
+    .activity-icon { display: flex; margin-bottom: 1.5rem; color: var(--pl); font-size: 5rem; }
+    
+    .highlight-box { background: linear-gradient(135deg, rgba(14, 165, 233, .1), rgba(139, 92, 246, .1)); border: 2px solid rgba(14, 165, 233, .3); border-radius: 16px; padding: 2rem; margin: 1rem 0; }
+    .highlight-box.green { background: linear-gradient(135deg, rgba(16, 185, 129, .1), rgba(14, 165, 233, .05)); border-color: rgba(16, 185, 129, .3); }
+    .highlight-box.yellow { background: linear-gradient(135deg, rgba(245, 158, 11, .1), rgba(14, 165, 233, .05)); border-color: rgba(245, 158, 11, .3); }
+    .highlight-box.red { background: linear-gradient(135deg, rgba(239, 68, 68, .1), rgba(14, 165, 233, .05)); border-color: rgba(239, 68, 68, .3); }
+    .highlight-box.purple { background: linear-gradient(135deg, rgba(168, 85, 247, .1), rgba(139, 92, 246, .1)); border-color: rgba(168, 85, 247, .3); }
+    
+    .flow-container { display: flex; align-items: center; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0; }
+    .flow-step { background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 1.5rem 2rem; text-align: center; min-width: 160px; flex: 1; max-width: 200px; }
+    .flow-arrow { font-size: 2.5rem; color: var(--p); flex-shrink: 0; }
+    .flow-step-num { width: 36px; height: 36px; background: var(--p); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.4rem; margin: 0 auto .8rem; }
+    .flow-step-title { font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: .4rem; }
+    .flow-step-body { font-size: 1.2rem; color: var(--muted); }
+    
+    .pill-row { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+    .pill { display: flex; align-items: center; gap: .6rem; padding: .6rem 1.4rem; border-radius: 999px; font-size: 1.3rem; font-weight: 700; }
+    .pill-cyan { background: rgba(14, 165, 233, .15); color: #7dd3fc; border: 1px solid rgba(14, 165, 233, .4); }
+    .pill-violet { background: rgba(139, 92, 246, .15); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, .4); }
+    .pill-green { background: rgba(16, 185, 129, .15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, .4); }
+    .pill-orange { background: rgba(245, 158, 11, .15); color: #fcd34d; border: 1px solid rgba(245, 158, 11, .4); }
+    
+    .formula { background: rgba(14, 165, 233, .08); border: 1px solid rgba(14, 165, 233, .25); border-radius: 12px; padding: 1.5rem 2rem; font-family: 'JetBrains Mono', monospace; font-size: 2rem; color: var(--pl); text-align: center; margin: 1rem 0; font-weight: 700; }
+    
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 1.4rem; }
+    .compare-table th { background: rgba(14, 165, 233, .2); color: var(--pl); padding: 1rem 1.5rem; text-align: left; font-weight: 800; border-bottom: 2px solid var(--p); }
+    .compare-table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--gb); color: var(--muted); vertical-align: top; line-height: 1.5; }
+    .compare-table tr:hover td { background: rgba(14, 165, 233, .05); }
+    
+    /* Árboles de decisión */
+    .tree-row { display: flex; justify-content: center; gap: 3rem; margin: 1rem 0; }
+    .tree-node { background: var(--card); border: 2px solid var(--gb); border-radius: 12px; padding: 1rem 1.5rem; font-size: 1.4rem; font-weight: 700; color: #fff; text-align: center; min-width: 140px; }
+    .tree-node.decision { border-color: var(--p); background: rgba(14, 165, 233, .1); }
+    .tree-node.leaf-yes { border-color: var(--ok); background: rgba(16, 185, 129, .1); color: #6ee7b7; }
+    .tree-node.leaf-no { border-color: var(--err); background: rgba(239, 68, 68, .1); color: #fca5a5; }
+    .tree-line { width: 2px; height: 30px; background: var(--gb); margin: 0 auto; }
+    .tree-label { font-size: 1.1rem; color: var(--muted); font-weight: 700; }
+    
+    /* Gráficos simulados */
+    .mock-chart { background: var(--card); border: 1px solid var(--gb); border-radius: 16px; padding: 2rem; position: relative; }
+    
+    /* Modal de notas */
+    .notes-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, .82); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .notes-overlay.open { opacity: 1; pointer-events: all; }
+    .notes-modal { background: var(--bg2); border: 1px solid rgba(14, 165, 233, .3); border-radius: 20px; width: min(900px, 90vw); max-height: 80vh; overflow-y: auto; box-shadow: 0 30px 80px rgba(0, 0, 0, .6); padding: 3rem; }
+    .notes-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+    .notes-header h3 { font-size: 1.8rem; color: var(--pl); }
+    .btn-close { background: rgba(239, 68, 68, .2); border: 1px solid rgba(239, 68, 68, .4); color: #fca5a5; padding: .5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 1.2rem; font-family: inherit; font-weight: 700; }
+    .notes-body p { color: var(--muted); font-size: 1.5rem; line-height: 1.7; margin-bottom: 1rem; padding: 1rem 1.5rem; background: rgba(14, 165, 233, .05); border-left: 4px solid var(--p); border-radius: 6px; }
+    
+    /* Colab Modal */
+    .colab-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, .85); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+    .colab-modal.open { opacity: 1; pointer-events: all; }
+    .colab-content { background: #1e1e1e; border: 1px solid #333; border-radius: 12px; width: min(1000px, 95vw); max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
+    .colab-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; background: #2d2d2d; border-bottom: 1px solid #444; }
+    .colab-header h3 { color: #fff; font-size: 1.4rem; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: .8rem; margin: 0; }
+    .colab-body { padding: 1.5rem; overflow-y: auto; flex: 1; background: #1e1e1e; }
+    .colab-code { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #d4d4d4; white-space: pre; line-height: 1.5; margin: 0; }
+    .colab-btn { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; background: #f9ab00; color: #fff; border: none; padding: .8rem 1.5rem; border-radius: 8px; font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: all .2s; margin-top: 1.5rem; width: 100%; }
+    .colab-btn:hover { background: #e39d00; transform: translateY(-2px); }
+  </style>
+</head>
+
+<body>
+  <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+  <div class="session-tabs">
+    <div class="tab" data-ses="0" onclick="jumpSession(0)"><i class="fa-solid fa-rocket"></i> Intro U2</div>
+    <div class="tab" data-ses="1" onclick="jumpSession(1)"><i class="fa-solid fa-chart-line"></i> Regresión</div>
+    <div class="tab" data-ses="2" onclick="jumpSession(2)"><i class="fa-solid fa-tags"></i> Clasificación</div>
+    <div class="tab" data-ses="3" onclick="jumpSession(3)"><i class="fa-solid fa-bullseye"></i> Evaluación</div>
+    <div class="tab" data-ses="4" onclick="jumpSession(4)"><i class="fa-solid fa-clipboard-check"></i> Cierre</div>
+  </div>
+
+  <div class="deck" id="deck">
+
+    <!-- ==================== SESION 0: INTRO ==================== -->
+    <!-- SLIDE 1 -->
+    <div class="slide" data-session="0" data-notes="Bienvenidos a la Unidad 2 de Inteligencia Artificial. En la unidad anterior conocimos los fundamentos. Ahora vamos a los algoritmos que hacen funcionar el Machine Learning. Esta unidad cubre el 20% de la nota final. Aprenderán a distinguir cuándo usar regresión, cuándo clasificación, y cómo saber si su modelo realmente funciona. Al final tendrán herramientas concretas para resolver problemas reales.">
+      <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+      <div class="slide-inner cover centered">
+        <div class="reveal">
+          <div class="cover-badge"><i class="fa-solid fa-microchip"></i> IPSS 2026 · INTELIGENCIA ARTIFICIAL</div>
+          <h1 class="gradient-text" style="font-size:clamp(4rem,6vw,6rem);margin-bottom:1.5rem;">Unidad 2</h1>
+          <h2 style="font-size:clamp(2.5rem,3.5vw,3.5rem);color:var(--pl);margin-bottom:2rem;">Algoritmos de Machine Learning:<br>Regresión, Clasificación y Evaluación</h2>
+          <p class="cover-sub">Aprenderemos a elegir el algoritmo correcto para cada problema, a entender cómo aprenden las máquinas a partir de datos, y a medir con rigor si nuestros modelos realmente funcionan.</p>
+          <div class="pill-row" style="justify-content:center;margin-top:3rem;">
+            <span class="pill pill-cyan"><i class="fa-solid fa-chart-line"></i> Modelos de Regresión</span>
+            <span class="pill pill-violet"><i class="fa-solid fa-tags"></i> Modelos de Clasificación</span>
+            <span class="pill pill-green"><i class="fa-solid fa-bullseye"></i> Evaluación de Modelos</span>
+            <span class="pill pill-orange"><i class="fa-solid fa-flask"></i> Ponderación: 20%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide" data-session="0" data-notes="Esta actividad tiene como objetivo conectar lo que los estudiantes ya saben con lo que van a aprender. Deles 3 minutos para pensar individualmente, luego abran 5 minutos de conversación. El objetivo no es que tengan la respuesta correcta, sino que activen su pensamiento previo. Las respuestas típicas: compras online, filtros de spam, Netflix, precio de casas. La pregunta 2 anticipa la distinción regresión vs clasificación que es el corazón de la unidad.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-bolt"></i> Activación de Conocimiento</div>
+        <h2 class="reveal reveal-d1"><i class="fa-solid fa-brain"></i> ¿Cómo predice una máquina?</h2>
+        <div class="activity-banner reveal reveal-d2">
+          <div class="activity-icon"><i class="fa-solid fa-comments"></i></div>
+          <h3 style="color:#fff;font-size:2.5rem;margin-bottom:1.5rem;">Actividad: 8 minutos</h3>
+          <p style="font-size:1.7rem;max-width:700px;margin-bottom:2rem;">Piensa en aplicaciones de tu vida diaria que hacen predicciones automáticas. ¿Qué tipo de predicción hacen?</p>
+          <div class="cols cols-2" style="width:100%;max-width:900px;gap:1.5rem;">
+            <div class="highlight-box" style="text-align:left;padding:1.5rem;">
+              <p style="font-size:1.5rem;color:var(--pl);font-weight:800;margin-bottom:.8rem;"><i class="fa-solid fa-magnifying-glass"></i> Pregunta 1</p>
+              <p style="font-size:1.4rem;">¿En qué momento Spotify, YouTube o TikTok decidió qué mostrarte a continuación? ¿Qué datos creerían que usan?</p>
+            </div>
+            <div class="highlight-box green" style="text-align:left;padding:1.5rem;">
+              <p style="font-size:1.5rem;color:var(--ok);font-weight:800;margin-bottom:.8rem;"><i class="fa-solid fa-magnifying-glass"></i> Pregunta 2</p>
+              <p style="font-size:1.4rem;">¿Cuál es la diferencia entre predecir el PRECIO de una casa y predecir si una transacción bancaria es FRAUDE o no?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide" data-session="0" data-notes="Antes de entrar en detalle, es crucial que los estudiantes tengan el mapa completo. Esto reduce la ansiedad cognitiva. La unidad tiene tres grandes bloques: regresión (predecir números), clasificación (predecir categorías), y evaluación (medir si funcionan). Estos bloques no son independientes: la evaluación se aplica a ambos tipos.">
+      <div class="orb orb2"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-map"></i> Mapa de la Unidad 2</div>
+        <h2 class="reveal reveal-d1">¿Qué aprenderemos?</h2>
+        <div class="flow-container reveal reveal-d2">
+          <div class="flow-step"><div class="flow-step-num">1</div><div class="flow-step-title" style="color:var(--pl);">Fundamentos</div><div class="flow-step-body">Ecosistema ML Supervisado</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="flow-step"><div class="flow-step-num" style="background:var(--c2);">2</div><div class="flow-step-title" style="color:#a5b4fc;">Regresión</div><div class="flow-step-body">Lineal, Árboles, SVM, KNN</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="flow-step"><div class="flow-step-num" style="background:var(--purple);">3</div><div class="flow-step-title" style="color:#c4b5fd;">Clasificación</div><div class="flow-step-body">Logística, Bayes, SVM, KNN</div></div>
+          <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="flow-step"><div class="flow-step-num" style="background:var(--ok);">4</div><div class="flow-step-title" style="color:#6ee7b7;">Evaluación</div><div class="flow-step-body">Métricas y validación</div></div>
+        </div>
+        <div class="card-grid card-grid-3 reveal reveal-d3" style="margin-top:1rem;">
+          <div class="card accent-p"><div class="card-icon" style="color:var(--p);"><i class="fa-solid fa-graduation-cap"></i></div><div class="card-title">Competencia</div><div class="card-body">Seleccionar y aplicar algoritmos de ML según el tipo de problema y datos.</div></div>
+          <div class="card accent-c"><div class="card-icon" style="color:var(--c2);"><i class="fa-solid fa-toolbox"></i></div><div class="card-title">Herramientas</div><div class="card-body">Conceptos aplicables en Python (scikit-learn, pandas).</div></div>
+          <div class="card accent-g"><div class="card-icon" style="color:var(--ok);"><i class="fa-solid fa-percentage"></i></div><div class="card-title">Ponderación</div><div class="card-body">20% de la nota final. Entrega de encargo evaluado con rúbrica específica.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide" data-session="0" data-notes="Esta diapositiva da contexto de dónde viven los algoritmos dentro del ecosistema más amplio del ML. Recordar de la Unidad 1 la distinción entre aprendizaje supervisado, no supervisado y por refuerzo. En esta unidad nos centramos en el aprendizaje SUPERVISADO: donde tenemos datos de entrenamiento con las respuestas correctas. La analogía perfecta es el estudiante con libro de respuestas: estudia ejemplos y sus respuestas para luego responder en el examen sin el libro.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-sitemap"></i> Sesión 1 - Tipos de Algoritmos</div>
+        <h2 class="reveal reveal-d1">El ecosistema del Machine Learning Supervisado</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <div class="highlight-box" style="margin-bottom:1.5rem;">
+              <p style="font-size:1.6rem;font-weight:800;color:var(--pl);margin-bottom:.8rem;"><i class="fa-solid fa-chalkboard-user"></i> Aprendizaje Supervisado (nuestro foco)</p>
+              <p style="font-size:1.4rem;">El algoritmo aprende de ejemplos <strong style="color:#fff;">etiquetados</strong>: pares (entrada → salida correcta). Como un alumno que estudia con un solucionario.</p>
+            </div>
+            <div class="card accent-p" style="margin-bottom:1rem;">
+              <div class="card-title" style="color:var(--pl);"><i class="fa-solid fa-chart-line"></i> Regresión</div>
+              <div class="card-body">La salida es un <strong style="color:#fff;">número continuo</strong>. Ej: ¿Cuánto costará este departamento?</div>
+            </div>
+            <div class="card accent-c">
+              <div class="card-title" style="color:#a5b4fc;"><i class="fa-solid fa-tags"></i> Clasificación</div>
+              <div class="card-body">La salida es una <strong style="color:#fff;">categoría</strong>. Ej: ¿Este email es spam o no spam?</div>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="margin-bottom:1rem;opacity:.6;"><div class="card-icon" style="color:var(--muted);font-size:2rem;"><i class="fa-solid fa-circle-nodes"></i></div><div class="card-title" style="color:var(--muted);">No Supervisado</div><div class="card-body" style="color:var(--dim);">Sin etiquetas. El algoritmo encuentra patrones solo. Ej: Segmentación de clientes. (Unidad 3)</div></div>
+            <div class="card" style="margin-bottom:1rem;opacity:.6;"><div class="card-icon" style="color:var(--muted);font-size:2rem;"><i class="fa-solid fa-gamepad"></i></div><div class="card-title" style="color:var(--muted);">Por Refuerzo</div><div class="card-body" style="color:var(--dim);">El agente aprende por recompensas y castigos. Ej: Juegos, robótica. (Avanzado)</div></div>
+            <div class="quote">
+              <strong>La diferencia clave:</strong> en supervisado, le dices a la máquina qué respuesta es correcta durante el entrenamiento. En no supervisado, la máquina descubre la estructura por sí sola.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide" data-session="0" data-notes="Esta es la distinción más importante de la unidad. Los estudiantes deben poder identificar si un problema es de regresión o clasificación ANTES de escribir una línea de código. Usar la analogía del termómetro vs el semáforo: el termómetro da medida continua, el semáforo da categoría. Hacer el ejercicio de los ejemplos en plenario y pedir que los alumnos clasifiquen cada uno.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-scale-balanced"></i> La distinción fundamental</div>
+        <h2 class="reveal reveal-d1">Regresión vs. Clasificación: ¿Cuánto? vs. ¿Cuál?</h2>
+        <div class="cols cols-2 reveal reveal-d2">
+          <div class="highlight-box" style="border-color:rgba(14, 165, 233, .5);">
+            <p style="font-size:2rem;font-weight:900;color:var(--pl);margin-bottom:1rem;text-align:center;"><i class="fa-solid fa-ruler-combined"></i> REGRESIÓN</p>
+            <p style="font-size:1.5rem;color:var(--muted);margin-bottom:1.5rem;text-align:center;">La respuesta es un <strong style="color:#fff;">número</strong></p>
+            <ul class="dot-list">
+              <li>¿Cuánto costará este apartamento? - <strong style="color:#fff;">$185.000.000</strong></li>
+              <li>¿Cuántas unidades venderemos? - <strong style="color:#fff;">342 unidades</strong></li>
+              <li>¿Cuál será la temperatura? - <strong style="color:#fff;">23.5 grados</strong></li>
+            </ul>
+          </div>
+          <div class="highlight-box purple">
+            <p style="font-size:2rem;font-weight:900;color:#c4b5fd;margin-bottom:1rem;text-align:center;"><i class="fa-solid fa-diagram-project"></i> CLASIFICACIÓN</p>
+            <p style="font-size:1.5rem;color:var(--muted);margin-bottom:1.5rem;text-align:center;">La respuesta es una <strong style="color:#fff;">categoría</strong></p>
+            <ul class="dot-list">
+              <li>¿Este email es spam? - <strong style="color:#fff;">Spam / No spam</strong></li>
+              <li>¿Qué animal sale en la foto? - <strong style="color:#fff;">Gato / Perro</strong></li>
+              <li>¿El cliente se irá (churn)? - <strong style="color:#fff;">Sí / No</strong></li>
+            </ul>
+          </div>
+        </div>
+        <div class="highlight-box yellow reveal reveal-d3" style="margin-top:1rem;">
+          <p style="font-size:1.5rem;font-weight:800;color:var(--acc);margin-bottom:.5rem;"><i class="fa-solid fa-triangle-exclamation"></i> Regla de oro para identificar el tipo:</p>
+          <p style="font-size:1.4rem;">¿La variable tiene una <strong style="color:#fff;">escala numérica con sentido</strong> (temperatura, precio, tiempo)? Es Regresión. ¿Es una <strong style="color:#fff;">etiqueta o categoría</strong> (tipo, clase, grupo)? Es Clasificación.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MICRO-ACTIVIDAD 1 -->
+    <div class="slide" data-session="1" data-notes="Esta es una Pausa Activa. Pregunte al público y déjelos debatir antes de mostrar la respuesta. Esta actividad es fundamental para que verifiquen si entendieron el concepto más básico que se evaluará.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal" style="display:inline-flex; align-items:center; gap:0.5rem; background:#f59e0b; color:#000; padding:0.4rem 1.2rem; border-radius:100px; box-shadow: 0 4px 15px rgba(245,158,11,0.3); font-size:1.2rem; letter-spacing:0.1em;"><i class="fa-solid fa-clipboard-question"></i> Micro-Actividad 1</div>
+        <h2 class="reveal reveal-d1">¿Regresión o Clasificación?</h2>
+        <p class="reveal reveal-d2" style="font-size:1.4rem; color:var(--muted); margin-bottom:2rem;">Lee los siguientes casos y determina qué tipo de modelo de Machine Learning Supervisado se necesita.</p>
+        
+        <div class="cols cols-3 reveal reveal-d3" style="gap:1.5rem;">
+          <div class="card accent-c">
+            <div class="card-title"><i class="fa-solid fa-house"></i> Caso A</div>
+            <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">Predecir a qué precio se venderá un departamento de 3 dormitorios en Providencia el próximo año.</p>
+            <button onclick="document.getElementById('sol1A').style.display='block';this.style.display='none'" style="padding:0.5rem 1rem; border:none; border-radius:4px; background:rgba(14,165,233,0.2); color:#38bdf8; cursor:pointer; font-weight:bold;">Ver Respuesta</button>
+            <div id="sol1A" style="display:none; margin-top:1rem; padding:1rem; background:rgba(14,165,233,0.1); border-left:4px solid #0ea5e9;">
+              <strong style="color:#38bdf8;">REGRESIÓN.</strong> Porque el precio es un valor numérico continuo (ej. $150.500.000).
+            </div>
+          </div>
+          <div class="card accent-p">
+            <div class="card-title"><i class="fa-solid fa-envelope"></i> Caso B</div>
+            <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">Crear un filtro para Gmail que determine si un correo entrante es Promoción o Bandeja Principal.</p>
+            <button onclick="document.getElementById('sol1B').style.display='block';this.style.display='none'" style="padding:0.5rem 1rem; border:none; border-radius:4px; background:rgba(196,181,253,0.2); color:#c4b5fd; cursor:pointer; font-weight:bold;">Ver Respuesta</button>
+            <div id="sol1B" style="display:none; margin-top:1rem; padding:1rem; background:rgba(196,181,253,0.1); border-left:4px solid #a855f7;">
+              <strong style="color:#c4b5fd;">CLASIFICACIÓN.</strong> Porque el resultado es una categoría/etiqueta discreta.
+            </div>
+          </div>
+          <div class="card accent-g">
+            <div class="card-title"><i class="fa-solid fa-cloud-sun-rain"></i> Caso C</div>
+            <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">Predecir cuántos milímetros de lluvia caerán mañana en la ciudad de Santiago.</p>
+            <button onclick="document.getElementById('sol1C').style.display='block';this.style.display='none'" style="padding:0.5rem 1rem; border:none; border-radius:4px; background:rgba(16,185,129,0.2); color:#34d399; cursor:pointer; font-weight:bold;">Ver Respuesta</button>
+            <div id="sol1C" style="display:none; margin-top:1rem; padding:1rem; background:rgba(16,185,129,0.1); border-left:4px solid #10b981;">
+              <strong style="color:#34d399;">REGRESIÓN.</strong> Porque los milímetros son una cantidad numérica medible.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5.2: Metodología CRISP-DM -->
+    <div class="slide" data-session="0" data-notes="CRISP-DM es el estándar de la industria para proyectos de datos. Es vital entender que Machine Learning no es solo entrenar modelos; el 80% del trabajo está en entender el negocio y preparar los datos (Fases 1 a 3), que es exactamente lo que abordaremos en la evaluación de esta unidad.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-list-check"></i> Metodología Estándar</div>
+        <h2 class="reveal reveal-d1">Las 6 Fases de CRISP-DM</h2>
+        <p class="reveal reveal-d2" style="font-size:1.6rem; color:var(--muted); margin-bottom: 2rem;">Todo proyecto profesional de Inteligencia Artificial sigue un ciclo de vida ordenado. ¡No empezamos programando!</p>
+        
+        <div class="cols cols-2 reveal reveal-d3">
+          <div class="card accent-p">
+            <div class="card-title" style="font-size:1.5rem;"><i class="fa-solid fa-magnifying-glass-chart" style="color:var(--p);"></i> Fases 1 a 3 (Foco de Evaluación)</div>
+            <ul class="num-list" style="margin-top:.5rem;">
+              <li><strong style="color:var(--pl);">Comprensión del Negocio:</strong> ¿Qué problema queremos resolver? (Ej. ¿A quién identificamos?).</li>
+              <li><strong style="color:var(--pl);">Comprensión de Datos:</strong> Análisis exploratorio (EDA). ¿Qué datos tenemos? ¿Hay sesgos?</li>
+              <li><strong style="color:var(--pl);">Preparación de Datos:</strong> Limpieza, redimensionamiento de imágenes, vectorización de texto. ¡El 80% del trabajo!</li>
+            </ul>
+          </div>
+          
+          <div class="card accent-c" style="opacity: 0.8;">
+            <div class="card-title" style="font-size:1.5rem;"><i class="fa-solid fa-laptop-code" style="color:var(--c2);"></i> Fases 4 a 6 (Siguientes Unidades)</div>
+            <ul class="num-list" style="margin-top:.5rem;">
+              <li><strong style="color:var(--c2);">Modelado:</strong> Elegir y entrenar los algoritmos (Regresión, KNN, SVM).</li>
+              <li><strong style="color:var(--c2);">Evaluación:</strong> Revisar métricas (Accuracy, F1-Score) y matriz de confusión.</li>
+              <li><strong style="color:var(--c2);">Despliegue:</strong> Poner el modelo en producción.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 (NUEVA): Herramientas -->
+    <div class="slide" data-session="0" data-notes="Antes de entrar a la programación, es crucial presentar el 'cinturón de herramientas' de Python. Numpy es como una calculadora ultra rápida para matrices, ideal para números. Pandas es como Excel en esteroides para manejar tablas. Matplotlib y Seaborn son para dibujar gráficos y pintar la realidad. Scikit-learn (sklearn) es la estrella: contiene todos los algoritmos listos para usarse.">
+      <div class="orb orb2"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-brands fa-python"></i> Preparando el Terreno</div>
+        <h2 class="reveal reveal-d1">Librerías Esenciales en Python</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <div class="card accent-p" style="margin-bottom:1rem;">
+              <div class="card-title"><i class="fa-solid fa-table-cells" style="color:#6ee7b7;"></i> Manejo de Datos</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li><strong style="color:#fff;">NumPy (np):</strong> El motor matemático. Procesa arreglos y matrices de números de forma ultrarrápida.</li>
+                <li><strong style="color:#fff;">Pandas (pd):</strong> Como un "Excel" para programar. Sirve para cargar, limpiar y manipular tablas de datos reales.</li>
+              </ul>
+            </div>
+            <div class="card accent-c">
+              <div class="card-title"><i class="fa-solid fa-chart-line" style="color:#c4b5fd;"></i> Visualización</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li><strong style="color:#fff;">Matplotlib (plt):</strong> La herramienta base para dibujar cualquier tipo de gráfico (líneas, puntos).</li>
+                <li><strong style="color:#fff;">Seaborn (sns):</strong> Basado en Matplotlib, crea gráficos bellos y estadísticos con una sola línea de código (ej. mapas de calor).</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box green" style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+              <div style="text-align:center; font-size:4rem; color:var(--ok); margin-bottom:1rem;"><i class="fa-solid fa-brain"></i></div>
+              <p style="font-size:2rem;font-weight:900;color:var(--pl);margin-bottom:1rem;text-align:center;">Scikit-Learn (sklearn)</p>
+              <p style="font-size:1.4rem;color:var(--muted);text-align:center;margin-bottom:1.5rem;">El corazón del Machine Learning en Python.</p>
+              <ul class="dot-list" style="margin-top:0;">
+                <li>No tienes que programar los algoritmos desde cero.</li>
+                <li>Contiene todas las matemáticas listas para usarse.</li>
+                <li>Mismo proceso siempre: <strong>Cargar datos → Entrenar (.fit) → Predecir (.predict).</strong></li>
+              </ul>
+              <button class="colab-btn" onclick="openColabModal('crisp_eda')" style="margin-top:2rem;"><i class="fa-brands fa-python"></i> Actividad Formativa 1: EDA en CRISP-DM</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- SLIDE 5.5: CRISP-DM Y DATOS NO ESTRUCTURADOS -->
+    <div class="slide" data-session="1" data-notes="CRISP-DM Fase 3. Hasta ahora, hemos hablado de datos tabulares. Pero la evaluación trabajará con imágenes o texto. Los algoritmos matemáticos no ven 'homero' ni entienden palabras; solo ven números. Aquí entra la ingeniería de características.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-filter"></i> Fase 3: Preparación de Datos</div>
+        <h2 class="reveal reveal-d1">¿Cómo lee la máquina Imágenes y Texto?</h2>
+        <p class="reveal reveal-d2" style="font-size:1.6rem; color:var(--muted); margin-bottom: 2rem;">Los algoritmos de Machine Learning son ecuaciones matemáticas. No tienen ojos para ver imágenes ni lenguaje para leer novelas. <strong>Todo debe convertirse en números.</strong></p>
+        
+        <div class="cols cols-2 reveal reveal-d3">
+          <div class="card accent-p">
+            <div class="card-title" style="font-size:1.5rem;"><i class="fa-regular fa-image" style="color:var(--p);"></i> Imágenes (Los Simpson)</div>
+            <ul class="dot-list" style="margin-top:.5rem;">
+              <li><strong style="color:var(--pl);">Píxeles:</strong> Una imagen es una grilla de números (0 al 255).</li>
+              <li><strong style="color:var(--pl);">Resize:</strong> Redimensionamiento uniforme exigido por el modelo.</li>
+              <li><strong style="color:var(--pl);">Normalización y Filtros:</strong> Normalizar píxeles a [0,1], conversión a escala de grises, o filtrado por color.</li>
+              <li><strong style="color:var(--pl);">Extracción de características:</strong> Convertir bordes o histogramas en vectores de números (Flatten).</li>
+            </ul>
+            <button class="colab-btn" onclick="openColabModal('prep_cv')" style="margin-top:1.5rem;"><i class="fa-brands fa-python"></i> Actividad Formativa 2</button>
+          </div>
+          
+          <div class="card accent-c">
+            <div class="card-title" style="font-size:1.5rem;"><i class="fa-solid fa-book" style="color:var(--c2);"></i> Texto (Don Quijote)</div>
+            <ul class="dot-list" style="margin-top:.5rem;">
+              <li><strong style="color:var(--c2);">Limpieza:</strong> Caracteres especiales y normalización.</li>
+              <li><strong style="color:var(--c2);">Tokenización:</strong> Separación, además de lematización o stemming.</li>
+              <li><strong style="color:var(--c2);">Stopwords:</strong> Eliminación de palabras vacías ("el", "la").</li>
+              <li><strong style="color:var(--c2);">Vectorización y Sintaxis:</strong> (TF-IDF, BoW) e ingeniería de características sintácticas.</li>
+            </ul>
+            <button class="colab-btn" onclick="openColabModal('prep_nlp')" style="margin-top:1.5rem;"><i class="fa-brands fa-python"></i> Actividad Formativa 3</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== SESION 1: REGRESION ==================== -->
+    <!-- SLIDE 6 -->
+    <div class="slide" data-session="1" data-notes="Iniciamos el bloque de regresión. Antes de presentar los algoritmos, reforzar la intuición de lo que significa ajustar una curva a los datos. La idea central: encontrar la función matemática que mejor describe la relación entre las variables de entrada y la variable de salida. Empezaremos con el modelo más simple y elemental: la regresión lineal.">
+      <div class="orb orb1"></div><div class="orb orb2"></div>
+      <div class="slide-inner cover centered">
+        <div class="reveal">
+          <div class="cover-badge" style="border-color:rgba(14, 165, 233, .6);"><i class="fa-solid fa-chart-line"></i> Sesión 2 - Modelos de Regresión</div>
+          <h1 class="gradient-text" style="font-size:clamp(3.5rem,5vw,5rem);margin-bottom:1rem;">Modelos de Regresión</h1>
+          <h2 style="color:var(--muted);font-size:2rem;font-weight:500;margin-bottom:2rem;">Cuando necesitamos predecir un número (¿Cuánto?)</h2>
+          <div class="pill-row" style="justify-content:center;">
+            <span class="pill pill-cyan"><i class="fa-solid fa-equals"></i> Regresión Lineal</span>
+            <span class="pill pill-violet"><i class="fa-solid fa-tree"></i> Árboles de Decisión</span>
+            <span class="pill pill-green"><i class="fa-solid fa-vector-square"></i> SVM Regresión</span>
+            <span class="pill pill-orange"><i class="fa-solid fa-magnifying-glass-location"></i> KNN Regresión</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide" data-session="1" data-notes="La regresión lineal es el punto de partida obligatorio. Es el modelo más simple, más interpretable y más fácil de comunicar a personas no técnicas. La idea principal: existe una relación lineal entre la variable x y la variable y. La fórmula es y = beta0 + beta1*x1 + ... El modelo aprende los valores de beta (coeficientes) que minimizan el error entre predicciones y valores reales del entrenamiento. El error más común que se minimiza es el Error Cuadrático Medio (MSE).">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-equals"></i> Regresión Lineal</div>
+        <h2 class="reveal reveal-d1">El modelo más simple: una línea recta</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">Imagina graficar <strong style="color:#fff;">metros cuadrados vs precio</strong> de departamentos. La regresión lineal traza la mejor línea posible a través de esos puntos.</p>
+            <div class="formula">y = B0 + B1*x1 + B2*x2 + ... + Bn*xn</div>
+            <div class="card accent-p" style="margin-top:1rem;">
+              <div class="card-title" style="font-size:1.5rem;"><i class="fa-solid fa-info-circle" style="color:var(--p);"></i> Componentes clave</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li><strong style="color:var(--pl);">y:</strong> Valor predicho (lo que el modelo estima)</li>
+                <li><strong style="color:var(--pl);">B0:</strong> Intercepto (valor cuando x=0)</li>
+                <li><strong style="color:var(--pl);">B1..Bn:</strong> Coeficientes (importancia de cada variable)</li>
+                <li><strong style="color:var(--pl);">x1..xn:</strong> Variables de entrada (features)</li>
+              </ul>
+            </div>
+            <div class="highlight-box green" style="margin-top:1rem;">
+              <p style="font-size:1.4rem;"><i class="fa-solid fa-check-circle" style="color:var(--ok);"></i> <strong style="color:#fff;">Cuándo usar:</strong> Cuando la relación entre variables es aproximadamente lineal y necesitas interpretar coeficientes fácilmente (economía, ventas).</p>
+            </div>
+          </div>
+          <div>
+            <div class="mock-chart">
+              <p style="font-size:1.4rem;font-weight:700;color:var(--pl);margin-bottom:1rem;text-align:center;"><i class="fa-solid fa-chart-scatter"></i> Precio de departamentos</p>
+              <svg viewBox="0 0 320 220" style="width:100%;max-width:340px;display:block;margin:0 auto;">
+                <line x1="40" y1="180" x2="300" y2="180" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+                <line x1="40" y1="10" x2="40" y2="180" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+                <text x="150" y="200" fill="#94a3b8" font-size="10" text-anchor="middle">m2 del departamento</text>
+                <text x="15" y="100" fill="#94a3b8" font-size="10" transform="rotate(-90,15,100)">Precio</text>
+                
+                <circle cx="70" cy="160" r="5" fill="#0ea5e9" opacity=".8"/>
+                <circle cx="95" cy="145" r="5" fill="#0ea5e9" opacity=".8"/>
+                <circle cx="120" cy="130" r="5" fill="#0ea5e9" opacity=".8"/>
+                <circle cx="140" cy="110" r="5" fill="#0ea5e9" opacity=".8"/>
+                <circle cx="165" cy="118" r="5" fill="#0ea5e9" opacity=".8"/>
+                <circle cx="185" cy="95" r="5" fill="#0ea5e9" opacity=".8"/>
+                
+                <line x1="55" y1="172" x2="290" y2="30" stroke="#f59e0b" stroke-width="2.5"/>
+                <line x1="120" y1="130" x2="120" y2="144" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+                <line x1="185" y1="118" x2="185" y2="104" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+                <text x="245" y="50" fill="#f59e0b" font-size="9">Línea óptima</text>
+                <text x="110" y="168" fill="#ef4444" font-size="8">error</text>
+              </svg>
+              <p style="font-size:1.2rem;color:var(--muted);text-align:center;margin-top:.5rem;">Las líneas rojas son los <strong style="color:#ef4444;">errores</strong>. El modelo minimiza su suma.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SLIDE 8 (Analogía Regresión Lineal) -->
+    <div class="slide" data-session="1" data-notes="Para que quede absolutamente claro: La regresión lineal es como un taxímetro. Hay un cobro base solo por subirte (Intercepto) y un cobro fijo por cada metro recorrido (Coeficiente). El modelo simplemente descubre cuáles son esos dos números mágicos viendo muchas boletas pasadas.">
+      <div class="orb orb3"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-lightbulb"></i> Analogía del Mundo Real</div>
+        <h2 class="reveal reveal-d1">Regresión Lineal: El Taxímetro</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <div class="highlight-box">
+              <p style="font-size:1.6rem;font-weight:800;color:var(--pl);margin-bottom:1rem;"><i class="fa-solid fa-taxi"></i> El misterio de la tarifa</p>
+              <p style="font-size:1.4rem;">Imagina que tomas un taxi en una ciudad extranjera, pero el taxímetro está escondido. Al bajar, el chofer solo te dice el total.</p>
+              <ul class="num-list" style="margin-top:1rem;">
+                <li>Viaje de 1 km = $3.000</li>
+                <li>Viaje de 2 km = $4.000</li>
+                <li>Viaje de 3 km = $5.000</li>
+              </ul>
+            </div>
+            <div class="card accent-g" style="margin-top:1rem;">
+              <p style="font-size:1.4rem;color:var(--muted);">El modelo de Regresión Lineal hace el cálculo mental rápido:</p>
+              <p style="font-size:1.6rem;font-weight:800;color:#fff;margin-top:.5rem;">"Ah, cobra $2.000 solo por subirme y $1.000 extra por cada kilómetro."</p>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box green" style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+              <div style="text-align:center; font-size:4rem; color:var(--ok); margin-bottom:1rem;"><i class="fa-solid fa-calculator"></i></div>
+              <p style="font-size:2rem;font-weight:900;color:var(--pl);margin-bottom:1rem;text-align:center;">La Ecuación Descubierta</p>
+              <div class="formula" style="font-size:1.5rem; margin-bottom: 1rem;">Costo = $2000 + ($1000 * km)</div>
+              <ul class="dot-list" style="margin-top:0;">
+                <li><strong style="color:#fff;">$2000 (Intercepto B0):</strong> El cobro base.</li>
+                <li><strong style="color:#fff;">$1000 (Coeficiente B1):</strong> Cuánto afecta la distancia al precio.</li>
+                <li><strong style="color:#fff;">km (Variable x):</strong> Tu distancia.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide" data-session="1" data-notes="Los árboles de decisión son uno de los algoritmos más intuitivos y poderosos. A diferencia de la regresión lineal, pueden capturar relaciones NO lineales. La analogía perfecta es el juego de las 20 preguntas: el árbol hace preguntas sucesivas y en cada bifurcación va separando posibles respuestas. En regresión, el valor predicho en cada hoja es el promedio de todos los valores de entrenamiento que cayeron en esa hoja. Un problema importante: el sobreajuste (overfitting). Si el árbol crece demasiado, memoriza el set de entrenamiento pero no generaliza.">
+      <div class="orb orb2"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-tree"></i> Árboles de Decisión para Regresión</div>
+        <h2 class="reveal reveal-d1">El árbol que divide y conquista</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">Un árbol divide los datos en <strong style="color:#fff;">regiones</strong> respondiendo preguntas Sí/No, y predice el <strong style="color:var(--pl);">valor promedio</strong> de la región. No asume líneas rectas.</p>
+            <div class="mock-chart" style="padding:1.5rem;">
+              <p style="font-size:1.3rem;font-weight:700;color:var(--muted);margin-bottom:1rem;text-align:center;">¿Cuánto costará el arriendo?</p>
+              <div class="tree-row"><div class="tree-node decision">¿m2 > 60?</div></div>
+              <div style="display:flex;justify-content:center;gap:6rem;">
+                <div style="text-align:center;"><div class="tree-line" style="height:25px;"></div><div class="tree-label">NO</div></div>
+                <div style="text-align:center;"><div class="tree-line" style="height:25px;"></div><div class="tree-label">SÍ</div></div>
+              </div>
+              <div class="tree-row">
+                <div class="tree-node decision" style="min-width:120px;">¿Barrio premium?</div>
+                <div class="tree-node decision" style="min-width:120px;">¿Barrio premium?</div>
+              </div>
+              <div style="display:flex;justify-content:center;gap:2rem;margin-top:.5rem;">
+                <div class="tree-node leaf-no" style="min-width:100px;padding:.8rem;">$ 350.000</div>
+                <div class="tree-node leaf-yes" style="min-width:100px;padding:.8rem;">$ 480.000</div>
+                <div class="tree-node leaf-no" style="min-width:100px;padding:.8rem;">$ 620.000</div>
+                <div class="tree-node leaf-yes" style="min-width:100px;padding:.8rem;">$ 950.000</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="card accent-g" style="margin-bottom:1rem;">
+              <div class="card-title"><i class="fa-solid fa-thumbs-up" style="color:var(--ok);"></i> Ventajas</div>
+              <ul class="check-list" style="margin-top:.5rem;">
+                <li>Muy interpretable: puedes explicar cada decisión humana.</li>
+                <li>No requiere normalizar variables.</li>
+                <li>Maneja relaciones no lineales.</li>
+              </ul>
+            </div>
+            <button class="colab-btn" onclick="openColabModal('trees')" style="margin-bottom:1rem; margin-top:0;"><i class="fa-brands fa-python"></i> Ver Ejemplo en Google Colab</button>
+            <div class="card accent-r" style="margin-bottom:1rem;">
+              <div class="card-title"><i class="fa-solid fa-thumbs-down" style="color:var(--err);"></i> Desventajas</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li>Propenso a <strong style="color:#fff;">sobreajuste (overfitting)</strong>.</li>
+                <li>Sensible a pequeños cambios en datos.</li>
+              </ul>
+            </div>
+            <div class="highlight-box yellow">
+              <p style="font-size:1.3rem;"><i class="fa-solid fa-wrench" style="color:var(--acc);"></i> <strong style="color:#fff;">Solución al sobreajuste:</strong> usar 'max_depth' para limitar la profundidad, o usar Random Forest (muchos árboles).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SLIDE 10 (Analogía Árboles) -->
+    <div class="slide" data-session="1" data-notes="El Árbol de Decisión funciona igual que el juego Adivina Quién (Guess Who) o Akinator. Hace la mejor pregunta de Sí o No para descartar a la mitad de los sospechosos de inmediato. Si preguntamos '¿Tiene sombrero?' y la respuesta es No, el árbol descarta esa rama completa y avanza a la siguiente mejor pregunta.">
+      <div class="orb orb2"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-lightbulb"></i> Analogía del Mundo Real</div>
+        <h2 class="reveal reveal-d1">Árboles de Decisión: El juego "Adivina Quién"</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <div class="highlight-box purple">
+              <p style="font-size:1.6rem;font-weight:800;color:#c4b5fd;margin-bottom:1rem;"><i class="fa-solid fa-users"></i> Descartar opciones rápido</p>
+              <p style="font-size:1.4rem;">En lugar de usar complejas matemáticas, el modelo hace <strong style="color:#fff;">preguntas de Sí/No</strong> buscando dividir los datos de la forma más limpia posible.</p>
+              <ul class="check-list" style="margin-top:1rem;">
+                <li>¿Tiene lentes? <strong style="color:var(--err);">NO</strong> (descarta a todos los con lentes)</li>
+                <li>¿Es rubio? <strong style="color:var(--ok);">SÍ</strong> (se queda solo con los rubios)</li>
+                <li>¿Lleva sombrero? <strong style="color:var(--ok);">SÍ</strong> (encuentra la respuesta)</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;">
+              <i class="fa-solid fa-brain" style="font-size:4rem; color:var(--p); margin-bottom:1rem;"></i>
+              <p style="font-size:1.6rem;font-weight:800;color:var(--pl);margin-bottom:1rem;">¿Cómo elige el árbol la pregunta?</p>
+              <p style="font-size:1.4rem;color:var(--muted);">El algoritmo calcula matemáticamente cuál es la pregunta que le da más <strong style="color:#fff;">"Ganancia de Información"</strong>.</p>
+              <p style="font-size:1.4rem;color:var(--muted);margin-top:.5rem;">Preguntar "¿Tiene cabeza?" es inútil (todos tienen). Preguntar "¿Tiene sombrero?" divide perfectamente al grupo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11 -->
+    <div class="slide" data-session="1" data-notes="Support Vector Machine para regresión (SVR) intenta encontrar una función que se desvíe a lo sumo epsilon de los valores reales. Es como construir un tubo alrededor de la línea de regresión: lo que cabe dentro no importa. Lo que sobresale (los vectores de soporte) define el modelo. La ventaja principal: es robusto a outliers. El hiperparámetro C controla el balance entre el ancho del tubo y el error permitido.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-vector-square"></i> Support Vector Machine para Regresión (SVR)</div>
+        <h2 class="reveal reveal-d1">Máquinas de Vectores de Soporte: el tubo de tolerancia</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">SVR construye un <strong style="color:#fff;">tubo de tolerancia</strong> (margen epsilon) alrededor de la función. Sólo se penalizan los puntos que quedan <strong style="color:var(--err);">fuera del tubo</strong>.</p>
+            <div class="mock-chart">
+              <svg viewBox="0 0 300 200" style="width:100%;max-width:320px;display:block;margin:0 auto;">
+                <path d="M 30 135 Q 150 45 270 25 L 270 55 Q 150 75 30 165 Z" fill="rgba(14, 165, 233, .12)" stroke="rgba(14, 165, 233, .4)" stroke-width="1" stroke-dasharray="4,3"/>
+                <path d="M 30 150 Q 150 60 270 40" stroke="#0ea5e9" stroke-width="2" fill="none"/>
+                
+                <circle cx="80" cy="130" r="5" fill="#10b981" opacity=".9"/>
+                <circle cx="130" cy="95" r="5" fill="#10b981" opacity=".9"/>
+                <circle cx="180" cy="75" r="5" fill="#10b981" opacity=".9"/>
+                
+                <circle cx="100" cy="160" r="5" fill="#ef4444" opacity=".9"/>
+                <line x1="100" y1="145" x2="100" y2="160" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+                
+                <circle cx="40" cy="185" r="4" fill="#10b981"/>
+                <text x="50" y="188" fill="#94a3b8" font-size="9">Dentro (sin error)</text>
+                <circle cx="170" cy="185" r="4" fill="#ef4444"/>
+                <text x="180" y="188" fill="#94a3b8" font-size="9">Fuera (penalizado)</text>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div class="card-grid" style="gap:1rem;">
+              <div class="card accent-p">
+                <div class="card-title" style="font-size:1.5rem;"><i class="fa-solid fa-sliders" style="color:var(--p);"></i> Hiperparámetros clave</div>
+                <ul class="dot-list" style="margin-top:.5rem;">
+                  <li><strong style="color:var(--pl);">C:</strong> penalización por errores fuera del tubo.</li>
+                  <li><strong style="color:var(--pl);">Epsilon:</strong> ancho del tubo de tolerancia.</li>
+                  <li><strong style="color:var(--pl);">Kernel:</strong> Permite adaptarse a curvas complejas (RBF).</li>
+                </ul>
+              </div>
+              <div class="card accent-g">
+                <div class="card-title" style="font-size:1.5rem;"><i class="fa-solid fa-thumbs-up" style="color:var(--ok);"></i> Cuándo es útil</div>
+                <ul class="check-list" style="margin-top:.5rem;">
+                  <li>Datos con muchos valores atípicos (outliers).</li>
+                  <li>Relaciones altamente complejas.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide" data-session="1" data-notes="K-Nearest Neighbors es increíblemente intuitivo: para predecir el valor de un nuevo punto, simplemente busca los K vecinos más cercanos en el espacio de features y promedia sus valores. No hay entrenamiento matemático complejo. La analogía perfecta: para estimar cuánto vale tu casa, miras el precio de las 5 casas más similares en el barrio y promedias. El hiperparámetro más crítico es K: si K es muy pequeño, el modelo memoriza; si K es muy grande, todo se promedia demasiado. Recordar: siempre normalizar datos con KNN.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-magnifying-glass-location"></i> K-Nearest Neighbors Regresión (KNNR)</div>
+        <h2 class="reveal reveal-d1">El vecindario digital: dime con quién te juntas...</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">Para predecir un nuevo dato, KNN busca los <strong style="color:#fff;">K vecinos más similares</strong> (cercanos) y <strong style="color:var(--pl);">promedia sus valores</strong>.</p>
+            <div class="mock-chart">
+              <p style="font-size:1.3rem;font-weight:700;color:var(--muted);text-align:center;margin-bottom:1rem;">Ejemplo: K=3 (Buscamos 3 casas similares)</p>
+              <svg viewBox="0 0 280 200" style="width:100%;max-width:300px;display:block;margin:0 auto;">
+                <circle cx="140" cy="100" r="60" fill="none" stroke="rgba(14, 165, 233, .3)" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <circle cx="140" cy="100" r="10" fill="#f59e0b" stroke="#fff" stroke-width="2"/>
+                <text x="155" y="95" fill="#f59e0b" font-size="10" font-weight="bold">? Nueva Casa</text>
+                
+                <circle cx="100" cy="75" r="7" fill="#0ea5e9"/>
+                <text x="60" y="72" fill="#94a3b8" font-size="9">$480k</text>
+                <line x1="140" y1="100" x2="100" y2="75" stroke="rgba(14, 165, 233, .5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                
+                <circle cx="170" cy="70" r="7" fill="#0ea5e9"/>
+                <text x="180" y="67" fill="#94a3b8" font-size="9">$520k</text>
+                <line x1="140" y1="100" x2="170" y2="70" stroke="rgba(14, 165, 233, .5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                
+                <circle cx="115" cy="130" r="7" fill="#0ea5e9"/>
+                <text x="60" y="140" fill="#94a3b8" font-size="9">$460k</text>
+                <line x1="140" y1="100" x2="115" y2="130" stroke="rgba(14, 165, 233, .5)" stroke-width="1.5" stroke-dasharray="3,2"/>
+                
+                <text x="60" y="185" fill="#f59e0b" font-size="10" font-weight="bold">Predicción: Promedio(480+520+460) = $487k</text>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div class="card accent-y" style="margin-bottom:1rem;">
+              <div class="card-title"><i class="fa-solid fa-k" style="color:var(--acc);"></i> Eligiendo K</div>
+              <div class="cols cols-2" style="gap:.8rem;margin-top:.5rem;">
+                <div style="background:rgba(239, 68, 68, .1);border:1px solid rgba(239, 68, 68, .3);border-radius:8px;padding:.8rem;text-align:center;">
+                  <p style="color:var(--err);font-weight:800;font-size:1.4rem;">K=1</p>
+                  <p style="font-size:1.2rem;color:var(--muted);">Sobreajuste: se aprende de memoria.</p>
+                </div>
+                <div style="background:rgba(16, 185, 129, .1);border:1px solid rgba(16, 185, 129, .3);border-radius:8px;padding:.8rem;text-align:center;">
+                  <p style="color:var(--ok);font-weight:800;font-size:1.4rem;">K=5-15</p>
+                  <p style="font-size:1.2rem;color:var(--muted);">Suele ser un balance óptimo.</p>
+                </div>
+              </div>
+            </div>
+            <div class="highlight-box red">
+              <p style="font-size:1.3rem;"><i class="fa-solid fa-triangle-exclamation" style="color:var(--err);"></i> <strong style="color:#fff;">¡Siempre normaliza!</strong> KNN es sensible a la escala. Si una variable está en millones y otra en decimales, la mayor dominará la distancia.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+        <!-- SLIDE 18.1: Underfitting vs Overfitting -->
+      <div class="slide" data-session="3" data-notes="Es vital que entiendan la diferencia entre subajuste y sobreajuste. El subajuste es cuando el estudiante (modelo) ni siquiera estudia y reprueba (error alto en train y test). El sobreajuste es cuando el estudiante se aprende el libro de memoria (error bajo en train) pero reprueba el examen porque le cambian una coma (error alto en test).">
+        <div class="orb orb1"></div>
+        <div class="slide-inner">
+          <div class="slide-tag reveal"><i class="fa-solid fa-scale-balanced"></i> El Balance Ideal</div>
+          <h2 class="reveal reveal-d1">Subajuste vs Sobreajuste</h2>
+          <p class="reveal reveal-d2" style="font-size:1.6rem; color:var(--muted); margin-bottom: 2rem;">El objetivo del Machine Learning es lograr que un modelo <strong>generalice</strong>, no que memorice.</p>
+          
+          <div class="cols cols-3 reveal reveal-d3">
+            <div class="card accent-y">
+              <div class="card-title"><i class="fa-solid fa-minus" style="color:var(--y);"></i> Underfitting (Subajuste)</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li><strong>El problema:</strong> El modelo es demasiado simple.</li>
+                <li><strong>Analogía:</strong> Tratar de ajustar una línea recta en datos que forman un círculo. El estudiante que no estudia.</li>
+                <li><strong>Síntoma:</strong> Alto error en los datos de Entrenamiento Y en los datos de Prueba.</li>
+              </ul>
+            </div>
+            
+            <div class="card accent-p" style="border: 2px solid var(--p);">
+              <div class="card-title"><i class="fa-solid fa-bullseye" style="color:var(--p);"></i> Balance Ideal</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li><strong>El objetivo:</strong> El modelo capta la tendencia subyacente.</li>
+                <li><strong>Analogía:</strong> El estudiante que entiende los conceptos y aprueba el examen final.</li>
+                <li><strong>Síntoma:</strong> Bajo error en Entrenamiento y Prueba.</li>
+              </ul>
+            </div>
+
+            <div class="card accent-r">
+              <div class="card-title"><i class="fa-solid fa-brain" style="color:var(--err);"></i> Overfitting (Sobreajuste)</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li><strong>El problema:</strong> El modelo es demasiado complejo y memoriza el ruido.</li>
+                <li><strong>Analogía:</strong> El estudiante que memoriza las preguntas en vez de aprender.</li>
+                <li><strong>Síntoma:</strong> Error casi 0 en Entrenamiento, pero MUY ALTO en Prueba.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 18.2: Regularización -->
+      <div class="slide" data-session="3" data-notes="Para combatir el sobreajuste existen métodos de regularización. Básicamente le decimos a la matemática: 'te castigaré si haces el modelo muy complejo'. Ridge achica los coeficientes, Lasso los puede volver cero (borra variables inútiles). Dropout apaga neuronas aleatoriamente y Pruning recorta las ramas de un árbol de decisión.">
+        <div class="orb orb2"></div>
+        <div class="slide-inner">
+          <div class="slide-tag reveal"><i class="fa-solid fa-shield-halved"></i> Prevención del Overfitting</div>
+          <h2 class="reveal reveal-d1">Métodos de Regularización</h2>
+          <p class="reveal reveal-d2" style="font-size:1.6rem; color:var(--muted); margin-bottom: 2rem;">Son técnicas que <strong>penalizan la complejidad</strong> del modelo. Le obligan a mantenerse lo más simple posible, mejorando su capacidad para generalizar en datos nuevos.</p>
+          
+          <div class="cols cols-2 reveal reveal-d3">
+            <div>
+              <div class="card accent-c" style="margin-bottom:1rem;">
+                <div class="card-title"><i class="fa-solid fa-chart-line" style="color:var(--c2);"></i> En Regresión Matemática</div>
+                <ul class="dot-list" style="margin-top:.5rem;">
+                  <li><strong>L2 (Ridge):</strong> Reduce el tamaño de los pesos o coeficientes (los acerca a 0, pero no los apaga). "Suaviza" el modelo.</li>
+                  <li><strong>L1 (Lasso):</strong> Puede reducir coeficientes exactamente a 0. Esto actúa como un selector automático, "apagando" las variables inútiles.</li>
+                </ul>
+              </div>
+              <div class="card accent-p">
+                <div class="card-title"><i class="fa-solid fa-tree" style="color:var(--p);"></i> En Otros Algoritmos</div>
+                <ul class="dot-list" style="margin-top:.5rem;">
+                  <li><strong>Pruning (Árboles):</strong> "Podar" el árbol de decisión limitando su profundidad máxima (ej. <code>max_depth</code>) para que no crezca infinitamente.</li>
+                  <li><strong>Dropout (Redes Neuronales):</strong> Apagar un porcentaje de "neuronas" al azar durante el entrenamiento para evitar que dependan demasiado de un solo rasgo.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="highlight-box green" style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+              <div style="text-align:center; font-size:4rem; color:var(--ok); margin-bottom:1rem;"><i class="fa-solid fa-flask"></i></div>
+              <p style="font-size:2rem;font-weight:900;color:var(--ok);margin-bottom:1rem;text-align:center;">Demo Práctica</p>
+              <p style="font-size:1.4rem;color:var(--muted);text-align:center;margin-bottom:1.5rem;">Veamos cómo un modelo sobreajustado enloquece con el ruido, y cómo Ridge y Lasso logran "suavizarlo".</p>
+              <button class="colab-btn" onclick="openColabModal('regularization')"><i class="fa-brands fa-python"></i> Ver Ejemplo en Google Colab</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    <!-- SLIDE 19 -->
+    <div class="slide" data-session="1" data-notes="Cerramos el bloque de regresión resumiendo en una tabla cuándo usar qué. Es útil hacer que los alumnos participen: si tengo datos de viviendas que cambian linealmente, ¿qué uso? (Lineal). Si tengo un dataset raro donde el precio se dispara en ciertas condiciones específicas no lineales (Árboles). Si tengo casos extremos y atípicos que ensucian los datos (SVR).">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-list-check"></i> Resumen</div>
+        <h2 class="reveal reveal-d1">¿Cuándo usar cada modelo de Regresión?</h2>
+        <div class="reveal reveal-d2" style="margin-top:2rem;">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Algoritmo</th>
+                <th>Ventaja principal</th>
+                <th>Cuándo usarlo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Regresión Lineal</strong></td>
+                <td>Simplicidad, altamente interpretable.</td>
+                <td>Primer acercamiento, relaciones simples directas.</td>
+              </tr>
+              <tr>
+                <td><strong>Árboles de Decisión</strong></td>
+                <td>Captura reglas complejas tipo Sí/No.</td>
+                <td>Relaciones no lineales, sin necesidad de escalar.</td>
+              </tr>
+              <tr>
+                <td><strong>SVR (Vectores Soporte)</strong></td>
+                <td>Ignora errores pequeños y resiste outliers.</td>
+                <td>Datos con ruido, alta dimensionalidad.</td>
+              </tr>
+              <tr>
+                <td><strong>KNN Regresión</strong></td>
+                <td>Intuitivo, se adapta localmente.</td>
+                <td>Datos bien agrupados, explicaciones basadas en similitud.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- MICRO-ACTIVIDAD 2 -->
+    <div class="slide" data-session="1" data-notes="Micro-actividad de Regresión. Invita a los estudiantes a elegir el algoritmo correcto basándose en las fortalezas y debilidades que acaban de aprender. Esto les ayuda a justificar algoritmos en su evaluación.">
+      <div class="orb orb3"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal" style="display:inline-flex; align-items:center; gap:0.5rem; background:#f59e0b; color:#000; padding:0.4rem 1.2rem; border-radius:100px; box-shadow: 0 4px 15px rgba(245,158,11,0.3); font-size:1.2rem; letter-spacing:0.1em;"><i class="fa-solid fa-clipboard-question"></i> Micro-Actividad 2</div>
+        <h2 class="reveal reveal-d1">¿Qué Algoritmo Elegirías?</h2>
+        <p class="reveal reveal-d2" style="font-size:1.4rem; color:var(--muted); margin-bottom:2rem;">Selecciona el mejor modelo de regresión para cada escenario empresarial.</p>
+        
+        <div class="cols cols-2 reveal reveal-d3" style="gap:2rem;">
+          <div>
+            <div class="highlight-box">
+              <p style="font-size:1.4rem;font-weight:700;color:var(--pl);margin-bottom:1rem;"><i class="fa-solid fa-building-columns"></i> El Banco Tradicional</p>
+              <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">El banco necesita predecir la línea de crédito de un cliente. <strong>Requisito legal:</strong> Deben poder explicarle al cliente exactamente cómo se calculó su cupo mediante una fórmula matemática simple.</p>
+              <button onclick="document.getElementById('sol2A').style.display='block';this.style.display='none'" style="padding:0.5rem 1rem; border:none; border-radius:4px; background:rgba(14,165,233,0.2); color:#38bdf8; cursor:pointer; font-weight:bold;">Ver Respuesta</button>
+              <div id="sol2A" style="display:none; margin-top:1rem; padding:1rem; background:rgba(14,165,233,0.1); border-left:4px solid #0ea5e9;">
+                <strong style="color:#38bdf8;">REGRESIÓN LINEAL.</strong> Porque es el único modelo completamente transparente (Caja Blanca) donde tienes una ecuación clara (ej. $10.000 + $5 * Sueldo).
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box purple">
+              <p style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:1rem;"><i class="fa-solid fa-cloud-bolt"></i> Datos Caóticos</p>
+              <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">Queremos predecir el tráfico de una web. Sabemos que hay reglas extrañas (ej. "Si es martes Y llueve Y es fin de mes, el tráfico se duplica"). La relación no es una línea recta.</p>
+              <button onclick="document.getElementById('sol2B').style.display='block';this.style.display='none'" style="padding:0.5rem 1rem; border:none; border-radius:4px; background:rgba(196,181,253,0.2); color:#c4b5fd; cursor:pointer; font-weight:bold;">Ver Respuesta</button>
+              <div id="sol2B" style="display:none; margin-top:1rem; padding:1rem; background:rgba(196,181,253,0.1); border-left:4px solid #a855f7;">
+                <strong style="color:#c4b5fd;">ÁRBOLES DE DECISIÓN.</strong> Porque pueden capturar relaciones NO lineales y reglas complejas tipo "Si pasa esto Y esto otro..." (If-Else).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SESION 2: CLASIFICACION ==================== -->
+    <!-- SLIDE 12 -->
+    <div class="slide" data-session="2" data-notes="Iniciamos el bloque de clasificación. Ahora el objetivo no es adivinar un número, sino ponerle una 'etiqueta' correcta al dato. ¿Es spam o no? ¿Es gato o perro? ¿Aprobará o reprobará el crédito? La clasificación es probablemente la tarea de ML más común en la industria.">
+      <div class="orb orb2"></div><div class="orb orb3"></div>
+      <div class="slide-inner cover centered">
+        <div class="reveal">
+          <div class="cover-badge" style="border-color:rgba(139, 92, 246, .6);color:#c4b5fd;background:rgba(139, 92, 246, .15);"><i class="fa-solid fa-tags"></i> Sesión 3 - Modelos de Clasificación</div>
+          <h1 class="gradient-text" style="font-size:clamp(3.5rem,5vw,5rem);margin-bottom:1rem;background:linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #8b5cf6 100%);-webkit-background-clip:text;">Modelos de Clasificación</h1>
+          <h2 style="color:var(--muted);font-size:2rem;font-weight:500;margin-bottom:2rem;">Cuando necesitamos predecir una categoría (¿Cuál?)</h2>
+          <div class="pill-row" style="justify-content:center;">
+            <span class="pill pill-cyan"><i class="fa-solid fa-s"></i> Regresión Logística</span>
+            <span class="pill pill-violet"><i class="fa-solid fa-brain"></i> Naive Bayes</span>
+            <span class="pill pill-green"><i class="fa-solid fa-vector-square"></i> SVM Clasificación</span>
+            <span class="pill pill-orange"><i class="fa-solid fa-users"></i> KNN Clasificación</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13 -->
+    <div class="slide" data-session="2" data-notes="¡Cuidado con el nombre! La Regresión Logística se llama regresión por razones históricas, pero es un algoritmo de CLASIFICACIÓN. Su trabajo es estimar la PROBABILIDAD de que algo pertenezca a una clase (entre 0 y 1) usando la función Sigmoide (curva en S). Si la probabilidad es mayor a 50%, decimos que es Clase 1, si no, Clase 0. Ejemplo: Si P(Spam) = 0.85 -> Lo marcamos como Spam.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-s"></i> Regresión Logística</div>
+        <h2 class="reveal reveal-d1">A pesar del nombre, es CLASIFICACIÓN</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">Calcula la <strong style="color:var(--pl);">probabilidad</strong> (de 0 a 100%) de que un dato pertenezca a una categoría usando la curva <strong style="color:#fff;">Sigmoide</strong> (en forma de S).</p>
+            <div class="highlight-box purple">
+              <p style="font-size:1.4rem;text-align:center;"><strong style="color:#fff;">Regla de decisión típica:</strong><br><br>Si Probabilidad > 50% 👉 <strong style="color:#c4b5fd;">Clase A (Ej: Spam)</strong><br>Si Probabilidad < 50% 👉 <strong style="color:var(--muted);">Clase B (Ej: Normal)</strong></p>
+            </div>
+            <div class="card accent-p" style="margin-top:1rem;">
+              <p style="font-size:1.4rem;color:var(--muted);">Mide la "seguridad" de pertenecer a una clase y establece un umbral (ej. 50%) para tomar la decisión final. Simple, rápido y muy interpretable.</p>
+              <ul class="check-list" style="margin-top:.5rem;">
+                <li>Clasificación binaria (Sí/No, 0/1).</li>
+                <li>Necesitas saber la <em>certeza</em> (probabilidad), no solo la respuesta final.</li>
+                <li>Baseline rápido y simple.</li>
+              </ul>
+            </div>
+            <button class="colab-btn" onclick="openColabModal('log_reg')"><i class="fa-brands fa-python"></i> Ver Ejemplo en Google Colab</button>
+          </div>
+          <div>
+            <div class="mock-chart">
+              <p style="font-size:1.4rem;font-weight:700;color:var(--pl);margin-bottom:1rem;text-align:center;"><i class="fa-solid fa-wave-square"></i> Curva Sigmoide</p>
+              <svg viewBox="0 0 320 220" style="width:100%;max-width:340px;display:block;margin:0 auto;">
+                <line x1="40" y1="180" x2="300" y2="180" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+                <line x1="40" y1="20" x2="40" y2="180" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+                <text x="15" y="100" fill="#94a3b8" font-size="10" transform="rotate(-90,15,100)">Probabilidad</text>
+                <text x="30" y="25" fill="#94a3b8" font-size="10">1.0</text>
+                <text x="30" y="105" fill="#94a3b8" font-size="10">0.5</text>
+                <text x="30" y="180" fill="#94a3b8" font-size="10">0.0</text>
+                
+                <!-- Umbral 0.5 -->
+                <line x1="40" y1="100" x2="300" y2="100" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,4"/>
+                
+                <!-- Sigmoid curve (approx) -->
+                <path d="M 40 178 Q 120 175 170 100 T 300 22" fill="none" stroke="#0ea5e9" stroke-width="3"/>
+                
+                <circle cx="120" cy="170" r="5" fill="#ef4444"/>
+                <circle cx="210" cy="40" r="5" fill="#10b981"/>
+                
+                <text x="90" y="195" fill="#ef4444" font-size="10">No Spam</text>
+                <text x="230" y="45" fill="#10b981" font-size="10">Spam!</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SLIDE 15 (Analogía Regresión Logística) -->
+    <div class="slide" data-session="2" data-notes="La Regresión Logística es como el Comité de Evaluación de Créditos de un banco. Cada característica de tu vida suma o resta puntos a tu carpeta. Al final, el sistema pesa todos esos puntos y te da una probabilidad de impago. Si esa probabilidad supera el 50%, el sello es ROJO (Rechazado). Si es menor, es VERDE (Aprobado). ¡Es un umbral!">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-lightbulb"></i> Analogía del Mundo Real</div>
+        <h2 class="reveal reveal-d1">Regresión Logística: El Comité del Banco</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <div class="highlight-box">
+              <p style="font-size:1.6rem;font-weight:800;color:var(--pl);margin-bottom:1rem;"><i class="fa-solid fa-building-columns"></i> La balanza de puntos</p>
+              <p style="font-size:1.4rem;color:var(--muted);">Cada variable del cliente empuja la probabilidad hacia el 0% o hacia el 100%.</p>
+              <ul class="num-list" style="margin-top:1rem;">
+                <li>Sueldo alto: <strong style="color:var(--ok);">Empuja hacia 0% (Riesgo bajo)</strong></li>
+                <li>Muchas deudas: <strong style="color:var(--err);">Empuja hacia 100% (Riesgo alto)</strong></li>
+                <li>Atrasos previos: <strong style="color:var(--err);">Empuja mucho al 100%</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box yellow" style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+              <div style="text-align:center; font-size:4rem; color:var(--acc); margin-bottom:1rem;"><i class="fa-solid fa-scale-unbalanced"></i></div>
+              <p style="font-size:2rem;font-weight:900;color:var(--pl);margin-bottom:1rem;text-align:center;">El Umbral de Decisión</p>
+              <p style="font-size:1.4rem;color:var(--muted);text-align:center;">Al sumar todo, el cliente obtuvo un <strong style="color:#fff;">62% de probabilidad</strong> de impago.</p>
+              <p style="font-size:1.4rem;color:var(--muted);text-align:center;margin-top:1rem;">Como 62% es mayor al umbral clásico del 50%, el algoritmo toma la decisión final categórica: <strong style="color:var(--err);">RECHAZAR CRÉDITO</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 16 -->
+    <div class="slide" data-session="2" data-notes="Naive Bayes se basa en el Teorema de Bayes (probabilidad condicional). Se llama 'Naive' (Ingenuo) porque asume que todas las variables son independientes entre sí, lo cual en la vida real casi nunca es cierto, pero ¡sorprendentemente funciona muy bien! Es el algoritmo rey histórico para clasificar texto (análisis de sentimiento, filtros de spam). Cuenta qué tan frecuentemente aparecen ciertas palabras en cada categoría.">
+      <div class="orb orb2"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-brain"></i> Naive Bayes</div>
+        <h2 class="reveal reveal-d1">El clasificador basado en probabilidades</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">Basado en el <strong style="color:var(--pl);">Teorema de Bayes</strong>. Calcula la probabilidad de una clase dado un conjunto de características, asumiendo (ingenuamente) que las características son independientes.</p>
+            <div class="highlight-box" style="padding:1.5rem;">
+              <p style="font-size:1.3rem;font-weight:700;color:var(--pl);margin-bottom:.5rem;">Ejemplo Clásico: Filtro de Spam</p>
+              <ul class="dot-list">
+                <li>Palabra "Gratis": 80% en Spam, 5% en Normal</li>
+                <li>Palabra "Oferta": 70% en Spam, 10% en Normal</li>
+                <li>Correo: "Oferta Gratis" ➔ ¡Probabilidad altísima de Spam!</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="card accent-c" style="margin-bottom:1rem;">
+              <div class="card-title"><i class="fa-solid fa-thumbs-up" style="color:var(--c2);"></i> Ventajas</div>
+              <ul class="check-list" style="margin-top:.5rem;">
+                <li>Extremadamente rápido de entrenar.</li>
+                <li>Funciona excelente con texto (NLP básico).</li>
+                <li>Maneja bien muchísimas variables.</li>
+              </ul>
+            </div>
+            <div class="card accent-r">
+              <div class="card-title"><i class="fa-solid fa-thumbs-down" style="color:var(--err);"></i> Desventajas</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li>Asume que las variables no tienen relación (ej: asume que "San" y "Francisco" no tienen relación, lo cual es falso).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 15 -->
+    <div class="slide" data-session="2" data-notes="Para SVM en clasificación, la idea es encontrar la 'calle' o frontera más ancha posible que separe las dos categorías. Los puntos que están en el borde de esta calle se llaman 'Vectores de Soporte', porque soportan la estructura matemática del modelo. Si los datos no se pueden separar con una línea recta, SVM usa el 'Truco del Kernel' para llevar los datos a 3D y cortarlos con un plano.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-vector-square"></i> Support Vector Machine (SVC)</div>
+        <h2 class="reveal reveal-d1">Buscando la frontera más segura</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">SVM busca trazar una línea (o hiperplano) que separe las clases maximizando el <strong style="color:var(--pl);">margen</strong> (la "calle" entre ambos grupos).</p>
+            <div class="mock-chart">
+              <svg viewBox="0 0 300 200" style="width:100%;max-width:320px;display:block;margin:0 auto;">
+                <!-- Margen -->
+                <path d="M 30 180 L 250 20 L 290 50 L 70 210 Z" fill="rgba(14, 165, 233, .1)" />
+                <!-- Línea de separación -->
+                <line x1="50" y1="195" x2="270" y2="35" stroke="#f59e0b" stroke-width="2"/>
+                
+                <!-- Vectores de soporte -->
+                <circle cx="140" cy="100" r="7" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                <circle cx="170" cy="140" r="7" fill="none" stroke="#f59e0b" stroke-width="2"/>
+                
+                <!-- Puntos clase A -->
+                <circle cx="80" cy="80" r="5" fill="#ef4444"/>
+                <circle cx="110" cy="60" r="5" fill="#ef4444"/>
+                <circle cx="140" cy="100" r="5" fill="#ef4444"/>
+                <circle cx="90" cy="120" r="5" fill="#ef4444"/>
+                
+                <!-- Puntos clase B -->
+                <circle cx="220" cy="120" r="5" fill="#10b981"/>
+                <circle cx="200" cy="160" r="5" fill="#10b981"/>
+                <circle cx="170" cy="140" r="5" fill="#10b981"/>
+                <circle cx="250" cy="100" r="5" fill="#10b981"/>
+              </svg>
+              <p style="font-size:1.2rem;color:var(--muted);text-align:center;margin-top:.5rem;">Los puntos con círculo amarillo son los <strong style="color:#f59e0b;">Vectores de Soporte</strong>.</p>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box purple" style="margin-bottom:1rem;">
+              <p style="font-size:1.5rem;font-weight:800;color:#c4b5fd;margin-bottom:.5rem;"><i class="fa-solid fa-magic"></i> El Truco del Kernel</p>
+              <p style="font-size:1.4rem;">Si los puntos no se pueden separar con una línea recta (ej: un círculo de puntos rojos rodeado de puntos verdes), SVM usa un "Kernel" para proyectar los datos a 3D, donde un plano plano sí puede cortarlos limpiamente.</p>
+            </div>
+            <div class="card accent-g">
+              <div class="card-title" style="font-size:1.5rem;"><i class="fa-solid fa-star" style="color:var(--ok);"></i> Ideal para...</div>
+              <ul class="check-list" style="margin-top:.5rem;">
+                <li>Datos complejos con fronteras claras.</li>
+                <li>Reconocimiento de imágenes (clásico).</li>
+                <li>Bioinformática.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 16 -->
+    <div class="slide" data-session="2" data-notes="KNN para clasificación funciona exactamente igual que para regresión, pero en lugar de promediar números, los vecinos VOTAN. Si de mis 5 vecinos más cercanos, 4 son 'Fraude' y 1 es 'Normal', por mayoría de votos me clasifican como 'Fraude'. Es crucial usar un K impar (ej: 3, 5, 7) para evitar empates en clasificaciones binarias.">
+      <div class="orb orb3"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-users"></i> KNN Clasificación</div>
+        <h2 class="reveal reveal-d1">Votación por mayoría en el vecindario</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">Para un nuevo dato, KNN encuentra los K vecinos más cercanos y deja que <strong style="color:var(--pl);">voten</strong>. La clase con más votos gana.</p>
+            <div class="mock-chart">
+              <p style="font-size:1.3rem;font-weight:700;color:var(--muted);text-align:center;margin-bottom:1rem;">K = 5 Vecinos</p>
+              <svg viewBox="0 0 280 200" style="width:100%;max-width:300px;display:block;margin:0 auto;">
+                <circle cx="140" cy="100" r="70" fill="none" stroke="rgba(14, 165, 233, .3)" stroke-width="1.5" stroke-dasharray="5,3"/>
+                <circle cx="140" cy="100" r="10" fill="#f59e0b" stroke="#fff" stroke-width="2"/>
+                <text x="155" y="95" fill="#f59e0b" font-size="10" font-weight="bold">? Nuevo</text>
+                
+                <!-- Vecinos dentro del círculo -->
+                <circle cx="95" cy="85" r="7" fill="#ef4444"/>  <!-- Rojo -->
+                <circle cx="115" cy="140" r="7" fill="#ef4444"/> <!-- Rojo -->
+                <circle cx="170" cy="145" r="7" fill="#ef4444"/> <!-- Rojo -->
+                
+                <circle cx="180" cy="65" r="7" fill="#10b981"/> <!-- Verde -->
+                <circle cx="120" cy="55" r="7" fill="#10b981"/> <!-- Verde -->
+                
+                <!-- Votación text -->
+                <text x="70" y="185" fill="#ef4444" font-size="12" font-weight="bold">3 Rojos vs 2 Verdes ➔ ¡Es Rojo!</text>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box yellow">
+              <p style="font-size:1.5rem;font-weight:800;color:var(--acc);margin-bottom:.5rem;"><i class="fa-solid fa-lightbulb"></i> Regla de Oro para KNN Clasificación:</p>
+              <p style="font-size:1.4rem;">Si tienes 2 categorías (ej: Enfermo / Sano), <strong style="color:#fff;">K siempre debe ser IMPAR</strong> (3, 5, 7...). Si K=4, podrías tener un empate 2 a 2 y el algoritmo no sabría qué decidir.</p>
+            </div>
+            <div class="card accent-c" style="margin-top:1rem;">
+              <div class="card-title" style="font-size:1.5rem;">Resumen Algoritmos Clasificación</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li><strong>Regresión Logística:</strong> Probabilidades (0 a 1) y umbrales.</li>
+                <li><strong>Naive Bayes:</strong> Análisis de texto / NLP.</li>
+                <li><strong>Support Vector Machine (SVM):</strong> Fronteras complejas e imágenes.</li>
+                <li><strong>K-Nearest Neighbors (KNN):</strong> Votación por mayoría entre los "K" vecinos más similares. El que se junta con lobos, a aullar aprende.</li>
+              </ul>
+            </div>
+            <button class="colab-btn" onclick="openColabModal('linear_reg')"><i class="fa-brands fa-python"></i> Ver Ejemplo en Google Colab</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- MICRO-ACTIVIDAD 3 -->
+    <div class="slide" data-session="2" data-notes="Micro-actividad de Clasificación. Analiza escenarios comunes de clasificación y pide que elijan el algoritmo que mejor se adapta. Similar a lo que pide la Evaluación 2.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal" style="display:inline-flex; align-items:center; gap:0.5rem; background:#f59e0b; color:#000; padding:0.4rem 1.2rem; border-radius:100px; box-shadow: 0 4px 15px rgba(245,158,11,0.3); font-size:1.2rem; letter-spacing:0.1em;"><i class="fa-solid fa-clipboard-question"></i> Micro-Actividad 3</div>
+        <h2 class="reveal reveal-d1">Clasificando en el Mundo Real</h2>
+        <p class="reveal reveal-d2" style="font-size:1.4rem; color:var(--muted); margin-bottom:2rem;">Decide qué modelo de clasificación usarías para estos problemas.</p>
+        
+        <div class="cols cols-2 reveal reveal-d3" style="gap:2rem;">
+          <div>
+            <div class="highlight-box green">
+              <p style="font-size:1.4rem;font-weight:700;color:var(--ok);margin-bottom:1rem;"><i class="fa-solid fa-virus-covid"></i> Diagnóstico Médico</p>
+              <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">Tienes miles de imágenes de radiografías y necesitas separar las que muestran neumonía de las sanas. La frontera entre ambas es sutil y compleja.</p>
+              <button onclick="document.getElementById('sol3A').style.display='block';this.style.display='none'" style="padding:0.5rem 1rem; border:none; border-radius:4px; background:rgba(16,185,129,0.2); color:#34d399; cursor:pointer; font-weight:bold;">Ver Respuesta</button>
+              <div id="sol3A" style="display:none; margin-top:1rem; padding:1rem; background:rgba(16,185,129,0.1); border-left:4px solid #10b981;">
+                <strong style="color:#34d399;">SUPPORT VECTOR MACHINE (SVM).</strong> Porque al usar el truco del Kernel, SVM es excelente separando datos altamente complejos (incluso imágenes clásicas) buscando el hiperplano óptimo.
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box red">
+              <p style="font-size:1.4rem;font-weight:700;color:var(--err);margin-bottom:1rem;"><i class="fa-solid fa-envelope-open-text"></i> Filtro Antispam</p>
+              <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">Analizar el texto de los correos electrónicos entrantes para decidir si es "Spam" o "No Spam" basándose en la frecuencia de ciertas palabras ("Gratis", "Oferta").</p>
+              <button onclick="document.getElementById('sol3B').style.display='block';this.style.display='none'" style="padding:0.5rem 1rem; border:none; border-radius:4px; background:rgba(239,68,68,0.2); color:#fca5a5; cursor:pointer; font-weight:bold;">Ver Respuesta</button>
+              <div id="sol3B" style="display:none; margin-top:1rem; padding:1rem; background:rgba(239,68,68,0.1); border-left:4px solid #ef4444;">
+                <strong style="color:#fca5a5;">NAIVE BAYES.</strong> Es el algoritmo estrella e históricamente utilizado para clasificar textos usando probabilidades de ocurrencia de palabras.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SESION 3: EVALUACION ==================== -->
+    <!-- SLIDE 17 -->
+    <div class="slide" data-session="3" data-notes="Llegamos a la parte más crítica para que la IA no sea humo: Evaluación. Aquí explicamos cómo sabemos que el modelo no se aprendió de memoria las respuestas. El concepto clave es separar los datos en Entrenamiento (Train) y Prueba (Test). Nunca evaluamos un modelo con los datos con los que aprendió, igual que un profesor no toma el examen final usando exactamente los mismos ejercicios de la guía de estudio.">
+      <div class="orb orb1"></div><div class="orb orb3"></div>
+      <div class="slide-inner cover centered">
+        <div class="reveal">
+          <div class="cover-badge" style="border-color:rgba(16, 185, 129, .6);color:#6ee7b7;background:rgba(16, 185, 129, .15);"><i class="fa-solid fa-bullseye"></i> Sesión 4 - Evaluación</div>
+          <h1 class="gradient-text" style="font-size:clamp(3.5rem,5vw,5rem);margin-bottom:1rem;background:linear-gradient(135deg, #fff 0%, #6ee7b7 50%, #10b981 100%);-webkit-background-clip:text;">Evaluación de Modelos</h1>
+          <h2 style="color:var(--muted);font-size:2rem;font-weight:500;margin-bottom:2rem;">¿Cómo sabemos si la máquina realmente aprendió?</h2>
+          <div class="pill-row" style="justify-content:center;">
+            <span class="pill pill-cyan">Train vs Test</span>
+            <span class="pill pill-violet">Error Cuadrático</span>
+            <span class="pill pill-green">Matriz de Confusión</span>
+            <span class="pill pill-orange">Curva ROC</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SLIDE 20 (Analogía Aprendizaje) -->
+    <div class="slide" data-session="3" data-notes="Para entender cómo aprende un modelo y por qué fallan, usemos la analogía del estudiante de matemáticas. El que no estudia nada es Underfitting: reprueba todo. El que memoriza los ejercicios del cuaderno es Overfitting: saca un 7.0 en los ensayos, pero en la prueba real reprueba porque le cambiaron los números. El estudiante ideal (Good Fit) es el que entendió la lógica de cómo sumar, y puede resolver problemas que nunca antes había visto.">
+      <div class="orb orb3"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-lightbulb"></i> Analogía del Mundo Real</div>
+        <h2 class="reveal reveal-d1">¿Aprender o Memorizar? (Underfitting vs Overfitting)</h2>
+        <div class="cols cols-3 reveal reveal-d2" style="gap:1.5rem;">
+          <div class="card accent-r">
+            <div class="card-title"><i class="fa-solid fa-face-frown-open" style="color:var(--err);"></i> Subajuste (Underfitting)</div>
+            <p style="font-size:1.4rem;color:#fff;font-weight:700;margin:.5rem 0;">"El que no estudió nada"</p>
+            <p style="font-size:1.3rem;color:var(--muted);">El modelo es tan simple que ni siquiera entiende los datos de entrenamiento. Se equivoca en todo, como tratar de trazar una línea recta en un círculo.</p>
+          </div>
+          <div class="card accent-y">
+            <div class="card-title"><i class="fa-solid fa-face-dizzy" style="color:var(--acc);"></i> Sobreajuste (Overfitting)</div>
+            <p style="font-size:1.4rem;color:#fff;font-weight:700;margin:.5rem 0;">"El Machetero (Memorión)"</p>
+            <p style="font-size:1.3rem;color:var(--muted);">El modelo se aprende de memoria hasta el más mínimo error de los datos. Saca 100% en el entrenamiento, pero fracasa terriblemente en el mundo real.</p>
+          </div>
+          <div class="card accent-g">
+            <div class="card-title"><i class="fa-solid fa-face-smile" style="color:var(--ok);"></i> Buen Ajuste (Good Fit)</div>
+            <p style="font-size:1.4rem;color:#fff;font-weight:700;margin:.5rem 0;">"El que entendió la lógica"</p>
+            <p style="font-size:1.3rem;color:var(--muted);">El modelo no memorizó, aprendió el patrón general. Por ende, cuando le pasamos datos nuevos, generaliza bien y acierta de forma consistente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 21 -->
+    <div class="slide" data-session="3" data-notes="El concepto de Train/Test Split. Imagina que enseñas a sumar a un niño con tarjetas (2+2=4). Si en la prueba le preguntas 2+2, ¿aprendió a sumar o memorizó la tarjeta? Para saber si aprendió, debes preguntarle 3+4. En ML, reservamos un 20% o 30% de los datos y los ESCONDEMOS. Entrenamos con el 70-80% restante (Train). Luego tomamos el modelo y lo evaluamos en los datos escondidos (Test).">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-scissors"></i> Train / Test Split</div>
+        <h2 class="reveal reveal-d1">La regla de oro: nunca evalúes con lo que entrenaste</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">Para saber si un modelo puede <strong style="color:var(--ok);">generalizar</strong> (predecir el mundo real) y no solo <strong style="color:var(--err);">memorizar</strong>, dividimos nuestros datos históricos en dos.</p>
+            
+            <div style="background:var(--card);border:1px solid var(--gb);border-radius:12px;padding:1.5rem;margin-bottom:1rem;">
+              <p style="font-size:1.4rem;font-weight:700;margin-bottom:.5rem;color:var(--pl);">1. Datos de Entrenamiento (Train) ~ 80%</p>
+              <div style="display:flex;height:30px;background:rgba(14, 165, 233, .2);border-radius:6px;overflow:hidden;border:1px solid rgba(14, 165, 233, .5);">
+                <div style="width:100%;background:rgba(14, 165, 233, .6);"></div>
+              </div>
+              <p style="font-size:1.2rem;color:var(--muted);margin-top:.5rem;">La "Guía de estudio". El modelo ve estos datos y sus respuestas.</p>
+            </div>
+            
+            <div style="background:var(--card);border:1px solid var(--gb);border-radius:12px;padding:1.5rem;">
+              <p style="font-size:1.4rem;font-weight:700;margin-bottom:.5rem;color:var(--acc);">2. Datos de Prueba (Test) ~ 20%</p>
+              <div style="display:flex;height:30px;background:rgba(245, 158, 11, .2);border-radius:6px;overflow:hidden;border:1px solid rgba(245, 158, 11, .5);">
+                <div style="width:100%;background:rgba(245, 158, 11, .6);"></div>
+              </div>
+              <p style="font-size:1.2rem;color:var(--muted);margin-top:.5rem;">El "Examen final". Están ocultos durante el entrenamiento.</p>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box red">
+              <p style="font-size:1.5rem;font-weight:800;color:var(--err);margin-bottom:.5rem;"><i class="fa-solid fa-ghost"></i> El peligro del Sobreajuste (Overfitting)</p>
+              <p style="font-size:1.4rem;">Pasa cuando el modelo tiene nota 100 en Entrenamiento pero reprueba en Prueba. Memorizó el ruido en lugar de aprender el patrón.</p>
+            </div>
+            <div class="highlight-box green">
+              <p style="font-size:1.5rem;font-weight:800;color:var(--ok);margin-bottom:.5rem;"><i class="fa-solid fa-shield-halved"></i> Validación Cruzada (Cross-Validation)</p>
+              <p style="font-size:1.4rem;">Es un nivel de seguridad mayor: dividimos los datos en 5 bloques y repetimos el examen 5 veces, rotando el bloque de prueba. Así evitamos tener "suerte" con un corte fácil de datos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 19 -->
+    <div class="slide" data-session="3" data-notes="Métricas para REGRESIÓN. Si predicimos precios de casas, ¿cómo sabemos si nos equivocamos mucho o poco? Las métricas clave son MAE, MSE y RMSE. MAE (Mean Absolute Error) es la más fácil de explicar: 'En promedio, nos equivocamos en $200.000'. RMSE castiga los errores muy grandes (porque los eleva al cuadrado primero). R2 (R cuadrado) es un porcentaje de qué tan bueno es el modelo vs predecir siempre el promedio.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-ruler-combined"></i> Evaluando Regresión</div>
+        <h2 class="reveal reveal-d1">Midiendo el margen de error</h2>
+        <div class="cols cols-3 reveal reveal-d2" style="gap:1.5rem;margin-top:1.5rem;">
+          <div class="card accent-p" style="padding:2rem;">
+            <p style="font-size:2rem;font-weight:900;color:var(--pl);margin-bottom:.5rem;">MAE</p>
+            <p style="font-size:1.2rem;color:var(--muted);font-weight:700;margin-bottom:1rem;">Error Absoluto Medio</p>
+            <p style="font-size:1.3rem;line-height:1.5;">El promedio simple de todos los errores. Súper fácil de explicar a gerencia.</p>
+            <div style="margin-top:1.5rem;background:rgba(0,0,0,.2);padding:1rem;border-radius:8px;">
+              <p style="font-size:1.2rem;color:var(--ok);">Ej: "Nos equivocamos por $10.000 promedio"</p>
+            </div>
+          </div>
+          <div class="card accent-r" style="padding:2rem;">
+            <p style="font-size:2rem;font-weight:900;color:var(--err);margin-bottom:.5rem;">RMSE</p>
+            <p style="font-size:1.2rem;color:var(--muted);font-weight:700;margin-bottom:1rem;">Raíz del Error Cuadrático Medio</p>
+            <p style="font-size:1.3rem;line-height:1.5;">Penaliza severamente los <strong style="color:#fff;">errores grandes</strong> (porque eleva el error al cuadrado).</p>
+            <div style="margin-top:1.5rem;background:rgba(0,0,0,.2);padding:1rem;border-radius:8px;">
+              <p style="font-size:1.2rem;color:var(--err);">Úsalo si un error grande es catastrófico.</p>
+            </div>
+          </div>
+          <div class="card accent-g" style="padding:2rem;">
+            <p style="font-size:2rem;font-weight:900;color:var(--ok);margin-bottom:.5rem;">R²</p>
+            <p style="font-size:1.2rem;color:var(--muted);font-weight:700;margin-bottom:1rem;">Coeficiente de Determinación</p>
+            <p style="font-size:1.3rem;line-height:1.5;">Puntaje de 0 a 1. Qué tanto mejor es tu modelo que simplemente adivinar el promedio.</p>
+            <div style="margin-top:1.5rem;background:rgba(0,0,0,.2);padding:1rem;border-radius:8px;">
+              <p style="font-size:1.2rem;color:var(--ok);">Ej: R² de 0.85 significa un modelo muy bueno.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 20 -->
+    <div class="slide" data-session="3" data-notes="Métricas para CLASIFICACIÓN. Aquí no medimos la 'distancia' de un error, porque te equivocas o aciertas (fraude o normal). La herramienta maestra es la Matriz de Confusión. Explique la estructura: Filas son la realidad, Columnas son lo que dijo el modelo. Verdaderos Positivos (el doctor dijo enfermo y estaba enfermo) vs Falsos Positivos (el doctor dijo enfermo, pero estaba sano). Haga participar: ¿Qué es peor en medicina, un Falso Positivo o un Falso Negativo? (Respuesta: Falso Negativo, porque mandas a un enfermo a su casa sin tratamiento).">
+      <div class="orb orb3"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-table-cells"></i> Evaluando Clasificación</div>
+        <h2 class="reveal reveal-d1">La Matriz de Confusión</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <p style="font-size:1.5rem;margin-bottom:1.5rem;">Compara lo que predijo el modelo vs la realidad. Fundamental para entender <strong style="color:var(--pl);">CÓMO</strong> se equivoca.</p>
+            
+            <table class="compare-table" style="text-align:center;background:var(--card);border-radius:12px;overflow:hidden;">
+              <thead>
+                <tr>
+                  <th style="background:transparent;border:none;"></th>
+                  <th colspan="2" style="text-align:center;background:rgba(14, 165, 233, .2);">Predicción del Modelo</th>
+                </tr>
+                <tr>
+                  <th style="text-align:center;background:rgba(139, 92, 246, .2);">Realidad</th>
+                  <th style="text-align:center;">Dijo Positivo (+)</th>
+                  <th style="text-align:center;">Dijo Negativo (-)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight:bold;background:rgba(139, 92, 246, .1);">Real Positivo (+)</td>
+                  <td style="background:rgba(16, 185, 129, .2);color:#10b981;font-weight:bold;font-size:1.8rem;">Verdadero Positivo (VP)<br><span style="font-size:1.2rem;font-weight:normal;color:#fff;">Enfermo, diagnosticado enfermo</span></td>
+                  <td style="background:rgba(239, 68, 68, .2);color:#ef4444;font-weight:bold;font-size:1.8rem;">Falso Negativo (FN)<br><span style="font-size:1.2rem;font-weight:normal;color:#fff;">Enfermo, mandado a casa ⚠️</span></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:bold;background:rgba(139, 92, 246, .1);">Real Negativo (-)</td>
+                  <td style="background:rgba(245, 158, 11, .2);color:#f59e0b;font-weight:bold;font-size:1.8rem;">Falso Positivo (FP)<br><span style="font-size:1.2rem;font-weight:normal;color:#fff;">Sano, pero asustado</span></td>
+                  <td style="background:rgba(16, 185, 129, .2);color:#10b981;font-weight:bold;font-size:1.8rem;">Verdadero Negativo (VN)<br><span style="font-size:1.2rem;font-weight:normal;color:#fff;">Sano, diagnosticado sano</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <div class="highlight-box purple" style="margin-top:0;">
+              <p style="font-size:1.5rem;font-weight:800;color:#c4b5fd;margin-bottom:.5rem;"><i class="fa-solid fa-scale-unbalanced"></i> No todos los errores cuestan lo mismo</p>
+              <ul class="dot-list" style="margin-top:1rem;">
+                <li><strong style="color:#fff;">En Medicina:</strong> Un Falso Negativo (decir que está sano cuando tiene cáncer) es fatal.</li>
+                <li><strong style="color:#fff;">En Filtro Spam:</strong> Un Falso Positivo (mandar el email de tu jefe a Spam) es peor que dejar pasar un spam (Falso Negativo).</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- SLIDE 24 (Analogía Métricas) -->
+    <div class="slide" data-session="3" data-notes="Entender Accuracy vs Recall es vital. Pensemos en un detector de metales del aeropuerto. Si pita con absolutamente todos los pasajeros (incluso por las llaves o cinturones), tiene un Recall del 100% porque jamás se le escapará un arma. ¡Pero su Precisión es horrible porque revisa a mil inocentes! En Machine Learning tenemos que elegir qué queremos priorizar según el problema de negocio.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-lightbulb"></i> Analogía del Mundo Real</div>
+        <h2 class="reveal reveal-d1">Métricas: El Detector de Metales</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <div class="highlight-box">
+              <p style="font-size:1.6rem;font-weight:800;color:var(--pl);margin-bottom:1rem;"><i class="fa-solid fa-person-military-pointing"></i> El guardia estricto (Alto Recall)</p>
+              <p style="font-size:1.4rem;color:var(--muted);margin-bottom:1rem;">El guardia decide pitarle a TODOS los pasajeros ante la más mínima duda.</p>
+              <ul class="check-list" style="margin-top:1rem;">
+                <li><strong style="color:var(--ok);">Lo Bueno:</strong> No se le escapó absolutamente ninguna amenaza real (Recall 100%).</li>
+                <li><strong style="color:var(--err);">Lo Malo:</strong> Hizo perder el vuelo a 500 personas inocentes revisándoles los zapatos (Baja Precisión).</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box purple" style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+              <p style="font-size:1.6rem;font-weight:800;color:#c4b5fd;margin-bottom:1rem;"><i class="fa-solid fa-user-doctor"></i> ¿Y en la medicina?</p>
+              <p style="font-size:1.4rem;color:var(--muted);margin-bottom:1rem;">Imagina un doctor diagnosticando cáncer.</p>
+              <p style="font-size:1.4rem;color:#fff;">Aquí queremos <strong>Alto Recall (Guardia Estricto)</strong>. Es preferible asustar a un paciente sano con exámenes extra (Falso Positivo), a mandar a un enfermo a su casa diciéndole que está bien (Falso Negativo).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 25 -->
+    <div class="slide" data-session="3" data-notes="De la Matriz de Confusión nacen las métricas matemáticas. Accuracy (Exactitud) es la más fácil pero engañosa si los datos están desbalanceados (ej. si el 99% son transacciones normales, decir siempre 'Normal' da 99% de Accuracy pero es inútil para atrapar fraudes). Para eso usamos Precisión (De los que el modelo dijo que eran fraude, ¿cuántos realmente lo eran?) y Recall/Sensibilidad (De todos los fraudes reales, ¿cuántos atrapó el modelo?). F1-Score es el promedio armónico entre ambas.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-calculator"></i> Métricas derivadas</div>
+        <h2 class="reveal reveal-d1">Más allá del simple "porcentaje de acierto"</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:1.5rem;">
+          <div class="card accent-c">
+            <div class="card-title" style="font-size:1.6rem;color:var(--pl);">Exactitud (Accuracy)</div>
+            <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">Total aciertos / Total de casos.</p>
+            <div style="background:rgba(239, 68, 68, .1);padding:1rem;border-radius:8px;border:1px solid rgba(239, 68, 68, .3);">
+              <p style="font-size:1.2rem;color:#fca5a5;"><i class="fa-solid fa-triangle-exclamation"></i> <strong>¡Engañosa en datos desbalanceados!</strong> Si el 99% de los correos no son spam, un modelo que siempre diga "No Spam" tendrá 99% de Accuracy, ¡pero es un modelo inútil!</p>
+            </div>
+          </div>
+          <div class="card accent-p">
+            <div class="card-title" style="font-size:1.6rem;color:var(--p);">Precisión (Precision)</div>
+            <p style="font-size:1.3rem;color:var(--muted);">De todos los que el modelo etiquetó como POSITIVOS, ¿cuántos eran realmente positivos? (Mide los Falsos Positivos).</p>
+          </div>
+          <div class="card accent-g">
+            <div class="card-title" style="font-size:1.6rem;color:var(--ok);">Sensibilidad (Recall)</div>
+            <p style="font-size:1.3rem;color:var(--muted);">De TODOS los positivos REALES que existen, ¿cuántos logró detectar el modelo? (Mide los Falsos Negativos).</p>
+          </div>
+          <div class="card accent-y">
+            <div class="card-title" style="font-size:1.6rem;color:var(--acc);">F1-Score</div>
+            <p style="font-size:1.3rem;color:var(--muted);">Es el promedio (armónico) entre Precisión y Recall. Úsalo como métrica principal cuando las clases están muy desbalanceadas.</p>
+            <button class="colab-btn" onclick="openColabModal('ethics')" style="margin-top:1.5rem;"><i class="fa-solid fa-scale-balanced"></i> Actividad Formativa 4: Ética y Sesgos</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- MICRO-ACTIVIDAD 4 -->
+    <div class="slide" data-session="3" data-notes="Micro-actividad final sobre Métricas. Pon a prueba el entendimiento de cuándo priorizar Recall y cuándo priorizar Precisión basándose en las consecuencias del negocio.">
+      <div class="orb orb2"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal" style="display:inline-flex; align-items:center; gap:0.5rem; background:#f59e0b; color:#000; padding:0.4rem 1.2rem; border-radius:100px; box-shadow: 0 4px 15px rgba(245,158,11,0.3); font-size:1.2rem; letter-spacing:0.1em;"><i class="fa-solid fa-clipboard-question"></i> Micro-Actividad 4</div>
+        <h2 class="reveal reveal-d1">¿Precisión o Recall?</h2>
+        <p class="reveal reveal-d2" style="font-size:1.4rem; color:var(--muted); margin-bottom:2rem;">Si estuvieras a cargo de estos dos proyectos de Machine Learning, ¿qué métrica intentarías maximizar a toda costa?</p>
+        
+        <div class="cols cols-2 reveal reveal-d3" style="gap:2rem;">
+          <div>
+            <div class="highlight-box red">
+              <p style="font-size:1.4rem;font-weight:700;color:var(--err);margin-bottom:1rem;"><i class="fa-solid fa-shield-halved"></i> Detección de Fraude Bancario</p>
+              <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">El modelo alerta cuando una transacción parece fraudulenta. Si el modelo se equivoca (falso fraude), el cliente tiene que llamar para desbloquear su tarjeta. Si se le escapa un fraude real, el banco pierde miles de dólares.</p>
+              <button onclick="document.getElementById('sol4A').style.display='block';this.style.display='none'" style="padding:0.5rem 1rem; border:none; border-radius:4px; background:rgba(239,68,68,0.2); color:#fca5a5; cursor:pointer; font-weight:bold;">Ver Respuesta</button>
+              <div id="sol4A" style="display:none; margin-top:1rem; padding:1rem; background:rgba(239,68,68,0.1); border-left:4px solid #ef4444;">
+                <strong style="color:#fca5a5;">RECALL (Sensibilidad).</strong> Es preferible molestar a algunos clientes bloqueando tarjetas sanas (falsos positivos) con tal de no dejar escapar <strong>ningún</strong> fraude real que pueda quebrar al banco.
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box purple">
+              <p style="font-size:1.4rem;font-weight:700;color:#c4b5fd;margin-bottom:1rem;"><i class="fa-solid fa-gavel"></i> Sistema de Justicia</p>
+              <p style="font-size:1.3rem;color:var(--muted);margin-bottom:1rem;">Un modelo predice si un acusado es Culpable (Positivo) o Inocente (Negativo). Si lo marca como Positivo, va a la cárcel.</p>
+              <button onclick="document.getElementById('sol4B').style.display='block';this.style.display='none'" style="padding:0.5rem 1rem; border:none; border-radius:4px; background:rgba(196,181,253,0.2); color:#c4b5fd; cursor:pointer; font-weight:bold;">Ver Respuesta</button>
+              <div id="sol4B" style="display:none; margin-top:1rem; padding:1rem; background:rgba(196,181,253,0.1); border-left:4px solid #a855f7;">
+                <strong style="color:#c4b5fd;">PRECISIÓN.</strong> En el sistema de justicia prima la presunción de inocencia. Es gravísimo meter a un inocente a la cárcel (Falso Positivo). Queremos estar 100% seguros de que si decimos "Culpable", realmente lo sea.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SESION 4: CIERRE ==================== -->
+    <!-- SLIDE 22 -->
+    <div class="slide" data-session="4" data-notes="Llegamos a la recta final. Es momento de aterrizar todo esto a la Evaluación 2 que deben realizar los alumnos. Recuerde que esta evaluación corresponde al 20% del curso y consolida la capacidad de elegir y aplicar estos modelos (o al menos diseñar el proceso de uso de los mismos según la rúbrica).">
+      <div class="orb orb1"></div><div class="orb orb2"></div>
+      <div class="slide-inner cover centered">
+        <div class="reveal">
+          <div class="cover-badge" style="border-color:rgba(245, 158, 11, .6);color:#fcd34d;background:rgba(245, 158, 11, .15);"><i class="fa-solid fa-clipboard-check"></i> Cierre de Unidad</div>
+          <h1 class="gradient-text" style="font-size:clamp(3.5rem,5vw,5rem);margin-bottom:1rem;background:linear-gradient(135deg, #fff 0%, #fcd34d 50%, #f59e0b 100%);-webkit-background-clip:text;">Evaluación y Práctica</h1>
+          <h2 style="color:var(--muted);font-size:2rem;font-weight:500;margin-bottom:2rem;">Llevando la teoría al mundo real</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 23 -->
+    <div class="slide" data-session="4" data-notes="Lea las instrucciones de la Evaluación 2. Dependiendo de cómo esté formulado el sílabo, esto puede ser un proyecto práctico en Python o un caso de estudio conceptual. Asegúrese de que los alumnos entiendan la rúbrica: 1. Identificar si es regresión o clasificación. 2. Elegir métrica de evaluación correcta. 3. Justificar el algoritmo propuesto.">
+      <div class="orb orb3"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-file-signature"></i> Instrucciones Evaluación 2</div>
+        <h2 class="reveal reveal-d1">Proyecto de Unidad (20%)</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <div class="highlight-box">
+              <p style="font-size:1.6rem;font-weight:800;color:var(--pl);margin-bottom:1rem;"><i class="fa-solid fa-list"></i> El Encargo</p>
+              <ul class="num-list">
+                <li>Se les entregará un <strong style="color:#fff;">Caso de Negocio Real</strong>.</li>
+                <li>Deben identificar si requiere Regresión o Clasificación.</li>
+                <li>Proponer 2 algoritmos candidatos y explicar por qué.</li>
+                <li>Definir la métrica de evaluación adecuada (ej. Por qué Accuracy no sirve y proponen Recall).</li>
+                <li>Presentar un esquema de Validación (Train/Test split).</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="card accent-g" style="margin-bottom:1rem;">
+              <div class="card-title"><i class="fa-solid fa-star" style="color:var(--ok);"></i> Criterios de Éxito</div>
+              <ul class="dot-list" style="margin-top:.5rem;">
+                <li>Justificación lógica de la elección del modelo.</li>
+                <li>Correcta selección de métricas (Matriz de confusión o RMSE).</li>
+                <li>Claridad en la comunicación hacia un "gerente" no técnico.</li>
+              </ul>
+            </div>
+            <div class="card accent-r">
+              <div class="card-title"><i class="fa-solid fa-calendar-xmark" style="color:var(--err);"></i> Plazos</div>
+              <p style="font-size:1.4rem;color:var(--muted);margin-top:.5rem;">Revisar el Aula Virtual para la fecha de entrega exacta y formato de subida (PDF).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 24 -->
+    <div class="slide" data-session="4" data-notes="Para profundizar en lo que se debe hacer, expliquemos el Paso 1. Los estudiantes deben leer el caso y preguntarse: ¿Qué queremos predecir? Si es un valor numérico continuo, como las ventas del próximo mes, es Regresión. Si es una categoría, como si un cliente va a cancelar su suscripción (Sí/No), es Clasificación. Luego, deben elegir dos modelos vistos en clase que sirvan para ese problema y justificar su elección basándose en las ventajas y desventajas que revisamos.">
+      <div class="orb orb1"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-magnifying-glass"></i> Paso 1 de la Evaluación</div>
+        <h2 class="reveal reveal-d1">Definición del Problema y Algoritmos</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <div class="card accent-p" style="margin-bottom:1rem; padding: 2rem;">
+              <div class="card-title"><i class="fa-solid fa-question-circle" style="color:var(--p);"></i> ¿Regresión o Clasificación?</div>
+              <p style="font-size:1.4rem;color:var(--muted);margin-top:.5rem;">Analicen la variable objetivo del caso.</p>
+              <ul class="dot-list" style="margin-top:1rem;">
+                <li><strong style="color:#fff;">Regresión:</strong> Si predicen precios, cantidades, tiempos.</li>
+                <li><strong style="color:#fff;">Clasificación:</strong> Si predicen etiquetas (Spam, Fraude, Tipo de cliente).</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="card accent-g" style="padding: 2rem;">
+              <div class="card-title"><i class="fa-solid fa-scale-balanced" style="color:var(--ok);"></i> Selección de 2 Modelos</div>
+              <p style="font-size:1.4rem;color:var(--muted);margin-top:.5rem;">Propongan 2 algoritmos competidores. Ejemplo para Clasificación:</p>
+              <ul class="check-list" style="margin-top:1rem;">
+                <li><strong style="color:#fff;">Modelo 1 (Regresión Logística):</strong> Porque es simple, rápido y fácil de interpretar.</li>
+                <li><strong style="color:#fff;">Modelo 2 (Árboles de Decisión):</strong> Porque puede capturar relaciones no lineales en el comportamiento de los clientes.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 25 -->
+    <div class="slide" data-session="4" data-notes="El Paso 2 de la evaluación requiere que definan cómo validarán el modelo y qué métricas usarán para medir su éxito. Deben explicar cómo separarían los datos, asegurándose de no entrenar y evaluar con lo mismo. Y lo más importante, deben justificar la métrica. Si el caso es de fraude, deben explicar que Accuracy no sirve y que se enfocarán en Recall para atrapar la mayor cantidad de fraudes posibles.">
+      <div class="orb orb2"></div>
+      <div class="slide-inner">
+        <div class="slide-tag reveal"><i class="fa-solid fa-chart-pie"></i> Paso 2 de la Evaluación</div>
+        <h2 class="reveal reveal-d1">Validación y Métricas de Éxito</h2>
+        <div class="cols cols-2 reveal reveal-d2" style="gap:2rem;">
+          <div>
+            <div class="highlight-box yellow" style="margin-top:0;">
+              <p style="font-size:1.5rem;font-weight:800;color:var(--pl);margin-bottom:1rem;"><i class="fa-solid fa-scissors"></i> Estrategia de Validación</p>
+              <p style="font-size:1.4rem;color:var(--muted);">Deben proponer un esquema <strong style="color:#fff;">Train/Test Split</strong>.</p>
+              <ul class="dot-list" style="margin-top:1rem;">
+                <li>Entrenar con el 80% de los datos históricos.</li>
+                <li>Evaluar el rendimiento en el 20% restante (datos nunca vistos por el modelo).</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <div class="highlight-box green" style="margin-top:0;">
+              <p style="font-size:1.5rem;font-weight:800;color:var(--pl);margin-bottom:1rem;"><i class="fa-solid fa-bullseye"></i> Elección de Métricas</p>
+              <p style="font-size:1.4rem;color:var(--muted);">No basta con nombrar una métrica, hay que <strong style="color:#fff;">justificarla en el contexto del negocio</strong>.</p>
+              <ul class="dot-list" style="margin-top:1rem;">
+                <li><strong style="color:var(--ok);">Caso Médico/Fraude:</strong> Privilegiar <strong style="color:#fff;">Recall (Sensibilidad)</strong> para no dejar escapar casos positivos.</li>
+                <li><strong style="color:var(--ok);">Caso Ventas/Precios:</strong> Usar <strong style="color:#fff;">MAE o RMSE</strong> para entender el error en dinero o unidades reales.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 24 -->
+    <div class="slide" data-session="4" data-notes="Fin de la clase. Dejar este slide mientras los alumnos comienzan a trabajar o resolver dudas. Agradecer por la atención e invitar a usar el foro si hay dudas.">
+      <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+      <div class="slide-inner cover centered">
+        <div class="reveal">
+          <i class="fa-solid fa-brain" style="font-size:6rem;color:var(--p);margin-bottom:2rem;animation:float 4s ease-in-out infinite;"></i>
+          <h1 class="gradient-text" style="font-size:4rem;margin-bottom:1.5rem;">Fin de la Unidad 2</h1>
+          <p class="cover-sub" style="font-size:1.8rem;margin-bottom:3rem;">"No se trata de tener el algoritmo más complejo, sino de hacer la pregunta correcta a los datos y medir con honestidad el resultado."</p>
+          <div class="pill-row" style="justify-content:center;">
+            <span class="pill pill-cyan"><i class="fa-solid fa-book"></i> Revisen el Aula Virtual</span>
+            <span class="pill pill-green"><i class="fa-solid fa-users"></i> Comiencen Evaluación 2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End Deck -->
+
+  <div class="nav-bar">
+    <div class="nav-info">
+      <div class="session-badge" id="ses-badge">INTRO</div>
+      <div class="nav-title" id="nav-title">Algoritmos de Machine Learning</div>
+      <div class="slide-counter"><span id="curr-slide">1</span> / <span id="total-slides">24</span></div>
+    </div>
+    <div class="nav-controls">
+      <button class="btn-notes" onclick="openPresenterWindow()"><i class="fa-solid fa-desktop"></i> Modo Orador</button>
+      <button class="btn-nav" id="btn-prev" onclick="go(-1)"><i class="fa-solid fa-chevron-left"></i> Anterior</button>
+      <button class="btn-nav primary" id="btn-next" onclick="go(1)">Siguiente <i class="fa-solid fa-chevron-right"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const tabs = document.querySelectorAll('.tab');
+    let current = 0;
+    let presenterWin = null;
+    
+    // Nombres de sesiones para el badge
+    const sessionNames = ['INTRO U2', 'REGRESIÓN', 'CLASIFICACIÓN', 'EVALUACIÓN', 'CIERRE'];
+
+    function update() {
+      slides.forEach((s, i) => {
+        s.classList.remove('active', 'prev');
+        if (i === current) s.classList.add('active');
+        else if (i < current) s.classList.add('prev');
+      });
+
+      document.getElementById('curr-slide').innerText = current + 1;
+      document.getElementById('total-slides').innerText = slides.length;
+      document.getElementById('btn-prev').disabled = current === 0;
+      document.getElementById('btn-next').disabled = current === slides.length - 1;
+      document.getElementById('prog').style.width = ((current + 1) / slides.length * 100) + '%';
+
+      const ses = parseInt(slides[current].getAttribute('data-session'));
+      tabs.forEach(t => t.classList.remove('active'));
+      const activeTab = document.querySelector(`.tab[data-ses="${ses}"]`);
+      if (activeTab) activeTab.classList.add('active');
+      
+      document.getElementById('ses-badge').innerText = sessionNames[ses] || 'SESIÓN';
+      
+      // Update presenter window if open
+      if (presenterWin && !presenterWin.closed) {
+        updatePresenterSlide();
+      }
+    }
+
+    function go(dir) {
+      current += dir;
+      if (current < 0) current = 0;
+      if (current >= slides.length) current = slides.length - 1;
+      update();
+    }
+
+    function jumpSession(ses) {
+      const idx = Array.from(slides).findIndex(s => parseInt(s.getAttribute('data-session')) === ses);
+      if (idx !== -1) {
+        current = idx;
+        update();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'Space') { e.preventDefault(); go(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    });
+
+    // PRESENTER WINDOW LOGIC
+    function openPresenterWindow() {
+      if (presenterWin && !presenterWin.closed) {
+        presenterWin.focus();
+        return;
+      }
+      
+      presenterWin = window.open('', 'PresenterNotes', 'width=800,height=600,menubar=no,toolbar=no,location=no,status=no');
+      
+      // Attach command function to child window to avoid window.opener cross-origin blocks
+      presenterWin.sendCmd = function(delta) {
+        go(delta);
+      };
+
+      const html = `
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="utf-8">
+          <title>Notas del Orador - Unidad 2</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #0f172a; color: #f8fafc; padding: 30px; line-height: 1.6; }
+            .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #334155; padding-bottom: 20px; margin-bottom: 30px; }
+            .slide-num { font-size: 24px; font-weight: bold; color: #38bdf8; }
+            .timer { font-size: 32px; font-family: monospace; color: #10b981; }
+            .notes { font-size: 22px; color: #cbd5e1; background: #1e293b; padding: 25px; border-radius: 12px; border-left: 5px solid #0ea5e9; white-space: pre-wrap; }
+            .controls { display: flex; gap: 15px; margin-top: 30px; }
+            button { background: #334155; border: none; color: white; padding: 15px 30px; font-size: 18px; border-radius: 8px; cursor: pointer; transition: background 0.2s; flex: 1; }
+            button:hover { background: #475569; }
+            button.primary { background: #0ea5e9; }
+            button.primary:hover { background: #0284c7; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="slide-num">Diapositiva <span id="p-slide-num">1</span> de <span id="p-total">X</span></div>
+            <div class="timer" id="timer">00:00</div>
+          </div>
+          <div class="notes" id="p-notes">Cargando notas...</div>
+          <div class="controls">
+            <button onclick="window.sendCmd(-1)">Anterior</button>
+            <button class="primary" onclick="window.sendCmd(1)">Siguiente</button>
+          </div>
+          
+          <script>
+            // Timer logic
+            let seconds = 0;
+            setInterval(() => {
+              seconds++;
+              const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+              const s = (seconds % 60).toString().padStart(2, '0');
+              document.getElementById('timer').innerText = m + ':' + s;
+            }, 1000);
+            
+            // Allow keyboard control from presenter window
+            document.addEventListener('keydown', (e) => {
+              if (e.key === 'ArrowRight' || e.key === 'Space') { window.sendCmd(1); }
+              if (e.key === 'ArrowLeft') { window.sendCmd(-1); }
+            });
+          <\/script>
+        </body>
+        </html>
+      `;
+      
+      presenterWin.document.write(html);
+      presenterWin.document.close();
+      
+      // Give the new window a moment to render before updating content
+      setTimeout(updatePresenterSlide, 100);
+    }
+
+    function updatePresenterSlide() {
+      if (!presenterWin || presenterWin.closed) return;
+      
+      const slideNumDoc = presenterWin.document.getElementById('p-slide-num');
+      const totalDoc = presenterWin.document.getElementById('p-total');
+      const notesDoc = presenterWin.document.getElementById('p-notes');
+      
+      if (slideNumDoc && totalDoc && notesDoc) {
+        slideNumDoc.innerText = current + 1;
+        totalDoc.innerText = slides.length;
+        
+        const currentSlide = slides[current];
+        const notes = currentSlide.getAttribute('data-notes') || "Sin notas para esta diapositiva.";
+        notesDoc.innerText = notes;
+      }
+    }
+
+    // Inicializar
+    update();
+
+    const colabActivities = {
+      'crisp_eda': {
+        title: 'Fases 1 y 2: Comprensión y Exploración (EDA)',
+        code: `import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# ==========================================
+# CRISP-DM FASE 1 y 2: ENTENDIENDO LOS DATOS
+# ==========================================
+# Imaginemos que cargamos un dataset con metadatos de imágenes de Los Simpson.
+datos = {
+    'personaje': ['Homero']*500 + ['Bart']*150 + ['Marge']*100 + ['Lisa']*80,
+    'resolucion': ['Alta']*600 + ['Baja']*230
+}
+df = pd.DataFrame(datos)
+
+# 1. Exploración Básica (EDA)
+print("Resumen del Dataset:")
+print(df['personaje'].value_counts())
+
+# 2. Visualización para entender el negocio y los datos
+plt.figure(figsize=(8,5))
+sns.countplot(data=df, x='personaje', palette='viridis')
+plt.title('Distribución de Imágenes por Personaje (¡Ojo al desbalance!)')
+plt.ylabel('Cantidad de Fotos')
+plt.show()
+
+# PREGUNTA PARA DEBATE:
+# Si entrenamos un modelo con estos datos, ¿a quién reconocerá perfectamente 
+# y con quién se equivocará más? ¿Por qué es un problema ético y técnico?`
+      },
+      'prep_cv': {
+        title: 'Fase 3: Preparación de Imágenes (Los Simpson)',
+        code: `import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ==========================================
+# CRISP-DM FASE 3: PREPARACIÓN DE IMÁGENES
+# ==========================================
+# Simulemos una imagen (grilla de píxeles aleatorios)
+imagen_original = np.random.randint(0, 255, (300, 400), dtype=np.uint8)
+
+# 1. REDIMENSIONAMIENTO (Resize)
+# Los algoritmos exigen que TODAS las imágenes midan exactamente lo mismo.
+tamano_deseado = (64, 64)
+imagen_redimensionada = cv2.resize(imagen_original, tamano_deseado)
+
+# 2. NORMALIZACIÓN
+# Transformar píxeles de rango [0, 255] a rango [0, 1] para que las mates funcionen mejor.
+imagen_normalizada = imagen_redimensionada / 255.0
+
+# 3. APLANAMIENTO (Flatten)
+# Convertir la matriz 2D en un vector 1D (una lista larga de números)
+vector_caracteristicas = imagen_normalizada.flatten()
+
+print(f"Tamaño original: {imagen_original.shape}")
+print(f"Tamaño después del Resize: {imagen_redimensionada.shape}")
+print(f"Tamaño final del vector (características extraídas): {vector_caracteristicas.shape}")
+
+# PREGUNTA PARA DEBATE:
+# ¿Qué pasaría si olvidamos hacer el Resize y le pasamos fotos de distintos 
+# tamaños a un modelo de clasificación?`
+      },
+      'prep_nlp': {
+        title: 'Fase 3: Preparación de Texto (Don Quijote)',
+        code: `from sklearn.feature_extraction.text import TfidfVectorizer
+import nltk
+from nltk.corpus import stopwords
+import pandas as pd
+
+# ==========================================
+# CRISP-DM FASE 3: PREPARACIÓN DE TEXTO (NLP)
+# ==========================================
+# Descargar lista de palabras vacías (stopwords)
+nltk.download('stopwords', quiet=True)
+palabras_vacias = stopwords.words('spanish')
+
+textos = [
+    "En un lugar de la Mancha, de cuyo nombre no quiero acordarme.",
+    "No huye el que se retira, porque la valentía que no se funda en la prudencia se llama temeridad."
+]
+
+# 1. VECTORIZACIÓN Y LIMPIEZA
+# TfidfVectorizer limpia minúsculas, quita puntuación, borra stopwords y cuenta frecuencias.
+vectorizador = TfidfVectorizer(stop_words=palabras_vacias)
+
+# Transformamos el texto en números (Matriz)
+matriz_tfidf = vectorizador.fit_transform(textos)
+
+# Ver las "Características" (Features) extraídas
+palabras_clave = vectorizador.get_feature_names_out()
+
+df_texto = pd.DataFrame(matriz_tfidf.toarray(), columns=palabras_clave, index=["Frase 1", "Frase 2"])
+print("El texto convertido a números que el algoritmo sí puede leer:\\n")
+print(df_texto)
+
+# PREGUNTA PARA DEBATE:
+# Observa que palabras como "en", "un", "de", "la" desaparecieron. 
+# ¿Por qué hacemos esto antes de entrenar un modelo de clasificación?`
+      },
+      'ethics': {
+        title: 'Ética, Sesgo y Toma de Decisiones',
+        code: `# ==========================================
+# REFLEXIÓN CRÍTICA SOBRE RESULTADOS (FASE 1 Y 6)
+# ==========================================
+
+print("CASO DE ESTUDIO: RECONOCIMIENTO DE PERSONAJES")
+print("-" * 50)
+print("Imagina que construiste un modelo espectacular para identificar a")
+print("los personajes de Los Simpson. El 'Accuracy' general es del 95%.")
+print("Pero al revisar la Matriz de Confusión por personaje, descubres:")
+print("")
+print("- Precisión en Homero: 99%")
+print("- Precisión en Bart: 98%")
+print("- Precisión en Marge: 90%")
+print("- Precisión en Lisa (o personajes minoritarios): 65%")
+print("")
+
+# PREGUNTA PARA DEBATE GRUPAL:
+# 1. Si tuvieras que escribir las 'Conclusiones Justificadas' (Requisito de la Rúbrica),
+#    ¿Dirías que el modelo es un éxito rotundo porque tiene 95% de Accuracy?
+# 2. ¿En qué etapa del CRISP-DM ocurrió el problema que causó este sesgo? 
+#    ¿Cómo lo solucionarías antes de entregar el Notebook final?`
+      },
+      'linear_reg': {
+        title: 'Regresión Lineal Simple (Sklearn)',
+        code: `import numpy as np # NumPy: Librería matemática para manejar números
+import matplotlib.pyplot as plt # Matplotlib: Para dibujar gráficos
+from sklearn.linear_model import LinearRegression # El algoritmo desde Scikit-Learn
+
+# ==========================================
+# PASO 1: PREPARAR LOS DATOS (El Aprendizaje)
+# ==========================================
+# Imaginemos que tenemos información de 5 departamentos.
+# 'X' será nuestra variable de entrada (Metros Cuadrados).
+X = np.array([40, 50, 60, 70, 80]).reshape(-1, 1) 
+
+# 'y' será la variable que queremos predecir (Precio en Miles de CLP).
+# Sabemos que el de 40m2 costó 400mil, el de 50m2 costó 480mil, etc.
+y = np.array([400, 480, 550, 700, 820])           
+
+# ==========================================
+# PASO 2: CREAR Y ENTRENAR EL MODELO
+# ==========================================
+# Creamos el modelo. Aún está vacío, no sabe nada.
+modelo = LinearRegression()
+
+# Le pedimos que APRENDA la relación entre X (mts2) e y (precio).
+# .fit() significa: "Estudia estos datos y encuentra la fórmula matemática".
+modelo.fit(X, y)
+
+# ==========================================
+# PASO 3: HACER UNA PREDICCIÓN AL FUTURO
+# ==========================================
+# Llega un cliente que quiere vender un departamento de 65m2.
+X_nuevo = np.array([[65]]) 
+
+# Le pedimos al modelo ya entrenado que nos dé una predicción automática.
+prediccion = modelo.predict(X_nuevo)
+
+print(f"Ecuación descubierta: Precio = {modelo.coef_[0]:.2f} * Mts2 + {modelo.intercept_:.2f}")
+print(f"Predicción automática para 65 mts2: {prediccion[0]:.2f} mil CLP")
+
+# ==========================================
+# PASO 4: VER PARA CREER (Gráficos)
+# ==========================================
+# Puntos azules: Nuestros 5 datos reales del historial
+plt.scatter(X, y, color='blue', label='Datos Históricos (Reales)')
+
+# Línea roja: La recta perfecta que el modelo calculó
+plt.plot(X, modelo.predict(X), color='red', label='Línea de Tendencia (El Modelo)')
+
+# Punto verde: La predicción futura que hicimos
+plt.scatter(X_nuevo, prediccion, color='green', s=100, label='NUEVA Predicción (65m2)')
+
+plt.legend()
+plt.show()`
+      },
+      'trees': {
+        title: 'Árboles de Decisión (Sklearn)',
+        code: `from sklearn.tree import DecisionTreeClassifier # Algoritmo de Árbol
+from sklearn.model_selection import train_test_split # Para separar Train/Test
+from sklearn.datasets import load_iris # Set de datos clásico sobre flores
+from sklearn import tree # Para dibujar el árbol
+import matplotlib.pyplot as plt 
+
+# ==========================================
+# PASO 1: CARGAR LOS DATOS
+# ==========================================
+# 'Iris' es un registro de 3 tipos de flores según medidas de sus pétalos.
+dataset = load_iris()
+X = dataset.data   # Las medidas en centímetros
+y = dataset.target # El tipo exacto de flor (Etiqueta 0, 1 o 2)
+
+# ==========================================
+# PASO 2: SEPARAR PARA VALIDAR (LA REGLA DE ORO)
+# ==========================================
+# test_size=0.3: Guardamos el 30% de las flores en secreto para un "examen final".
+# Solo usamos el 70% restante para entrenar.
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# ==========================================
+# PASO 3: ENTRENAR EL MODELO
+# ==========================================
+# max_depth=3 evita que el árbol se vuelva gigante y memorice (Sobreajuste).
+modelo_arbol = DecisionTreeClassifier(max_depth=3) 
+
+# Lo entrenamos SOLO con los datos de estudio (70%)
+modelo_arbol.fit(X_train, y_train)
+
+# ==========================================
+# PASO 4: EXAMEN FINAL
+# ==========================================
+# Pedimos al modelo que evalúe el 30% oculto y comparamos si acertó.
+precision = modelo_arbol.score(X_test, y_test)
+print(f"Exactitud (Accuracy) del Árbol en datos nunca vistos: {precision * 100:.2f}%")
+
+# ==========================================
+# PASO 5: VER LAS REGLAS
+# ==========================================
+# Mostramos en pantalla qué preguntas lógicas aprendió el árbol para clasificar.
+plt.figure(figsize=(12,8))
+tree.plot_tree(modelo_arbol, feature_names=dataset.feature_names, 
+               class_names=dataset.target_names, filled=True)
+plt.show()`
+      },
+      'log_reg': {
+        title: 'Regresión Logística - Clasificación Binaria',
+        code: `from sklearn.linear_model import LogisticRegression # Algoritmo (Clasifica, no hace regresión)
+from sklearn.model_selection import train_test_split # Separar Train/Test
+from sklearn.datasets import make_classification # Inventa datos falsos para practicar
+from sklearn.metrics import confusion_matrix, classification_report # Para medir errores
+import seaborn as sns # Para mapas de calor
+import matplotlib.pyplot as plt 
+
+# ==========================================
+# PASO 1: INVENTAR DATOS SINTÉTICOS DE PACIENTES
+# ==========================================
+# Generamos 500 pacientes. Mitad sanos (Clase 0) y mitad enfermos (Clase 1).
+X, y = make_classification(n_samples=500, n_features=2, n_informative=2, 
+                           n_redundant=0, random_state=42)
+
+# ==========================================
+# PASO 2: SEPARAR PARA EVALUAR
+# ==========================================
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# ==========================================
+# PASO 3: ENTRENAR (APRENDER A DIAGNOSTICAR)
+# ==========================================
+modelo = LogisticRegression()
+modelo.fit(X_train, y_train)
+
+# ==========================================
+# PASO 4: EXAMEN (PREDICCIONES)
+# ==========================================
+# Entregamos los datos secretos y el modelo entrega una lista: [0, 1, 1, 0...]
+predicciones = modelo.predict(X_test) 
+
+# ==========================================
+# PASO 5: LA BOLETA DE NOTAS (MÉTRICAS)
+# ==========================================
+print("REPORTE DE CLASIFICACIÓN (Métricas formales):\\n")
+print(classification_report(y_test, predicciones))
+
+# MATRIZ DE CONFUSIÓN: 
+# Nos dice exactamente en qué nos equivocamos. Ej: Falsos Positivos o Falsos Negativos.
+cm = confusion_matrix(y_test, predicciones)
+
+# sns.heatmap dibuja la matriz con colores azules intensos para los valores altos.
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+plt.title('Matriz de Confusión')
+plt.xlabel('Lo que Predijo la Máquina')
+plt.ylabel('La Realidad de los Pacientes')
+plt.show()`
+      },
+      'regularization': {
+        title: 'Overfitting y Métodos de Regularización',
+        code: `import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import make_pipeline
+import warnings
+warnings.filterwarnings('ignore') # Ocultar advertencias de convergencia de Lasso
+
+# ==========================================
+# PASO 1: GENERAR DATOS (Curvos y con Ruido)
+# ==========================================
+np.random.seed(42)
+X = np.sort(np.random.rand(25, 1) * 10, axis=0) # 25 puntos aleatorios (Eje X)
+y = np.sin(X).ravel() + np.random.randn(25) * 0.4 # Función Seno + Ruido aleatorio
+
+# Datos continuos para dibujar las líneas del modelo
+X_test = np.linspace(0, 10, 100)[:, np.newaxis]
+
+# ==========================================
+# PASO 2: MODELO SOBREAJUSTADO (Sin regularizar)
+# ==========================================
+# Usamos un polinomio exagerado de grado 15. Es decir, permitimos que la curva 
+# se doble 15 veces para tocar casi todos los puntos.
+modelo_overfit = make_pipeline(PolynomialFeatures(15), LinearRegression())
+modelo_overfit.fit(X, y)
+
+# ==========================================
+# PASO 3: REGULARIZACIÓN RIDGE (L2)
+# ==========================================
+# Ridge penaliza el tamaño de los coeficientes, "aplastando" la curva 
+# para que no enloquezca.
+modelo_ridge = make_pipeline(PolynomialFeatures(15), Ridge(alpha=100))
+modelo_ridge.fit(X, y)
+
+# ==========================================
+# PASO 4: REGULARIZACIÓN LASSO (L1)
+# ==========================================
+# Lasso penaliza tanto que manda a cero (0) los coeficientes inútiles,
+# logrando un modelo aún más simplificado.
+modelo_lasso = make_pipeline(PolynomialFeatures(15), Lasso(alpha=0.2, max_iter=10000))
+modelo_lasso.fit(X, y)
+
+# ==========================================
+# GRÁFICOS: VISUALIZANDO EL EFECTO
+# ==========================================
+plt.figure(figsize=(12, 7))
+plt.scatter(X, y, color='black', s=50, label='Datos de Entrenamiento (con ruido)')
+
+# Dibujamos las 3 curvas
+plt.plot(X_test, modelo_overfit.predict(X_test), color='red', linestyle='--', linewidth=2, 
+         label='Sin Regularizar (SOBREAJUSTADO)')
+plt.plot(X_test, modelo_ridge.predict(X_test), color='blue', linewidth=3, 
+         label='Con Ridge (L2) - Suavizado')
+plt.plot(X_test, modelo_lasso.predict(X_test), color='green', linewidth=3, 
+         label='Con Lasso (L1) - Ultra Simple')
+
+plt.ylim(-2.5, 2.5)
+plt.title('Comparación: Sobreajuste vs Modelos Regularizados', fontsize=16)
+plt.legend(loc='upper right')
+plt.grid(alpha=0.3)
+plt.show()
+
+print("--- ANÁLISIS DE COEFICIENTES ---")
+print("El modelo de Grado 15 genera 16 coeficientes matemáticos.")
+print(f"- Coeficientes usados por Ridge (L2): {np.sum(modelo_ridge.steps[1][1].coef_ != 0)}")
+print(f"- Coeficientes usados por Lasso (L1): {np.sum(modelo_lasso.steps[1][1].coef_ != 0)}")
+print("\\nCONCLUSIÓN: Lasso apagó (volvió 0) varios coeficientes, seleccionando solo los más importantes y evitando memorizar el ruido.")`
+      }
+    };
+
+    function openColabModal(id) {
+      if(colabActivities[id]) {
+        document.getElementById('colabTitle').innerText = colabActivities[id].title;
+        document.getElementById('colabCode').innerText = colabActivities[id].code;
+        document.getElementById('colabModal').classList.add('open');
+      }
+    }
+    
+    function closeColabModal() {
+      document.getElementById('colabModal').classList.remove('open');
+    }
+  </script>
+
+  <!-- Colab Modal HTML -->
+  <div class="colab-modal" id="colabModal">
+    <div class="colab-content">
+      <div class="colab-header">
+        <h3><i class="fa-brands fa-python" style="color:#f9ab00;"></i> <span id="colabTitle">Actividad</span></h3>
+        <button class="btn-close" onclick="closeColabModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="colab-body">
+        <pre class="colab-code" id="colabCode"></pre>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

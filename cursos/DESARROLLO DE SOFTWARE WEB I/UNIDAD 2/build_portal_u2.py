@@ -1,0 +1,379 @@
+#!/usr/bin/env python3
+"""
+build_portal_u2.py — Genera portal_unidad2.html
+Dashboard interactivo de entrada para la Unidad 2 de Desarrollo de Software Web I.
+(Enfoque en Persistencia, ORM, Autenticación y Seeders)
+"""
+import os
+
+DIR = r"c:\Users\vicen\OneDrive\Escritorio\EVA IPSS\DESARROLLO DE SOFTWARE WEB I\UNIDAD 2"
+OUT = os.path.join(DIR, 'portal_unidad2.html')
+
+CSS = """
+/* ============================================
+   RESET & DESIGN TOKENS
+   ============================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --p:#6C3BFF;--p-glow:rgba(108,59,255,.35);
+  --c2:#9D6BFF;--c3:#C4A7FF;--c4:#E5D8FF;
+  --bg:#080B18;--bg2:#0D1128;--bg3:#131830;
+  --surface:rgba(255,255,255,.04);--surface-h:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.07);--border-h:rgba(255,255,255,.14);
+  --text:#E8ECF4;--text2:#94A3B8;--text3:#64748B;
+  --radius:16px;--radius-sm:10px;
+  --font:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  font-size:16px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--p);color:#fff}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--text3)}
+a{color:var(--c2);text-decoration:none;transition:color .3s}
+a:hover{color:var(--c3)}
+
+/* ── Typography & Gradients ── */
+.gradient-text{background:linear-gradient(135deg,var(--p),var(--c2),var(--c3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.title-xl{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:1.5rem}
+.title-lg{font-size:clamp(2rem,4vw,2.5rem);font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:1.5rem}
+.subtitle{font-size:1.1rem;color:var(--text2);margin-bottom:2rem;max-width:600px}
+.mono{font-family:var(--mono)}
+
+/* ── UI Components ── */
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 1.5rem;border-radius:50px;font-weight:600;font-size:.95rem;cursor:pointer;transition:all .3s;border:none}
+.btn-primary{background:var(--p);color:#fff;box-shadow:0 4px 15px var(--p-glow)}
+.btn-primary:hover{background:var(--c2);transform:translateY(-2px);box-shadow:0 6px 20px var(--p-glow)}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--surface-h);transform:translateY(-2px)}
+
+.badge{display:inline-block;padding:.35rem .85rem;border-radius:50px;font-family:var(--mono);font-size:.75rem;font-weight:600;letter-spacing:1px}
+.badge.purple{background:rgba(108,59,255,.15);color:var(--c3);border:1px solid rgba(108,59,255,.2)}
+.badge.gray{background:var(--surface);color:var(--text2);border:1px solid var(--border)}
+
+/* ── Layout & Sections ── */
+.container{max-width:1200px;margin:0 auto;padding:0 2rem}
+section{padding:5rem 0;position:relative}
+
+/* ── Navbar ── */
+.nav{position:fixed;top:0;left:0;right:0;padding:1.25rem 0;z-index:100;transition:all .4s}
+.nav.scrolled{background:rgba(8,11,24,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav .container{display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.1rem;display:flex;align-items:center;gap:.5rem}
+.nav-logo .dot{width:8px;height:8px;background:var(--p);border-radius:50%;box-shadow:0 0 10px var(--p-glow)}
+.nav-links{display:flex;gap:1.5rem;align-items:center}
+.nav-links a{font-size:.9rem;color:var(--text2);font-weight:500}
+.nav-links a:hover{color:var(--text)}
+
+/* ── Hero ── */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:4rem}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-content .badge{margin-bottom:1.5rem}
+
+.code-window{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.5);transform:perspective(1000px) rotateY(-5deg) rotateX(2deg);transition:transform .5s ease}
+.code-window:hover{transform:perspective(1000px) rotateY(0) rotateX(0)}
+.cw-header{display:flex;align-items:center;gap:.4rem;padding:.75rem 1rem;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)}
+.cw-dot{width:10px;height:10px;border-radius:50%}
+.cw-dot.r{background:#FF5F57}.cw-dot.y{background:#FFBD2E}.cw-dot.g{background:#28CA41}
+.cw-title{margin-left:1rem;font-family:var(--mono);font-size:.7rem;color:var(--text3)}
+.cw-body{padding:1.5rem;font-family:var(--mono);font-size:.85rem;line-height:1.6;color:#B0C4D8;overflow-x:auto}
+.cw-body .c-p{color:#BD93F9} /* keyword */
+.cw-body .c-f{color:#FFB86C} /* function */
+.cw-body .c-s{color:#50FA7B} /* string */
+.cw-body .c-c{color:#5C7080;font-style:italic} /* comment */
+
+/* ── Cards Grid (Concepts) ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;transition:all .4s}
+.card:hover{background:var(--surface-h);transform:translateY(-5px);border-color:rgba(108,59,255,.15)}
+.card-icon{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,rgba(108,59,255,.1),rgba(157,107,255,.05));border:1px solid rgba(108,59,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem}
+.card-icon svg{width:24px;height:24px;color:var(--p)}
+.card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.card p{font-size:.9rem;color:var(--text2);line-height:1.6}
+
+/* ── Artisan Cheatsheet ── */
+.artisan-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:6rem 0}
+.artisan-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
+.a-command{background:var(--bg);border:1px solid var(--border);padding:1.5rem;border-radius:var(--radius-sm);display:flex;flex-direction:column;gap:.5rem}
+.a-command code{font-family:var(--mono);color:var(--c3);font-size:.9rem;background:rgba(108,59,255,.12);padding:.3rem .6rem;border-radius:4px;display:inline-block;align-self:flex-start}
+.a-command h4{font-size:.95rem;font-weight:700}
+.a-command p{font-size:.85rem;color:var(--text2)}
+
+/* ── FAQ Accordion ── */
+.faq-section{padding:6rem 0}
+.faq-container{max-width:800px;margin:3rem auto 0;display:flex;flex-direction:column;gap:1rem}
+.faq-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.faq-question{width:100%;text-align:left;background:none;border:none;padding:1.25rem 1.5rem;color:var(--text);font-weight:600;font-size:1rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-family:var(--font)}
+.faq-question:hover{background:var(--surface-h)}
+.faq-question svg{width:20px;height:20px;color:var(--p);transition:transform .3s}
+.faq-item.active .faq-question svg{transform:rotate(180deg)}
+.faq-answer{padding:0 1.5rem;max-height:0;overflow:hidden;transition:all .3s ease;color:var(--text2);font-size:.9rem;line-height:1.6}
+.faq-item.active .faq-answer{padding:0 1.5rem 1.5rem;max-height:500px}
+.faq-answer code{font-family:var(--mono);background:var(--bg);padding:.2rem .4rem;border-radius:4px;color:var(--c3)}
+
+/* ── Resources & Eval ── */
+.resources-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
+.res-card{padding:3rem;border-radius:var(--radius);border:1px solid var(--border);position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start}
+.res-card.pres{background:linear-gradient(135deg,rgba(8,11,24,1),rgba(108,59,255,.05))}
+.res-card.eval{background:linear-gradient(135deg,rgba(8,11,24,1),rgba(196,167,255,.05))}
+.res-icon{width:60px;height:60px;border-radius:16px;background:var(--surface);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;border:1px solid var(--border)}
+.res-icon svg{width:30px;height:30px;color:var(--p)}
+.res-card h3{font-size:1.5rem;font-weight:800;margin-bottom:.75rem}
+.res-card p{font-size:.95rem;color:var(--text2);margin-bottom:2rem;line-height:1.6}
+
+/* ── Footer ── */
+footer{padding:3rem 0;text-align:center;border-top:1px solid var(--border);color:var(--text3);font-size:.85rem}
+
+/* ── Reveal Animations ── */
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s ease}
+.reveal.active{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr;text-align:center;gap:2rem}
+  .hero-content .subtitle{margin:0 auto 2rem}
+  .artisan-grid{grid-template-columns:1fr}
+  .resources-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .nav-links{display:none}
+}
+"""
+
+HTML = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidad 2 - Persistencia, Autenticación y Base de Datos</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>{CSS}</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-logo"><div class="dot"></div> DS Web I</div>
+    <div class="nav-links">
+      <a href="#conceptos">Conceptos</a>
+      <a href="#artisan">Artisan CLI</a>
+      <a href="#faq">Preguntas Frecuentes</a>
+      <a href="#recursos">Recursos</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-content reveal">
+      <span class="badge purple">Unidad 2</span>
+      <h1 class="title-xl">Persistencia y Seguridad con <span class="gradient-text">Eloquent & JWT</span></h1>
+      <p class="subtitle">Aprende a estructurar bases de datos con migraciones, poblar tablas con seeders y factories, manipular datos con Eloquent ORM, y proteger rutas de API con JWT.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:flex-start">
+        <a href="presentacion_U2.html" class="btn btn-primary"><i data-lucide="play-circle"></i> Ver Presentación</a>
+        <a href="evaluacion_U2.html" class="btn btn-secondary"><i data-lucide="file-check"></i> Ir a la Evaluación</a>
+      </div>
+    </div>
+    <div class="hero-image reveal">
+      <div class="code-window">
+        <div class="cw-header">
+          <div class="cw-dot r"></div><div class="cw-dot y"></div><div class="cw-dot g"></div>
+          <div class="cw-title">database/migrations/xxxx_create_proyectos_table.php</div>
+        </div>
+        <div class="cw-body">
+<span class="c-p">public function</span> <span class="c-f">up</span>(): void {{
+    Schema::<span>create</span>(<span class="c-s">'proyectos'</span>, <span class="c-p">function</span> (Blueprint $table) {{
+        $table-><span>id</span>();
+        $table-><span>string</span>(<span class="c-s">'nombre'</span>);
+        $table-><span>decimal</span>(<span class="c-s">'monto'</span>, 10, 2);
+        
+        <span class="c-c">// Clave foránea al Usuario creador</span>
+        $table-><span>foreignId</span>(<span class="c-s">'created_by'</span>)
+              -><span>constrained</span>(<span class="c-s">'users'</span>)
+              -><span>onDelete</span>(<span class="c-s">'cascade'</span>);
+              
+        $table-><span>timestamps</span>();
+    }});
+}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="conceptos" class="container">
+  <h2 class="title-lg text-center">Conceptos Clave de la <span class="gradient-text">Unidad</span></h2>
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon"><i data-lucide="database"></i></div>
+      <h3>Migraciones</h3>
+      <p>El sistema de control de versiones para la base de datos. Permite crear y modificar tablas mediante código PHP, sin necesidad de escribir sentencias SQL directas.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i data-lucide="cpu"></i></div>
+      <h3>Eloquent ORM</h3>
+      <p>Mapeo Objeto-Relacional que proporciona una interfaz sencilla e intuitiva para interactuar con las tablas de tu base de datos a través de modelos de PHP.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i data-lucide="key-round"></i></div>
+      <h3>Cifrado & Autenticación</h3>
+      <p>Encriptación segura de contraseñas de usuario (hashing) antes de guardarlas, y autenticación basada en tokens JWT para APIs sin estado.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i data-lucide="test-tube"></i></div>
+      <h3>Seeders & Factories</h3>
+      <p>Poblamiento automatizado de bases de datos con datos sintéticos y realistas mediante la biblioteca Faker. Excelente para pruebas de desarrollo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="artisan" class="artisan-section">
+  <div class="container">
+    <h2 class="title-lg text-center">Comandos Artisan <span class="gradient-text">Esenciales</span></h2>
+    <div class="artisan-grid">
+      <div class="a-command">
+        <code>php artisan make:model Proyecto -mcf</code>
+        <h4>Modelo Completo</h4>
+        <p>Genera el modelo en app/Models/, junto con su archivo de migración (-m), controlador resource (-c) y factory (-f) en un único paso.</p>
+      </div>
+      <div class="a-command">
+        <code>php artisan migrate</code>
+        <h4>Ejecutar Migraciones</h4>
+        <p>Aplica todas las migraciones pendientes que no hayan sido registradas en la tabla 'migrations' de la base de datos.</p>
+      </div>
+      <div class="a-command">
+        <code>php artisan migrate:rollback</code>
+        <h4>Deshacer Cambios</h4>
+        <p>Revierte el último lote de migraciones que fue ejecutado. Útil para corregir errores de estructura recientes.</p>
+      </div>
+      <div class="a-command">
+        <code>php artisan migrate:fresh --seed</code>
+        <h4>Reinicio Completo</h4>
+        <p>Elimina todas las tablas de la base de datos, vuelve a aplicar todas las migraciones desde cero y ejecuta los seeders de prueba.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="faq-section">
+  <div class="container">
+    <h2 class="title-lg text-center">Preguntas <span class="gradient-text">Frecuentes (FAQ)</span></h2>
+    <div class="faq-container">
+      
+      <div class="faq-item">
+        <button class="faq-question">¿Qué significa el error SQLSTATE[42S02] Table not found? <i data-lucide="chevron-down"></i></button>
+        <div class="faq-answer">
+          <p>Este error ocurre cuando Laravel intenta interactuar con una tabla en la base de datos que no existe. Asegúrate de haber ejecutado las migraciones usando el comando <code>php artisan migrate</code> y que el archivo de configuración <code>.env</code> apunte a la base de datos correcta.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">¿Cuál es la diferencia entre bcrypt() y Hash::make()? <i data-lucide="chevron-down"></i></button>
+        <div class="faq-answer">
+          <p>No existe diferencia técnica en el resultado. <code>Hash::make()</code> es la fachada del framework para el hashing de claves, mientras que <code>bcrypt()</code> es un helper de conveniencia global que internamente invoca a <code>Hash::make()</code> con el driver bcrypt configurado por defecto.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">¿Por qué obtengo un código de estado 419 Page Expired? <i data-lucide="chevron-down"></i></button>
+        <div class="faq-answer">
+          <p>Se debe a que el formulario web de tu vista Blade no incluyó la directiva <code>@csrf</code>. Laravel exige un token CSRF de validación para cualquier solicitud POST, PUT o DELETE con el fin de proteger a la aplicación contra ataques de Falsificación de Solicitud en Sitios Cruzados.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">¿Cómo evito que se guarden datos duplicados al correr seeders repetidas veces? <i data-lucide="chevron-down"></i></button>
+        <div class="faq-answer">
+          <p>En lugar de usar <code>Model::create()</code> en tus seeders, puedes usar <code>Model::firstOrCreate()</code> pasándole las condiciones únicas. O bien, puedes reiniciar la base de datos limpia ejecutando <code>php artisan migrate:fresh --seed</code>.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="recursos" class="container">
+  <h2 class="title-lg text-center">Recursos de la <span class="gradient-text">Unidad 2</span></h2>
+  <div class="resources-grid">
+    <div class="res-card pres">
+      <div class="res-icon"><i data-lucide="presentation"></i></div>
+      <h3>Presentación Interactiva</h3>
+      <p>Material de apoyo visual con el guion para el docente, ejemplos paso a paso de migraciones, modelos, controladores y seeders en Laravel.</p>
+      <a href="presentacion_U2.html" class="btn btn-primary"><i data-lucide="external-link"></i> Abrir Presentación</a>
+    </div>
+    <div class="res-card eval">
+      <div class="res-icon"><i data-lucide="award"></i></div>
+      <h3>Evaluación Sumativa</h3>
+      <p>Consulte las instrucciones completas, rúbrica de calificación, ponderaciones y el simulador de notas interactivo para la segunda entrega.</p>
+      <a href="evaluacion_U2.html" class="btn btn-secondary"><i data-lucide="external-link"></i> Ver Evaluación</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 Instituto Profesional San Sebastián. Tecnología Educativa.</p>
+  </div>
+</footer>
+
+<script>
+// Scroll nav effect
+window.addEventListener('scroll', () => {{
+  const nav = document.getElementById('nav');
+  if (window.scrollY > 50) {{
+    nav.classList.add('scrolled');
+  }} else {{
+    nav.classList.remove('scrolled');
+  }}
+}});
+
+// Reveal scroll animation
+const reveals = document.querySelectorAll('.reveal');
+function revealOnScroll() {{
+  reveals.forEach(el => {{
+    const windowHeight = window.innerHeight;
+    const elementTop = el.getBoundingClientRect().top;
+    const elementVisible = 150;
+    if (elementTop < windowHeight - elementVisible) {{
+      el.classList.add('active');
+    }}
+  }});
+}}
+window.addEventListener('scroll', revealOnScroll);
+revealOnScroll(); // Trigger once on load
+
+// FAQ Accordion
+const faqItems = document.querySelectorAll('.faq-item');
+faqItems.forEach(item => {{
+  const question = item.querySelector('.faq-question');
+  question.addEventListener('click', () => {{
+    const activeItem = document.querySelector('.faq-item.active');
+    if (activeItem && activeItem !== item) {{
+      activeItem.classList.remove('active');
+      activeItem.querySelector('.faq-answer').style.maxHeight = null;
+    }}
+    
+    item.classList.toggle('active');
+    const answer = item.querySelector('.faq-answer');
+    if (item.classList.contains('active')) {{
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }} else {{
+      answer.style.maxHeight = null;
+    }}
+  }});
+}});
+
+lucide.createIcons();
+</script>
+</body>
+</html>
+"""
+
+# Escribir el archivo final directamente
+with open(OUT, 'w', encoding='utf-8') as f:
+    f.write(HTML)
+
+print(f"[OK] Generado: {OUT}")

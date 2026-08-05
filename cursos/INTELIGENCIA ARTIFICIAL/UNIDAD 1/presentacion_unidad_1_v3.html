@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="tokyo-night">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Unidad 1 — Inteligencia Artificial | v3</title>
+  
+  <link rel="stylesheet" href="../../../PPT as Codes/html-ppt-skill/assets/fonts.css">
+  <link rel="stylesheet" href="../../../PPT as Codes/html-ppt-skill/assets/base.css">
+  <link rel="stylesheet" id="theme-link" href="../../../PPT as Codes/html-ppt-skill/assets/themes/tokyo-night.css">
+  <link rel="stylesheet" href="../../../PPT as Codes/html-ppt-skill/assets/animations/animations.css">
+  
+  <style>
+    /* CSS de Mapeo para Componentes Personalizados Originales */
+    /* Piramide */
+    .pyramid-container { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 2rem; }
+    .pyramid-level { background: var(--surface); border: 2px solid var(--border); padding: 1rem; text-align: center; border-radius: 8px; color: var(--text-1); font-weight: bold; }
+    .pyramid-level:nth-child(1) { width: 30%; border-color: var(--accent); }
+    .pyramid-level:nth-child(2) { width: 50%; border-color: var(--accent-2); }
+    .pyramid-level:nth-child(3) { width: 70%; border-color: var(--accent-3); }
+    .pyramid-level:nth-child(4) { width: 90%; border-color: var(--good); }
+    /* Conjuntos Venn */
+    .venn-container { display: flex; justify-content: center; align-items: center; position: relative; height: 300px; margin-top: 2rem; }
+    .venn-ai, .venn-ml, .venn-dl { position: absolute; border: 2px solid; border-radius: 50%; display: flex; justify-content: center; align-items: flex-start; padding-top: 1rem; font-weight: bold; background: var(--surface); }
+    .venn-ai { width: 280px; height: 280px; border-color: var(--accent); color: var(--accent); z-index: 1; opacity: 0.9; }
+    .venn-ml { width: 200px; height: 200px; border-color: var(--accent-2); color: var(--accent-2); z-index: 2; margin-top: 40px; opacity: 0.9; }
+    .venn-dl { width: 120px; height: 120px; border-color: var(--accent-3); color: var(--accent-3); z-index: 3; margin-top: 80px; opacity: 0.9; }
+    /* Flow boxes */
+    .flow-box { border: 2px solid var(--border); background: var(--surface); padding: 1rem; border-radius: 8px; text-align: center; }
+    .flow-box.brain { border-color: var(--accent); }
+    .arrow { font-size: 2rem; color: var(--accent); text-align: center; }
+    /* Timeline */
+    .timeline { position: relative; margin-top: 2rem; padding-left: 2rem; border-left: 2px solid var(--accent); }
+    .timeline-item { position: relative; margin-bottom: 2rem; }
+    .timeline-item::before { content: ''; position: absolute; left: -34px; top: 0; width: 20px; height: 20px; background: var(--bg); border: 4px solid var(--accent); border-radius: 50%; }
+    /* Banner Google Colab */
+    .activity-banner { background: var(--surface); border: 2px solid var(--accent); border-radius: 12px; padding: 2rem; text-align: center; margin-top: 2rem; }
+    .activity-icon { font-size: 4rem; color: var(--accent); margin-bottom: 1rem; display: block; }
+  </style>
+</head>
+<body data-themes="academic-paper,arctic-cool,aurora,bauhaus,blueprint,catppuccin-latte,catppuccin-mocha,corporate-clean,cyberpunk-neon,dracula,editorial-serif,engineering-whiteprint,glassmorphism,gruvbox-dark,japanese-minimal,magazine-bold,memphis-pop,midcentury,minimal-white,neo-brutalism,news-broadcast,nord,pitch-deck-vc,rainbow-gradient,retro-tv,rose-pine,sharp-mono,soft-pastel,solarized-light,sunset-warm,swiss-grid,terminal-green,tokyo-night,vaporwave,xiaohongshu-white,y2k-chrome" data-theme-base="../../../PPT as Codes/html-ppt-skill/assets/themes/">
+<div class="deck">
+<section class="slide cover" data-session="0">
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="slide-inner centered">
+<div class="cover-badge reveal"><i class="fa-solid fa-brain"></i> UNIDAD 1 · SEMANAS 1-4</div>
+<h1 class="gradient-text reveal reveal-d1 h1 anim-fade-up" data-anim="fade-up">FUNDAMENTOS Y ÉTICA DE LA IA</h1>
+<h2 class="reveal reveal-d2 h2" style="font-size:2.2rem;color:var(--text);margin-bottom:2rem;">Inteligencia
+          Artificial | IPSS 2026</h2>
+<p class="cover-sub reveal reveal-d3">Descubre cómo los algoritmos aprenden, las principales ramas que impulsan
+          la tecnología actual y los dilemas éticos que enfrentamos en la era de la información.</p>
+</div>
+<div class="notes">Bienvenidos a la primera unidad de Inteligencia Artificial. Mi nombre es [tu nombre] y seré su docente. NO necesitan saber programar ni ser genios de las matemáticas para entender esto. La IA ya está en sus vidas — en su celular, en Netflix, en Waze. Lo que haremos es entender CÓMO funciona por dentro. Esta unidad cubre 4 semanas: las dos primeras son conceptuales, la tercera es ética, y la cuarta es evaluación.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="1" data-total="29"></span></div></section>\n\n<section class="slide cover" data-session="0">
+<div class="orb orb1"></div>
+<div class="slide-inner centered">
+<div class="cover-badge reveal"><i class="fa-solid fa-tower-broadcast"></i> SEMANA 1 · CLASE SINCRÓNICA</div>
+<h1 class="gradient-text reveal reveal-d1 h1 anim-fade-up" data-anim="fade-up" style="font-size:3.5rem;">Conceptos y Tipos de Aprendizaje</h1>
+<p class="cover-sub reveal reveal-d2">¿Qué es realmente la IA? ¿Cómo aprende una máquina? Desmitificándolo con
+          ejemplos del día a día.</p>
+</div>
+<div class="notes">Esta primera sesión sincrónica sienta las bases. Cubriremos: qué es la IA, cómo se relaciona con Machine Learning y Deep Learning, y los tres tipos de aprendizaje automático. Todo con ejemplos cotidianos. Al final hay actividad interactiva.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="2" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="slide-inner centered">
+<div class="kicker reveal"><i class="fa-solid fa-bolt"></i> Actividad de Activación</div>
+<h2 class="reveal reveal-d1 h2">¡Rompamos el Hielo! <i class="fa-solid fa-cubes-stacked" style="color:var(--c2);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area reveal reveal-d2" style="justify-content:center;">
+<div class="activity-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(99,102,241,.15));border-color:rgba(245,158,11,.4);">
+<div class="activity-icon"><i class="fa-solid fa-comments"></i></div>
+<p style="font-size:1.8rem;color:#fff;max-width:800px;margin-bottom:2rem;font-weight:700;">Respondan en el
+              chat en 60 segundos:</p>
+<div style="display:grid;gap:1.5rem;text-align:left;width:100%;max-width:800px;">
+<div class="card" style="padding:1.5rem 2rem;font-size:1.5rem;border-left:5px solid var(--acc);"><i class="fa-solid fa-1 fa-fw" style="color:var(--acc);margin-right:.5rem;"></i> <strong>¿Qué es para
+                  ustedes la inteligencia artificial?</strong> En una frase.</div>
+<div class="card" style="padding:1.5rem 2rem;font-size:1.5rem;border-left:5px solid var(--c2);"><i class="fa-solid fa-2 fa-fw" style="color:var(--c2);margin-right:.5rem;"></i> Nombren <strong>UNA app
+                  que usen a diario</strong> que crean que usa IA.</div>
+<div class="card" style="padding:1.5rem 2rem;font-size:1.5rem;border-left:5px solid var(--p);"><i class="fa-solid fa-3 fa-fw" style="color:var(--p);margin-right:.5rem;"></i> ¿Creen que la IA
+                <strong>nos va a quitar el trabajo</strong>? <span class="tag tag-g">Sí</span> <span class="tag tag-r">No</span> <span class="tag tag-y">Depende</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Antes de entrar en materia, hagamos una actividad de activación para romper el hielo y saber qué piensan ustedes. Les haré 3 preguntas rápidas que deben responder en el chat en 60 segundos. No hay respuestas correctas ni incorrectas, solo quiero saber qué saben y qué piensan. Pregunta 1: ¿Qué es para ustedes la inteligencia artificial? En una frase. Pregunta 2: Nombren UNA app o herramienta que usen a diario que crean que usa IA. Pregunta 3: ¿Creen que la IA nos va a quitar el trabajo? Sí, No, o Depende. Vamos, escriban en el chat, tienen 60 segundos. Mientras responden, les cuento que la mayoría de las personas tiene una idea de la IA basada en películas de ciencia ficción — robots con conciencia propia, Terminator, HAL 9000. La realidad es muy diferente y mucho más cercana a ustedes de lo que creen.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="3" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-circle-question"></i> Definición Fundamental</div>
+<h2 class="reveal reveal-d1 h2">¿Qué es la Inteligencia Artificial?</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<p class="reveal reveal-d2" style="margin-bottom:1.5rem;">Lograr que una computadora realice tareas que
+            normalmente requerirían <strong>inteligencia humana</strong> — reconocer caras, entender idiomas, tomar
+            decisiones, crear contenido.</p>
+<div class="analogy-box reveal reveal-d3">
+<div class="analogy-title"><i class="fa-solid fa-lightbulb" style="color:var(--acc);"></i> Analogía del Día
+              a Día</div>
+<div class="analogy-body"><strong>Programa Tradicional</strong> = una receta de cocina que sigues paso a
+              paso, siempre igual.<br/><br/><strong>Inteligencia Artificial</strong> = un chef que <em>prueba</em> cada
+              plato, recibe opiniones de los comensales, y va <em>mejorando sus recetas</em> automáticamente.</div>
+</div>
+<div class="cols reveal reveal-d4 grid g3" style="margin-top:1.5rem;">
+<div class="card">
+<div class="card-icon" style="color:var(--pl);"><i class="fa-solid fa-mobile-screen-button"></i></div>
+<div class="card-title">Tu Celular</div>
+<div class="card-body">Face ID te reconoce aunque cambies de peinado o uses lentes.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--c2);"><i class="fa-solid fa-map-location-dot"></i></div>
+<div class="card-title">Waze / Google Maps</div>
+<div class="card-body">Analiza datos de millones de conductores en tiempo real para predecir el tráfico.
+              </div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--ok);"><i class="fa-solid fa-music"></i></div>
+<div class="card-title">Spotify / YouTube</div>
+<div class="card-body">Estudia qué te gusta para recomendarte contenido nuevo que probablemente
+                disfrutarás.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Arranquemos: ¿qué es la Inteligencia Artificial? Olvídense de los robots de las películas. La IA, en su definición más simple, es lograr que una computadora haga cosas que normalmente necesitarían inteligencia humana: reconocer una cara, entender lo que alguien dice, tomar una decisión, traducir un idioma. No es magia, son matemáticas y datos. La diferencia clave con un programa tradicional: un programa sigue instrucciones fijas escritas por un humano. La IA aprende de los datos y mejora sola. Un programa es como una receta de cocina que sigues al pie de la letra. La IA es como un chef que prueba platos, recibe comentarios, y va mejorando sus recetas automáticamente.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="4" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="orb orb2"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-code-compare"></i> Comparación Fundamental</div>
+<h2 class="reveal reveal-d1 h2">Programa Clásico vs. Inteligencia Artificial</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="cols reveal reveal-d2 grid g2">
+<div class="grid g3" style="flex-direction:column;align-items:center;gap:1rem;padding:2rem;">
+<div style="font-size:1.8rem;font-weight:900;color:var(--err);display:flex;align-items:center;gap:.5rem;">
+<i class="fa-solid fa-code"></i> Programa Clásico</div>
+<div class="flow-box" style="width:100%;border-color:var(--err);">
+<div class="flow-box-title">Reglas escritas por humanos</div>
+<div class="flow-box-sub">"Si asunto contiene GRATIS → Spam"</div>
+</div>
+<div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+<div class="flow-box" style="width:100%;border-color:var(--err);">
+<div class="flow-box-title">Resultado fijo</div>
+<div class="flow-box-sub">No se adapta. El spammer cambia y el filtro falla.</div>
+</div>
+<div class="tag tag-r"><i class="fa-solid fa-circle-xmark"></i> Estático y frágil</div>
+</div>
+<div class="grid g3" style="flex-direction:column;align-items:center;gap:1rem;padding:2rem;border-color:var(--ok);">
+<div style="font-size:1.8rem;font-weight:900;color:var(--ok);display:flex;align-items:center;gap:.5rem;">
+<i class="fa-solid fa-brain"></i> IA / Machine Learning</div>
+<div class="flow-box" style="width:100%;border-color:var(--ok);">
+<div class="flow-box-title">Datos de ejemplo</div>
+<div class="flow-box-sub">10.000 correos etiquetados: Spam / No Spam</div>
+</div>
+<div class="flow-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+<div class="flow-box" style="width:100%;border-color:var(--ok);">
+<div class="flow-box-title">Descubre patrones solo</div>
+<div class="flow-box-sub">Se re-entrena y adapta automáticamente.</div>
+</div>
+<div class="tag tag-g"><i class="fa-solid fa-circle-check"></i> Dinámico y adaptable</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Profundicemos en la diferencia. Un programa clásico funciona así: un humano escribe reglas como 'Si el asunto contiene GRATIS y URGENTE, marcar como spam'. Pero los spammers se adaptan: escriben 'GR4TIS'. Y tus reglas fallan. Con Machine Learning, le das al sistema 10.000 correos ya clasificados como spam y no-spam, y el algoritmo DESCUBRE los patrones solo. Es como estudiar de memoria las respuestas de un examen (programa) versus ENTENDER la materia (IA).</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="5" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="orb orb1"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-timeline"></i> Evolución de la IA</div>
+<h2 class="reveal reveal-d1 h2">Línea de Tiempo: De las Reglas al Aprendizaje</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<p class="reveal reveal-d2" style="text-align:center;margin-bottom:1rem;">De reglas codificadas manualmente a
+            sistemas que crean contenido inédito.</p>
+<div class="timeline reveal reveal-d3">
+<div class="timeline-item">
+<div class="timeline-year">1950s - 1980s</div>
+<div class="timeline-title"><i class="fa-solid fa-gears fa-fw"></i> Sistemas Expertos</div>
+<div class="timeline-desc">Lógica "Si-Entonces" dictada por humanos. Como un médico dictando TODAS sus
+                reglas a una computadora.</div>
+</div>
+<div class="timeline-item" style="border-top-color:var(--c2);">
+<div class="timeline-year" style="color:var(--c2);">1990s - 2000s</div>
+<div class="timeline-title"><i class="fa-solid fa-chart-line fa-fw"></i> Machine Learning</div>
+<div class="timeline-desc">La máquina aprende de datos históricos. Como dar 50.000 fichas clínicas y que
+                descubra patrones sola.</div>
+</div>
+<div class="timeline-item" style="border-top-color:var(--ok);">
+<div class="timeline-year" style="color:var(--ok);">2010s</div>
+<div class="timeline-title"><i class="fa-solid fa-network-wired fa-fw"></i> Deep Learning</div>
+<div class="timeline-desc">Redes neuronales con millones de conexiones. Explosión gracias a GPUs. Siri
+                dejó de ser un chiste.</div>
+</div>
+<div class="timeline-item" style="border-top-color:var(--warn);">
+<div class="timeline-year" style="color:var(--warn);">2020s - Hoy</div>
+<div class="timeline-title"><i class="fa-solid fa-wand-magic-sparkles fa-fw"></i> IA Generativa</div>
+<div class="timeline-desc">Transformers. ChatGPT, DALL-E, Midjourney. Crea texto, imágenes, código y
+                música desde cero.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Ahora veamos cómo llegamos aquí. En los 50-80s teníamos Sistemas Expertos con reglas manuales. En los 90s-2000s, Machine Learning: la máquina aprende de datos históricos. En los 2010s, Deep Learning con redes neuronales masivas. Y ahora en los 2020s, IA Generativa con ChatGPT, DALL-E, Midjourney.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="6" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="orb orb2"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-layer-group"></i> Definiciones Clave</div>
+<h2 class="reveal reveal-d1 h2">IA vs ML vs DL — Las Muñecas Rusas</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area cols reveal reveal-d2 grid g2" style="align-items:center;">
+<div class="venn-container">
+<div class="venn-circle venn-ai">
+<div class="venn-title"><i class="fa-solid fa-robot"></i> IA</div>
+<div class="venn-sub">Sistemas que emulan inteligencia humana.</div>
+</div>
+<div class="venn-circle venn-ml">
+<div class="venn-title"><i class="fa-solid fa-chart-bar"></i> ML</div>
+<div class="venn-sub">Modelos que aprenden de datos.</div>
+</div>
+<div class="venn-circle venn-dl">
+<div class="venn-title" style="margin-top:20px;"><i class="fa-solid fa-brain"></i> DL</div>
+</div>
+</div>
+<div>
+<div class="card" style="margin-bottom:1.5rem;">
+<div class="card-title"><i class="fa-solid fa-key fa-fw" style="color:var(--pl);"></i> Diferencia
+                Fundamental</div>
+<div class="card-body">En <strong>ML clásico</strong>, un humano le dice al modelo qué buscar. En
+                <strong>Deep Learning</strong>, la red neuronal lo descubre POR SÍ MISMA desde datos crudos.</div>
+</div>
+<div class="card">
+<div class="card-title"><i class="fa-solid fa-house fa-fw" style="color:var(--c2);"></i> Ejemplos
+                Cotidianos</div>
+<div class="card-body">
+<ul class="check-list" style="margin-top:.5rem;">
+<li><strong>IA:</strong> Un NPC en un videojuego que reacciona inteligentemente.</li>
+<li><strong>ML:</strong> Netflix recomendándote series ("Porque viste X...").</li>
+<li><strong>DL:</strong> Face ID reconociendo tu rostro en 3D.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Esto es clave: IA, ML y DL no son lo mismo. Imaginen muñecas rusas. IA es la más grande — el objetivo general. ML es una forma de lograr IA usando datos. DL es una técnica dentro del ML con redes neuronales profundas. Ejemplo cotidiano: IA = NPC de videojuego. ML = Netflix recomendando series. DL = Face ID reconociendo tu rostro.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="7" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-database"></i> ¿Y la Ciencia de Datos?</div>
+<h2 class="reveal reveal-d1 h2">Pirámide de Jerarquía de Datos</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area cols reveal reveal-d2 grid g2" style="align-items:center;">
+<div>
+<p style="margin-bottom:1.5rem;">No se puede hacer IA sin datos sólidos. El <strong>Data Science</strong>
+              abarca toda la pirámide.</p>
+<div class="card" style="margin-bottom:1.5rem;">
+<div class="card-title"><i class="fa-solid fa-triangle-exclamation fa-fw" style="color:var(--warn);"></i>
+                Regla de Oro</div>
+<div class="card-body"><strong>"Garbage In, Garbage Out"</strong> — Basura entra, basura sale. Datos
+                sesgados = predicciones peligrosas.</div>
+</div>
+<div class="analogy-box" style="margin:0;">
+<div class="analogy-title"><i class="fa-solid fa-utensils" style="color:var(--acc);"></i> Analogía de la
+                Cocina</div>
+<div class="analogy-body">La mejor receta + el mejor chef + ingredientes podridos = <strong>plato
+                  horrible</strong>. La IA necesita <em>buenos ingredientes</em> (datos limpios).</div>
+</div>
+</div>
+<div class="pyramid-container">
+<div class="pyramid-level">
+<div><i class="fa-solid fa-brain fa-fw"></i> Inteligencia Artificial</div>
+<div class="pyramid-sub">Deep Learning, Predicción</div>
+</div>
+<div class="pyramid-level">
+<div><i class="fa-solid fa-chart-line fa-fw"></i> Machine Learning</div>
+<div class="pyramid-sub">Entrenamiento, Testing</div>
+</div>
+<div class="pyramid-level">
+<div><i class="fa-solid fa-chart-pie fa-fw"></i> Analítica / BI</div>
+<div class="pyramid-sub">Métricas, Dashboards</div>
+</div>
+<div class="pyramid-level">
+<div><i class="fa-solid fa-broom fa-fw"></i> Limpieza y Recolección</div>
+<div class="pyramid-sub">Bases de datos, Pipelines (ETL)</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">La IA NO funciona sin datos. Los data scientists pasan el 80% del tiempo limpiando datos. Garbage In, Garbage Out: si alimentas un modelo con datos sesgados, el resultado es basura. La pirámide muestra que primero necesitas datos limpios, luego analítica, luego ML, y finalmente IA en la cima.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="8" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="orb orb1"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-graduation-cap"></i> Cómo aprende la máquina</div>
+<h2 class="reveal reveal-d1 h2">1. Aprendizaje Supervisado</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="grid g3 reveal reveal-d2">
+<div class="flow-box">
+<div class="flow-box-title"><i class="fa-solid fa-image fa-fw"></i> Input (X)</div>
+<div class="flow-box-sub">Ej: Foto de una fruta</div>
+</div>
+<div class="flow-arrow"><i class="fa-solid fa-plus"></i></div>
+<div class="flow-box" style="border-color:var(--ok);">
+<div class="flow-box-title"><i class="fa-solid fa-tag fa-fw"></i> Etiqueta (Y)</div>
+<div class="flow-box-sub">Respuesta: "Manzana" <i class="fa-solid fa-apple-whole" style="color:var(--err);"></i></div>
+<div class="flow-badge">CLAVE</div>
+</div>
+<div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+<div class="flow-box brain">
+<div class="card-icon" style="color:var(--c2);font-size:2rem;"><i class="fa-solid fa-microchip"></i></div>
+<div class="flow-box-title">Modelo ML</div>
+<div class="flow-box-sub">Ajusta sus pesos internos</div>
+</div>
+<div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+<div class="flow-box">
+<div class="flow-box-title"><i class="fa-solid fa-bullseye fa-fw"></i> Predicción</div>
+<div class="flow-box-sub">Identifica frutas nuevas</div>
+</div>
+</div>
+<div class="cols reveal reveal-d3 grid g2" style="margin-top:2rem;">
+<div class="analogy-box" style="margin:0;">
+<div class="analogy-title"><i class="fa-solid fa-child" style="color:var(--acc);"></i> Analogía del Niño
+              </div>
+<div class="analogy-body">Le muestras 1.000 frutas diciéndole el nombre de cada una. Después puede
+                reconocer frutas que <em>nunca vio</em>.</div>
+</div>
+<div class="card">
+<div class="card-title"><i class="fa-solid fa-house-user fa-fw" style="color:var(--pl);"></i> Casos
+                Cotidianos</div>
+<div class="card-body">
+<ul class="check-list" style="gap:.5rem;">
+<li><strong>Gmail:</strong> Filtrando tu spam automáticamente.</li>
+<li><strong>Banco:</strong> Detectando transacciones sospechosas.</li>
+<li><strong>Clima:</strong> Prediciendo que mañana serán 22°C.</li>
+<li><strong>Uber:</strong> Estimando el precio antes de pedir.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">El primer tipo de aprendizaje: Supervisado. Hay un 'profesor' que le da las respuestas correctas. Como enseñarle a un niño a distinguir frutas mostrándole 1000 frutas con nombre. El modelo aprende la relación entre los datos de entrada (X) y las etiquetas (Y). Hay dos sub-tipos: Clasificación (spam/no spam) y Regresión (predecir temperatura, precio de casa).</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="9" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-puzzle-piece"></i> Cómo aprende la máquina</div>
+<h2 class="reveal reveal-d1 h2">2. Aprendizaje No Supervisado</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="grid g3 reveal reveal-d2">
+<div class="flow-box">
+<div class="flow-box-title"><i class="fa-solid fa-cart-shopping fa-fw"></i> Input (X)</div>
+<div class="flow-box-sub">Historial de compras</div>
+</div>
+<div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+<div class="flow-box brain">
+<div class="card-icon" style="color:var(--c2);font-size:2rem;"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+<div class="flow-box-title">Modelo ML</div>
+<div class="flow-box-sub">Busca patrones ocultos</div>
+</div>
+<div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+<div class="flow-box" style="border-color:var(--ok);">
+<div class="flow-box-title"><i class="fa-solid fa-object-group fa-fw"></i> Clústeres</div>
+<div class="flow-box-sub">Grupos A, B, C</div>
+<div class="flow-badge" style="background:var(--warn)">SIN ETIQUETAS</div>
+</div>
+</div>
+<div class="cols reveal reveal-d3 grid g2" style="margin-top:2rem;">
+<div class="analogy-box" style="margin:0;">
+<div class="analogy-title"><i class="fa-solid fa-cubes" style="color:var(--acc);"></i> Analogía del Lego
+              </div>
+<div class="analogy-body">Te dan 500 piezas y te dicen "ordénalos". Nadie dice CÓMO. Tú descubres
+                agrupaciones naturales (color, tamaño, forma).</div>
+</div>
+<div class="card">
+<div class="card-title"><i class="fa-solid fa-house-user fa-fw" style="color:var(--c2);"></i> Casos
+                Cotidianos</div>
+<div class="card-body">
+<ul class="check-list" style="gap:.5rem;">
+<li><strong>Supermercado:</strong> Agrupando clientes para ofertas.</li>
+<li><strong>Banco:</strong> Bloqueando compra sospechosa a las 3am.</li>
+<li><strong>Spotify:</strong> Agrupando canciones por similitud acústica.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">El segundo tipo: No Supervisado. NO hay profesor ni respuestas. Le das datos y le dices 'encuentra patrones'. Es como darte 500 piezas de Lego y decirte 'ordénalos' sin decirte cómo. Ejemplo: tu banco monitorea transacciones. Si aparece una compra de $2M en Bangkok a las 3am, el algoritmo la detecta como anomalía y bloquea la tarjeta.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="10" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-gamepad"></i> Cómo aprende la máquina</div>
+<h2 class="reveal reveal-d1 h2">3. Aprendizaje por Refuerzo</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="grid g3 reveal reveal-d2">
+<div class="flow-box">
+<div class="flow-box-title"><i class="fa-solid fa-earth-americas fa-fw"></i> Entorno</div>
+<div class="flow-box-sub">Estado actual del mundo</div>
+</div>
+<div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+<div class="flow-box brain" style="border-color:var(--warn);">
+<div class="card-icon" style="color:var(--warn);font-size:2rem;"><i class="fa-solid fa-robot"></i></div>
+<div class="flow-box-title">Agente (IA)</div>
+<div class="flow-box-sub">Ejecuta una ACCIÓN</div>
+<div class="flow-badge" style="background:var(--acc)">POLÍTICA</div>
+</div>
+<div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+<div class="flow-box">
+<div class="flow-box-title"><i class="fa-solid fa-comment-dots fa-fw"></i> Feedback</div>
+<div class="flow-box-sub"><span style="color:var(--ok)">+1 Recompensa</span> / <span style="color:var(--err)">-1 Castigo</span></div>
+</div>
+</div>
+<div class="cols reveal reveal-d3 grid g2" style="margin-top:2rem;">
+<div class="analogy-box" style="margin:0;">
+<div class="analogy-title"><i class="fa-solid fa-baby" style="color:var(--acc);"></i> Analogía del Bebé
+              </div>
+<div class="analogy-body">Un bebé aprende a caminar <em>sin manual</em>: se cae (castigo), lo intenta, da
+                un paso (recompensa). Miles de intentos hasta dominar el equilibrio.</div>
+</div>
+<div class="card">
+<div class="card-title"><i class="fa-solid fa-house-user fa-fw" style="color:var(--warn);"></i> Casos
+                Cotidianos</div>
+<div class="card-body">
+<ul class="check-list" style="gap:.5rem;">
+<li><strong>Robot Roomba:</strong> Aprende tu casa chocando con muebles.</li>
+<li><strong>AlphaGo:</strong> Venció al campeón mundial de Go.</li>
+<li><strong>Tesla Autopilot:</strong> Mejora con cada km recorrido.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">El tercer tipo: Por Refuerzo. Funciona como un bebé aprendiendo a caminar: prueba y error con premios y castigos. Un 'agente' interactúa con un 'entorno', ejecuta acciones, recibe recompensas o castigos, y optimiza su estrategia. AlphaGo aprendió jugadas que ningún humano pensó en 3000 años.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="11" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="orb orb2"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-table-columns"></i> Resumen Comparativo</div>
+<h2 class="reveal reveal-d1 h2">Los 3 Tipos de Aprendizaje Automático</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<table class="compare-table reveal reveal-d2">
+<thead>
+<tr>
+<th>Característica</th>
+<th><i class="fa-solid fa-tag"></i> Supervisado</th>
+<th><i class="fa-solid fa-puzzle-piece"></i> No Supervisado</th>
+<th><i class="fa-solid fa-gamepad"></i> Por Refuerzo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>¿Tiene etiquetas?</strong></td>
+<td><i class="fa-solid fa-circle-check" style="color:var(--ok);"></i> Sí</td>
+<td><i class="fa-solid fa-circle-xmark" style="color:var(--err);"></i> No</td>
+<td><i class="fa-solid fa-bolt" style="color:var(--acc);"></i> Premios/castigos</td>
+</tr>
+<tr>
+<td><strong>Analogía</strong></td>
+<td>Estudiar con solucionario</td>
+<td>Ordenar sin instrucciones</td>
+<td>Entrenar una mascota</td>
+</tr>
+<tr>
+<td><strong>Objetivo</strong></td>
+<td>Predecir una respuesta</td>
+<td>Descubrir patrones</td>
+<td>Maximizar recompensa</td>
+</tr>
+<tr>
+<td><strong>Ejemplo cotidiano</strong></td>
+<td>Gmail filtrando spam</td>
+<td>Banco detectando fraude</td>
+<td>Robot Roomba</td>
+</tr>
+</tbody>
+</table>
+<div class="quote reveal reveal-d3" style="margin-top:1.5rem;"><strong>¿Cuál es "mejor"?</strong> Ninguno. Un
+            martillo no es mejor que un destornillador — son herramientas distintas para situaciones distintas.</div>
+</div>
+</div>
+<div class="notes">Resumamos en una tabla. Supervisado: tiene etiquetas, como estudiar con solucionario. No Supervisado: sin etiquetas, como ordenar sin instrucciones. Refuerzo: premios y castigos, como entrenar una mascota. ¿Cuál es mejor? Depende del problema. Son herramientas distintas para situaciones distintas.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="12" data-total="29"></span></div></section>\n\n<section class="slide" data-session="0">
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="slide-inner centered">
+<div class="kicker reveal"><i class="fa-solid fa-gamepad"></i> Actividad Lúdica</div>
+<h2 class="reveal reveal-d1 h2">Adivina: ¿Cómo aprende la máquina? <i class="fa-solid fa-gamepad" style="color:var(--pl);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area reveal reveal-d2" style="justify-content:center;">
+<div class="activity-banner" style="background:linear-gradient(135deg,rgba(6,182,212,.15),rgba(99,102,241,.15));border-color:rgba(6,182,212,.4);">
+<div class="activity-icon"><i class="fa-solid fa-dice"></i></div>
+<p style="font-size:1.6rem;color:#fff;max-width:800px;margin-bottom:2rem;">Vota: <strong>S</strong>
+              (Supervisado), <strong>N</strong> (No Supervisado), <strong>R</strong> (Refuerzo)</p>
+<div style="display:grid;gap:1.5rem;text-align:left;width:100%;max-width:900px;">
+<div class="card" style="padding:1.5rem 2rem;font-size:1.4rem;"><strong>1.</strong> Un robot aspiradora
+                que aprende a navegar chocando con las paredes. <details style="margin-top:1rem;cursor:pointer;">
+<summary style="color:var(--pl);font-weight:bold;font-size:1.2rem;"><i class="fa-solid fa-eye"></i>
+                    Ver Respuesta</summary>
+<div style="margin-top:.5rem;color:var(--ok);font-size:1.3rem;"><strong>POR REFUERZO (R)</strong>:
+                    Interactúa con el entorno, recibe castigos al chocar.</div>
+</details>
+</div>
+<div class="card" style="padding:1.5rem 2rem;font-size:1.4rem;"><strong>2.</strong> Una app médica que
+                detecta tumores con 10.000 radiografías marcadas por médicos. <details style="margin-top:1rem;cursor:pointer;">
+<summary style="color:var(--pl);font-weight:bold;font-size:1.2rem;"><i class="fa-solid fa-eye"></i>
+                    Ver Respuesta</summary>
+<div style="margin-top:.5rem;color:var(--ok);font-size:1.3rem;"><strong>SUPERVISADO (S)</strong>:
+                    Datos de entrada + etiquetas correctas.</div>
+</details>
+</div>
+<div class="card" style="padding:1.5rem 2rem;font-size:1.4rem;"><strong>3.</strong> Spotify agrupando
+                canciones por similitud acústica, sin saber el género. <details style="margin-top:1rem;cursor:pointer;">
+<summary style="color:var(--pl);font-weight:bold;font-size:1.2rem;"><i class="fa-solid fa-eye"></i>
+                    Ver Respuesta</summary>
+<div style="margin-top:.5rem;color:var(--ok);font-size:1.3rem;"><strong>NO SUPERVISADO (N)</strong>:
+                    Agrupa por similitud sin etiquetas previas.</div>
+</details>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Vamos a poner a prueba lo aprendido. Tres situaciones, voten en el chat: S (Supervisado), N (No Supervisado) o R (Refuerzo). 30 segundos por pregunta.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="13" data-total="29"></span></div></section>\n\n<section class="slide cover" data-session="1">
+<div class="orb orb2"></div>
+<div class="slide-inner centered">
+<div class="cover-badge reveal"><i class="fa-solid fa-laptop"></i> SEMANA 2 · ASINCRÓNICA</div>
+<h1 class="gradient-text reveal reveal-d1 h1 anim-fade-up" data-anim="fade-up" style="font-size:3.5rem;">Ramas, Aplicaciones y Redes Neuronales</h1>
+</div>
+<div class="notes">Sesión asincrónica de Semana 2. Exploraremos: Visión por Computadora, PLN, Sistemas Expertos, Redes Neuronales y IA Generativa. Al final hay actividad del foro.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="14" data-total="29"></span></div></section>\n\n<section class="slide" data-session="1">
+<div class="orb orb1"></div>
+<div class="slide-inner centered">
+<div class="kicker reveal"><i class="fa-solid fa-bolt"></i> Actividad de Activación</div>
+<h2 class="reveal reveal-d1 h2">Antes de Empezar: Reflexiona <i class="fa-solid fa-head-side-icons" style="color:var(--acc);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area reveal reveal-d2" style="justify-content:center;">
+<div class="activity-banner" style="background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(6,182,212,.15));border-color:rgba(16,185,129,.4);">
+<div class="activity-icon" style="color:var(--ok);"><i class="fa-solid fa-pencil"></i></div>
+<p style="font-size:1.8rem;color:#fff;max-width:800px;margin-bottom:2rem;font-weight:700;">Antes de avanzar,
+              haz este ejercicio:</p>
+<div style="display:grid;gap:1.5rem;text-align:left;width:100%;max-width:800px;">
+<div class="card" style="padding:2rem;font-size:1.5rem;border-left:5px solid var(--ok);">
+<i class="fa-solid fa-clock fa-fw" style="color:var(--ok);margin-right:.5rem;"></i>
+                Piensa en tus <strong>últimas 24 horas</strong>. ¿Cuántas veces interactuaste con IA sin darte
+                cuenta?<br/><br/>
+<strong>Pista:</strong> probablemente fueron <em>más de 20 veces</em>.<br/><br/>
+<i class="fa-solid fa-pencil fa-fw" style="color:var(--pl);margin-right:.5rem;"></i> Escribe en un papel
+                <strong>al menos 5 momentos</strong> antes de avanzar al siguiente slide. Luego compara tu lista con lo
+                que veremos a continuación.
+              </div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Actividad de activación para la sesión asincrónica. Antes de leer el material, quiero que reflexionen. Piensen en las últimas 24 horas: ¿cuántas veces interactuaron con IA sin darse cuenta? Les doy una pista: probablemente fueron más de 20 veces. Escriban en un papel al menos 5 momentos antes de avanzar al siguiente slide.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="15" data-total="29"></span></div></section>\n\n<section class="slide" data-session="1">
+<div class="orb orb1"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-eye"></i> Visión por Computadora</div>
+<h2 class="reveal reveal-d1 h2">Haciendo que la máquina "vea" <i class="fa-solid fa-eye" style="color:var(--c2);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area cols reveal reveal-d2 grid g2">
+<div>
+<p style="margin-bottom:1.5rem;">Usa <strong>Redes Neuronales Convolucionales (CNN)</strong> — filtros que
+              detectan bordes, texturas y formas progresivamente.</p>
+<ul class="check-list">
+<li><i class="fa-solid fa-face-smile fa-fw" style="color:var(--p);"></i> <strong>Face ID:</strong> 30.000
+                puntos infrarrojos 3D.</li>
+<li><i class="fa-solid fa-images fa-fw" style="color:var(--c2);"></i> <strong>Google Fotos:</strong>
+                Reconoce familiares automáticamente.</li>
+<li><i class="fa-solid fa-cash-register fa-fw" style="color:var(--ok);"></i> <strong>Cajeros
+                  auto:</strong> Reconocen frutas sin código.</li>
+<li><i class="fa-solid fa-stethoscope fa-fw" style="color:var(--err);"></i> <strong>Medicina:</strong>
+                Detecta tumores en radiografías.</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title"><i class="fa-solid fa-triangle-exclamation fa-fw" style="color:var(--err);"></i>
+              Caso Polémico: Clearview AI</div>
+<div class="card-body">Policías identifican sospechosos escaneando miles de millones de fotos públicas de
+              redes sociales.<br/><br/><strong>¿Es aceptable que tu foto de Instagram pueda usarse para buscarte sin tu
+                consentimiento?</strong></div>
+</div>
+</div>
+</div>
+<div class="notes">Visión por Computadora: enseñarle a una computadora a 'ver'. Usa Redes Neuronales Convolucionales (CNNs) que aplican filtros progresivos — primero líneas, luego texturas, luego objetos completos. Face ID analiza 30.000 puntos infrarrojos de tu cara. Google Fotos reconoce amigos. Y Clearview AI es un caso polémico de vigilancia masiva.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="16" data-total="29"></span></div></section>\n\n<section class="slide" data-session="1">
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-diagram-project"></i> Deep Learning (DINTA)</div>
+<h2 class="reveal reveal-d1 h2">¿Cómo Funciona una Red Neuronal? <i class="fa-solid fa-brain" style="color:var(--purple);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="cols reveal reveal-d2 grid g2">
+<div>
+<div class="card" style="margin-bottom:1.5rem;">
+<div class="card-title"><i class="fa-solid fa-layer-group fa-fw" style="color:var(--purple);"></i> Las 3
+                  Capas Básicas</div>
+<div class="card-body">
+<ul class="dot-list">
+<li><strong style="color:var(--pl);">Entrada:</strong> Datos crudos (píxeles, números).</li>
+<li><strong style="color:var(--c2);">Ocultas:</strong> Pesos + activación. Aquí ocurre el
+                      aprendizaje.</li>
+<li><strong style="color:var(--ok);">Salida:</strong> Predicción final.</li>
+</ul>
+</div>
+</div>
+<div class="analogy-box" style="margin:0;">
+<div class="analogy-title"><i class="fa-solid fa-check-to-slot" style="color:var(--acc);"></i> Analogía
+                  de la Votación</div>
+<div class="analogy-body">Cada conexión es un <strong>voto con diferente peso</strong>. Si la suma
+                  supera un umbral, la neurona se "enciende".</div>
+</div>
+</div>
+<div style="display:flex;justify-content:center;align-items:center;gap:4rem;padding:2rem;background:rgba(0,0,0,.3);border-radius:16px;border:1px solid var(--gb);height:100%;">
+<div class="neuron-layer">
+<div style="font-weight:800;font-size:1.2rem;color:var(--pl);margin-bottom:.5rem;">ENTRADA</div>
+<div class="neuron-node neuron-input">x₁</div>
+<div class="neuron-node neuron-input">x₂</div>
+<div class="neuron-node neuron-input">x₃</div>
+<div class="neuron-node neuron-input">x₄</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:.5rem;color:var(--dim);font-size:1rem;"><i class="fa-solid fa-arrow-right"></i><i class="fa-solid fa-arrow-right"></i><i class="fa-solid fa-arrow-right"></i><i class="fa-solid fa-arrow-right"></i></div>
+<div class="neuron-layer">
+<div style="font-weight:800;font-size:1.2rem;color:var(--c2);margin-bottom:.5rem;">OCULTA</div>
+<div class="neuron-node neuron-hidden">h₁</div>
+<div class="neuron-node neuron-hidden">h₂</div>
+<div class="neuron-node neuron-hidden">h₃</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:.5rem;color:var(--dim);font-size:1rem;"><i class="fa-solid fa-arrow-right"></i><i class="fa-solid fa-arrow-right"></i><i class="fa-solid fa-arrow-right"></i></div>
+<div class="neuron-layer">
+<div style="font-weight:800;font-size:1.2rem;color:var(--ok);margin-bottom:.5rem;">SALIDA</div>
+<div class="neuron-node neuron-output">ŷ₁</div>
+<div class="neuron-node neuron-output">ŷ₂</div>
+</div>
+</div>
+</div>
+<div class="quote reveal reveal-d3" style="margin-top:1.5rem;"><strong><i class="fa-solid fa-rotate-left"></i>
+              Backpropagation:</strong> Predice → compara → calcula error → ajusta pesos → repite <em>millones de
+              veces</em>. Como corregir errores examen tras examen.</div>
+</div>
+</div>
+<div class="notes">Profundicemos en Redes Neuronales. Capa de Entrada recibe datos crudos. Capas Ocultas procesan con pesos y funciones de activación — como una votación donde cada conexión vota con diferente fuerza. Capa de Salida da la predicción. Backpropagation: la red predice, compara con la respuesta real, calcula el error, y ajusta los pesos. Repite millones de veces.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="17" data-total="29"></span></div></section>\n\n<section class="slide" data-session="1">
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-language"></i> Procesamiento de Lenguaje Natural</div>
+<h2 class="reveal reveal-d1 h2">Haciendo que la máquina "entienda" <i class="fa-solid fa-comments" style="color:var(--ok);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area cols reveal reveal-d2 grid g2">
+<div>
+<p style="margin-bottom:1.5rem;">El salto gigante: los <strong>Transformers</strong> (2017) entienden el
+              contexto completo de un texto simultáneamente.</p>
+<div class="analogy-box" style="margin-bottom:1.5rem;">
+<div class="analogy-title"><i class="fa-solid fa-book" style="color:var(--acc);"></i> El Problema del
+                "Banco"</div>
+<div class="analogy-body">"El <strong>banco</strong> está cerca del río" vs "Voy al <strong>banco</strong>
+                a sacar dinero". Los Transformers entienden esto por el <em>contexto</em>.</div>
+</div>
+<ul class="check-list">
+<li><i class="fa-solid fa-globe fa-fw" style="color:var(--p);"></i> <strong>Google Translate:</strong>
+                Traduce párrafos con coherencia.</li>
+<li><i class="fa-brands fa-whatsapp fa-fw" style="color:var(--ok);"></i> <strong>WhatsApp:</strong>
+                Sugiere palabras mientras escribes.</li>
+<li><i class="fa-solid fa-robot fa-fw" style="color:var(--c2);"></i> <strong>ChatGPT:</strong> Genera
+                texto, código, respuestas.</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title"><i class="fa-solid fa-key fa-fw" style="color:var(--warn);"></i> ¿Qué son los
+              Transformers?</div>
+<div class="card-body"><strong>Antes:</strong> Leían de izquierda a derecha y "olvidaban" el
+              inicio.<br/><br/><strong>Transformers:</strong> Miran TODA la frase simultáneamente con
+              "Atención".<br/><br/><strong>Dato:</strong> Chat<strong>G</strong>P<strong>T</strong> = <em>Generative
+                Pre-trained <strong>Transformer</strong></em>.</div>
+</div>
+</div>
+</div>
+<div class="notes">PLN: que la máquina entienda lenguaje humano. Los Transformers (2017) miraron TODA la frase simultáneamente en vez de leer de izquierda a derecha. La T de ChatGPT es Transformer. Ejemplos: Google Translate, WhatsApp sugiriendo palabras, Alexa, ChatGPT.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="18" data-total="29"></span></div></section>\n\n<section class="slide" data-session="1">
+<div class="orb orb2"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-clock"></i> La IA en Tu Día a Día</div>
+<h2 class="reveal reveal-d1 h2">Un Día Completo con Inteligencia Artificial <i class="fa-solid fa-mobile-screen-button" style="color:var(--pl);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="card-grid card-grid-4 reveal reveal-d2">
+<div class="card">
+<div class="card-icon" style="color:var(--pl);"><i class="fa-solid fa-bell"></i></div>
+<div class="card-title">7:00 AM</div>
+<div class="card-body">"Alexa, alarma". <strong>PLN</strong> interpreta tu voz.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--c2);"><i class="fa-solid fa-envelope"></i></div>
+<div class="card-title">8:00 AM</div>
+<div class="card-body">Gmail separa tu spam. <strong>ML Supervisado</strong>.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--ok);"><i class="fa-solid fa-face-smile"></i></div>
+<div class="card-title">9:00 AM</div>
+<div class="card-body">Desbloqueas con Face ID. <strong>Deep Learning</strong>.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-car"></i></div>
+<div class="card-title">9:30 AM</div>
+<div class="card-body">Uber estima precio. <strong>Regresión ML</strong>.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--err);"><i class="fa-brands fa-instagram"></i></div>
+<div class="card-title">12:00 PM</div>
+<div class="card-body">Instagram muestra lo que te gusta. <strong>DL</strong>.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--purple);"><i class="fa-solid fa-language"></i></div>
+<div class="card-title">2:00 PM</div>
+<div class="card-body">Traduces con DeepL. <strong>Transformers</strong>.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--lime);"><i class="fa-solid fa-building-columns"></i></div>
+<div class="card-title">5:00 PM</div>
+<div class="card-body">Banco bloquea compra rara. <strong>Anomalías</strong>.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--rose);"><i class="fa-solid fa-film"></i></div>
+<div class="card-title">9:00 PM</div>
+<div class="card-body">Netflix recomienda serie. <strong>ML</strong>.</div>
+</div>
+</div>
+<div class="quote reveal reveal-d3" style="margin-top:1rem;">La IA <strong>no está "llegando"</strong> — ya
+            llegó hace años y está en cada app que usas.</div>
+</div>
+</div>
+<div class="notes">Veamos dónde está la IA en tu día a día completo. Cada momento del día involucra alguna forma de IA. La IA no está 'llegando' — ya llegó hace años.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="19" data-total="29"></span></div></section>\n\n<section class="slide" data-session="1">
+<div class="orb orb2"></div>
+<div class="slide-inner centered">
+<div class="kicker reveal"><i class="fa-solid fa-binoculars"></i> Reto Asincrónico</div>
+<h2 class="reveal reveal-d1 h2">Actividad: Cazadores de Deepfakes <i class="fa-solid fa-user-secret" style="color:var(--warn);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area reveal reveal-d2" style="justify-content:center;">
+<div class="activity-banner" style="background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(239,68,68,.15));border-color:rgba(245,158,11,.4);">
+<div class="activity-icon" style="color:var(--warn);"><i class="fa-solid fa-magnifying-glass"></i></div>
+<p style="font-size:1.6rem;color:#fff;max-width:800px;margin-bottom:2rem;">En el <strong>foro de la
+                plataforma EVA</strong>:</p>
+<div style="display:flex;flex-direction:column;gap:1.5rem;text-align:left;width:100%;max-width:800px;background:var(--card);padding:2rem;border-radius:12px;">
+<div style="font-size:1.5rem;color:var(--text);">
+<i class="fa-solid fa-1 fa-fw" style="color:var(--acc);"></i> Busca una imagen/video <strong>generado
+                  por IA</strong> que sea extremadamente realista.<br/><br/>
+<i class="fa-solid fa-2 fa-fw" style="color:var(--acc);"></i> Sube la URL o imagen al foro.<br/><br/>
+<i class="fa-solid fa-3 fa-fw" style="color:var(--acc);"></i> Explica en 2-3 líneas <strong>qué pistas
+                  visuales</strong> te indican que NO es real (dedos deformados, texto sin sentido, reflejos ilógicos).
+              </div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Actividad del foro: Cazadores de Deepfakes. Busquen una imagen o video generado por IA, súbanla al foro, y expliquen qué pistas visuales les indican que NO es real.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="20" data-total="29"></span></div></section>\n\n<section class="slide cover" data-session="2">
+<div class="orb orb1"></div>
+<div class="slide-inner centered">
+<div class="cover-badge reveal"><i class="fa-solid fa-scale-balanced"></i> SEMANA 3 · CLASE SINCRÓNICA</div>
+<h1 class="gradient-text reveal reveal-d1 h1 anim-fade-up" data-anim="fade-up" style="font-size:3.5rem;">Ética, Impacto y Responsabilidad</h1>
+</div>
+<div class="notes">Última sesión sincrónica. Ética en IA: sesgos, privacidad, impacto laboral, accountability. La IA puede salvar vidas o destruirlas. Hoy enfrentamos esos dilemas de frente.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="21" data-total="29"></span></div></section>\n\n<section class="slide" data-session="2">
+<div class="orb orb2"></div>
+<div class="slide-inner centered">
+<div class="kicker reveal"><i class="fa-solid fa-bolt"></i> Actividad de Activación</div>
+<h2 class="reveal reveal-d1 h2">Escenario para Reflexionar <i class="fa-solid fa-bolt" style="color:var(--acc);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area reveal reveal-d2" style="justify-content:center;">
+<div class="activity-banner" style="background:linear-gradient(135deg,rgba(239,68,68,.15),rgba(245,158,11,.15));border-color:rgba(239,68,68,.4);">
+<div class="activity-icon" style="color:var(--err);"><i class="fa-solid fa-building-columns"></i></div>
+<div class="card" style="text-align:left;max-width:800px;padding:2.5rem;font-size:1.5rem;border-left:5px solid var(--err);">
+<p style="font-size:1.8rem;font-weight:800;color:var(--err);margin-bottom:1rem;"><i class="fa-solid fa-triangle-exclamation fa-fw"></i> Escenario:</p>
+<p style="color:var(--text);font-size:1.5rem;line-height:1.8;">Vas a pedir un <strong>crédito
+                  hipotecario</strong> para tu primera casa. El banco usa un sistema de IA que analiza tu perfil y te
+                dice:</p>
+<div style="text-align:center;margin:2rem 0;padding:1.5rem;background:rgba(239,68,68,.15);border:2px solid var(--err);border-radius:12px;font-size:2.5rem;font-weight:900;color:var(--err);">
+<i class="fa-solid fa-xmark"></i> RECHAZADO</div>
+<p style="color:var(--text);font-size:1.5rem;">No te dan <strong>ninguna explicación</strong> de por qué.
+                Solo "rechazado".</p>
+<div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
+<span class="tag tag-r" style="font-size:1.3rem;padding:.5rem 1rem;">¿Cómo te sentirías?</span>
+<span class="tag tag-y" style="font-size:1.3rem;padding:.5rem 1rem;">¿Te parece justo?</span>
+<span class="tag tag-p" style="font-size:1.3rem;padding:.5rem 1rem;">Escribe en el chat</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Actividad de activación para la sesión de ética. Voy a mostrarles un escenario y quiero su reacción instintiva en el chat. El escenario es: imaginen que van a pedir un crédito hipotecario para su primera casa. El banco usa un sistema de IA que analiza su perfil y les dice 'rechazado'. No les dan ninguna explicación de por qué. Solo 'rechazado'. ¿Cómo se sentirían? ¿Les parece justo? Escriban en el chat. Este es exactamente el dilema de accountability que vamos a explorar hoy.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="22" data-total="29"></span></div></section>\n\n<section class="slide" data-session="2">
+<div class="orb orb2"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-shield-halved"></i> Los 4 Pilares Éticos</div>
+<h2 class="reveal reveal-d1 h2">¿Cuáles son los Grandes Riesgos de la IA?</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="card-grid card-grid-2 reveal reveal-d2">
+<div class="card">
+<div class="card-icon" style="color:var(--err);"><i class="fa-solid fa-triangle-exclamation"></i></div>
+<div class="card-title">1. Sesgos Algorítmicos</div>
+<div class="card-body">La IA <strong>amplifica</strong> prejuicios históricos a escala industrial. Amazon
+                rechazaba CVs de mujeres porque aprendió de 10 años de contrataciones masculinas.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--warn);"><i class="fa-solid fa-eye-slash"></i></div>
+<div class="card-title">2. Privacidad</div>
+<div class="card-body">IA analiza datos personales masivamente. En China, el <strong>Crédito
+                  Social</strong> puntúa el comportamiento ciudadano con IA.</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--c2);"><i class="fa-solid fa-briefcase"></i></div>
+<div class="card-title">3. Impacto Laboral</div>
+<div class="card-body">Automatiza tareas rutinarias. No elimina TODOS los empleos, pero exige
+                <strong>reskilling</strong> (nuevas habilidades).</div>
+</div>
+<div class="card">
+<div class="card-icon" style="color:var(--purple);"><i class="fa-solid fa-gavel"></i></div>
+<div class="card-title">4. Accountability</div>
+<div class="card-body">Si un auto autónomo atropella a alguien, ¿de quién es la culpa? <strong>El marco
+                  legal no fue diseñado para algoritmos.</strong></div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Los 4 pilares éticos de la IA: 1) Sesgos: la IA amplifica prejuicios históricos a escala industrial. Amazon rechazaba CVs de mujeres. 2) Privacidad: la IA analiza datos personales a escala masiva. Crédito Social en China. 3) Impacto Laboral: automatiza tareas rutinarias, exige reskilling. 4) Accountability: si un auto autónomo atropella, ¿de quién es la culpa?</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="23" data-total="29"></span></div></section>\n\n<section class="slide" data-session="2">
+<div class="orb orb1"></div>
+<div class="slide-inner centered">
+<div class="kicker reveal"><i class="fa-solid fa-people-arrows"></i> Debate Express</div>
+<h2 class="reveal reveal-d1 h2">El Tribunal de la IA <i class="fa-solid fa-scale-balanced" style="color:var(--c2);margin-left:.5rem;"></i></h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area reveal reveal-d2" style="justify-content:center;">
+<div class="activity-banner" style="background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(99,102,241,.15));border-color:rgba(16,185,129,.4);">
+<div class="activity-icon"><i class="fa-solid fa-gavel"></i></div>
+<p style="font-size:1.5rem;color:#fff;max-width:800px;margin-bottom:2rem;"><strong>Caso Real
+                (2018):</strong> Una IA de Amazon rechazaba CVs de mujeres. Aprendió de 10 años de contrataciones
+              mayoritariamente masculinas.</p>
+<div class="cols grid g2" style="width:100%;max-width:900px;">
+<div class="card" style="text-align:left;background:rgba(0,0,0,.5);">
+<div class="card-title" style="color:var(--err);"><i class="fa-solid fa-user-tie fa-fw"></i> Fiscalía
+                </div>
+<div class="card-body">La empresa es culpable por no auditar los sesgos. <em>¡1 argumento en el
+                    chat!</em></div>
+</div>
+<div class="card" style="text-align:left;background:rgba(0,0,0,.5);">
+<div class="card-title" style="color:var(--c2);"><i class="fa-solid fa-shield fa-fw"></i> Defensa</div>
+<div class="card-body">El algoritmo es matemático, no machista. Solo reflejó la realidad. <em>¡1
+                    argumento en el chat!</em></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Debate express: En 2018, la IA de Amazon rechazaba CVs de mujeres. Divídanse en Fiscalía (acusa a la empresa) y Defensa (defiende al algoritmo). Escriban UN argumento en el chat. 3 minutos.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="24" data-total="29"></span></div></section>\n\n<section class="slide cover" data-session="3">
+<div class="orb orb2"></div>
+<div class="slide-inner centered">
+<div class="cover-badge reveal"><i class="fa-solid fa-file-circle-check"></i> SEMANA 4 · EVALUACIÓN ASINCRÓNICA
+        </div>
+<h1 class="gradient-text reveal reveal-d1 h1 anim-fade-up" data-anim="fade-up" style="font-size:3.5rem;">Evaluación Unidad 1</h1>
+<h2 class="reveal reveal-d2 h2" style="font-size:1.8rem;color:var(--dim);margin-top:1rem;"><i class="fa-solid fa-star fa-fw"></i> 10% de la nota final</h2>
+</div>
+<div class="notes">Ahora pasamos a lo más importante para ustedes: la Evaluación 1. Presten mucha atención porque les voy a explicar exactamente qué deben hacer, cómo hacerlo bien, y qué criterios voy a usar para calificarlos. Esta evaluación vale el 10% de la nota final.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="25" data-total="29"></span></div></section>\n\n<section class="slide" data-session="3">
+<div class="orb orb1"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-clipboard-list"></i> ¿Qué tienen que hacer?</div>
+<h2 class="reveal reveal-d1 h2">Análisis de Caso de Estudio IA</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="cols reveal reveal-d2 grid g2">
+<div>
+<div class="card" style="border:2px solid var(--p);margin-bottom:1.5rem;padding:2rem;">
+<div class="card-title" style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;"><i class="fa-solid fa-circle-info" style="color:var(--pl);font-size:2rem;"></i> Datos Generales</div>
+<div class="card-body">
+<ul class="dot-list">
+<li><strong>Modalidad:</strong> Individual o equipos (máx. 3 personas)</li>
+<li><strong>Entrega:</strong> Semana 4 vía plataforma EVA</li>
+<li><strong>Ponderación:</strong> 10% de la nota final</li>
+<li><strong>Instrumento:</strong> Rúbrica de evaluación</li>
+</ul>
+</div>
+</div>
+<div class="card">
+<div class="card-title" style="color:var(--err);"><i class="fa-solid fa-ban fa-fw"></i> ¡IMPORTANTE! No
+                  usar temas genéricos</div>
+<div class="card-body">
+<i class="fa-solid fa-circle-xmark" style="color:var(--err);margin-right:.4rem;"></i> "La IA en redes
+                  sociales"<br/>
+<i class="fa-solid fa-circle-xmark" style="color:var(--err);margin-right:.4rem;"></i> "Machine
+                  Learning en la medicina"<br/><br/>
+<i class="fa-solid fa-circle-check" style="color:var(--ok);margin-right:.4rem;"></i> "El algoritmo de
+                  recomendación de <strong>YouTube</strong>"<br/>
+<i class="fa-solid fa-circle-check" style="color:var(--ok);margin-right:.4rem;"></i> "El sistema de
+                  reconocimiento facial de <strong>FaceID</strong>"<br/>
+<i class="fa-solid fa-circle-check" style="color:var(--ok);margin-right:.4rem;"></i> "Cómo
+                  <strong>Spotify</strong> crea la playlist Discover Weekly"
+                </div>
+</div>
+</div>
+<div>
+<h3 style="color:var(--pl);font-size:1.6rem;margin-bottom:1.5rem;"><i class="fa-solid fa-list-ol fa-fw"></i> Las 5 Fases Obligatorias:</h3>
+<div style="display:flex;flex-direction:column;gap:1rem;">
+<div class="eval-step">
+<div class="eval-step-num">1</div>
+<div class="eval-step-body">
+<div class="eval-step-title">Descripción del Caso</div>
+<div class="eval-step-desc">¿Qué problema resuelve? ¿Quiénes son los usuarios? ¿Cuál es el objetivo
+                      principal?</div>
+</div>
+</div>
+<div class="eval-step">
+<div class="eval-step-num" style="background:linear-gradient(135deg,var(--c2),#0891b2);">2</div>
+<div class="eval-step-body">
+<div class="eval-step-title">Tecnología Utilizada</div>
+<div class="eval-step-desc">¿Es ML supervisado? ¿Deep Learning? ¿Qué datos de entrenamiento usa?
+                      ¿Qué rama de IA?</div>
+</div>
+</div>
+<div class="eval-step">
+<div class="eval-step-num" style="background:linear-gradient(135deg,var(--ok),#059669);">3</div>
+<div class="eval-step-body">
+<div class="eval-step-title">Beneficios</div>
+<div class="eval-step-desc">Eficiencia, optimización, bienestar social. ¿Qué mejora concretamente?
+                    </div>
+</div>
+</div>
+<div class="eval-step">
+<div class="eval-step-num" style="background:linear-gradient(135deg,var(--warn),#d97706);">4</div>
+<div class="eval-step-body">
+<div class="eval-step-title">Implicancias Éticas</div>
+<div class="eval-step-desc">Sesgos potenciales, riesgos de privacidad, impacto laboral,
+                      accountability.</div>
+</div>
+</div>
+<div class="eval-step">
+<div class="eval-step-num" style="background:linear-gradient(135deg,var(--purple),#7c3aed);">5</div>
+<div class="eval-step-body">
+<div class="eval-step-title">Conclusión y Mitigación</div>
+<div class="eval-step-desc">Balance crítico: ¿superan los beneficios a los riesgos? Propuestas de
+                      mitigación.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">La evaluación es un Análisis de Caso de Estudio de IA. Pueden trabajar individualmente o en equipos de máximo 3 personas. Deben elegir un caso de aplicación REAL y ESPECÍFICO de inteligencia artificial — no algo genérico como 'Redes Sociales', sino algo concreto como 'El algoritmo de recomendación de YouTube' o 'El sistema de reconocimiento facial del Transantiago' o 'Cómo Spotify crea la playlist Discover Weekly'. El análisis tiene 5 fases obligatorias que les voy a detallar ahora.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="26" data-total="29"></span></div></section>\n\n<section class="slide" data-session="3">
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-star-half-stroke"></i> Criterios de Evaluación</div>
+<h2 class="reveal reveal-d1 h2">Rúbrica: ¿Cómo los evalúo?</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="card-grid card-grid-3 reveal reveal-d2">
+<div class="card" style="border:2px solid var(--ok);background:rgba(16,185,129,.05);">
+<div class="card-title" style="color:var(--ok);font-size:2rem;text-align:center;"><i class="fa-solid fa-trophy fa-fw"></i> Logrado<br/><span style="font-size:1.4rem;">100%</span></div>
+<div class="card-body">
+<ul class="check-list" style="gap:.5rem;">
+<li>Caso específico y bien investigado</li>
+<li>Conexión explícita con conceptos del curso (ML vs DL, tipo de aprendizaje)</li>
+<li>Análisis ético con escenarios específicos</li>
+<li>Propuestas de mitigación realistas y concretas</li>
+<li>Conclusión argumentada con equilibrio</li>
+</ul>
+</div>
+</div>
+<div class="card" style="border:2px solid var(--warn);background:rgba(245,158,11,.05);">
+<div class="card-title" style="color:var(--warn);font-size:2rem;text-align:center;"><i class="fa-solid fa-circle-half-stroke fa-fw"></i> Medianamente<br/><span style="font-size:1.4rem;">50-75%</span></div>
+<div class="card-body">
+<ul class="dot-list" style="gap:.5rem;">
+<li>Caso identificado pero análisis superficial</li>
+<li>Conexiones teóricas vagas</li>
+<li>Ética mencionada sin profundidad</li>
+<li>Mitigaciones genéricas</li>
+<li>Conclusión sin argumentación fuerte</li>
+</ul>
+</div>
+</div>
+<div class="card" style="border:2px solid var(--err);background:rgba(239,68,68,.05);">
+<div class="card-title" style="color:var(--err);font-size:2rem;text-align:center;"><i class="fa-solid fa-circle-xmark fa-fw"></i> Por Lograr<br/><span style="font-size:1.4rem;">0-50%</span>
+</div>
+<div class="card-body">
+<ul class="dot-list" style="gap:.5rem;">
+<li>Tema genérico o copiado</li>
+<li>Sin conexión con conceptos del curso</li>
+<li>Ética ignorada o solo mencionada</li>
+<li>Sin propuestas de mitigación</li>
+<li>Sin conclusión o conclusión vacía</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="quote reveal reveal-d3" style="margin-top:1.5rem;border-left-color:var(--warn);">
+<strong><i class="fa-solid fa-triangle-exclamation"></i> La diferencia clave:</strong> No digan solo "la IA
+            tiene sesgos". Digan <strong>QUÉ</strong> sesgo específico, <strong>POR QUÉ</strong> se genera, y
+            <strong>CÓMO</strong> se mitiga. Esa profundidad es lo que separa un 50% de un 100%.
+          </div>
+</div>
+</div>
+<div class="notes">Ahora veamos la rúbrica con la que los voy a evaluar. Hay 3 niveles de logro: Logrado (100%), Medianamente Logrado (50-75%), y Por Lograr (0-50%). Lo que marca la diferencia entre un trabajo promedio y uno sobresaliente es la profundidad del análisis ético y la conexión explícita con los conceptos teóricos que vimos en clase. No se queden en lo superficial. Si solo dicen 'la IA tiene sesgos', eso es insuficiente. Necesito que digan QUÉ tipo de sesgo específico podría tener su caso, POR QUÉ se generaría, y CÓMO se podría mitigar.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="27" data-total="29"></span></div></section>\n\n<section class="slide" data-session="3">
+<div class="orb orb2"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-lightbulb"></i> Ejemplo de Caso Bien Hecho</div>
+<h2 class="reveal reveal-d1 h2">Caso: "El Algoritmo de TikTok"</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="card-grid card-grid-3 reveal reveal-d2" style="margin-bottom:1rem;">
+<div class="card">
+<div class="card-title" style="font-size:1.4rem;"><i class="fa-solid fa-1 fa-fw" style="color:var(--pl);"></i> Descripción</div>
+<div class="card-body" style="font-size:1.2rem;">IA decide qué videos mostrar en el "For You Page".
+                Analiza likes, tiempo de visualización, compartidos, scroll.</div>
+</div>
+<div class="card">
+<div class="card-title" style="font-size:1.4rem;"><i class="fa-solid fa-2 fa-fw" style="color:var(--c2);"></i> Tecnología</div>
+<div class="card-body" style="font-size:1.2rem;"><strong>Deep Learning</strong> con señales de video,
+                texto y audio. Supervisado (predice likes) + Refuerzo (maximiza engagement).</div>
+</div>
+<div class="card">
+<div class="card-title" style="font-size:1.4rem;"><i class="fa-solid fa-3 fa-fw" style="color:var(--ok);"></i> Beneficios</div>
+<div class="card-body" style="font-size:1.2rem;">Democratiza la creación: cualquiera puede viralizar sin
+                ser famoso. Negocios pequeños alcanzan audiencias masivas.</div>
+</div>
+</div>
+<div class="cols reveal reveal-d3 grid g2">
+<div class="card">
+<div class="card-title" style="font-size:1.4rem;"><i class="fa-solid fa-4 fa-fw" style="color:var(--err);"></i> Implicancias Éticas</div>
+<div class="card-body" style="font-size:1.2rem;">
+<ul class="dot-list" style="gap:.3rem;">
+<li><strong>Burbujas:</strong> Solo ves contenido que refuerza tus creencias.</li>
+<li><strong>Adicción:</strong> Riesgo alto especialmente en menores.</li>
+<li><strong>Privacidad:</strong> Recopila datos de ubicación y comportamiento.</li>
+<li><strong>Sesgo:</strong> Puede favorecer ciertos perfiles físicos.</li>
+</ul>
+</div>
+</div>
+<div class="card">
+<div class="card-title" style="font-size:1.4rem;"><i class="fa-solid fa-5 fa-fw" style="color:var(--purple);"></i> Conclusión + Mitigación</div>
+<div class="card-body" style="font-size:1.2rem;">
+<ul class="dot-list" style="gap:.3rem;">
+<li>Beneficios superan riesgos <strong>si se regulan</strong>.</li>
+<li>Límites de tiempo obligatorios para menores.</li>
+<li>Permitir control de criterios del algoritmo al usuario.</li>
+<li>Auditorías independientes de sesgo de contenido.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Les doy un ejemplo de cómo se vería un caso bien hecho para que tengan referencia. Imaginen el caso: 'El algoritmo de recomendación de TikTok'. Fase 1 - Descripción: TikTok usa IA para decidir qué videos mostrar en el 'For You Page', analizando cada interacción del usuario (likes, tiempo de visualización, compartidos, comentarios). Fase 2 - Tecnología: Usa Deep Learning con redes neuronales que procesan señales de video, texto y audio. Aprendizaje supervisado (predice si le darás like) + refuerzo (optimiza el engagement). Fase 3 - Beneficios: Democratiza la creación de contenido. Cualquier usuario puede viralizar sin ser famoso. Los negocios pequeños llegan a audiencias masivas sin pagar publicidad. Fase 4 - Ética: El algoritmo puede crear 'burbujas de información' donde solo ves contenido que refuerza tus creencias. Hay riesgo de adicción especialmente en menores. TikTok recopila datos sensibles de ubicación y comportamiento. Fase 5 - Mitigación: Implementar límites de tiempo de uso obligatorios, permitir a los usuarios controlar los criterios del algoritmo, auditorías independientes de sesgo. Ven cómo cada fase tiene profundidad y especificidad? Eso es lo que espero.</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="28" data-total="29"></span></div></section>\n\n<section class="slide" data-session="3">
+<div class="orb orb1"></div>
+<div class="orb orb3"></div>
+<div class="slide-inner">
+<div class="kicker reveal"><i class="fa-solid fa-rocket"></i> ¡A Trabajar!</div>
+<h2 class="reveal reveal-d1 h2">Ideas de Casos + Instrucciones Finales</h2>
+<div class="hdiv reveal reveal-d1"></div>
+<div class="content-area">
+<div class="cols reveal reveal-d2 grid g2">
+<div>
+<h3 style="font-size:1.6rem;margin-bottom:1rem;"><i class="fa-solid fa-lightbulb fa-fw" style="color:var(--acc);"></i> Ideas de Casos Específicos:</h3>
+<div class="card-grid" style="grid-template-columns:1fr;gap:.8rem;">
+<div class="card" style="padding:1rem 1.5rem;flex-direction:row;align-items:center;gap:1rem;"><i class="fa-brands fa-spotify" style="color:#1DB954;font-size:2rem;"></i>
+<div><strong style="color:#fff;">Spotify Discover Weekly</strong>
+<div style="font-size:1.2rem;color:var(--dim);">ML + Filtrado colaborativo</div>
+</div>
+</div>
+<div class="card" style="padding:1rem 1.5rem;flex-direction:row;align-items:center;gap:1rem;"><i class="fa-brands fa-google" style="color:#4285F4;font-size:2rem;"></i>
+<div><strong style="color:#fff;">Google Translate</strong>
+<div style="font-size:1.2rem;color:var(--dim);">Transformers + NLP</div>
+</div>
+</div>
+<div class="card" style="padding:1rem 1.5rem;flex-direction:row;align-items:center;gap:1rem;"><i class="fa-solid fa-car" style="color:var(--err);font-size:2rem;"></i>
+<div><strong style="color:#fff;">Tesla Autopilot</strong>
+<div style="font-size:1.2rem;color:var(--dim);">Visión + Refuerzo</div>
+</div>
+</div>
+<div class="card" style="padding:1rem 1.5rem;flex-direction:row;align-items:center;gap:1rem;"><i class="fa-solid fa-stethoscope" style="color:var(--ok);font-size:2rem;"></i>
+<div><strong style="color:#fff;">Detección de cáncer con IA</strong>
+<div style="font-size:1.2rem;color:var(--dim);">Deep Learning + CNN</div>
+</div>
+</div>
+<div class="card" style="padding:1rem 1.5rem;flex-direction:row;align-items:center;gap:1rem;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--purple);font-size:2rem;"></i>
+<div><strong style="color:#fff;">ChatGPT / Claude</strong>
+<div style="font-size:1.2rem;color:var(--dim);">LLM + Transformers</div>
+</div>
+</div>
+<div class="card" style="padding:1rem 1.5rem;flex-direction:row;align-items:center;gap:1rem;"><i class="fa-solid fa-shield-halved" style="color:var(--warn);font-size:2rem;"></i>
+<div><strong style="color:#fff;">COMPAS (justicia predictiva)</strong>
+<div style="font-size:1.2rem;color:var(--dim);">ML + Sesgos raciales</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="card" style="border:2px solid var(--ok);padding:2.5rem;margin-bottom:1.5rem;background:rgba(16,185,129,.08);">
+<div class="card-title" style="font-size:2rem;color:var(--ok);text-align:center;margin-bottom:1.5rem;">
+<i class="fa-solid fa-person-running fa-fw"></i> ¡Empiecen AHORA!</div>
+<div class="card-body" style="font-size:1.4rem;">
+<ul class="num-list">
+<li><strong>Elijan su caso</strong> en equipo (o individual). Confirmen con el docente que no se
+                      repita.</li>
+<li><strong>Investiguen</strong> su caso en internet: cómo funciona, qué tecnología usa, qué
+                      controversias tiene.</li>
+<li><strong>Estructuren</strong> su análisis siguiendo las 5 fases obligatorias.</li>
+<li><strong>Entreguen</strong> en la Semana 4 vía plataforma EVA.</li>
+</ul>
+</div>
+</div>
+<div class="card">
+<div class="card-title"><i class="fa-solid fa-hand fa-fw" style="color:var(--pl);"></i> ¿Dudas?</div>
+<div class="card-body">Tienen el <strong>resto de la clase para empezar</strong>. Aprovechen
+                  para:<br/><br/>
+<ul class="check-list" style="gap:.3rem;">
+<li>Elegir caso y formar equipo</li>
+<li>Consultar dudas al docente</li>
+<li>Iniciar la investigación</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">Aquí les dejo ideas de casos que pueden elegir. Recuerden: deben ser ESPECÍFICOS, no genéricos. Tienen el resto de la clase para empezar a trabajar en la evaluación. Pueden consultarme dudas ahora mismo. La entrega es en la Semana 4 a través de la plataforma EVA. Les recomiendo que empiecen hoy eligiendo su caso y comenzando la investigación. ¡Manos a la obra!</div><div class="deck-footer"><span class="dim2">Inteligencia Artificial</span><span class="slide-number" data-current="29" data-total="29"></span></div></section>\n\n
+</div>
+<script src="../../../PPT as Codes/html-ppt-skill/assets/runtime.js"></script>
+<script src="../../../PPT as Codes/html-ppt-skill/assets/animations/fx-runtime.js"></script>
+</body>
+</html>

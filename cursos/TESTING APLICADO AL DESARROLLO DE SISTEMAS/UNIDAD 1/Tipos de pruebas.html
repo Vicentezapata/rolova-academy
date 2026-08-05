@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagrama de Flujo de Pruebas de Software</title>
+    
+    <!-- Tailwind CSS for styling the page -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevent body scroll when panning diagram */
+        }
+        #cy {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        .header-container {
+            position: relative;
+            z-index: 20;
+        }
+        #legend {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 20;
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="header-container container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Header -->
+        <header class="text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Diagrama de Flujo de Pruebas</h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Un diagrama interactivo para explorar los tipos de pruebas de software. Arrastra los nodos, haz zoom y navega.</p>
+            <button id="download-svg" class="mt-6 inline-block bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors">
+                Descargar SVG
+            </button>
+        </header>
+    </div>
+
+    <!-- Cytoscape.js container -->
+    <div id="cy"></div>
+
+    <!-- Legend -->
+    <div id="legend">
+        <h4 class="font-bold mb-3 text-center text-gray-700">Leyenda</h4>
+        <ul class="space-y-2">
+            <li class="flex items-center">
+                <span class="w-5 h-5 rounded-md mr-2" style="background-color: #6366f1;"></span>
+                <span class="text-sm text-gray-600">Prueba Funcional</span>
+            </li>
+            <li class="flex items-center">
+                <span class="w-5 h-5 rounded-md mr-2" style="background-color: #7c3aed;"></span>
+                <span class="text-sm text-gray-600">Prueba No Funcional</span>
+            </li>
+            <li class="flex items-center">
+                <span class="w-5 h-5 rounded-md mr-2" style="background-color: #a5b4fc;"></span>
+                <span class="text-sm text-gray-600">Nivel de Prueba</span>
+            </li>
+        </ul>
+    </div>
+
+
+    <!-- Cytoscape.js and its dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.23.0/cytoscape.min.js"></script>
+    <!-- Dagre layout for hierarchical graphs -->
+    <script src="https://unpkg.com/dagre@0.8.5/dist/dagre.min.js"></script>
+    <script src="https://unpkg.com/cytoscape-dagre@2.4.0/cytoscape-dagre.js"></script>
+    <!-- SVG export utility -->
+    <script src="https://unpkg.com/cytoscape-svg@0.4.0/cytoscape-svg.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Raw data structured for easy conversion with only two main categories
+            const rawData = [
+                { id: 'root', text: 'Pruebas de Software', parent: null, type: 'root' },
+                
+                // Functional Tests
+                { id: 'funcionales', text: 'Pruebas Funcionales', parent: 'root', type: 'branch', colorGroup: 'functional' },
+                { id: 'unitarias', text: 'Unitarias', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'unitarias_nivel', text: 'Nivel Función/Método', parent: 'unitarias', type: 'subleaf' },
+                { id: 'integracion', text: 'Integración', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'integracion_nivel', text: 'Nivel de Módulos', parent: 'integracion', type: 'subleaf' },
+                { id: 'sistema', text: 'Sistema', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'sistema_nivel', text: 'Nivel End-to-End', parent: 'sistema', type: 'subleaf' },
+                { id: 'uat', text: 'Aceptación (UAT)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'alfa', text: 'Alfa', parent: 'uat', type: 'subleaf' },
+                { id: 'beta', text: 'Beta', parent: 'uat', type: 'subleaf' },
+                { id: 'humo', text: 'Humo', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'humo_nivel', text: 'Verificación de Build', parent: 'humo', type: 'subleaf' },
+                { id: 'sanidad', text: 'Sanidad', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'sanidad_nivel', text: 'Verificación de Arreglos', parent: 'sanidad', type: 'subleaf' },
+                { id: 'api', text: 'API', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'api_nivel', text: 'Nivel de Endpoints', parent: 'api', type: 'subleaf' },
+                { id: 'ui', text: 'UI', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'ui_nivel', text: 'Nivel Visual/Interacción', parent: 'ui', type: 'subleaf' },
+                { id: 'regresion', text: 'Regresión', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'regresion_nivel', text: 'Nivel de Cobertura', parent: 'regresion', type: 'subleaf' },
+                { id: 'confirmacion', text: 'Confirmación', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+                { id: 'confirmacion_nivel', text: 'Nivel de Defecto', parent: 'confirmacion', type: 'subleaf' },
+
+                // Non-Functional Tests
+                { id: 'no-funcionales', text: 'Pruebas No Funcionales', parent: 'root', type: 'branch', colorGroup: 'non-functional' },
+                { id: 'rendimiento', text: 'Rendimiento', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+                { id: 'carga', text: 'De Carga', parent: 'rendimiento', type: 'subleaf' },
+                { id: 'estres', text: 'De Estrés', parent: 'rendimiento', type: 'subleaf' },
+                { id: 'resistencia', text: 'De Resistencia (Soak)', parent: 'rendimiento', type: 'subleaf' },
+                { id: 'picos', text: 'De Picos (Spike)', parent: 'rendimiento', type: 'subleaf' },
+                
+                { id: 'seguridad', text: 'Seguridad', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+                { id: 'pentesting', text: 'Pentesting', parent: 'seguridad', type: 'subleaf' },
+                { id: 'sast', text: 'Análisis Estático (SAST)', parent: 'seguridad', type: 'subleaf' },
+                { id: 'dast', text: 'Análisis Dinámico (DAST)', parent: 'seguridad', type: 'subleaf' },
+
+                { id: 'usabilidad', text: 'Usabilidad', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+                { id: 'expertos', text: 'Evaluación Heurística', parent: 'usabilidad', type: 'subleaf' },
+                { id: 'usuarios', text: 'Pruebas con Usuarios', parent: 'usabilidad', type: 'subleaf' },
+
+                { id: 'compatibilidad', text: 'Compatibilidad', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+                { id: 'navegadores', text: 'Navegadores', parent: 'compatibilidad', type: 'subleaf' },
+                { id: 'sistemas', text: 'Sistemas Operativos', parent: 'compatibilidad', type: 'subleaf' },
+
+                { id: 'instalacion', text: 'Instalación', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+                { id: 'instalacion_nivel', text: 'Nivel de Plataforma', parent: 'instalacion', type: 'subleaf' },
+                { id: 'localizacion', text: 'Localización', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+                { id: 'localizacion_nivel', text: 'Nivel Lingüístico/Cultural', parent: 'localizacion', type: 'subleaf' },
+            ];
+
+            // Convert raw data to Cytoscape elements
+            const elements = [];
+            rawData.forEach(item => {
+                elements.push({ group: 'nodes', data: { id: item.id, label: item.text, type: item.type, colorGroup: item.colorGroup } });
+                if (item.parent) {
+                    elements.push({ group: 'edges', data: { source: item.parent, target: item.id } });
+                }
+            });
+            
+            // Register SVG export extension
+            cytoscape.use(cytoscapeSvg);
+
+            var cy = cytoscape({
+                container: document.getElementById('cy'),
+                elements: elements,
+                style: [ 
+                    {
+                        selector: 'node',
+                        style: {
+                            'background-color': '#666', 'label': 'data(label)', 'color': '#fff',
+                            'text-valign': 'center', 'text-halign': 'center', 'font-size': '14px',
+                            'text-wrap': 'wrap', 'text-max-width': '100px', 'padding': '10px',
+                            'shape': 'round-rectangle', 'width': 'label', 'height': 'label'
+                        }
+                    },
+                    {
+                        selector: 'node[type="root"]',
+                        style: { 'background-color': '#334155', 'font-size': '20px', 'font-weight': 'bold', 'padding': '16px' }
+                    },
+                    {
+                        selector: 'node[type="branch"]',
+                        style: { 'background-color': '#4f46e5', 'font-size': '16px', 'font-weight': 'bold', 'padding': '14px' }
+                    },
+                    {
+                        selector: 'node[colorGroup="functional"]',
+                        style: { 'background-color': '#6366f1' }
+                    },
+                    {
+                        selector: 'node[colorGroup="non-functional"]',
+                        style: { 'background-color': '#7c3aed' }
+                    },
+                    {
+                        selector: 'node[type="subleaf"]',
+                        style: { 'background-color': '#a5b4fc', 'color': '#1e293b', 'font-size': '12px' }
+                    },
+                    {
+                        selector: 'edge',
+                        style: {
+                            'width': 2, 'line-color': '#cbd5e1', 'target-arrow-color': '#cbd5e1',
+                            'target-arrow-shape': 'triangle', 'curve-style': 'bezier'
+                        }
+                    }
+                ],
+                layout: {
+                    name: 'dagre', padding: 30, rankDir: 'LR', spacingFactor: 1.1
+                },
+                minZoom: 0.2, maxZoom: 3, boxSelectionEnabled: false,
+            });
+
+            // SVG Download Logic
+            document.getElementById('download-svg').addEventListener('click', function() {
+                const svgContent = cy.svg({ scale: 1, full: true });
+                const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'diagrama_pruebas.svg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+
+</body>
+</html>

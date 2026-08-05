@@ -1,0 +1,2706 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPT Preview - Presenter Ready</title>
+<script src="notas_orador.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #000; /* Pure black for projectors */
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars by default */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  }
+  .toolbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 48px;
+    background: rgba(0,0,0,0.8); border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    z-index: 1000; backdrop-filter: blur(10px);
+    opacity: 0; transition: opacity 0.3s; /* Hide by default, show on hover */
+  }
+  .toolbar:hover, .toolbar:focus-within { opacity: 1; }
+  
+  :fullscreen .toolbar { display: none !important; }
+  :fullscreen .nav-hint { display: none !important; }
+
+  .toolbar button {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; padding: 6px 16px; border-radius: 6px; cursor: pointer;
+    font-size: 14px; transition: background 0.2s;
+  }
+  .toolbar button:hover { background: rgba(255,255,255,0.2); }
+  .toolbar button:disabled { opacity: 0.3; cursor: not-allowed; }
+  .page-info { font-size: 14px; color: rgba(255,255,255,0.7); min-width: 80px; text-align: center; }
+  
+  .stage {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+        overflow: hidden;
+    position: relative;
+    background: #000;
+  }
+  
+  .slide-wrap {
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+  
+  /* Overview Mode */
+  .stage.overview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 24px;
+    align-content: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    background: transparent;
+    box-shadow: none;
+    aspect-ratio: auto;
+    height: calc(100vh - 60px);
+  }
+  .stage.overview .slide-wrap {
+    display: block !important;
+    position: relative;
+    width: 256px; height: 144px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border 0.2s, transform 0.2s;
+  }
+  .stage.overview .slide-wrap:hover {
+    border-color: #22D3EE;
+    transform: scale(1.05);
+  }
+  .stage.overview .slide-wrap.active {
+    border-color: #6366f1;
+  }
+  .stage.overview .slide-frame {
+    transform: scale(0.2) !important;
+    pointer-events: none;
+  }
+  
+  .slide-frame {
+    width: 100%; height: 100%; /* Fully responsive */
+    transform-origin: top left;
+    position: absolute; top: 0; left: 0;
+    border: none;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* In overview mode, force fixed aspect ratio so it scales down correctly */
+  .overview .slide-frame {
+    width: 1280px; height: 720px;
+  }
+  
+  .nav-hint {
+    position: fixed; bottom: 12px;
+    color: rgba(255,255,255,0.25); font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="btn-prev" onclick="nav(-1)">Prev</button>
+  <span class="page-info" id="page-info">1 / 21</span>
+  <button id="btn-next" onclick="nav(1)">Next</button>
+</div>
+
+<div class="stage" id="stage">
+<div class="slide-wrap" id="wrap-0" onclick="if(isOverview) { toggleOverview(); show(0); }"><iframe class="slide-frame" id="slide-0" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 00 — Portada&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{
+  --bg:#050b1f;--bg2:#0a1f3d;--card-from:rgba(34,211,238,0.08);--card-to:rgba(99,102,241,0.04);
+  --border:rgba(34,211,238,0.2);--text:#ffffff;--text-sec:rgba(255,255,255,0.65);
+  --accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--radius:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 70% 120%, #0c1b4a 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;z-index:1;background-image:radial-gradient(rgba(99,102,241,0.08) 1px,transparent 1px);background-size:40px 40px;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(99,102,241,0.2);filter:blur(60px);top:-80px;right:320px;z-index:1;}
+.glow2{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(99,102,241,0.2);filter:blur(60px);bottom:-60px;left:80px;z-index:1;}
+.content{position:relative;z-index:10;padding:60px 80px;display:flex;flex-direction:column;justify-content:center;height:100%;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.35);color:var(--accent1);padding:8px 18px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:28px;width:fit-content;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent1);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+.title{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:56px;font-weight:800;line-height:1.1;letter-spacing:-0.045em;color:var(--text);margin-bottom:20px;}
+.title em{font-family:&#x27;Instrument Serif&#x27;,Georgia,serif;font-style:italic;color:var(--accent1);}
+.subtitle{font-size:17px;color:var(--text-sec);line-height:1.7;max-width:580px;letter-spacing:-0.005em;margin-bottom:44px;}
+.meta-row{display:flex;align-items:center;gap:20px;}
+.meta-chip{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:7px 16px;border-radius:6px;font-size:12px;color:var(--text-sec);letter-spacing:0.05em;font-family:&#x27;JetBrains Mono&#x27;,monospace;}
+.meta-chip.accent{background:rgba(99,102,241,0.2);border-color:rgba(99,102,241,0.4);color:#a5b4fc;}
+.corner-tl{position:absolute;top:32px;left:32px;z-index:10;}
+.corner-tl svg{opacity:0.4;}
+.slide-num{position:absolute;bottom:36px;right:48px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:0.1em;z-index:10;}
+.bg-img{position:absolute;inset:0;background-size:cover;background-position:center right;opacity:0.25;z-index:0;}
+.bg-overlay{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 40%,transparent 100%);z-index:1;}
+
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+&lt;div class=&quot;bg-img&quot; style=&quot;background-image:url(&#x27;images/cover.png&#x27;)&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;bg-overlay&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow1&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow2&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;corner-tl&quot;&gt;
+    &lt;lord-icon src=&quot;https://cdn.lordicon.com/wxnxiano.json&quot; trigger=&quot;loop&quot; delay=&quot;2000&quot; colors=&quot;primary:#22d3ee&quot; style=&quot;width:40px;height:40px;transform:rotate(315deg)&quot;&gt;&lt;/lord-icon&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;eyebrow&quot;&gt;&lt;div class=&quot;dot&quot;&gt;&lt;/div&gt;IF203IINF &amp;nbsp;·&amp;nbsp; IPSS &amp;nbsp;·&amp;nbsp; 2026&lt;/div&gt;
+    &lt;h1 class=&quot;title&quot;&gt;Unidad 2&lt;br&gt;&lt;em&gt;Planificación&lt;/em&gt;&lt;br&gt;de Pruebas&lt;/h1&gt;
+    &lt;p class=&quot;subtitle&quot;&gt;Estrategia, diseño y documentación de pruebas de software. Desde la selección contextual de tipos de prueba hasta el Plan Maestro IEEE 829.&lt;/p&gt;
+    &lt;div class=&quot;meta-row&quot;&gt;
+      &lt;div class=&quot;meta-chip accent&quot;&gt;4 Sesiones&lt;/div&gt;
+      &lt;div class=&quot;meta-chip accent&quot;&gt;21 Slides&lt;/div&gt;
+      &lt;div class=&quot;meta-chip&quot;&gt;Gherkin · RTM · Test Plan · INVEST&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;00 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-1" onclick="if(isOverview) { toggleOverview(); show(1); }"><iframe class="slide-frame" id="slide-1" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 01 — Tabla de Contenidos&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--accent4:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 90% 110%, #082f49 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;z-index:0;background-image:radial-gradient(rgba(14,165,233,0.08) 1px,transparent 1px);background-size:40px 40px;}
+.glow{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(14,165,233,0.2);filter:blur(70px);top:-60px;right:-60px;z-index:0;}
+.header{position:absolute;top:36px;left:48px;right:48px;z-index:10;display:flex;align-items:center;justify-content:space-between;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:11px;letter-spacing:0.18em;color:var(--accent1);text-transform:uppercase;}
+.title{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:24px;font-weight:800;color:var(--text);letter-spacing:-0.015em;}
+.divider{position:absolute;top:80px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent1),transparent);opacity:0.4;z-index:10;}
+.content-area{position:absolute;left:48px;top:100px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:1fr 1fr / 1fr 1fr;gap:18px;z-index:10;}
+.card{background:linear-gradient(135deg,rgba(34,211,238,0.08),rgba(99,102,241,0.04));border:1px solid var(--border);border-radius:8px;padding:28px 32px;display:flex;flex-direction:column;gap:12px;transition:border-color .2s;}
+.card:hover{border-color:rgba(34,211,238,0.5);}
+.part-num{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:4px;}
+.card-icon{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:8px;}
+.card h3{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.015em;line-height:1.25;}
+.card p{font-size:13px;color:var(--text-sec);line-height:1.65;letter-spacing:-0.005em;}
+.topics{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+.topic{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--text-sec);letter-spacing:0.04em;}
+.c1 .part-num{color:var(--accent1);}
+.c2 .part-num{color:var(--accent2);}
+.c3 .part-num{color:var(--accent3);}
+.c4 .part-num{color:var(--accent4);}
+.c1{border-color:rgba(34,211,238,0.3);}
+.c2{border-color:rgba(99,102,241,0.3);}
+.c3{border-color:rgba(253,224,71,0.3);}
+.c4{border-color:rgba(16,185,129,0.3);}
+.c1 .card-icon{background:rgba(34,211,238,0.12);}
+.c2 .card-icon{background:rgba(99,102,241,0.12);}
+.c3 .card-icon{background:rgba(253,224,71,0.12);}
+.c4 .card-icon{background:rgba(16,185,129,0.12);}
+.slide-num{position:absolute;bottom:20px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.2);z-index:10;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Unidad 2 — IF203IINF&lt;/span&gt;
+    &lt;span class=&quot;title&quot;&gt;Contenido de la Unidad&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;2026&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content-area&quot;&gt;
+    &lt;div class=&quot;card c1&quot;&gt;
+      &lt;div class=&quot;part-num&quot;&gt;Sesión 01&lt;/div&gt;
+      &lt;div class=&quot;card-icon&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/wxnxiano.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+      &lt;h3&gt;Selección Estratégica de Tipos de Prueba&lt;/h3&gt;
+      &lt;p&gt;El Testing depende del contexto (ISTQB #6). Evaluación de riesgo como inversión de negocio: Impacto × Probabilidad.&lt;/p&gt;
+      &lt;div class=&quot;topics&quot;&gt;&lt;span class=&quot;topic&quot;&gt;Contexto&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;Matriz de Riesgo&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;MVP vs Crítico&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card c2&quot;&gt;
+      &lt;div class=&quot;part-num&quot;&gt;Sesión 02&lt;/div&gt;
+      &lt;div class=&quot;card-icon&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/nocovwne.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+      &lt;h3&gt;Requerimientos e Historias de Usuario&lt;/h3&gt;
+      &lt;p&gt;De los documentos SRS monolíticos a las User Stories ágiles. Criterio INVEST y Gherkin BDD para criterios de aceptación.&lt;/p&gt;
+      &lt;div class=&quot;topics&quot;&gt;&lt;span class=&quot;topic&quot;&gt;User Stories&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;INVEST&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;Gherkin&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;BDD&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card c3&quot;&gt;
+      &lt;div class=&quot;part-num&quot;&gt;Sesión 03&lt;/div&gt;
+      &lt;div class=&quot;card-icon&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/msoeawqm.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+      &lt;h3&gt;Diseño de Casos de Prueba y Trazabilidad&lt;/h3&gt;
+      &lt;p&gt;Anatomía del Test Case profesional. Requirement Traceability Matrix (RTM) para garantizar cobertura total de requerimientos.&lt;/p&gt;
+      &lt;div class=&quot;topics&quot;&gt;&lt;span class=&quot;topic&quot;&gt;Test Cases&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;RTM&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;Cobertura&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;Auditoría&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card c4&quot;&gt;
+      &lt;div class=&quot;part-num&quot;&gt;Sesión 04 — Sincrónica&lt;/div&gt;
+      &lt;div class=&quot;card-icon&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/dxjqoygy.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+      &lt;h3&gt;El Plan de Pruebas Maestro (Test Plan)&lt;/h3&gt;
+      &lt;p&gt;Documento estratégico IEEE 829: Alcance, Estrategia y Criterios de Entrada/Salida. Dinámica de roleplay y auditoría cruzada.&lt;/p&gt;
+      &lt;div class=&quot;topics&quot;&gt;&lt;span class=&quot;topic&quot;&gt;IEEE 829&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;Test Plan&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;Roleplay&lt;/span&gt;&lt;span class=&quot;topic&quot;&gt;QA Audit&lt;/span&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;01 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-2" onclick="if(isOverview) { toggleOverview(); show(2); }"><iframe class="slide-frame" id="slide-2" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 02 — Sección 1&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 70% -10%, #082f49 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(14,165,233,0.08) 1px,transparent 1px);background-size:60px 60px;z-index:0;}
+.glow-center{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(14,165,233,0.2);filter:blur(80px);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;}
+.content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:60px;}
+.part-label{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:12px;letter-spacing:0.25em;color:var(--accent1);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.part-label::before,.part-label::after{content:&#x27;&#x27;;flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--accent1),transparent);max-width:80px;}
+.title{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:48px;font-weight:800;line-height:1.15;letter-spacing:-0.045em;color:var(--text);margin-bottom:20px;}
+.title em{font-family:&#x27;Instrument Serif&#x27;,Georgia,serif;font-style:italic;color:var(--accent1);}
+.subtitle{font-size:17px;color:var(--text-sec);max-width:640px;line-height:1.7;letter-spacing:-0.005em;margin-bottom:44px;}
+.agenda-row{display:flex;gap:16px;justify-content:center;}
+.agenda-chip{background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.2);padding:10px 20px;border-radius:6px;font-size:12px;color:var(--text-sec);}
+.agenda-chip strong{color:var(--accent1);display:block;font-size:11px;letter-spacing:0.1em;margin-bottom:3px;text-transform:uppercase;}
+.slide-num{position:absolute;bottom:20px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.2);z-index:10;}
+
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow-center&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;part-label&quot;&gt;Sesión 01&lt;/div&gt;
+    &lt;h1 class=&quot;title&quot;&gt;Selección &lt;em&gt;Estratégica&lt;/em&gt;&lt;br&gt;de Tipos de Prueba&lt;/h1&gt;
+    &lt;p class=&quot;subtitle&quot;&gt;Cómo decidir qué probar, cuándo y con qué herramientas. La selección de pruebas como decisión de inversión, no solo técnica.&lt;/p&gt;
+    &lt;div class=&quot;agenda-row&quot;&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Principio&lt;/strong&gt;Testing en Contexto (ISTQB)&lt;/div&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Herramienta&lt;/strong&gt;Matriz Riesgo: Impacto × Probabilidad&lt;/div&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Práctica&lt;/strong&gt;El Estratega de Calidad&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;02 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-3" onclick="if(isOverview) { toggleOverview(); show(3); }"><iframe class="slide-frame" id="slide-3" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 03 — El Principio del Contexto&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--err:#ef4444;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 70% 110%, #082f49 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(14,165,233,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(14,165,233,0.2);filter:blur(70px);top:-60px;right:60px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent1);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent1),transparent);opacity:0.35;z-index:10;}
+/* Asymmetric 2fr + 1fr */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:1fr / 2fr 1fr;gap:20px;z-index:10;}
+.card{background:linear-gradient(135deg,rgba(34,211,238,0.08),rgba(99,102,241,0.04));border:1px solid var(--border);border-radius:8px;padding:24px 28px;}
+.card-tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:12px;}
+.card h3{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:19px;font-weight:700;color:var(--text);letter-spacing:-0.015em;margin-bottom:10px;}
+.card p{font-size:13px;color:var(--text-sec);line-height:1.7;}
+.quote-block{background:rgba(34,211,238,0.06);border-left:3px solid var(--accent1);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:16px;}
+.quote-block p{font-size:14px;color:var(--text);line-height:1.65;font-style:normal;}
+.quote-block strong{color:var(--accent1);}
+.principle-num{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:64px;font-weight:900;color:var(--accent1);opacity:0.12;position:absolute;top:16px;right:20px;letter-spacing:-0.05em;}
+.main-card{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:16px;}
+.factor-list{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+.factor{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;}
+.factor-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.factor-text{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.factor-text strong{color:var(--text);}
+.side-col{display:flex;flex-direction:column;gap:20px;}
+.mini-card{background:linear-gradient(135deg,rgba(34,211,238,0.08),rgba(99,102,241,0.04));border:1px solid var(--border);border-radius:8px;padding:20px 22px;display:flex;flex-direction:column;gap:8px;flex:1;}
+.mini-card .card-tag{font-size:10px;}
+.mini-card h4{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+.mini-card p{font-size:12px;color:var(--text-sec);line-height:1.6;}
+.data-big{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:32px;font-weight:800;letter-spacing:-0.03em;margin-bottom:4px;font-variant-numeric:tabular-nums;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow1&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Sesión 01 · Selección de Tipos&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;El Principio del Contexto (ISTQB #6)&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;S1&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content-area&quot;&gt;
+    &lt;!-- Main card: 2/3 --&gt;
+    &lt;div class=&quot;card main-card&quot;&gt;
+      &lt;div class=&quot;principle-num&quot;&gt;6&lt;/div&gt;
+      &lt;div class=&quot;card-tag&quot; style=&quot;color:var(--accent1)&quot;&gt;Principio Fundamental ISTQB&lt;/div&gt;
+      &lt;div class=&quot;quote-block&quot;&gt;
+        &lt;p&gt;&lt;strong&gt;&quot;El Testing depende del contexto.&quot;&lt;/strong&gt;&lt;br&gt;La selección de tipos de prueba es una &lt;strong&gt;decisión de inversión financiera&lt;/strong&gt;, no solo técnica. Los recursos (tiempo y dinero) son limitados: se invierte donde el riesgo es mayor.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;h3&gt;Factores que definen la estrategia de pruebas&lt;/h3&gt;
+      &lt;div class=&quot;factor-list&quot;&gt;
+        &lt;div class=&quot;factor&quot;&gt;
+          &lt;div class=&quot;factor-dot&quot; style=&quot;background:var(--accent1)&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;factor-text&quot;&gt;&lt;strong&gt;Complejidad arquitectónica:&lt;/strong&gt; Sistemas distribuidos, microservicios e integraciones necesitan más tipos de prueba que un CRUD monolítico.&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;factor&quot;&gt;
+          &lt;div class=&quot;factor-dot&quot; style=&quot;background:var(--accent2)&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;factor-text&quot;&gt;&lt;strong&gt;Requisitos regulatorios:&lt;/strong&gt; Fintech, salud y sistemas críticos están sujetos a normativas (ISO 26262, IEC 62443) que obligan a ciertos tipos de prueba.&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;factor&quot;&gt;
+          &lt;div class=&quot;factor-dot&quot; style=&quot;background:var(--accent3)&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;factor-text&quot;&gt;&lt;strong&gt;Ciclo de vida del proyecto:&lt;/strong&gt; Agile con entregas semanales favorece pruebas unitarias + integración continua; Waterfall prioriza pruebas de sistema al final.&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;factor&quot;&gt;
+          &lt;div class=&quot;factor-dot&quot; style=&quot;background:var(--ok)&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;factor-text&quot;&gt;&lt;strong&gt;Probabilidad e impacto del fallo:&lt;/strong&gt; ¿Es tecnología nueva? ¿Equipo junior? ¿Un fallo mata alguien o solo molesta?&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- Side column: 1/3 --&gt;
+    &lt;div class=&quot;side-col&quot;&gt;
+      &lt;div class=&quot;mini-card&quot; style=&quot;border-color:rgba(34,211,238,0.35)&quot;&gt;
+        &lt;div class=&quot;card-tag&quot; style=&quot;color:var(--accent1)&quot;&gt;Ejemplo A — Startup MVP&lt;/div&gt;
+        &lt;div class=&quot;data-big&quot; style=&quot;color:var(--accent1)&quot;&gt;1 mes&lt;/div&gt;
+        &lt;h4&gt;Tiempo para lanzar&lt;/h4&gt;
+        &lt;p&gt;Selección: Pruebas unitarias core, Smoke Tests manuales. Sin pruebas de carga pesadas aún. El riesgo de negocio es no llegar al mercado.&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mini-card&quot; style=&quot;border-color:rgba(239,68,68,0.35)&quot;&gt;
+        &lt;div class=&quot;card-tag&quot; style=&quot;color:var(--err)&quot;&gt;Ejemplo B — App Bancaria Core&lt;/div&gt;
+        &lt;div class=&quot;data-big&quot; style=&quot;color:var(--err)&quot;&gt;~100%&lt;/div&gt;
+        &lt;h4&gt;Cobertura requerida&lt;/h4&gt;
+        &lt;p&gt;Pruebas estructurales estrictas, Pen-testing obligatorio, Pruebas de Estrés. El riesgo de negocio es la pérdida de fondos o datos de clientes.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;03 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-4" onclick="if(isOverview) { toggleOverview(); show(4); }"><iframe class="slide-frame" id="slide-4" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 04 — Matriz de Riesgo&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--err:#ef4444;--ok:#10b981;--warn:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 10% 120%, #082f49 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(14,165,233,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.bg-fade{position:absolute;right:0;top:0;width:373px;height:720px;background:linear-gradient(90deg,var(--bg) 0%,transparent 100%);z-index:1;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent1);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent1),transparent);opacity:0.35;z-index:10;}
+/* Hero-top layout */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:auto 1fr / repeat(3,1fr);gap:18px;z-index:10;}
+.hero{grid-column:1/-1;background:linear-gradient(135deg,rgba(34,211,238,0.1),rgba(99,102,241,0.06));border:1px solid rgba(34,211,238,0.3);border-radius:8px;padding:22px 28px;display:flex;align-items:center;gap:32px;}
+.hero-text h3{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.015em;}
+.hero-text p{font-size:13px;color:var(--text-sec);line-height:1.65;max-width:700px;}
+.matrix-visual{display:flex;flex-direction:column;gap:4px;flex-shrink:0;margin-right:24px;}
+.matrix-row{display:flex;gap:4px;}
+.matrix-cell{width:70px;height:45px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;}
+.m-low{background:rgba(16,185,129,0.25);color:#6ee7b7;border:1px solid rgba(16,185,129,0.3);}
+.m-med{background:rgba(245,158,11,0.25);color:#fcd34d;border:1px solid rgba(245,158,11,0.3);}
+.m-high{background:rgba(239,68,68,0.25);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);}
+.m-crit{background:rgba(239,68,68,0.45);color:#fff;border:1px solid rgba(239,68,68,0.6);}
+.axis-label{font-size:11px;font-weight:700;color:var(--text-sec);text-align:center;letter-spacing:0.08em;}
+.card{background:linear-gradient(135deg,rgba(34,211,238,0.07),rgba(99,102,241,0.03));border:1px solid var(--border);border-radius:8px;padding:20px 22px;display:flex;flex-direction:column;gap:8px;}
+.card-tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:4px;}
+.card h4{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+.card p{font-size:12px;color:var(--text-sec);line-height:1.65;}
+.badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.05em;margin-bottom:6px;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+.teacher-note{position:absolute;bottom:20px;left:48px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:8px;padding:12px 16px;display:flex;align-items:flex-start;gap:12px;max-width:800px;z-index:20;}
+.teacher-icon{font-size:20px;}
+.teacher-text h4{color:var(--warn);font-size:12px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;font-family:&#x27;JetBrains Mono&#x27;,monospace;}
+.teacher-text p{color:var(--text-sec);font-size:12px;line-height:1.5;}
+.bg-img{position:absolute;inset:0;background-size:cover;background-position:center right;opacity:0.25;z-index:0;}
+.bg-overlay{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 40%,transparent 100%);z-index:1;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+&lt;div class=&quot;bg-img&quot; style=&quot;background-image:url(&#x27;images/risk_matrix.png&#x27;)&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;bg-overlay&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;bg-fade&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Sesión 01 · Selección de Tipos&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;Matriz de Riesgo: Impacto × Probabilidad&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;S1&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content-area&quot;&gt;
+    &lt;!-- Hero --&gt;
+    &lt;div class=&quot;hero&quot;&gt;
+      &lt;div class=&quot;matrix-visual&quot;&gt;
+        &lt;div class=&quot;axis-label&quot;&gt;↑ IMPACTO&lt;/div&gt;
+        &lt;div class=&quot;matrix-row&quot;&gt;
+          &lt;div class=&quot;matrix-cell m-med&quot;&gt;Med&lt;/div&gt;
+          &lt;div class=&quot;matrix-cell m-high&quot;&gt;Alto&lt;/div&gt;
+          &lt;div class=&quot;matrix-cell m-crit&quot;&gt;Crítico&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;matrix-row&quot;&gt;
+          &lt;div class=&quot;matrix-cell m-low&quot;&gt;Bajo&lt;/div&gt;
+          &lt;div class=&quot;matrix-cell m-med&quot;&gt;Med&lt;/div&gt;
+          &lt;div class=&quot;matrix-cell m-high&quot;&gt;Alto&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;matrix-row&quot;&gt;
+          &lt;div class=&quot;matrix-cell m-low&quot;&gt;Bajo&lt;/div&gt;
+          &lt;div class=&quot;matrix-cell m-low&quot;&gt;Bajo&lt;/div&gt;
+          &lt;div class=&quot;matrix-cell m-med&quot;&gt;Med&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;axis-label&quot;&gt;PROBABILIDAD →&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;hero-text&quot;&gt;
+        &lt;h3&gt;Priorización basada en Riesgo&lt;/h3&gt;
+        &lt;p&gt;La Matriz de Riesgo es la herramienta central para decidir &lt;strong&gt;dónde invertir el esfuerzo de prueba&lt;/strong&gt;. Clasifica cada funcionalidad según su &lt;strong&gt;Probabilidad de Fallo × Impacto del Fallo&lt;/strong&gt;. El cuadrante Crítico recibe cobertura máxima; el cuadrante Bajo puede quedar fuera del alcance en proyectos con tiempo limitado.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- 3 cards below --&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;badge&quot; style=&quot;background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.4);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/dxjqoygy.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; CRÍTICO&lt;/div&gt;
+      &lt;div class=&quot;card-tag&quot; style=&quot;color:var(--err)&quot;&gt;Alta Prob. + Alto Impacto&lt;/div&gt;
+      &lt;h4&gt;Cobertura Máxima&lt;/h4&gt;
+      &lt;p&gt;Pruebas exhaustivas: unitarias + integración + E2E + seguridad. Ejecución en cada build. Ejemplo: módulo de pagos en e-commerce.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;badge&quot; style=&quot;background:rgba(245,158,11,0.2);color:#fcd34d;border:1px solid rgba(245,158,11,0.4);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/wxnxiano.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; ALTO&lt;/div&gt;
+      &lt;div class=&quot;card-tag&quot; style=&quot;color:var(--warn)&quot;&gt;Alta Prob. + Bajo Impacto&lt;/div&gt;
+      &lt;h4&gt;Cobertura Selectiva&lt;/h4&gt;
+      &lt;p&gt;Pruebas de regresión y humo. Se automatizan los caminos felices. Ejemplo: formulario de búsqueda con texto libre que devuelve 0 resultados.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;badge&quot; style=&quot;background:rgba(16,185,129,0.2);color:#6ee7b7;border:1px solid rgba(16,185,129,0.4);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; BAJO&lt;/div&gt;
+      &lt;div class=&quot;card-tag&quot; style=&quot;color:var(--ok)&quot;&gt;Baja Prob. + Bajo Impacto&lt;/div&gt;
+      &lt;h4&gt;Cobertura Mínima / Excluida&lt;/h4&gt;
+      &lt;p&gt;Se documenta la decisión de no probar. El riesgo es asumido explícitamente por el Product Owner. Ejemplo: página &quot;Acerca de nosotros&quot;.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  
+
+  &lt;div class=&quot;slide-num&quot;&gt;04 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-5" onclick="if(isOverview) { toggleOverview(); show(5); }"><iframe class="slide-frame" id="slide-5" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 05 — Actividad: El Estratega&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--err:#ef4444;--ok:#10b981;--warn:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 10% 110%, #082f49 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(14,165,233,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(14,165,233,0.2);filter:blur(80px);top:-80px;right:-80px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent2);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent2),transparent);opacity:0.35;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.activity-header{background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(34,211,238,0.08));border:1px solid rgba(99,102,241,0.35);border-radius:8px;padding:20px 28px;display:flex;align-items:center;gap:20px;}
+.activity-icon{width:56px;height:56px;background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.activity-info h3{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:20px;font-weight:800;color:var(--text);letter-spacing:-0.02em;margin-bottom:6px;}
+.activity-info p{font-size:13px;color:var(--text-sec);line-height:1.6;}
+.meta-row{display:flex;gap:10px;margin-top:10px;}
+.meta-chip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.04em;border:1px solid;}
+.cases-grid{display:grid;grid-template:1fr / repeat(3,1fr);gap:16px;flex:1;}
+.case-card{background:linear-gradient(135deg,rgba(34,211,238,0.06),rgba(99,102,241,0.03));border:1px solid var(--border);border-radius:8px;padding:20px 22px;display:flex;flex-direction:column;gap:10px;}
+.case-num{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:var(--text-sec);letter-spacing:0.15em;text-transform:uppercase;}
+.case-title{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+.case-desc{font-size:12px;color:var(--text-sec);line-height:1.65;}
+.case-challenge{margin-top:auto;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--text-sec);}
+.case-challenge strong{color:var(--accent1);display:block;margin-bottom:3px;font-size:10px;letter-spacing:0.08em;text-transform:uppercase;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Actividad Práctica — Sesión 01&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;El Estratega de Calidad&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;Grupal&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;activity-header&quot;&gt;
+      &lt;div class=&quot;activity-icon&quot;&gt;♟️&lt;/div&gt;
+      &lt;div class=&quot;activity-info&quot;&gt;
+        &lt;h3&gt;El Estratega de Calidad&lt;/h3&gt;
+        &lt;p&gt;Asume el rol de &lt;em&gt;Test Manager&lt;/em&gt;. Se te presentan 3 proyectos ficticios con contextos radicalmente distintos. Debes elegir &lt;strong&gt;EXACTAMENTE 3 tipos de prueba&lt;/strong&gt; para cada uno y justificar tu decisión usando la Matriz de Riesgo.&lt;/p&gt;
+        &lt;div class=&quot;meta-row&quot;&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(99,102,241,0.12);color:#a5b4fc;border-color:rgba(99,102,241,0.35);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/wxnxiano.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Buzón EVA&lt;/div&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(245,158,11,0.12);color:#fcd34d;border-color:rgba(245,158,11,0.35);&quot;&gt;⏱ 30 minutos&lt;/div&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(16,185,129,0.12);color:#6ee7b7;border-color:rgba(16,185,129,0.35);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/ljvjsnvh.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Grupal (2-3 personas)&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;cases-grid&quot;&gt;
+      &lt;div class=&quot;case-card&quot; style=&quot;border-color:rgba(245,158,11,0.35)&quot;&gt;
+        &lt;div class=&quot;case-num&quot;&gt;Caso 01&lt;/div&gt;
+        &lt;div class=&quot;case-title&quot; style=&quot;color:var(--warn)&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/nocovwne.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; E-Commerce — Black Friday&lt;/div&gt;
+        &lt;div class=&quot;case-desc&quot;&gt;Plataforma de ventas online. Se proyectan miles de usuarios simultáneos durante el evento de 24 horas más importante del año. Un fallo en pagos implica pérdida de millones.&lt;/div&gt;
+        &lt;div class=&quot;case-challenge&quot;&gt;&lt;strong&gt;Tu desafío&lt;/strong&gt;¿Qué 3 tipos de prueba priorizas y por qué? Justifica con Impacto × Probabilidad.&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;case-card&quot; style=&quot;border-color:rgba(239,68,68,0.35)&quot;&gt;
+        &lt;div class=&quot;case-num&quot;&gt;Caso 02&lt;/div&gt;
+        &lt;div class=&quot;case-title&quot; style=&quot;color:var(--err)&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/wxnxiano.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Control de Semáforos IoT&lt;/div&gt;
+        &lt;div class=&quot;case-desc&quot;&gt;Sistema gubernamental que sincroniza el tráfico de la capital usando sensores en tiempo real. Un fallo puede provocar accidentes. Opera 24/7 sin pausa.&lt;/div&gt;
+        &lt;div class=&quot;case-challenge&quot;&gt;&lt;strong&gt;Tu desafío&lt;/strong&gt;¿Qué normas regulatorias aplican? ¿Cómo justificas excluir algún tipo de prueba?&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;case-card&quot; style=&quot;border-color:rgba(16,185,129,0.35)&quot;&gt;
+        &lt;div class=&quot;case-num&quot;&gt;Caso 03&lt;/div&gt;
+        &lt;div class=&quot;case-title&quot; style=&quot;color:var(--ok)&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; App de Recetas (Red Social)&lt;/div&gt;
+        &lt;div class=&quot;case-desc&quot;&gt;Red social indie donde usuarios suben fotos de postres y se dan &quot;likes&quot;. Equipo de 2 devs. Presupuesto de testing casi nulo. El peor escenario: una foto que no carga.&lt;/div&gt;
+        &lt;div class=&quot;case-challenge&quot;&gt;&lt;strong&gt;Tu desafío&lt;/strong&gt;¿Cuál es el nivel MÍNIMO de testing aceptable? ¿Qué riesgo asumes explícitamente?&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;05 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-6" onclick="if(isOverview) { toggleOverview(); show(6); }"><iframe class="slide-frame" id="slide-6" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 06 — Sección 2&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent2:#6366f1;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 70% -20%, #3b0764 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(168,85,247,0.08) 1px,transparent 1px);background-size:60px 60px;z-index:0;}
+.glow-center{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(168,85,247,0.2);filter:blur(80px);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;}
+.content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:60px;}
+.part-label{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:12px;letter-spacing:0.25em;color:var(--accent2);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.part-label::before,.part-label::after{content:&#x27;&#x27;;flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--accent2),transparent);max-width:80px;}
+.title{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:48px;font-weight:800;line-height:1.15;letter-spacing:-0.045em;color:var(--text);margin-bottom:20px;}
+.title em{font-family:&#x27;Instrument Serif&#x27;,Georgia,serif;font-style:italic;color:var(--accent2);}
+.subtitle{font-size:17px;color:var(--text-sec);max-width:660px;line-height:1.7;letter-spacing:-0.005em;margin-bottom:44px;}
+.agenda-row{display:flex;gap:16px;justify-content:center;}
+.agenda-chip{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);padding:10px 20px;border-radius:6px;font-size:12px;color:var(--text-sec);}
+.agenda-chip strong{color:var(--accent2);display:block;font-size:11px;letter-spacing:0.1em;margin-bottom:3px;text-transform:uppercase;}
+.slide-num{position:absolute;bottom:20px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.2);z-index:10;}
+.bg-img{position:absolute;inset:0;background-size:cover;background-position:center right;opacity:0.25;z-index:0;}
+.bg-overlay{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 40%,transparent 100%);z-index:1;}
+
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+&lt;div class=&quot;bg-img&quot; style=&quot;background-image:url(&#x27;images/user_stories.png&#x27;)&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;bg-overlay&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow-center&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;part-label&quot;&gt;Sesión 02&lt;/div&gt;
+    &lt;h1 class=&quot;title&quot;&gt;Requerimientos e&lt;br&gt;&lt;em&gt;Historias&lt;/em&gt; de Usuario&lt;/h1&gt;
+    &lt;p class=&quot;subtitle&quot;&gt;De la ambigüedad del cliente a la especificidad técnica. User Stories con INVEST y Criterios de Aceptación con Gherkin BDD.&lt;/p&gt;
+    &lt;div class=&quot;agenda-row&quot;&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Comparativa&lt;/strong&gt;SRS (Waterfall) vs User Stories (Agile)&lt;/div&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Herramienta&lt;/strong&gt;Criterio INVEST + Sintaxis Gherkin&lt;/div&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Práctica&lt;/strong&gt;El Traductor Ágil&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;06 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-7" onclick="if(isOverview) { toggleOverview(); show(7); }"><iframe class="slide-frame" id="slide-7" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 07 — SRS vs User Stories&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(99,102,241,0.22);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 90% 110%, #3b0764 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(168,85,247,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(168,85,247,0.2);filter:blur(70px);top:-50px;left:-50px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent2);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent2),transparent);opacity:0.35;z-index:10;}
+/* Symmetric 50/50 */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:1fr / 1fr 1fr;gap:20px;z-index:10;}
+.card{background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(34,211,238,0.04));border:1px solid var(--border);border-radius:8px;padding:26px 30px;display:flex;flex-direction:column;gap:14px;}
+.card-label{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;padding:5px 10px;border-radius:4px;width:fit-content;}
+.card h3{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:18px;font-weight:800;color:var(--text);letter-spacing:-0.015em;}
+.card p{font-size:13px;color:var(--text-sec);line-height:1.7;}
+.example-block{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:14px 16px;font-size:12px;font-style:italic;color:var(--text-sec);line-height:1.65;}
+.example-block strong{color:var(--text);font-style:normal;}
+.pro-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.pro-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text-sec);line-height:1.6;}
+.pro-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.vs-divider{position:absolute;left:50%;top:88px;bottom:32px;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,0.15),transparent);transform:translateX(-50%);z-index:20;}
+.vs-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;background:var(--bg);border:1px solid rgba(255,255,255,0.2);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--text-sec);font-family:&#x27;JetBrains Mono&#x27;,monospace;letter-spacing:0.05em;}
+.invest-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;}
+.invest-chip{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);border-radius:4px;padding:4px 10px;font-size:11px;font-weight:700;color:#6ee7b7;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow1&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Sesión 02 · Requerimientos&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;SRS vs Historia de Usuario — Waterfall vs Agile&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;S2&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content-area&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;card-label&quot; style=&quot;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/nocovwne.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Requerimiento Tradicional (SRS)&lt;/div&gt;
+      &lt;h3&gt;Software Requirements Specification&lt;/h3&gt;
+      &lt;p&gt;Típico del modelo &lt;strong&gt;Cascada (Waterfall)&lt;/strong&gt;. Documentos extensos, formales, orientados al &quot;Qué&quot; debe hacer el sistema desde una perspectiva de ingeniería. Escrito por analistas, para ingenieros.&lt;/p&gt;
+      &lt;div class=&quot;example-block&quot;&gt;
+        &quot;El sistema deberá permitir la autenticación de usuarios contra el LDAP corporativo con encriptación &lt;strong&gt;SHA-256&lt;/strong&gt; dentro de un tiempo de respuesta &amp;lt; 200ms. El módulo deberá registrar cada intento en auditoría con timestamp UTC.&quot;
+      &lt;/div&gt;
+      &lt;div class=&quot;pro-list&quot;&gt;
+        &lt;div class=&quot;pro-item&quot;&gt;&lt;div class=&quot;pro-dot&quot; style=&quot;background:var(--accent2)&quot;&gt;&lt;/div&gt;Documentación exhaustiva para contratos legales y proyectos regulados.&lt;/div&gt;
+        &lt;div class=&quot;pro-item&quot;&gt;&lt;div class=&quot;pro-dot&quot; style=&quot;background:var(--accent2)&quot;&gt;&lt;/div&gt;Preciso para equipos grandes y distribuidos con poca comunicación directa.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot; style=&quot;border-color:rgba(34,211,238,0.25)&quot;&gt;
+      &lt;div class=&quot;card-label&quot; style=&quot;background:rgba(34,211,238,0.12);color:var(--accent1);border:1px solid rgba(34,211,238,0.3);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/wxnxiano.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Historia de Usuario (Agile)&lt;/div&gt;
+      &lt;h3&gt;User Story: COMO / QUIERO / PARA&lt;/h3&gt;
+      &lt;p&gt;Un &lt;strong&gt;recordatorio para tener una conversación&lt;/strong&gt;. Enfocado en el Valor de Negocio y en el Usuario. Usa lenguaje natural, escrito por (y para) el equipo de producto.&lt;/p&gt;
+      &lt;div class=&quot;example-block&quot;&gt;
+        &quot;&lt;strong&gt;COMO&lt;/strong&gt; empleado remoto, &lt;strong&gt;QUIERO&lt;/strong&gt; ingresar al sistema usando mi clave corporativa, &lt;strong&gt;PARA&lt;/strong&gt; no tener que recordar contraseñas distintas.&quot;
+      &lt;/div&gt;
+      &lt;div class=&quot;pro-list&quot;&gt;
+        &lt;div class=&quot;pro-item&quot;&gt;&lt;div class=&quot;pro-dot&quot; style=&quot;background:var(--ok)&quot;&gt;&lt;/div&gt;Fomenta la colaboración y la comprensión compartida del objetivo.&lt;/div&gt;
+        &lt;div class=&quot;pro-item&quot;&gt;&lt;div class=&quot;pro-dot&quot; style=&quot;background:var(--ok)&quot;&gt;&lt;/div&gt;Adaptable: se refina durante los sprints con nuevas conversaciones.&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;invest-row&quot;&gt;
+        &lt;div class=&quot;invest-chip&quot;&gt;I — Independiente&lt;/div&gt;
+        &lt;div class=&quot;invest-chip&quot;&gt;N — Negociable&lt;/div&gt;
+        &lt;div class=&quot;invest-chip&quot;&gt;V — Valiosa&lt;/div&gt;
+        &lt;div class=&quot;invest-chip&quot;&gt;E — Estimable&lt;/div&gt;
+        &lt;div class=&quot;invest-chip&quot;&gt;S — Small&lt;/div&gt;
+        &lt;div class=&quot;invest-chip&quot;&gt;T — Testeable ✓&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;vs-divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;vs-badge&quot;&gt;VS&lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;07 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-8" onclick="if(isOverview) { toggleOverview(); show(8); }"><iframe class="slide-frame" id="slide-8" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 08 — INVEST + Gherkin BDD&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 50% 120%, #3b0764 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(168,85,247,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(168,85,247,0.2);filter:blur(70px);bottom:-60px;right:200px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent2);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent2),transparent);opacity:0.35;z-index:10;}
+/* Primary-secondary layout 2fr + 1fr */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:1fr / 3fr 2fr;gap:20px;z-index:10;}
+.main-card{background:linear-gradient(135deg,rgba(34,211,238,0.07),rgba(99,102,241,0.03));border:1px solid var(--border);border-radius:8px;padding:24px 28px;display:flex;flex-direction:column;gap:12px;}
+.card-tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:4px;}
+.card h3{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:17px;font-weight:700;color:var(--text);letter-spacing:-0.015em;margin-bottom:6px;}
+.code-block{background:#020614;border:1px solid rgba(34,211,238,0.2);border-radius:6px;padding:18px 20px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:12.5px;line-height:1.7;color:#e2e8f0;flex:1;}
+.kw{color:#a78bfa;font-weight:700;}
+.fn{color:var(--accent1);}
+.ok-kw{color:#4ade80;}
+.when-kw{color:var(--accent1);}
+.then-kw{color:#c084fc;}
+.st{color:var(--accent3);}
+.cm{color:#475569;font-style:italic;}
+.side-col{display:flex;flex-direction:column;gap:16px;}
+.invest-card{background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(6,182,212,0.05));border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:22px 24px;}
+.invest-card h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;letter-spacing:-0.01em;}
+.invest-items{display:flex;flex-direction:column;gap:6px;}
+.invest-item{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:5px;background:rgba(255,255,255,0.04);}
+.invest-letter{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:18px;font-weight:900;color:var(--ok);min-width:22px;letter-spacing:-0.02em;}
+.invest-word{font-size:12px;color:var(--text);}
+.invest-desc{font-size:11px;color:var(--text-sec);margin-left:auto;}
+.bdd-card{background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(34,211,238,0.04));border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:20px 22px;flex:1;}
+.bdd-card h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.bdd-card p{font-size:12px;color:var(--text-sec);line-height:1.65;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow1&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Sesión 02 · Requerimientos&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;Criterios de Aceptación — INVEST + Gherkin BDD&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;S2&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content-area&quot;&gt;
+    &lt;!-- Main: Gherkin code --&gt;
+    &lt;div class=&quot;main-card&quot;&gt;
+      &lt;div class=&quot;card-tag&quot; style=&quot;color:var(--accent1)&quot;&gt;Sintaxis Gherkin (BDD)&lt;/div&gt;
+      &lt;h3&gt;Criterios de Aceptación — Estándar de facto en Agile&lt;/h3&gt;
+      &lt;div class=&quot;code-block&quot;&gt;&lt;span class=&quot;kw&quot;&gt;Funcionalidad:&lt;/span&gt; &lt;span class=&quot;fn&quot;&gt;Suscripción al Newsletter&lt;/span&gt;
+
+&lt;span class=&quot;kw&quot;&gt;Escenario:&lt;/span&gt; &lt;span class=&quot;fn&quot;&gt;Suscripción exitosa con correo válido y nuevo&lt;/span&gt;
+  &lt;span class=&quot;ok-kw&quot;&gt;DADO&lt;/span&gt; que el usuario está en la página principal
+  &lt;span class=&quot;ok-kw&quot;&gt;Y&lt;/span&gt;   el correo &lt;span class=&quot;st&quot;&gt;&quot;ana@empresa.cl&quot;&lt;/span&gt; no existe en la base de datos
+  &lt;span class=&quot;when-kw&quot;&gt;CUANDO&lt;/span&gt; el usuario ingresa &lt;span class=&quot;st&quot;&gt;&quot;ana@empresa.cl&quot;&lt;/span&gt; y hace clic en Suscribir
+  &lt;span class=&quot;then-kw&quot;&gt;ENTONCES&lt;/span&gt; el sistema muestra &lt;span class=&quot;st&quot;&gt;&quot;¡Te has suscrito con éxito!&quot;&lt;/span&gt;
+  &lt;span class=&quot;then-kw&quot;&gt;Y&lt;/span&gt;    el correo queda registrado en la tabla newsletters
+
+&lt;span class=&quot;kw&quot;&gt;Escenario:&lt;/span&gt; &lt;span class=&quot;fn&quot;&gt;Rechazo por correo ya registrado&lt;/span&gt;
+  &lt;span class=&quot;ok-kw&quot;&gt;DADO&lt;/span&gt; que &lt;span class=&quot;st&quot;&gt;&quot;juan@empresa.cl&quot;&lt;/span&gt; ya existe en la base de datos
+  &lt;span class=&quot;when-kw&quot;&gt;CUANDO&lt;/span&gt; el usuario intenta suscribirse con ese correo
+  &lt;span class=&quot;then-kw&quot;&gt;ENTONCES&lt;/span&gt; el sistema muestra &lt;span class=&quot;st&quot;&gt;&quot;Este correo ya está registrado&quot;&lt;/span&gt;
+
+&lt;span class=&quot;kw&quot;&gt;Escenario:&lt;/span&gt; &lt;span class=&quot;fn&quot;&gt;Rechazo por formato inválido&lt;/span&gt;
+  &lt;span class=&quot;ok-kw&quot;&gt;DADO&lt;/span&gt; que el usuario ingresa &lt;span class=&quot;st&quot;&gt;&quot;correo-sin-arroba&quot;&lt;/span&gt;
+  &lt;span class=&quot;when-kw&quot;&gt;CUANDO&lt;/span&gt; hace clic en Suscribir
+  &lt;span class=&quot;then-kw&quot;&gt;ENTONCES&lt;/span&gt; el sistema muestra &lt;span class=&quot;st&quot;&gt;&quot;Formato de correo inválido&quot;&lt;/span&gt;
+  &lt;span class=&quot;then-kw&quot;&gt;Y&lt;/span&gt;    no realiza ninguna inserción en la base de datos&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- Side col --&gt;
+    &lt;div class=&quot;side-col&quot;&gt;
+      &lt;div class=&quot;invest-card&quot;&gt;
+        &lt;h4&gt;Criterio INVEST para User Stories&lt;/h4&gt;
+        &lt;div class=&quot;invest-items&quot;&gt;
+          &lt;div class=&quot;invest-item&quot;&gt;&lt;span class=&quot;invest-letter&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;invest-word&quot;&gt;Independiente&lt;/span&gt;&lt;span class=&quot;invest-desc&quot;&gt;Sin dependencias rígidas&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;invest-item&quot;&gt;&lt;span class=&quot;invest-letter&quot;&gt;N&lt;/span&gt;&lt;span class=&quot;invest-word&quot;&gt;Negociable&lt;/span&gt;&lt;span class=&quot;invest-desc&quot;&gt;Sujeta a conversación&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;invest-item&quot;&gt;&lt;span class=&quot;invest-letter&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;invest-word&quot;&gt;Valiosa&lt;/span&gt;&lt;span class=&quot;invest-desc&quot;&gt;Valor para el usuario&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;invest-item&quot;&gt;&lt;span class=&quot;invest-letter&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;invest-word&quot;&gt;Estimable&lt;/span&gt;&lt;span class=&quot;invest-desc&quot;&gt;El equipo puede estimarla&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;invest-item&quot;&gt;&lt;span class=&quot;invest-letter&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;invest-word&quot;&gt;Small (Pequeña)&lt;/span&gt;&lt;span class=&quot;invest-desc&quot;&gt;Cabe en un sprint&lt;/span&gt;&lt;/div&gt;
+          &lt;div class=&quot;invest-item&quot; style=&quot;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:5px;&quot;&gt;&lt;span class=&quot;invest-letter&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;invest-word&quot;&gt;Testeable ★&lt;/span&gt;&lt;span class=&quot;invest-desc&quot;&gt;Base del Gherkin&lt;/span&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;bdd-card&quot;&gt;
+        &lt;h4&gt;¿Por qué Gherkin?&lt;/h4&gt;
+        &lt;p&gt;Permite que &lt;strong&gt;Negocio, Desarrollo y QA&lt;/strong&gt; hablen exactamente el mismo idioma. Los escenarios Gherkin son directamente ejecutables con frameworks como &lt;strong&gt;Cucumber&lt;/strong&gt;, &lt;strong&gt;Behave&lt;/strong&gt; o &lt;strong&gt;SpecFlow&lt;/strong&gt;.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;08 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-9" onclick="if(isOverview) { toggleOverview(); show(9); }"><iframe class="slide-frame" id="slide-9" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 09 — Actividad: El Traductor Ágil&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 90% -10%, #3b0764 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(168,85,247,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(168,85,247,0.2);filter:blur(80px);bottom:-60px;left:200px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent1);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent1),transparent);opacity:0.35;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.activity-header{background:linear-gradient(135deg,rgba(34,211,238,0.1),rgba(99,102,241,0.06));border:1px solid rgba(34,211,238,0.3);border-radius:8px;padding:18px 26px;display:flex;align-items:center;gap:20px;}
+.act-icon{width:50px;height:50px;background:rgba(34,211,238,0.15);border:1px solid rgba(34,211,238,0.35);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.act-info h3{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-0.02em;margin-bottom:5px;}
+.act-info p{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.meta-row{display:flex;gap:10px;margin-top:8px;}
+.meta-chip{padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;border:1px solid;}
+.main-grid{display:grid;grid-template:1fr / 1fr 1fr;gap:16px;flex:1;}
+.email-card{background:rgba(0,0,0,0.4);border:1px solid rgba(34,211,238,0.3);border-radius:8px;padding:18px 22px;display:flex;flex-direction:column;gap:10px;}
+.email-header{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--accent1);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
+.email-icon{width:48px;height:48px;background:rgba(34,211,238,0.12);border:1px solid rgba(34,211,238,0.3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.email-body{font-size:12.5px;color:var(--text-sec);line-height:1.7;font-style:italic;}
+.task-card{background:rgba(0,0,0,0.4);border:1px solid rgba(99,102,241,0.35);border-radius:8px;padding:18px 22px;display:flex;flex-direction:column;gap:12px;}
+.task-header{font-size:11px;color:#a5b4fc;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
+.task-item{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:6px;}
+.task-num{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:20px;font-weight:900;color:var(--accent2);opacity:0.6;min-width:24px;}
+.task-text{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.task-text strong{color:var(--text);}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Actividad Práctica — Sesión 02&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;El Traductor Ágil&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;Individual&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;activity-header&quot;&gt;
+      &lt;div class=&quot;act-icon&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/psnhyobz.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+      &lt;div class=&quot;act-info&quot;&gt;
+        &lt;h3&gt;El Traductor Ágil&lt;/h3&gt;
+        &lt;p&gt;El Gerente de Ventas acaba de enviar un correo con un requerimiento en formato monolítico. Tu misión: &lt;strong&gt;descomponerlo en el formato Ágil profesional&lt;/strong&gt; con User Story + Criterios de Aceptación Gherkin.&lt;/p&gt;
+        &lt;div class=&quot;meta-row&quot;&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(99,102,241,0.12);color:#a5b4fc;border-color:rgba(99,102,241,0.35);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/psnhyobz.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Foro EVA&lt;/div&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(245,158,11,0.12);color:#fcd34d;border-color:rgba(245,158,11,0.35);&quot;&gt;⏱ 45 minutos&lt;/div&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(34,211,238,0.12);color:var(--accent1);border-color:rgba(34,211,238,0.35);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/ljvjsnvh.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Individual&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;main-grid&quot;&gt;
+      &lt;div class=&quot;email-card&quot;&gt;
+        &lt;div class=&quot;email-header&quot;&gt;&lt;div class=&quot;email-icon&quot;&gt;✉️&lt;/div&gt;Correo del Gerente de Ventas:&lt;/div&gt;
+        &lt;div class=&quot;email-body&quot;&gt;
+          &quot;Estimados, necesitamos urgente un botón en la página principal para que los clientes puedan suscribirse al Newsletter ingresando su correo. Si el correo ya existe en BD, el sistema no debe explotar, debe avisarles. Y obvio, tiene que verificar que sea un formato de correo válido con un arroba.&quot;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;task-card&quot;&gt;
+        &lt;div class=&quot;task-header&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/nocovwne.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Tu Entrega&lt;/div&gt;
+        &lt;div class=&quot;task-item&quot;&gt;
+          &lt;div class=&quot;task-num&quot;&gt;01&lt;/div&gt;
+          &lt;div class=&quot;task-text&quot;&gt;Redacta la &lt;strong&gt;Historia de Usuario&lt;/strong&gt; en formato COMO / QUIERO / PARA que capture el valor de negocio real del correo.&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;task-item&quot;&gt;
+          &lt;div class=&quot;task-num&quot;&gt;02&lt;/div&gt;
+          &lt;div class=&quot;task-text&quot;&gt;Redacta &lt;strong&gt;3 Criterios de Aceptación Gherkin&lt;/strong&gt; cubriendo: éxito, correo duplicado y formato inválido.&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;task-item&quot;&gt;
+          &lt;div class=&quot;task-num&quot;&gt;03&lt;/div&gt;
+          &lt;div class=&quot;task-text&quot;&gt;Verifica con &lt;strong&gt;INVEST&lt;/strong&gt;: ¿Tu historia cumple todos los criterios? Especialmente: ¿es Testeable?&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;09 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-10" onclick="if(isOverview) { toggleOverview(); show(10); }"><iframe class="slide-frame" id="slide-10" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 10 — Sección 3&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent3:#FDE047;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 70% -20%, #451a03 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(245,158,11,0.08) 1px,transparent 1px);background-size:60px 60px;z-index:0;}
+.glow-center{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(245,158,11,0.15);filter:blur(80px);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;}
+.content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:60px;}
+.part-label{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:12px;letter-spacing:0.25em;color:var(--accent3);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.part-label::before,.part-label::after{content:&#x27;&#x27;;flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--accent3),transparent);max-width:80px;}
+.title{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:46px;font-weight:800;line-height:1.15;letter-spacing:-0.045em;color:var(--text);margin-bottom:20px;}
+.title em{font-family:&#x27;Instrument Serif&#x27;,Georgia,serif;font-style:italic;color:var(--accent3);}
+.subtitle{font-size:17px;color:var(--text-sec);max-width:660px;line-height:1.7;margin-bottom:44px;}
+.agenda-row{display:flex;gap:16px;justify-content:center;}
+.agenda-chip{background:rgba(253,224,71,0.08);border:1px solid rgba(253,224,71,0.2);padding:10px 20px;border-radius:6px;font-size:12px;color:var(--text-sec);}
+.agenda-chip strong{color:var(--accent3);display:block;font-size:11px;letter-spacing:0.1em;margin-bottom:3px;text-transform:uppercase;}
+.slide-num{position:absolute;bottom:20px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.2);z-index:10;}
+.bg-img{position:absolute;inset:0;background-size:cover;background-position:center right;opacity:0.25;z-index:0;}
+.bg-overlay{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 40%,transparent 100%);z-index:1;}
+
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+&lt;div class=&quot;bg-img&quot; style=&quot;background-image:url(&#x27;images/test_case.png&#x27;)&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;bg-overlay&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow-center&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;part-label&quot;&gt;Sesión 03&lt;/div&gt;
+    &lt;h1 class=&quot;title&quot;&gt;Diseño de &lt;em&gt;Casos&lt;/em&gt; de Prueba&lt;br&gt;y Trazabilidad&lt;/h1&gt;
+    &lt;p class=&quot;subtitle&quot;&gt;La anatomía de un Test Case infalible. Diseño basado en requerimientos y cobertura exhaustiva con la Matriz de Trazabilidad (RTM).&lt;/p&gt;
+    &lt;div class=&quot;agenda-row&quot;&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Estructura&lt;/strong&gt;Anatomía del Test Case (5 campos)&lt;/div&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Herramienta&lt;/strong&gt;RTM — Requirement Traceability Matrix&lt;/div&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Práctica&lt;/strong&gt;Disección del Bug&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;10 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-11" onclick="if(isOverview) { toggleOverview(); show(11); }"><iframe class="slide-frame" id="slide-11" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 11 — Anatomía del Test Case&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(253,224,71,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--ok:#10b981;--err:#ef4444;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 10% -20%, #451a03 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(245,158,11,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(245,158,11,0.15);filter:blur(70px);top:-40px;right:100px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent3);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent3),transparent);opacity:0.35;z-index:10;}
+/* Hero top:hero + 5 cards below in a row */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:auto 1fr / repeat(5,1fr);gap:16px;z-index:10;}
+.hero{grid-column:1/-1;background:linear-gradient(135deg,rgba(253,224,71,0.1),rgba(34,211,238,0.05));border:1px solid rgba(253,224,71,0.3);border-radius:8px;padding:18px 24px;display:flex;align-items:center;gap:24px;}
+.hero-text h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.hero-text p{font-size:12.5px;color:var(--text-sec);line-height:1.65;max-width:780px;}
+.tc-badge{background:rgba(253,224,71,0.15);border:1px solid rgba(253,224,71,0.4);border-radius:6px;padding:8px 14px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:12px;color:var(--accent3);font-weight:700;flex-shrink:0;}
+.field-card{background:linear-gradient(135deg,rgba(34,211,238,0.06),rgba(99,102,241,0.03));border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:18px 16px;display:flex;flex-direction:column;gap:8px;}
+.field-num{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:11px;color:var(--text-sec);letter-spacing:0.1em;}
+.field-name{font-size:13px;font-weight:700;letter-spacing:-0.01em;}
+.field-desc{font-size:11px;color:var(--text-sec);line-height:1.6;flex:1;}
+.field-example{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:8px 10px;font-size:10.5px;color:var(--text-sec);line-height:1.5;font-style:italic;margin-top:auto;}
+.field-example strong{color:var(--text);font-style:normal;}
+.c1 .field-name{color:var(--accent3);}
+.c2 .field-name{color:var(--accent1);}
+.c3 .field-name{color:var(--accent2);}
+.c4 .field-name{color:var(--ok);}
+.c5 .field-name{color:var(--err);}
+.c1{border-color:rgba(253,224,71,0.25);}
+.c2{border-color:rgba(34,211,238,0.25);}
+.c3{border-color:rgba(99,102,241,0.25);}
+.c4{border-color:rgba(16,185,129,0.25);}
+.c5{border-color:rgba(239,68,68,0.25);}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow1&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Sesión 03 · Test Cases&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;Anatomía del Caso de Prueba (Test Case)&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;S3&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content-area&quot;&gt;
+    &lt;div class=&quot;hero&quot;&gt;
+      &lt;div class=&quot;tc-badge&quot;&gt;TC-001&lt;/div&gt;
+      &lt;div class=&quot;hero-text&quot;&gt;
+        &lt;h3&gt;¿Qué es un Test Case?&lt;/h3&gt;
+        &lt;p&gt;Un conjunto documentado de condiciones bajo las cuales se determinará si una aplicación cumple sus especificaciones. Debe ser tan preciso que &lt;strong&gt;alguien nuevo pueda ejecutarlo sin ambigüedad&lt;/strong&gt;. Cada campo tiene un propósito crítico: omitir uno invalida el caso.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- 5 field cards --&gt;
+    &lt;div class=&quot;field-card c1&quot;&gt;
+      &lt;div class=&quot;field-num&quot;&gt;Campo 01&lt;/div&gt;
+      &lt;div class=&quot;field-name&quot;&gt;ID / Título&lt;/div&gt;
+      &lt;div class=&quot;field-desc&quot;&gt;Identificador único y nombre descriptivo. Permite referenciar el caso en la RTM, defectos y reportes.&lt;/div&gt;
+      &lt;div class=&quot;field-example&quot;&gt;&lt;strong&gt;TC-001:&lt;/strong&gt; Validar login exitoso con credenciales correctas — Módulo de autenticación.&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;field-card c2&quot;&gt;
+      &lt;div class=&quot;field-num&quot;&gt;Campo 02&lt;/div&gt;
+      &lt;div class=&quot;field-name&quot;&gt;Precondiciones&lt;/div&gt;
+      &lt;div class=&quot;field-desc&quot;&gt;El estado exacto del sistema ANTES de ejecutar. Sin esto, el resultado no es reproducible.&lt;/div&gt;
+      &lt;div class=&quot;field-example&quot;&gt;El usuario &#x27;admin&#x27; existe en BD con estado Activo. El navegador está en &lt;strong&gt;/login&lt;/strong&gt;.&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;field-card c3&quot;&gt;
+      &lt;div class=&quot;field-num&quot;&gt;Campo 03&lt;/div&gt;
+      &lt;div class=&quot;field-name&quot;&gt;Pasos (Steps)&lt;/div&gt;
+      &lt;div class=&quot;field-desc&quot;&gt;Acciones explícitas, secuenciales y atómicas. Cada paso = una acción. Sin interpretación posible.&lt;/div&gt;
+      &lt;div class=&quot;field-example&quot;&gt;1. Ingresar user &#x27;admin&#x27;. 2. Ingresar pass &#x27;1234&#x27;. 3. Click en &lt;strong&gt;&#x27;Entrar&#x27;&lt;/strong&gt;.&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;field-card c4&quot;&gt;
+      &lt;div class=&quot;field-num&quot;&gt;Campo 04&lt;/div&gt;
+      &lt;div class=&quot;field-name&quot;&gt;Resultado Esperado&lt;/div&gt;
+      &lt;div class=&quot;field-desc&quot;&gt;La validación que define el ÉXITO. Verbo + objeto + estado final. Debe ser 100% verificable.&lt;/div&gt;
+      &lt;div class=&quot;field-example&quot;&gt;El sistema redirige a &lt;strong&gt;/dashboard&lt;/strong&gt; y muestra el mensaje &quot;Bienvenido Admin&quot;.&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;field-card c5&quot;&gt;
+      &lt;div class=&quot;field-num&quot;&gt;Campo 05&lt;/div&gt;
+      &lt;div class=&quot;field-name&quot;&gt;Datos de Prueba&lt;/div&gt;
+      &lt;div class=&quot;field-desc&quot;&gt;Variables, archivos o configuraciones específicas necesarias. Deben ser versionados.&lt;/div&gt;
+      &lt;div class=&quot;field-example&quot;&gt;&lt;strong&gt;user:&lt;/strong&gt; &#x27;admin&#x27;, &lt;strong&gt;pass:&lt;/strong&gt; &#x27;1234&#x27;, &lt;strong&gt;env:&lt;/strong&gt; staging-v2.&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;11 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-12" onclick="if(isOverview) { toggleOverview(); show(12); }"><iframe class="slide-frame" id="slide-12" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 12 — RTM&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(253,224,71,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--ok:#10b981;--err:#ef4444;--warn:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 70% 120%, #451a03 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(245,158,11,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(245,158,11,0.15);filter:blur(70px);top:-40px;left:200px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent3);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent3),transparent);opacity:0.35;z-index:10;}
+/* Asymmetric 2fr + 1fr */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:1fr / 3fr 2fr;gap:20px;z-index:10;}
+.main-card{background:linear-gradient(135deg,rgba(253,224,71,0.07),rgba(34,211,238,0.03));border:1px solid rgba(253,224,71,0.25);border-radius:8px;padding:22px 26px;display:flex;flex-direction:column;gap:14px;}
+.card-tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:2px;}
+.card h3{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.015em;margin-bottom:4px;}
+.card p{font-size:12.5px;color:var(--text-sec);line-height:1.7;}
+/* RTM Table */
+.rtm-table{width:100%;border-collapse:collapse;flex:1;}
+.rtm-table th{text-align:left;padding:10px 12px;background:rgba(253,224,71,0.08);color:var(--accent3);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;border-bottom:1px solid rgba(253,224,71,0.25);}
+.rtm-table td{padding:9px 12px;color:var(--text-sec);border-bottom:1px solid rgba(255,255,255,0.05);font-size:12px;vertical-align:middle;}
+.rtm-table tr:hover td{background:rgba(255,255,255,0.03);}
+.rtm-table code{background:rgba(253,224,71,0.1);color:var(--accent3);padding:2px 6px;border-radius:3px;font-size:11px;font-family:&#x27;JetBrains Mono&#x27;,monospace;}
+.badge{display:inline-block;padding:3px 8px;border-radius:3px;font-size:10px;font-weight:700;border:1px solid;font-family:&#x27;JetBrains Mono&#x27;,monospace;}
+.badge-pass{background:rgba(16,185,129,0.15);color:#6ee7b7;border-color:rgba(16,185,129,0.4);}
+.badge-fail{background:rgba(239,68,68,0.15);color:#fca5a5;border-color:rgba(239,68,68,0.4);}
+.badge-pend{background:rgba(245,158,11,0.15);color:#fcd34d;border-color:rgba(245,158,11,0.4);}
+.badge-miss{background:rgba(239,68,68,0.25);color:#fff;border-color:rgba(239,68,68,0.6);font-weight:900;}
+.side-col{display:flex;flex-direction:column;gap:16px;}
+.mini-card{background:linear-gradient(135deg,rgba(34,211,238,0.07),rgba(99,102,241,0.03));border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:18px 20px;flex:1;display:flex;flex-direction:column;gap:8px;}
+.mini-card .label{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:4px;}
+.mini-card h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.mini-card p{font-size:11.5px;color:var(--text-sec);line-height:1.65;}
+.check-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+.check-list li{display:flex;align-items:flex-start;gap:7px;font-size:11.5px;color:var(--text-sec);line-height:1.5;}
+.check-dot{width:14px;height:14px;border-radius:50%;background:var(--ok);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
+.check-dot svg{width:14px;height:14px;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+&lt;/style&gt;
+
+&lt;style&gt;
+.lucide-animate {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  animation: drawIcon 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.lucide-delay-1 { animation-delay: 0.1s; }
+.lucide-delay-2 { animation-delay: 0.2s; }
+.lucide-delay-3 { animation-delay: 0.3s; }
+.lucide-delay-4 { animation-delay: 0.4s; }
+.lucide-delay-5 { animation-delay: 0.5s; }
+.lucide-delay-6 { animation-delay: 0.6s; }
+
+@keyframes drawIcon {
+  0% { stroke-dashoffset: 1; opacity: 0; }
+  5% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow1&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Sesión 03 · Test Cases&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;Requirement Traceability Matrix (RTM)&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;S3&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content-area&quot;&gt;
+    &lt;!-- Main: RTM Table --&gt;
+    &lt;div class=&quot;main-card&quot;&gt;
+      &lt;div class=&quot;card-tag&quot; style=&quot;color:var(--accent3)&quot;&gt;Matriz de Trazabilidad de Requerimientos&lt;/div&gt;
+      &lt;h3&gt;Cada requerimiento mapeado a sus Test Cases — Cobertura garantizada&lt;/h3&gt;
+      &lt;p&gt;La RTM garantiza que ningún requerimiento quedó sin probar y que cualquier cambio de requisito se refleja automáticamente en los casos afectados.&lt;/p&gt;
+      &lt;table class=&quot;rtm-table&quot;&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;&lt;th&gt;Req ID&lt;/th&gt;&lt;th&gt;Historia de Usuario&lt;/th&gt;&lt;th&gt;Test Case(s)&lt;/th&gt;&lt;th&gt;Cobertura&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;&lt;td&gt;&lt;code&gt;REQ-01&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Login con credenciales válidas&lt;/td&gt;&lt;td&gt;&lt;code&gt;TC-001&lt;/code&gt;, &lt;code&gt;TC-002&lt;/code&gt;&lt;/td&gt;&lt;td&gt;100%&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge badge-pass&quot;&gt;PASS&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td&gt;&lt;code&gt;REQ-02&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Recuperación de contraseña&lt;/td&gt;&lt;td&gt;&lt;code&gt;TC-003&lt;/code&gt;, &lt;code&gt;TC-004&lt;/code&gt;&lt;/td&gt;&lt;td&gt;100%&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge badge-pass&quot;&gt;PASS&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td&gt;&lt;code&gt;REQ-03&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Bloqueo tras 3 intentos fallidos&lt;/td&gt;&lt;td&gt;&lt;span style=&quot;color:var(--err);font-weight:700;font-family:JetBrains Mono,monospace;font-size:11px;&quot;&gt;¡FALTA!&lt;/span&gt;&lt;/td&gt;&lt;td&gt;0%&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge badge-pend&quot;&gt;PENDIENTE&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td&gt;&lt;code&gt;REQ-04&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Integración SSO con LDAP&lt;/td&gt;&lt;td&gt;&lt;code&gt;TC-005&lt;/code&gt;, &lt;code&gt;TC-006&lt;/code&gt;&lt;/td&gt;&lt;td&gt;67%&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge badge-fail&quot;&gt;FAIL&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;tr&gt;&lt;td&gt;&lt;code&gt;REQ-05&lt;/code&gt;&lt;/td&gt;&lt;td&gt;Suscripción Newsletter&lt;/td&gt;&lt;td&gt;&lt;code&gt;TC-007&lt;/code&gt;, &lt;code&gt;TC-008&lt;/code&gt;, &lt;code&gt;TC-009&lt;/code&gt;&lt;/td&gt;&lt;td&gt;100%&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;badge badge-pass&quot;&gt;PASS&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+    &lt;!-- Side --&gt;
+    &lt;div class=&quot;side-col&quot;&gt;
+      &lt;div class=&quot;mini-card&quot; style=&quot;border-color:rgba(16,185,129,0.25)&quot;&gt;
+        &lt;div class=&quot;label&quot; style=&quot;color:var(--ok)&quot;&gt;Objetivos de la RTM&lt;/div&gt;
+        &lt;h4&gt;¿Para qué sirve?&lt;/h4&gt;
+        &lt;ul class=&quot;check-list&quot;&gt;
+          &lt;li&gt;&lt;div class=&quot;check-dot&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:20px;height:20px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;Garantizar &lt;strong&gt;100% de cobertura&lt;/strong&gt;: ningún requisito sin probar.&lt;/li&gt;
+          &lt;li&gt;&lt;div class=&quot;check-dot&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:20px;height:20px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;&lt;strong&gt;Análisis de impacto&lt;/strong&gt;: si un req cambia, sé qué TCs actualizar.&lt;/li&gt;
+          &lt;li&gt;&lt;div class=&quot;check-dot&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:20px;height:20px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;&lt;strong&gt;Auditoría&lt;/strong&gt;: demuestra al cliente que su sistema fue validado.&lt;/li&gt;
+          &lt;li&gt;&lt;div class=&quot;check-dot&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:20px;height:20px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;Detecta reqs sin casos → brechas de cobertura críticas.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;mini-card&quot; style=&quot;border-color:rgba(99,102,241,0.25)&quot;&gt;
+        &lt;div class=&quot;label&quot; style=&quot;color:var(--accent2)&quot;&gt;Herramientas comunes&lt;/div&gt;
+        &lt;h4&gt;¿Dónde se implementa?&lt;/h4&gt;
+        &lt;p&gt;En proyectos simples: hoja de cálculo Excel/Sheets. En proyectos Enterprise: &lt;strong&gt;Jira + Xray&lt;/strong&gt;, &lt;strong&gt;Azure DevOps&lt;/strong&gt;, &lt;strong&gt;Zephyr&lt;/strong&gt;, &lt;strong&gt;TestRail&lt;/strong&gt;. La RTM es el contrato de calidad del proyecto.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;12 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-13" onclick="if(isOverview) { toggleOverview(); show(13); }"><iframe class="slide-frame" id="slide-13" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 13 — Actividad: Disección del Bug&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent3:#FDE047;--err:#ef4444;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 10% 120%, #451a03 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(245,158,11,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(245,158,11,0.15);filter:blur(80px);top:-80px;left:300px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--err);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--err),transparent);opacity:0.35;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.act-header{background:linear-gradient(135deg,rgba(239,68,68,0.12),rgba(245,158,11,0.08));border:1px solid rgba(239,68,68,0.35);border-radius:8px;padding:16px 24px;display:flex;align-items:center;gap:18px;}
+.act-icon{width:50px;height:50px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.act-info h3{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.02em;margin-bottom:5px;}
+.act-info p{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.meta-row{display:flex;gap:10px;margin-top:8px;}
+.meta-chip{padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;border:1px solid;}
+.main-grid{display:grid;grid-template:1fr / 1fr 1fr;gap:16px;flex:1;}
+.incident-card{background:rgba(0,0,0,0.45);border:1px solid rgba(239,68,68,0.35);border-radius:8px;padding:18px 22px;display:flex;flex-direction:column;gap:10px;}
+.incident-header{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--err);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;}
+.incident-body{font-size:13px;color:var(--text-sec);line-height:1.7;font-style:italic;flex:1;}
+.note-block{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:6px;padding:10px 14px;font-size:11.5px;color:var(--text-sec);line-height:1.6;}
+.note-block strong{color:var(--accent3);}
+.task-card{background:rgba(0,0,0,0.45);border:1px solid rgba(16,185,129,0.35);border-radius:8px;padding:18px 22px;display:flex;flex-direction:column;gap:12px;}
+.task-header{font-size:11px;color:var(--ok);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px;}
+.template-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.18);border-radius:5px;}
+.t-num{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:13px;font-weight:700;color:var(--ok);min-width:22px;}
+.t-text{font-size:12px;color:var(--text-sec);line-height:1.6;}
+.t-text strong{color:var(--text);}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Actividad Práctica — Sesión 03&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;Disección del Bug&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;Individual&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;act-header&quot;&gt;
+      &lt;div class=&quot;act-icon&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/dxjqoygy.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+      &lt;div class=&quot;act-info&quot;&gt;
+        &lt;h3&gt;Disección del Bug — Test Case Design&lt;/h3&gt;
+        &lt;p&gt;Debes diseñar un &lt;strong&gt;Caso de Prueba estructurado&lt;/strong&gt; que exponga un defecto sutil pero crítico reportado en producción. El objetivo es &lt;strong&gt;reproducirlo de forma determinista&lt;/strong&gt; y documentar el resultado correcto esperado.&lt;/p&gt;
+        &lt;div class=&quot;meta-row&quot;&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(253,224,71,0.12);color:var(--accent3);border-color:rgba(253,224,71,0.35);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/wxnxiano.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Buzón EVA&lt;/div&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(245,158,11,0.12);color:#fcd34d;border-color:rgba(245,158,11,0.35);&quot;&gt;⏱ 40 minutos&lt;/div&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(34,211,238,0.12);color:#67e8f9;border-color:rgba(34,211,238,0.35);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/ljvjsnvh.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Individual&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;main-grid&quot;&gt;
+      &lt;div class=&quot;incident-card&quot;&gt;
+        &lt;div class=&quot;incident-header&quot;&gt;⚠️ El Incidente (Bug Reportado en Producción):&lt;/div&gt;
+        &lt;div class=&quot;incident-body&quot;&gt;
+          &quot;Los usuarios descubrieron que si van a la pasarela de pago, ingresan una tarjeta de crédito sin fondos, hacen &lt;strong&gt;doble click MUY rápido&lt;/strong&gt; en el botón &#x27;Pagar&#x27;, el sistema les descuenta el producto del inventario aunque la transacción falle.&quot;
+        &lt;/div&gt;
+        &lt;div class=&quot;note-block&quot;&gt;&lt;strong&gt;Pista técnica:&lt;/strong&gt; El botón no tiene protección contra doble submit. La primera petición falla en el gateway de pago, pero la segunda llega antes de que el sistema revierta el estado del inventario → Race condition clásica.&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;task-card&quot;&gt;
+        &lt;div class=&quot;task-header&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/nocovwne.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Diseña TC-XXX usando la Plantilla Oficial&lt;/div&gt;
+        &lt;div class=&quot;template-item&quot;&gt;&lt;div class=&quot;t-num&quot;&gt;01&lt;/div&gt;&lt;div class=&quot;t-text&quot;&gt;&lt;strong&gt;Título:&lt;/strong&gt; Nombre descriptivo que identifique el bug (incluye &quot;doble click&quot; y &quot;sin fondos&quot;).&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;template-item&quot;&gt;&lt;div class=&quot;t-num&quot;&gt;02&lt;/div&gt;&lt;div class=&quot;t-text&quot;&gt;&lt;strong&gt;Precondiciones:&lt;/strong&gt; Estado exacto del sistema: producto en inventario, tarjeta sin fondos lista, usuario autenticado.&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;template-item&quot;&gt;&lt;div class=&quot;t-num&quot;&gt;03&lt;/div&gt;&lt;div class=&quot;t-text&quot;&gt;&lt;strong&gt;Pasos precisos:&lt;/strong&gt; Incluir el timing del doble click. ¿En qué milisegundo debe ser el segundo click para reproducirlo?&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;template-item&quot;&gt;&lt;div class=&quot;t-num&quot;&gt;04&lt;/div&gt;&lt;div class=&quot;t-text&quot;&gt;&lt;strong&gt;Resultado Esperado:&lt;/strong&gt; El correcto (no el bug). Inventario sin cambios, mensaje de error de pago.&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;13 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-14" onclick="if(isOverview) { toggleOverview(); show(14); }"><iframe class="slide-frame" id="slide-14" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 14 — Sección 4&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent4:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 90% 110%, #451a03 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(245,158,11,0.08) 1px,transparent 1px);background-size:60px 60px;z-index:0;}
+.glow-center{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(245,158,11,0.15);filter:blur(80px);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;}
+.live-badge{position:absolute;top:40px;right:60px;display:flex;align-items:center;gap:8px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);color:var(--accent4);padding:8px 16px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;z-index:10;}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--accent4);animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:60px;}
+.part-label{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:12px;letter-spacing:0.25em;color:var(--accent4);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.part-label::before,.part-label::after{content:&#x27;&#x27;;flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--accent4),transparent);max-width:80px;}
+.title{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:46px;font-weight:800;line-height:1.15;letter-spacing:-0.045em;color:var(--text);margin-bottom:20px;}
+.title em{font-family:&#x27;Instrument Serif&#x27;,Georgia,serif;font-style:italic;color:var(--accent4);}
+.subtitle{font-size:17px;color:var(--text-sec);max-width:680px;line-height:1.7;margin-bottom:44px;}
+.agenda-row{display:flex;gap:16px;justify-content:center;}
+.agenda-chip{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);padding:10px 20px;border-radius:6px;font-size:12px;color:var(--text-sec);}
+.agenda-chip strong{color:var(--accent4);display:block;font-size:11px;letter-spacing:0.1em;margin-bottom:3px;text-transform:uppercase;}
+.slide-num{position:absolute;bottom:20px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.2);z-index:10;}
+
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow-center&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;live-badge&quot;&gt;&lt;div class=&quot;live-dot&quot;&gt;&lt;/div&gt;Sesión Sincrónica · Teams&lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;part-label&quot;&gt;Sesión 04&lt;/div&gt;
+    &lt;h1 class=&quot;title&quot;&gt;El Plan de Pruebas &lt;em&gt;Maestro&lt;/em&gt;&lt;br&gt;y Dinámicas Finales&lt;/h1&gt;
+    &lt;p class=&quot;subtitle&quot;&gt;Cómo unificar requerimientos, estrategias, casos y recursos en el documento rector. Estándar IEEE 829. Dinámicas de auditoría y roleplay en vivo.&lt;/p&gt;
+    &lt;div class=&quot;agenda-row&quot;&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Documento&lt;/strong&gt;Test Plan IEEE 829 — 3 Pilares&lt;/div&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Roleplay&lt;/strong&gt;Defendiendo el Plan (20 min)&lt;/div&gt;
+      &lt;div class=&quot;agenda-chip&quot;&gt;&lt;strong&gt;Dinámica&lt;/strong&gt;QA Audit — Auditoría Cruzada&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;14 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-15" onclick="if(isOverview) { toggleOverview(); show(15); }"><iframe class="slide-frame" id="slide-15" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 15 — IEEE 829 Test Plan&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#001f12;--border:rgba(16,185,129,0.22);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 30% 120%, #064e3b 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(16,185,129,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.bg-fade{position:absolute;right:0;top:0;width:373px;height:720px;background:linear-gradient(90deg,var(--bg) 0%,transparent 100%);z-index:1;}
+.glow{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(16,185,129,0.2);filter:blur(70px);top:-60px;right:200px;z-index:1;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--ok);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--ok),transparent);opacity:0.35;z-index:10;}
+/* Three-column layout */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:auto 1fr / repeat(3,1fr);gap:18px;z-index:10;}
+.hero-strip{grid-column:1/-1;background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(34,211,238,0.06));border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:16px 24px;display:flex;align-items:center;gap:24px;}
+.hero-strip h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.hero-strip p{font-size:12.5px;color:var(--text-sec);line-height:1.65;max-width:820px;}
+.ieee-badge{background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);padding:8px 14px;border-radius:6px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:12px;color:var(--ok);font-weight:700;flex-shrink:0;white-space:nowrap;}
+.pilar-card{background:linear-gradient(135deg,rgba(16,185,129,0.07),rgba(34,211,238,0.03));border:1px solid var(--border);border-radius:8px;padding:22px 22px;display:flex;flex-direction:column;gap:10px;}
+.pilar-num{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:42px;font-weight:900;opacity:0.12;letter-spacing:-0.04em;line-height:1;}
+.pilar-name{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-0.015em;margin-top:-4px;}
+.pilar-sub{font-size:11px;font-family:&#x27;JetBrains Mono&#x27;,monospace;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
+.pilar-desc{font-size:12.5px;color:var(--text-sec);line-height:1.7;flex:1;}
+.pilar-items{display:flex;flex-direction:column;gap:6px;margin-top:6px;}
+.pilar-item{display:flex;align-items:flex-start;gap:7px;font-size:11.5px;color:var(--text-sec);line-height:1.5;padding:6px 9px;background:rgba(255,255,255,0.04);border-radius:4px;}
+.pilar-item-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.p1 .pilar-num,.p1 .pilar-item-dot{color:var(--ok);background:var(--ok);}
+.p2 .pilar-num,.p2 .pilar-item-dot{color:var(--accent1);background:var(--accent1);}
+.p3 .pilar-num,.p3 .pilar-item-dot{color:var(--accent3);background:var(--accent3);}
+.p1{border-color:rgba(16,185,129,0.3);}
+.p2{border-color:rgba(34,211,238,0.3);}
+.p3{border-color:rgba(253,224,71,0.3);}
+.p1 .pilar-name{color:var(--ok);}
+.p2 .pilar-name{color:var(--accent1);}
+.p3 .pilar-name{color:var(--accent3);}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+.bg-img{position:absolute;inset:0;background-size:cover;background-position:center right;opacity:0.25;z-index:0;}
+.bg-overlay{position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 40%,transparent 100%);z-index:1;}
+
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+&lt;div class=&quot;bg-img&quot; style=&quot;background-image:url(&#x27;images/test_plan.png&#x27;)&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;bg-overlay&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;bg-fade&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Sesión 04 · Test Plan&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;IEEE 829: Los 3 Pilares del Plan de Pruebas&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;S4&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content-area&quot;&gt;
+    &lt;div class=&quot;hero-strip&quot;&gt;
+      &lt;div class=&quot;ieee-badge&quot;&gt;IEEE 829&lt;/div&gt;
+      &lt;div&gt;
+        &lt;h3&gt;El Plan de Pruebas Maestro (Test Plan)&lt;/h3&gt;
+        &lt;p&gt;Documento estratégico y directivo que describe el &lt;strong&gt;alcance, enfoque, recursos y calendario&lt;/strong&gt; de las actividades de testing. Responde a: ¿Qué? ¿Cómo? ¿Cuándo? ¿Quién? ¿Con qué criterios terminamos?&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- 3 pillars --&gt;
+    &lt;div class=&quot;pilar-card p1&quot;&gt;
+      &lt;div class=&quot;pilar-num&quot;&gt;01&lt;/div&gt;
+      &lt;div class=&quot;pilar-sub&quot; style=&quot;color:var(--ok)&quot;&gt;Pilar 1&lt;/div&gt;
+      &lt;div class=&quot;pilar-name&quot;&gt;Alcance&lt;/div&gt;
+      &lt;div class=&quot;pilar-desc&quot;&gt;Define explícitamente qué se va a probar y — más importante — &lt;strong&gt;qué NO se va a probar&lt;/strong&gt; en este ciclo. Acota la responsabilidad del QA.&lt;/div&gt;
+      &lt;div class=&quot;pilar-items&quot;&gt;
+        &lt;div class=&quot;pilar-item&quot;&gt;&lt;div class=&quot;pilar-item-dot&quot; style=&quot;background:var(--ok)&quot;&gt;&lt;/div&gt;&lt;strong&gt;IN:&lt;/strong&gt; Features a cubrir en esta release.&lt;/div&gt;
+        &lt;div class=&quot;pilar-item&quot;&gt;&lt;div class=&quot;pilar-item-dot&quot; style=&quot;background:var(--ok)&quot;&gt;&lt;/div&gt;&lt;strong&gt;OUT:&lt;/strong&gt; Features excluidos con justificación explícita.&lt;/div&gt;
+        &lt;div class=&quot;pilar-item&quot;&gt;&lt;div class=&quot;pilar-item-dot&quot; style=&quot;background:var(--ok)&quot;&gt;&lt;/div&gt;Aprobado por el Product Owner antes de empezar.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;pilar-card p2&quot;&gt;
+      &lt;div class=&quot;pilar-num&quot;&gt;02&lt;/div&gt;
+      &lt;div class=&quot;pilar-sub&quot; style=&quot;color:var(--accent1)&quot;&gt;Pilar 2&lt;/div&gt;
+      &lt;div class=&quot;pilar-name&quot;&gt;Estrategia y Entorno&lt;/div&gt;
+      &lt;div class=&quot;pilar-desc&quot;&gt;Define &lt;strong&gt;cómo&lt;/strong&gt; se probará. Tipos de prueba seleccionados, herramientas, topología del entorno de QA, y cronograma de ejecución.&lt;/div&gt;
+      &lt;div class=&quot;pilar-items&quot;&gt;
+        &lt;div class=&quot;pilar-item&quot;&gt;&lt;div class=&quot;pilar-item-dot&quot; style=&quot;background:var(--accent1)&quot;&gt;&lt;/div&gt;Tipos de prueba: unitaria, integración, E2E, carga.&lt;/div&gt;
+        &lt;div class=&quot;pilar-item&quot;&gt;&lt;div class=&quot;pilar-item-dot&quot; style=&quot;background:var(--accent1)&quot;&gt;&lt;/div&gt;Herramientas: Jira + Xray, Selenium, Postman, k6.&lt;/div&gt;
+        &lt;div class=&quot;pilar-item&quot;&gt;&lt;div class=&quot;pilar-item-dot&quot; style=&quot;background:var(--accent1)&quot;&gt;&lt;/div&gt;Entorno: staging independiente, datos anonimizados.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;pilar-card p3&quot;&gt;
+      &lt;div class=&quot;pilar-num&quot;&gt;03&lt;/div&gt;
+      &lt;div class=&quot;pilar-sub&quot; style=&quot;color:var(--accent3)&quot;&gt;Pilar 3&lt;/div&gt;
+      &lt;div class=&quot;pilar-name&quot;&gt;Criterios y Entregables&lt;/div&gt;
+      &lt;div class=&quot;pilar-desc&quot;&gt;Los criterios que disparan el inicio (Entrada) y confirman la finalización (Salida) del ciclo de pruebas. Sin esto, las pruebas nunca &quot;terminan&quot;.&lt;/div&gt;
+      &lt;div class=&quot;pilar-items&quot;&gt;
+        &lt;div class=&quot;pilar-item&quot;&gt;&lt;div class=&quot;pilar-item-dot&quot; style=&quot;background:var(--accent3)&quot;&gt;&lt;/div&gt;&lt;strong&gt;Entrada:&lt;/strong&gt; Código compilado, ambiente disponible, RTM lista.&lt;/div&gt;
+        &lt;div class=&quot;pilar-item&quot;&gt;&lt;div class=&quot;pilar-item-dot&quot; style=&quot;background:var(--accent3)&quot;&gt;&lt;/div&gt;&lt;strong&gt;Salida:&lt;/strong&gt; 100% bugs críticos cerrados, RTM ≥ 95% PASS.&lt;/div&gt;
+        &lt;div class=&quot;pilar-item&quot;&gt;&lt;div class=&quot;pilar-item-dot&quot; style=&quot;background:var(--accent3)&quot;&gt;&lt;/div&gt;Entregable: Informe de Cierre de Pruebas firmado.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;15 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-16" onclick="if(isOverview) { toggleOverview(); show(16); }"><iframe class="slide-frame" id="slide-16" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 16 — Dinámicas Sincrónicas&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--ok:#10b981;--warn:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 50% -10%, #064e3b 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(16,185,129,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--ok);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--ok),transparent);opacity:0.35;z-index:10;}
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:1fr / 1fr 1fr;gap:20px;z-index:10;}
+.dyn-card{border-radius:8px;padding:28px 30px;display:flex;flex-direction:column;gap:16px;}
+.dyn-header{display:flex;align-items:center;gap:16px;margin-bottom:4px;}
+.dyn-icon{width:60px;height:60px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;}
+.dyn-title{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:20px;font-weight:800;color:var(--text);letter-spacing:-0.02em;margin-bottom:4px;}
+.dyn-time{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;}
+.dyn-desc{font-size:13px;color:var(--text-sec);line-height:1.7;flex:1;}
+.dyn-steps{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.step{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:5px;font-size:12px;line-height:1.6;}
+.step-num{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:14px;font-weight:900;min-width:20px;flex-shrink:0;}
+.step-text{color:var(--text-sec);}
+.step-text strong{color:var(--text);}
+.card1{background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(34,211,238,0.06));border:1px solid rgba(16,185,129,0.35);}
+.step-text strong{color:var(--text);}
+.card1{background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(34,211,238,0.06));border:1px solid rgba(16,185,129,0.35);}
+.card2{background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(239,68,68,0.06));border:1px solid rgba(245,158,11,0.35);}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+.teacher-note{position:absolute;bottom:20px;left:48px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:8px;padding:12px 16px;display:flex;align-items:flex-start;gap:12px;max-width:800px;z-index:20;}
+.teacher-icon{font-size:20px;}
+.teacher-text h4{color:var(--warn);font-size:12px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;font-family:&#x27;JetBrains Mono&#x27;,monospace;}
+.teacher-text p{color:var(--text-sec);font-size:12px;line-height:1.5;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Actividades Sincrónicas — Sesión 04&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;Roleplay + QA Audit en Vivo&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;Sincrónica&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content-area&quot;&gt;
+    &lt;!-- Roleplay --&gt;
+    &lt;div class=&quot;dyn-card card1&quot;&gt;
+      &lt;div class=&quot;dyn-header&quot;&gt;
+        &lt;div class=&quot;dyn-icon&quot; style=&quot;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;️&lt;/div&gt;
+        &lt;div&gt;
+          &lt;div class=&quot;dyn-title&quot;&gt;Defendiendo el Plan&lt;/div&gt;
+          &lt;div class=&quot;dyn-time&quot; style=&quot;color:var(--ok)&quot;&gt;Presentación Ejecutiva · 20 minutos&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;dyn-desc&quot;&gt;Los grupos presentan el &lt;strong&gt;Esqueleto de su Plan de Pruebas&lt;/strong&gt; ante el profesor (quien asume el rol de &quot;Gerente de Proyecto exigente&quot;). Deben defender las decisiones de alcance frente a la presión de deadlines.&lt;/div&gt;
+      &lt;div class=&quot;dyn-steps&quot;&gt;
+        &lt;div class=&quot;step&quot; style=&quot;background:rgba(16,185,129,0.08);&quot;&gt;&lt;div class=&quot;step-num&quot; style=&quot;color:var(--ok)&quot;&gt;01&lt;/div&gt;&lt;div class=&quot;step-text&quot;&gt;&lt;strong&gt;Presentación del Plan:&lt;/strong&gt; Alcance IN/OUT, estrategia elegida, criterios de salida.&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;step&quot; style=&quot;background:rgba(16,185,129,0.08);&quot;&gt;&lt;div class=&quot;step-num&quot; style=&quot;color:var(--ok)&quot;&gt;02&lt;/div&gt;&lt;div class=&quot;step-text&quot;&gt;&lt;strong&gt;Interrogatorio:&lt;/strong&gt; El Gerente pregunta &quot;¿Por qué no probaste X?&quot; El equipo debe justificar con la Matriz de Riesgo.&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;step&quot; style=&quot;background:rgba(16,185,129,0.08);&quot;&gt;&lt;div class=&quot;step-num&quot; style=&quot;color:var(--ok)&quot;&gt;03&lt;/div&gt;&lt;div class=&quot;step-text&quot;&gt;&lt;strong&gt;Feedback:&lt;/strong&gt; El grupo recibe retroalimentación sobre la solidez y coherencia del plan.&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- QA Audit --&gt;
+    &lt;div class=&quot;dyn-card card2&quot;&gt;
+      &lt;div class=&quot;dyn-header&quot;&gt;
+        &lt;div class=&quot;dyn-icon&quot; style=&quot;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/msoeawqm.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+        &lt;div&gt;
+          &lt;div class=&quot;dyn-title&quot;&gt;QA Audit — Auditoría Cruzada&lt;/div&gt;
+          &lt;div class=&quot;dyn-time&quot; style=&quot;color:var(--warn)&quot;&gt;Breakout Rooms · 40 minutos&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;dyn-desc&quot;&gt;El &lt;strong&gt;Grupo A intercambia sus Test Cases con el Grupo B&lt;/strong&gt;. Cada grupo busca &quot;hackear&quot; los casos del otro: fisuras lógicas, precondiciones faltantes, resultados esperados ambiguos.&lt;/div&gt;
+      &lt;div class=&quot;dyn-steps&quot;&gt;
+        &lt;div class=&quot;step&quot; style=&quot;background:rgba(245,158,11,0.08);&quot;&gt;&lt;div class=&quot;step-num&quot; style=&quot;color:var(--warn)&quot;&gt;01&lt;/div&gt;&lt;div class=&quot;step-text&quot;&gt;&lt;strong&gt;Intercambio:&lt;/strong&gt; Grupo A recibe TCs del Grupo B y viceversa. Sin contexto adicional.&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;step&quot; style=&quot;background:rgba(245,158,11,0.08);&quot;&gt;&lt;div class=&quot;step-num&quot; style=&quot;color:var(--warn)&quot;&gt;02&lt;/div&gt;&lt;div class=&quot;step-text&quot;&gt;&lt;strong&gt;Disección:&lt;/strong&gt; Identificar ambigüedades, pasos incompletos, precondiciones imposibles o resultados no verificables.&lt;/div&gt;&lt;/div&gt;
+        &lt;div class=&quot;step&quot; style=&quot;background:rgba(245,158,11,0.08);&quot;&gt;&lt;div class=&quot;step-num&quot; style=&quot;color:var(--warn)&quot;&gt;03&lt;/div&gt;&lt;div class=&quot;step-text&quot;&gt;&lt;strong&gt;Premio:&lt;/strong&gt; Se premia al grupo que encuentre más &lt;em&gt;defectos en los Test Cases ajenos&lt;/em&gt;. Mejor documentación = menos defectos encontrados.&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  
+
+  &lt;div class=&quot;slide-num&quot;&gt;16 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-17" onclick="if(isOverview) { toggleOverview(); show(17); }"><iframe class="slide-frame" id="slide-17" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 17 — Cierre Unidad 2&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 50% 120%, #064e3b 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(16,185,129,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(16,185,129,0.2);filter:blur(80px);top:-100px;right:-100px;z-index:0;}
+.glow2{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(16,185,129,0.2);filter:blur(70px);bottom:-60px;left:100px;z-index:0;}
+.corner-br{position:absolute;bottom:32px;left:32px;z-index:10;opacity:0.35;}
+.content{position:relative;z-index:10;padding:48px 60px;display:flex;flex-direction:column;height:100%;gap:0;}
+.top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.label{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:11px;letter-spacing:0.2em;color:var(--accent1);text-transform:uppercase;}
+.title{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:38px;font-weight:800;color:var(--text);letter-spacing:-0.04em;margin-bottom:20px;line-height:1.15;}
+.title em{font-family:&#x27;Instrument Serif&#x27;,Georgia,serif;font-style:italic;color:var(--accent1);}
+.achievements-grid{display:grid;grid-template:repeat(3,1fr) / repeat(2,1fr);gap:12px;flex:1;}
+.achievement{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:linear-gradient(135deg,rgba(34,211,238,0.07),rgba(99,102,241,0.03));border:1px solid rgba(255,255,255,0.08);border-radius:7px;}
+.ach-check{width:28px;height:28px;border-radius:50%;background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.5);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.ach-check svg{width:28px;height:28px;}
+.ach-text{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.ach-text strong{color:var(--text);}
+.next-card{background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(34,211,238,0.06));border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:18px 22px;display:flex;align-items:center;gap:16px;margin-top:14px;}
+.next-icon{width:44px;height:44px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.next-text h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.next-text p{font-size:12px;color:var(--text-sec);line-height:1.55;}
+.next-label{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:var(--accent2);letter-spacing:0.15em;text-transform:uppercase;display:block;margin-bottom:5px;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+
+&lt;style&gt;
+.lucide-animate {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  animation: drawIcon 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.lucide-delay-1 { animation-delay: 0.1s; }
+.lucide-delay-2 { animation-delay: 0.2s; }
+.lucide-delay-3 { animation-delay: 0.3s; }
+.lucide-delay-4 { animation-delay: 0.4s; }
+.lucide-delay-5 { animation-delay: 0.5s; }
+.lucide-delay-6 { animation-delay: 0.6s; }
+
+@keyframes drawIcon {
+  0% { stroke-dashoffset: 1; opacity: 0; }
+  5% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow1&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow2&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;corner-br&quot;&gt;
+    &lt;svg width=&quot;40&quot; height=&quot;40&quot; viewBox=&quot;0 0 40 40&quot; fill=&quot;none&quot;&gt;
+      &lt;path d=&quot;M40 0 L40 40 L0 40&quot; stroke=&quot;#22D3EE&quot; stroke-width=&quot;1.5&quot;/&gt;
+    &lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;top-row&quot;&gt;
+      &lt;span class=&quot;label&quot;&gt;Cierre — Unidad 2&lt;/span&gt;
+      &lt;span class=&quot;label&quot;&gt;IF203IINF · IPSS · 2026&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;h2 class=&quot;title&quot;&gt;¿Qué &lt;em&gt;logramos&lt;/em&gt; en esta Unidad?&lt;/h2&gt;
+    &lt;div class=&quot;achievements-grid&quot;&gt;
+      &lt;div class=&quot;achievement&quot;&gt;
+        &lt;div class=&quot;ach-check&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#10b981&quot; style=&quot;width:24px;height:24px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+        &lt;div class=&quot;ach-text&quot;&gt;Seleccionar &lt;strong&gt;tipos de prueba&lt;/strong&gt; basándonos en evaluación real de riesgo de negocio (Impacto × Probabilidad).&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;achievement&quot;&gt;
+        &lt;div class=&quot;ach-check&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#10b981&quot; style=&quot;width:24px;height:24px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+        &lt;div class=&quot;ach-text&quot;&gt;Transformar requisitos monolíticos en &lt;strong&gt;Historias de Usuario&lt;/strong&gt; con metodología INVEST y lenguaje orientado al valor.&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;achievement&quot;&gt;
+        &lt;div class=&quot;ach-check&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#10b981&quot; style=&quot;width:24px;height:24px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+        &lt;div class=&quot;ach-text&quot;&gt;Redactar &lt;strong&gt;Criterios de Aceptación&lt;/strong&gt; estructurados y testeables en sintaxis Gherkin BDD (DADO/CUANDO/ENTONCES).&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;achievement&quot;&gt;
+        &lt;div class=&quot;ach-check&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#10b981&quot; style=&quot;width:24px;height:24px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+        &lt;div class=&quot;ach-text&quot;&gt;Diseñar &lt;strong&gt;Casos de Prueba formales&lt;/strong&gt; con los 5 campos: ID, Precondiciones, Pasos, Resultado Esperado y Datos.&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;achievement&quot;&gt;
+        &lt;div class=&quot;ach-check&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#10b981&quot; style=&quot;width:24px;height:24px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+        &lt;div class=&quot;ach-text&quot;&gt;Implementar &lt;strong&gt;Matrices de Trazabilidad (RTM)&lt;/strong&gt; para auditar cobertura y gestionar el impacto de cambios en requisitos.&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;achievement&quot;&gt;
+        &lt;div class=&quot;ach-check&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#10b981&quot; style=&quot;width:24px;height:24px&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+        &lt;div class=&quot;ach-text&quot;&gt;Construir un &lt;strong&gt;Test Plan estratégico maestro&lt;/strong&gt; con los 3 pilares IEEE 829: Alcance, Estrategia y Criterios de Entrada/Salida.&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;next-card&quot;&gt;
+      &lt;div class=&quot;next-icon&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/wxnxiano.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+      &lt;div class=&quot;next-text&quot;&gt;
+        &lt;span class=&quot;next-label&quot;&gt;Próxima Unidad&lt;/span&gt;
+        &lt;h4&gt;Unidad 3 — Ejecución, Automatización y Gestión de Defectos&lt;/h4&gt;
+        &lt;p&gt;Bug Tracking con Jira, frameworks de automatización (Selenium, Playwright), reportes de calidad y métricas de cobertura de código.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;17 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-18" onclick="if(isOverview) { toggleOverview(); show(18); }"><iframe class="slide-frame" id="slide-18" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 18 — Contexto de Evaluación 2&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--err:#ef4444;--ok:#10b981;--warn:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 10% 120%, #450a0a 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(239,68,68,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(239,68,68,0.2);filter:blur(80px);top:-80px;right:-80px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--err);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--err),transparent);opacity:0.35;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.activity-header{background:linear-gradient(135deg,rgba(239,68,68,0.15),rgba(245,158,11,0.08));border:1px solid rgba(239,68,68,0.35);border-radius:8px;padding:20px 28px;display:flex;align-items:center;gap:20px;}
+.activity-icon{width:56px;height:56px;background:rgba(239,68,68,0.2);border:1px solid rgba(239,68,68,0.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.activity-info h3{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:20px;font-weight:800;color:var(--text);letter-spacing:-0.02em;margin-bottom:6px;}
+.activity-info p{font-size:13px;color:var(--text-sec);line-height:1.6;}
+.meta-row{display:flex;gap:10px;margin-top:10px;}
+.meta-chip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.04em;border:1px solid;}
+.cases-grid{display:grid;grid-template:1fr / repeat(2,1fr);gap:16px;flex:1;}
+.case-card{background:linear-gradient(135deg,rgba(239,68,68,0.06),rgba(245,158,11,0.03));border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:20px 22px;display:flex;flex-direction:column;gap:10px;}
+.case-title{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+.case-desc{font-size:14px;color:var(--text-sec);line-height:1.65;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+/* Teacher note */
+.teacher-note{position:absolute;bottom:20px;left:48px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:8px;padding:12px 16px;display:flex;align-items:flex-start;gap:12px;max-width:800px;z-index:20;}
+.teacher-icon{font-size:20px;}
+.teacher-text h4{color:var(--warn);font-size:12px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;font-family:&#x27;JetBrains Mono&#x27;,monospace;}
+.teacher-text p{color:var(--text-sec);font-size:12px;line-height:1.5;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;EVALUACIÓN SUMATIVA 2 (40%)&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;Continuidad del Repositorio&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;Unidad 2&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content&quot;&gt;
+    &lt;div class=&quot;activity-header&quot;&gt;
+      &lt;div class=&quot;activity-icon&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/egiwmiit.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt;&lt;/div&gt;
+      &lt;div class=&quot;activity-info&quot;&gt;
+        &lt;h3&gt;Proyecto QA Testing: Parte II — Test Plan &amp; Automatización BDD&lt;/h3&gt;
+        &lt;p&gt;Aplicando la Planificación Estratégica, Matrices de Trazabilidad y Escenarios Gherkin al repositorio CS50 / LeetCode de la Unidad 1.&lt;/p&gt;
+        &lt;div class=&quot;meta-row&quot;&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(239,68,68,0.12);color:#fca5a5;border-color:rgba(239,68,68,0.35);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/nocovwne.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Ponderación: 40%&lt;/div&gt;
+          &lt;div class=&quot;meta-chip&quot; style=&quot;background:rgba(16,185,129,0.12);color:#6ee7b7;border-color:rgba(16,185,129,0.35);&quot;&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/ljvjsnvh.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Grupos de Trabajo&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;cases-grid&quot;&gt;
+      &lt;div class=&quot;case-card&quot;&gt;
+        &lt;div class=&quot;case-title&quot; style=&quot;color:var(--err)&quot;&gt;Retomando el Código&lt;/div&gt;
+        &lt;div class=&quot;case-desc&quot;&gt;
+          En la Evaluación 1, actuaste como QA Engineer definiendo el tipo de prueba y diseñando 4 casos aislados para este repositorio:&lt;br&gt;&lt;br&gt;
+          &lt;code style=&quot;display:inline-block; font-size:12px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); padding:6px; border-radius:6px; color:var(--text); margin-top:8px;&quot;&gt;https://github.com/camilo-lavado/mi-leet-code-cs50&lt;/code&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;case-card&quot; style=&quot;border-color:rgba(245,158,11,0.3)&quot;&gt;
+        &lt;div class=&quot;case-title&quot; style=&quot;color:var(--warn)&quot;&gt;Evolución del Rol&lt;/div&gt;
+        &lt;div class=&quot;case-desc&quot;&gt;
+          Ahora asumes el rol de &lt;strong&gt;QA Lead&lt;/strong&gt;. Tu objetivo ya no es aislar 4 casos, sino diseñar la estrategia de cobertura total (Test Plan) y asegurar que los &quot;requerimientos&quot; (los enunciados de los algoritmos) se traduzcan en criterios automatizables vía BDD.
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  
+
+  &lt;div class=&quot;slide-num&quot;&gt;18 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-19" onclick="if(isOverview) { toggleOverview(); show(19); }"><iframe class="slide-frame" id="slide-19" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 19 — Partes de la Evaluación&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--err:#ef4444;--ok:#10b981;--warn:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 30% 110%, #450a0a 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(239,68,68,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(239,68,68,0.2);filter:blur(80px);top:-80px;right:-80px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--err);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--err),transparent);opacity:0.35;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.cases-grid{display:grid;grid-template:1fr / repeat(3,1fr);gap:16px;flex:1;}
+.case-card{background:linear-gradient(135deg,rgba(239,68,68,0.06),rgba(245,158,11,0.03));border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:20px 22px;display:flex;flex-direction:column;gap:10px;}
+.case-num{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:var(--text-sec);letter-spacing:0.15em;text-transform:uppercase;}
+.case-title{font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+.case-desc{font-size:14px;color:var(--text-sec);line-height:1.65;}
+.case-challenge{margin-top:auto;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--text-sec);}
+.case-challenge strong{color:var(--text);display:block;margin-bottom:3px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+.teacher-note{position:absolute;bottom:20px;left:48px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:8px;padding:12px 16px;display:flex;align-items:flex-start;gap:12px;max-width:800px;z-index:20;}
+.teacher-icon{font-size:20px;}
+.teacher-text h4{color:var(--warn);font-size:12px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;font-family:&#x27;JetBrains Mono&#x27;,monospace;}
+.teacher-text p{color:var(--text-sec);font-size:12px;line-height:1.5;}
+
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;El Encargo (3 Entregables)&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;Partes de la Evaluación 2&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;Unidad 2&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content&quot; style=&quot;padding-top:10px;&quot;&gt;
+    &lt;div class=&quot;cases-grid&quot;&gt;
+      &lt;div class=&quot;case-card&quot; style=&quot;border-color:rgba(34,211,238,0.3)&quot;&gt;
+        &lt;div class=&quot;case-num&quot;&gt;Parte 1 (35 pts)&lt;/div&gt;
+        &lt;div class=&quot;case-title&quot; style=&quot;color:var(--accent1)&quot;&gt;Matriz de Pruebas (RTM)&lt;/div&gt;
+        &lt;div class=&quot;case-desc&quot;&gt;
+          El equipo de desarrollo necesita saber exactamente qué pruebas cubren qué requisitos algorítmicos. Identifica y enlista cada uno de los requerimientos y/o Historias de Usuario de los algoritmos y asocia cada requisito con su(s) respectivo(s) caso(s) de prueba.
+        &lt;/div&gt;
+        &lt;div class=&quot;case-challenge&quot;&gt;&lt;strong&gt;Formato&lt;/strong&gt;Hoja de Cálculo (.xls)&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;case-card&quot; style=&quot;border-color:rgba(99,102,241,0.3)&quot;&gt;
+        &lt;div class=&quot;case-num&quot;&gt;Parte 2 (35 pts)&lt;/div&gt;
+        &lt;div class=&quot;case-title&quot; style=&quot;color:var(--accent2)&quot;&gt;Diseño del Plan y Casos&lt;/div&gt;
+        &lt;div class=&quot;case-desc&quot;&gt;
+          Cada caso debe tener: ID, Precondiciones, Pasos, Datos y Resultado Esperado. No pruebes solo cuando todo sale bien. ¿Qué pasa si el sistema falla? Diseña escenarios negativos.
+        &lt;/div&gt;
+        &lt;div class=&quot;case-challenge&quot;&gt;&lt;strong&gt;Formato&lt;/strong&gt;Hoja de Cálculo (.xls) junto a la RTM&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;case-card&quot; style=&quot;border-color:rgba(245,158,11,0.3)&quot;&gt;
+        &lt;div class=&quot;case-num&quot;&gt;Parte 3 (30 pts)&lt;/div&gt;
+        &lt;div class=&quot;case-title&quot; style=&quot;color:var(--warn)&quot;&gt;Criterios de Aceptación (Gherkin)&lt;/div&gt;
+        &lt;div class=&quot;case-desc&quot;&gt;
+          El cliente quiere estar seguro de que entendimos el comportamiento esperado del sistema (BDD). Utiliza el estándar &lt;code&gt;DADO&lt;/code&gt; (estado inicial), &lt;code&gt;CUANDO&lt;/code&gt; (acción) y &lt;code&gt;ENTONCES&lt;/code&gt; (resultado medible).
+        &lt;/div&gt;
+        &lt;div class=&quot;case-challenge&quot;&gt;&lt;strong&gt;Formato&lt;/strong&gt;Documento PDF (Max 10 páginas)&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  
+
+  &lt;div class=&quot;slide-num&quot;&gt;19 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+"></iframe></div>
+<div class="slide-wrap" id="wrap-20" onclick="if(isOverview) { toggleOverview(); show(20); }"><iframe class="slide-frame" id="slide-20" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;es&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Slide 20 — Rúbrica y Entregables&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&amp;family=Instrument+Serif:ital@0;1&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--err:#ef4444;--ok:#10b981;--warn:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:&#x27;Inter&#x27;,&#x27;Inter Tight&#x27;,sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 10% 120%, #450a0a 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(239,68,68,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(239,68,68,0.2);filter:blur(80px);top:-80px;right:-80px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;letter-spacing:0.18em;color:var(--err);text-transform:uppercase;}
+.h2{font-family:&#x27;Inter Tight&#x27;,&#x27;Inter&#x27;,sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--err),transparent);opacity:0.35;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.table-container{background:linear-gradient(135deg,rgba(255,255,255,0.03),transparent);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:2px;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{background:rgba(255,255,255,0.05);color:var(--text);text-align:left;padding:12px 16px;font-family:&#x27;Inter Tight&#x27;,sans-serif;font-weight:700;border-bottom:1px solid rgba(255,255,255,0.1);}
+td{padding:14px 16px;color:var(--text-sec);border-bottom:1px solid rgba(255,255,255,0.05);line-height:1.5;}
+.score{color:var(--ok);font-weight:700;font-family:&#x27;JetBrains Mono&#x27;,monospace;}
+.reqs-box{background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:16px 20px;margin-top:10px;}
+.reqs-box h4{color:var(--err);font-family:&#x27;Inter Tight&#x27;,sans-serif;font-size:16px;margin-bottom:8px;}
+.reqs-box ul{list-style:none;}
+.reqs-box li{color:var(--text-sec);font-size:14px;margin-bottom:6px;display:flex;align-items:flex-start;gap:10px;}
+.reqs-box li::before{content:&quot;❌&quot;;font-size:12px;margin-top:2px;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:&#x27;JetBrains Mono&#x27;,monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+&lt;/style&gt;
+&lt;script src=&quot;https://cdn.lordicon.com/lordicon.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;slide&quot;&gt;
+  &lt;div class=&quot;grid-texture&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;glow&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;header&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;CRITERIOS DE CALIFICACIÓN&lt;/span&gt;
+    &lt;span class=&quot;h2&quot;&gt;Rúbrica y Restricciones Formales&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;Unidad 2&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;divider&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;content&quot; style=&quot;padding-top:10px;&quot;&gt;
+    
+    &lt;div class=&quot;table-container&quot;&gt;
+      &lt;table&gt;
+        &lt;tr&gt;
+          &lt;th style=&quot;width:20%&quot;&gt;Dimensión&lt;/th&gt;
+          &lt;th style=&quot;width:65%&quot;&gt;Criterio de Evaluación&lt;/th&gt;
+          &lt;th style=&quot;width:15%&quot;&gt;Puntaje Máximo&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;strong style=&quot;color:var(--accent1)&quot;&gt;Cobertura (RTM)&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;La Matriz mapea correctamente TODOS los requerimientos con casos de prueba, sin dejar ningún algoritmo sin su respectiva batería de pruebas.&lt;/td&gt;
+          &lt;td class=&quot;score&quot;&gt;35 pts&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;strong style=&quot;color:var(--accent2)&quot;&gt;Diseño de Casos&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Los Casos de Prueba están redactados con pasos atómicos y detallados. Incluyen correctamente pruebas negativas. Se utiliza el estándar (ID, Precondiciones, etc).&lt;/td&gt;
+          &lt;td class=&quot;score&quot;&gt;35 pts&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;&lt;strong style=&quot;color:var(--warn)&quot;&gt;Traducción a BDD&lt;/strong&gt;&lt;/td&gt;
+          &lt;td&gt;Los escenarios Gherkin utilizan correctamente DADO, CUANDO, ENTONCES y AND. El vocabulario es de negocio, no de código.&lt;/td&gt;
+          &lt;td class=&quot;score&quot;&gt;30 pts&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;reqs-box&quot;&gt;
+      &lt;h4&gt;&lt;lord-icon src=&quot;https://cdn.lordicon.com/dxjqoygy.json&quot; trigger=&quot;loop&quot; delay=&quot;1500&quot; colors=&quot;primary:#ffffff&quot; style=&quot;width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;&quot;&gt;&lt;/lord-icon&gt; Restricciones Críticas (Criterio de Rechazo Inmediato)&lt;/h4&gt;
+      &lt;ul&gt;
+        &lt;li&gt;No subir archivos .rar o .zip. Subir directamente el PDF y el .xls a la plataforma.&lt;/li&gt;
+        &lt;li&gt;El archivo de Gherkin debe estar en formato PDF y no superar las 10 páginas de extensión.&lt;/li&gt;
+        &lt;li&gt;No usar inteligencia artificial para redactar los Gherkins; se auditará la coherencia técnica respecto al negocio y las herramientas usadas en los algoritmos.&lt;/li&gt;
+        &lt;li&gt;Evaluación grupal. El documento debe contener una portada formal con el RUT y nombre de todos los integrantes. Estudiante que no aparezca en portada tendrá nota 1.0.&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+  &lt;div class=&quot;slide-num&quot;&gt;20 / 20&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script src=&quot;https://unpkg.com/lucide@latest&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    lucide.createIcons();
+  });
+&lt;/script&gt;
+
+&lt;script&gt;
+document.addEventListener(&#x27;keydown&#x27;, e =&gt; {
+  window.parent.postMessage({ type: &#x27;forward-key&#x27;, key: e.key }, &#x27;*&#x27;);
+});
+&lt;/script&gt;
+&lt;/body&gt;
+
+
+&lt;/html&gt;
+"></iframe></div>
+</div>
+
+<div class="nav-hint">
+  <b>&larr; &rarr;</b> Nav | <b>+ / -</b> Zoom | <b>S</b> Speaker Notes | <b>F</b> Fullscreen | <b>T</b> Toggle Theme | <b>O</b> Overview
+</div>
+
+<script>
+  let cur = 0;
+  const frames = document.querySelectorAll('.slide-frame');
+  const wraps = document.querySelectorAll('.slide-wrap');
+  const total = frames.length;
+  const info = document.getElementById('page-info');
+  const CHANNEL_NAME = 'html-ppt-presenter-U2';
+  let bc;
+  try { bc = new BroadcastChannel(CHANNEL_NAME); } catch(e) {}
+  
+  const slideMeta = [{"title": "Slide 00 \u2014 Portada", "notes": ""}, {"title": "Slide 01 \u2014 Tabla de Contenidos", "notes": ""}, {"title": "Slide 02 \u2014 Secci\u00f3n 1", "notes": ""}, {"title": "Slide 03 \u2014 El Principio del Contexto", "notes": ""}, {"title": "Slide 04 \u2014 Matriz de Riesgo", "notes": ""}, {"title": "Slide 05 \u2014 Actividad: El Estratega", "notes": ""}, {"title": "Slide 06 \u2014 Secci\u00f3n 2", "notes": ""}, {"title": "Slide 07 \u2014 SRS vs User Stories", "notes": ""}, {"title": "Slide 08 \u2014 INVEST + Gherkin BDD", "notes": ""}, {"title": "Slide 09 \u2014 Actividad: El Traductor \u00c1gil", "notes": ""}, {"title": "Slide 10 \u2014 Secci\u00f3n 3", "notes": ""}, {"title": "Slide 11 \u2014 Anatom\u00eda del Test Case", "notes": ""}, {"title": "Slide 12 \u2014 RTM", "notes": ""}, {"title": "Slide 13 \u2014 Actividad: Disecci\u00f3n del Bug", "notes": ""}, {"title": "Slide 14 \u2014 Secci\u00f3n 4", "notes": ""}, {"title": "Slide 15 \u2014 IEEE 829 Test Plan", "notes": ""}, {"title": "Slide 16 \u2014 Din\u00e1micas Sincr\u00f3nicas", "notes": ""}, {"title": "Slide 17 \u2014 Cierre Unidad 2", "notes": ""}, {"title": "Slide 18 \u2014 Contexto de Evaluaci\u00f3n 2", "notes": ""}, {"title": "Slide 19 \u2014 Partes de la Evaluaci\u00f3n", "notes": ""}, {"title": "Slide 20 \u2014 R\u00fabrica y Entregables", "notes": ""}];
+  let presenterWin = null;
+  let currentTheme = 'dark';
+  let isOverview = false;
+  
+  function resize() {
+    if(isOverview) return;
+    const stage = document.getElementById('stage');
+    // Main view is now fully responsive, no scale transform needed
+    frames.forEach(f => f.style.transform = 'none');
+    
+    // Also center the iframes within the slide-wrap to avoid top cutoff
+    wraps.forEach(w => {
+      w.style.alignItems = 'center';
+      w.style.justifyContent = 'center';
+    });
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  show(0);
+  
+  if(bc) bc.onmessage = e => {
+    if(e.data.type === 'goto') show(e.data.idx);
+  };
+
+  function show(i) {
+    if(isOverview) {
+      wraps.forEach((w, idx) => {
+        w.classList.toggle('active', idx === i);
+      });
+      cur = i;
+      return;
+    }
+    wraps.forEach((w, idx) => w.style.display = idx === i ? 'flex' : 'none');
+    if(info) {
+      info.innerText = `${i + 1} / ${total}`;
+      document.getElementById('btn-prev').disabled = i === 0;
+      document.getElementById('btn-next').disabled = i === total - 1;
+    }
+    cur = i;
+    resize();
+  }
+  
+  function nav(d) {
+    const n = cur + d;
+    if (n >= 0 && n < total) { 
+      show(n);
+      if(bc) bc.postMessage({ type: 'goto', idx: n });
+    }
+  }
+
+  // Keyboard Shortcuts
+  document.addEventListener('keydown', e => {
+    handleKey(e.key);
+  });
+  
+  window.addEventListener('message', e => {
+    if(e.data && e.data.type === 'forward-key') {
+      handleKey(e.data.key);
+    }
+  });
+
+  function handleKey(key) {
+    let kL = key.toLowerCase();
+    if (key === 'ArrowLeft' || key === 'ArrowUp') nav(-1);
+    if (key === 'ArrowRight' || key === 'ArrowDown' || key === ' ') nav(1);
+    if (kL === 'f') fullscreen();
+    if (kL === 's') openPresenterWindow();
+    if (kL === 't') toggleTheme();
+    if (kL === 'o') toggleOverview();
+    if (key === '+' || key === '=') adjustZoom(1);
+    if (key === '-') adjustZoom(-1);
+    if (key === '0') adjustZoom(0);
+  }
+
+  let zoomLevel = 0;
+  function adjustZoom(delta) {
+    if (delta === 0) {
+      zoomLevel = 0;
+    } else {
+      zoomLevel += delta;
+    }
+    const stage = document.getElementById('stage');
+    if (zoomLevel > 0) {
+      stage.style.maxWidth = 'none';
+      stage.style.maxHeight = 'none';
+      stage.style.width = (100 + zoomLevel * 20) + 'vw';
+      stage.style.height = 'auto';
+      document.body.style.overflow = 'auto'; // allow scrolling
+    } else if (zoomLevel < 0) {
+      stage.style.maxWidth = '100vw';
+      stage.style.maxHeight = '100vh';
+      stage.style.width = Math.max(30, 100 + zoomLevel * 10) + 'vw';
+      stage.style.height = 'auto';
+      document.body.style.overflow = 'hidden';
+    } else {
+      stage.style.maxWidth = '';
+      stage.style.maxHeight = '';
+      stage.style.width = '';
+      stage.style.height = '';
+      document.body.style.overflow = 'hidden';
+    }
+    setTimeout(resize, 10);
+  }
+
+
+  function toggleOverview() {
+    isOverview = !isOverview;
+    const stage = document.getElementById('stage');
+    if(isOverview) {
+      stage.classList.add('overview');
+      show(cur);
+    } else {
+      stage.classList.remove('overview');
+      show(cur);
+    }
+  }
+
+  function fullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {});
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  function toggleTheme() {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    frames.forEach(f => {
+        try {
+            let doc = f.contentDocument || f.contentWindow.document;
+            if (currentTheme === 'light') {
+                doc.documentElement.style.setProperty('--bg', '#f8fafc');
+                doc.documentElement.style.setProperty('--bg2', '#f1f5f9');
+                doc.documentElement.style.setProperty('--text', '#0f172a');
+            } else {
+                // Restore dark
+                doc.documentElement.style.setProperty('--bg', '#050b1f');
+                doc.documentElement.style.setProperty('--bg2', '#0a1f3d');
+                doc.documentElement.style.setProperty('--text', '#ffffff');
+            }
+        } catch(e) {}
+    });
+    if(bc) bc.postMessage({ type: 'theme', name: currentTheme });
+  }
+
+  /* ==============================================================
+   * Presenter Window Logic (Imported from html-ppt-skill)
+   * ============================================================== */
+  function openPresenterWindow() {
+    if (presenterWin && !presenterWin.closed) {
+      presenterWin.focus();
+      return;
+    }
+    presenterWin = window.open('', 'html-ppt-presenter-u2', 'width=1280,height=820,menubar=no,toolbar=no');
+    if (!presenterWin) {
+      alert('Pop-up blocked. Please allow popups for this site.');
+      return;
+    }
+    
+    // Collect srcdocs to bypass file:// CORS
+    const srcdocs = Array.from(frames).map(f => f.getAttribute('srcdoc'));
+    
+    presenterWin.document.open();
+    presenterWin.document.write(getPresenterTemplate());
+    presenterWin.document.close();
+    
+    // Inject data directly to the new window
+    presenterWin.slideMeta = slideMeta;
+    presenterWin.slideSrcdocs = srcdocs;
+    presenterWin.total = total;
+    presenterWin.idx = cur;
+    presenterWin.channelName = CHANNEL_NAME;
+    presenterWin.speakerNotes = window.speakerNotes || {};
+    
+    // Wait for popup DOM to finish parsing then initialize
+    setTimeout(() => {
+      if(presenterWin.initPresenter) presenterWin.initPresenter();
+    }, 100);
+  }
+
+  function getPresenterTemplate() {
+    return `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Presenter View - U2</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden; background: #1a1d24; color: #e6edf3;
+    font-family: -apple-system, sans-serif;
+  }
+  #stage { position: absolute; inset: 0; overflow: hidden; }
+  
+  .pcard {
+    position: absolute; background: #0d1117;
+    border: 1px solid rgba(255,255,255,.1); border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.45); display: flex; flex-direction: column;
+    overflow: hidden; min-width: 180px; min-height: 100px;
+  }
+  .pcard-head {
+    display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+    background: rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.06);
+    cursor: move; user-select: none; flex-shrink: 0;
+  }
+  .pcard-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dot-color, #58a6ff); }
+  .pcard-title { font-size: 11px; font-weight: 700; color: #8b949e; flex: 1; letter-spacing: .15em; }
+  
+  .pcard-body { flex: 1; position: relative; overflow: hidden; min-height: 0; }
+  
+  .pcard-preview .pcard-body { background: #000; }
+  .pcard-preview iframe {
+    position: absolute; top: 0; left: 0; width: 1280px; height: 720px; border: none;
+    transform-origin: top left;
+  }
+  
+  .pcard-notes .pcard-body { padding: 14px 18px; overflow-y: auto; font-size: 18px; line-height: 1.75; }
+  .pcard-notes .pcard-body strong { color: #f0883e; }
+  
+  .pcard-timer .pcard-body { display: flex; flex-direction: column; gap: 14px; padding: 18px 20px; justify-content: center; }
+  .timer-display { font-size: 42px; font-weight: 700; color: #3fb950; line-height: 1; }
+  .timer-row { display: flex; gap: 12px; font-size: 14px; color: #8b949e; }
+  .timer-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+  .timer-btn {
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    color: #e6edf3; padding: 6px 12px; border-radius: 6px; cursor: pointer;
+  }
+  .pcard-resize {
+    position: absolute; right: 0; bottom: 0; width: 18px; height: 18px; cursor: nwse-resize;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="pcard pcard-preview" id="card-cur" style="--dot-color:#58a6ff">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">CURRENT</span></div>
+    <div class="pcard-body"><iframe id="iframe-cur"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+  <div class="pcard pcard-preview" id="card-nxt" style="--dot-color:#bc8cff">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">NEXT</span></div>
+    <div class="pcard-body"><iframe id="iframe-nxt"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+  <div class="pcard pcard-notes" id="card-notes" style="--dot-color:#f0883e">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">SPEAKER SCRIPT</span></div>
+    <div class="pcard-body" id="notes-body"></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+  <div class="pcard pcard-timer" id="card-timer" style="--dot-color:#3fb950">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">TIMER</span></div>
+    <div class="pcard-body">
+      <div class="timer-display" id="timer-display">00:00</div>
+      <div class="timer-row">Slide <span id="timer-count"></span></div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="btn-prev">Prev</button>
+        <button class="timer-btn" id="btn-next">Next</button>
+        <button class="timer-btn" id="btn-reset">Reset</button>
+      </div>
+    </div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+</div>
+<script>
+  function initPresenter() {
+    let bc; try { bc = new BroadcastChannel(window.channelName); } catch(e){}
+    
+    function initLayout() {
+      // Provide fallback dimensions in case popup window hasn't laid out yet
+      let w = window.innerWidth || 1280;
+      let h = window.innerHeight || 820;
+      if (w < 100 || h < 100) { w = 1280; h = 820; } // aggressive fallback
+      document.getElementById('card-cur').style.cssText = \`left: 16px; top: 16px; width: \${w*0.55 - 24}px; height: \${h*0.62 - 16}px\`;
+      document.getElementById('card-nxt').style.cssText = \`left: \${w*0.55 + 8}px; top: 16px; width: \${w - w*0.55 - 24}px; height: \${h*0.42 - 16}px\`;
+      document.getElementById('card-notes').style.cssText = \`left: \${w*0.55 + 8}px; top: \${h*0.42 + 8}px; width: \${w - w*0.55 - 24}px; height: \${h - h*0.42 - 16}px\`;
+      document.getElementById('card-timer').style.cssText = \`left: 16px; top: \${h*0.62 + 8}px; width: \${w*0.55 - 24}px; height: \${h - h*0.62 - 16}px\`;
+    }
+    // Delay initialization slightly to ensure window layout is ready
+    requestAnimationFrame(() => {
+      initLayout();
+    
+    let iframeCur = document.getElementById('iframe-cur');
+    let iframeNxt = document.getElementById('iframe-nxt');
+    
+    function fitIframe(iframe) {
+        let cw = iframe.parentElement.clientWidth;
+        let ch = iframe.parentElement.clientHeight;
+        let scale = Math.min(cw/1280, ch/720);
+        iframe.style.transform = \`scale(\${scale})\`;
+    }
+    
+    function renderState() {
+      document.getElementById('timer-count').innerText = (window.idx+1) + " / " + window.total;
+      let n = window.speakerNotes && window.speakerNotes[window.idx];
+      document.getElementById('notes-body').innerHTML = n || '<span style="color:#6e7681;font-style:italic">Sin guion</span>';
+      
+      iframeCur.srcdoc = window.slideSrcdocs[window.idx];
+      let nxt = window.idx + 1 < window.total ? window.idx + 1 : window.idx;
+      iframeNxt.srcdoc = window.slideSrcdocs[nxt];
+      
+      setTimeout(() => {
+          fitIframe(iframeCur);
+          fitIframe(iframeNxt);
+      }, 50);
+      
+      if(bc) bc.postMessage({ type: 'goto', idx: window.idx });
+    }
+    
+    window.addEventListener('resize', () => {
+        fitIframe(iframeCur);
+        fitIframe(iframeNxt);
+    });
+    
+    document.getElementById('btn-prev').onclick = () => { if(window.idx>0){ window.idx--; renderState(); } };
+    document.getElementById('btn-next').onclick = () => { if(window.idx<window.total-1){ window.idx++; renderState(); } };
+    
+    if(bc) bc.onmessage = e => {
+      if(e.data.type === 'goto') { window.idx = e.data.idx; renderState(); }
+      // theme overrides could be applied here if needed
+    };
+    
+    let startT = Date.now();
+    let timerEl = document.getElementById('timer-display');
+    setInterval(() => {
+      let diff = Math.floor((Date.now() - startT)/1000);
+      let m = Math.floor(diff/60).toString().padStart(2,'0');
+      let s = (diff%60).toString().padStart(2,'0');
+      timerEl.innerText = m + ':' + s;
+    }, 1000);
+    document.getElementById('btn-reset').onclick = () => { startT = Date.now(); };
+    
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if(window.idx>0){ window.idx--; renderState(); } }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { if(window.idx<window.total-1){ window.idx++; renderState(); } }
+    });
+    
+    document.querySelectorAll('[data-drag]').forEach(h => {
+      h.onmousedown = e => {
+        let card = h.closest('.pcard');
+        let stX = e.clientX, stY = e.clientY;
+        let startL = parseInt(card.style.left) || 0, startT = parseInt(card.style.top) || 0;
+        card.style.zIndex = 999;
+        function onMove(ev) {
+          card.style.left = (startL + ev.clientX - stX) + 'px';
+          card.style.top = (startT + ev.clientY - stY) + 'px';
+        }
+        function onUp() { card.style.zIndex = ''; document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      };
+    });
+    
+    document.querySelectorAll('[data-resize]').forEach(h => {
+      h.onmousedown = e => {
+        let card = h.closest('.pcard');
+        e.stopPropagation(); e.preventDefault();
+        let stX = e.clientX, stY = e.clientY;
+        let startW = parseInt(card.style.width) || card.offsetWidth, startH = parseInt(card.style.height) || card.offsetHeight;
+        card.style.zIndex = 999;
+        function onMove(ev) {
+          card.style.width = Math.max(180, startW + ev.clientX - stX) + 'px';
+          card.style.height = Math.max(100, startH + ev.clientY - stY) + 'px';
+          fitIframe(card.querySelector('iframe'));
+        }
+        function onUp() { card.style.zIndex = ''; document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      };
+    });
+    
+    renderState();
+    }); // end requestAnimationFrame
+  }
+<\/script>
+</body>
+</html>`;
+  }
+</script>
+</body>
+</html>

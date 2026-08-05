@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Slide 16 — Dinámicas Sincrónicas</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--ok:#10b981;--warn:#f59e0b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tight',sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 50% -10%, #064e3b 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(16,185,129,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--ok);text-transform:uppercase;}
+.h2{font-family:'Inter Tight','Inter',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--ok),transparent);opacity:0.35;z-index:10;}
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:1fr / 1fr 1fr;gap:20px;z-index:10;}
+.dyn-card{border-radius:8px;padding:28px 30px;display:flex;flex-direction:column;gap:16px;}
+.dyn-header{display:flex;align-items:center;gap:16px;margin-bottom:4px;}
+.dyn-icon{width:60px;height:60px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0;}
+.dyn-title{font-family:'Inter Tight','Inter',sans-serif;font-size:20px;font-weight:800;color:var(--text);letter-spacing:-0.02em;margin-bottom:4px;}
+.dyn-time{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;}
+.dyn-desc{font-size:13px;color:var(--text-sec);line-height:1.7;flex:1;}
+.dyn-steps{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.step{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:5px;font-size:12px;line-height:1.6;}
+.step-num{font-family:'Inter Tight','Inter',sans-serif;font-size:14px;font-weight:900;min-width:20px;flex-shrink:0;}
+.step-text{color:var(--text-sec);}
+.step-text strong{color:var(--text);}
+.card1{background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(34,211,238,0.06));border:1px solid rgba(16,185,129,0.35);}
+.step-text strong{color:var(--text);}
+.card1{background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(34,211,238,0.06));border:1px solid rgba(16,185,129,0.35);}
+.card2{background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(239,68,68,0.06));border:1px solid rgba(245,158,11,0.35);}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+.teacher-note{position:absolute;bottom:20px;left:48px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:8px;padding:12px 16px;display:flex;align-items:flex-start;gap:12px;max-width:800px;z-index:20;}
+.teacher-icon{font-size:20px;}
+.teacher-text h4{color:var(--warn);font-size:12px;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;font-family:'JetBrains Mono',monospace;}
+.teacher-text p{color:var(--text-sec);font-size:12px;line-height:1.5;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<div class="slide">
+  <div class="grid-texture"></div>
+  <div class="header">
+    <span class="tag">Actividades Sincrónicas — Sesión 04</span>
+    <span class="h2">Roleplay + QA Audit en Vivo</span>
+    <span class="tag">Sincrónica</span>
+  </div>
+  <div class="divider"></div>
+  <div class="content-area">
+    <!-- Roleplay -->
+    <div class="dyn-card card1">
+      <div class="dyn-header">
+        <div class="dyn-icon" style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);"><lord-icon src="https://cdn.lordicon.com/egiwmiit.json" trigger="loop" delay="1500" colors="primary:#ffffff" style="width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;"></lord-icon>️</div>
+        <div>
+          <div class="dyn-title">Defendiendo el Plan</div>
+          <div class="dyn-time" style="color:var(--ok)">Presentación Ejecutiva · 20 minutos</div>
+        </div>
+      </div>
+      <div class="dyn-desc">Los grupos presentan el <strong>Esqueleto de su Plan de Pruebas</strong> ante el profesor (quien asume el rol de "Gerente de Proyecto exigente"). Deben defender las decisiones de alcance frente a la presión de deadlines.</div>
+      <div class="dyn-steps">
+        <div class="step" style="background:rgba(16,185,129,0.08);"><div class="step-num" style="color:var(--ok)">01</div><div class="step-text"><strong>Presentación del Plan:</strong> Alcance IN/OUT, estrategia elegida, criterios de salida.</div></div>
+        <div class="step" style="background:rgba(16,185,129,0.08);"><div class="step-num" style="color:var(--ok)">02</div><div class="step-text"><strong>Interrogatorio:</strong> El Gerente pregunta "¿Por qué no probaste X?" El equipo debe justificar con la Matriz de Riesgo.</div></div>
+        <div class="step" style="background:rgba(16,185,129,0.08);"><div class="step-num" style="color:var(--ok)">03</div><div class="step-text"><strong>Feedback:</strong> El grupo recibe retroalimentación sobre la solidez y coherencia del plan.</div></div>
+      </div>
+    </div>
+    <!-- QA Audit -->
+    <div class="dyn-card card2">
+      <div class="dyn-header">
+        <div class="dyn-icon" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);"><lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" delay="1500" colors="primary:#ffffff" style="width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;"></lord-icon></div>
+        <div>
+          <div class="dyn-title">QA Audit — Auditoría Cruzada</div>
+          <div class="dyn-time" style="color:var(--warn)">Breakout Rooms · 40 minutos</div>
+        </div>
+      </div>
+      <div class="dyn-desc">El <strong>Grupo A intercambia sus Test Cases con el Grupo B</strong>. Cada grupo busca "hackear" los casos del otro: fisuras lógicas, precondiciones faltantes, resultados esperados ambiguos.</div>
+      <div class="dyn-steps">
+        <div class="step" style="background:rgba(245,158,11,0.08);"><div class="step-num" style="color:var(--warn)">01</div><div class="step-text"><strong>Intercambio:</strong> Grupo A recibe TCs del Grupo B y viceversa. Sin contexto adicional.</div></div>
+        <div class="step" style="background:rgba(245,158,11,0.08);"><div class="step-num" style="color:var(--warn)">02</div><div class="step-text"><strong>Disección:</strong> Identificar ambigüedades, pasos incompletos, precondiciones imposibles o resultados no verificables.</div></div>
+        <div class="step" style="background:rgba(245,158,11,0.08);"><div class="step-num" style="color:var(--warn)">03</div><div class="step-text"><strong>Premio:</strong> Se premia al grupo que encuentre más <em>defectos en los Test Cases ajenos</em>. Mejor documentación = menos defectos encontrados.</div></div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+  <div class="slide-num">16 / 20</div>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    lucide.createIcons();
+  });
+</script>
+</body>
+
+</html>

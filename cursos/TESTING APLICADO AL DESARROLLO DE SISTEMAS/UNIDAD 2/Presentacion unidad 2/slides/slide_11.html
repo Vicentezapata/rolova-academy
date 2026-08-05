@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Slide 11 — Anatomía del Test Case</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(253,224,71,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--ok:#10b981;--err:#ef4444;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tight',sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 10% -20%, #451a03 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(245,158,11,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(245,158,11,0.15);filter:blur(70px);top:-40px;right:100px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent3);text-transform:uppercase;}
+.h2{font-family:'Inter Tight','Inter',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent3),transparent);opacity:0.35;z-index:10;}
+/* Hero top:hero + 5 cards below in a row */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:auto 1fr / repeat(5,1fr);gap:16px;z-index:10;}
+.hero{grid-column:1/-1;background:linear-gradient(135deg,rgba(253,224,71,0.1),rgba(34,211,238,0.05));border:1px solid rgba(253,224,71,0.3);border-radius:8px;padding:18px 24px;display:flex;align-items:center;gap:24px;}
+.hero-text h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.hero-text p{font-size:12.5px;color:var(--text-sec);line-height:1.65;max-width:780px;}
+.tc-badge{background:rgba(253,224,71,0.15);border:1px solid rgba(253,224,71,0.4);border-radius:6px;padding:8px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent3);font-weight:700;flex-shrink:0;}
+.field-card{background:linear-gradient(135deg,rgba(34,211,238,0.06),rgba(99,102,241,0.03));border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:18px 16px;display:flex;flex-direction:column;gap:8px;}
+.field-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-sec);letter-spacing:0.1em;}
+.field-name{font-size:13px;font-weight:700;letter-spacing:-0.01em;}
+.field-desc{font-size:11px;color:var(--text-sec);line-height:1.6;flex:1;}
+.field-example{background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:8px 10px;font-size:10.5px;color:var(--text-sec);line-height:1.5;font-style:italic;margin-top:auto;}
+.field-example strong{color:var(--text);font-style:normal;}
+.c1 .field-name{color:var(--accent3);}
+.c2 .field-name{color:var(--accent1);}
+.c3 .field-name{color:var(--accent2);}
+.c4 .field-name{color:var(--ok);}
+.c5 .field-name{color:var(--err);}
+.c1{border-color:rgba(253,224,71,0.25);}
+.c2{border-color:rgba(34,211,238,0.25);}
+.c3{border-color:rgba(99,102,241,0.25);}
+.c4{border-color:rgba(16,185,129,0.25);}
+.c5{border-color:rgba(239,68,68,0.25);}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="grid-texture"></div>
+  <div class="glow1"></div>
+  <div class="header">
+    <span class="tag">Sesión 03 · Test Cases</span>
+    <span class="h2">Anatomía del Caso de Prueba (Test Case)</span>
+    <span class="tag">S3</span>
+  </div>
+  <div class="divider"></div>
+  <div class="content-area">
+    <div class="hero">
+      <div class="tc-badge">TC-001</div>
+      <div class="hero-text">
+        <h3>¿Qué es un Test Case?</h3>
+        <p>Un conjunto documentado de condiciones bajo las cuales se determinará si una aplicación cumple sus especificaciones. Debe ser tan preciso que <strong>alguien nuevo pueda ejecutarlo sin ambigüedad</strong>. Cada campo tiene un propósito crítico: omitir uno invalida el caso.</p>
+      </div>
+    </div>
+    <!-- 5 field cards -->
+    <div class="field-card c1">
+      <div class="field-num">Campo 01</div>
+      <div class="field-name">ID / Título</div>
+      <div class="field-desc">Identificador único y nombre descriptivo. Permite referenciar el caso en la RTM, defectos y reportes.</div>
+      <div class="field-example"><strong>TC-001:</strong> Validar login exitoso con credenciales correctas — Módulo de autenticación.</div>
+    </div>
+    <div class="field-card c2">
+      <div class="field-num">Campo 02</div>
+      <div class="field-name">Precondiciones</div>
+      <div class="field-desc">El estado exacto del sistema ANTES de ejecutar. Sin esto, el resultado no es reproducible.</div>
+      <div class="field-example">El usuario 'admin' existe en BD con estado Activo. El navegador está en <strong>/login</strong>.</div>
+    </div>
+    <div class="field-card c3">
+      <div class="field-num">Campo 03</div>
+      <div class="field-name">Pasos (Steps)</div>
+      <div class="field-desc">Acciones explícitas, secuenciales y atómicas. Cada paso = una acción. Sin interpretación posible.</div>
+      <div class="field-example">1. Ingresar user 'admin'. 2. Ingresar pass '1234'. 3. Click en <strong>'Entrar'</strong>.</div>
+    </div>
+    <div class="field-card c4">
+      <div class="field-num">Campo 04</div>
+      <div class="field-name">Resultado Esperado</div>
+      <div class="field-desc">La validación que define el ÉXITO. Verbo + objeto + estado final. Debe ser 100% verificable.</div>
+      <div class="field-example">El sistema redirige a <strong>/dashboard</strong> y muestra el mensaje "Bienvenido Admin".</div>
+    </div>
+    <div class="field-card c5">
+      <div class="field-num">Campo 05</div>
+      <div class="field-name">Datos de Prueba</div>
+      <div class="field-desc">Variables, archivos o configuraciones específicas necesarias. Deben ser versionados.</div>
+      <div class="field-example"><strong>user:</strong> 'admin', <strong>pass:</strong> '1234', <strong>env:</strong> staging-v2.</div>
+    </div>
+  </div>
+  <div class="slide-num">11 / 20</div>
+</div>
+</body>
+</html>

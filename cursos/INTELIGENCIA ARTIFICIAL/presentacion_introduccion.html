@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentación Asignatura — Inteligencia Artificial | IPSS 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --p:#6366f1;--pl:#818cf8;--pd:#4f46e5;--c2:#06b6d4;--acc:#f59e0b;
+  --ok:#10b981;--err:#ef4444;--warn:#f59e0b;
+  --bg:#0a0a15;--bg2:#111120;--bg3:#1a1a2e;--card:#16162a;
+  --border:rgba(99,102,241,.25);--text:#f8fafc;--muted:#cbd5e1;--dim:#94a3b8;
+  --glass:rgba(255,255,255,.05);--gb:rgba(255,255,255,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:11px;}
+.deck{width:100vw;height:100vh;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transform:translateX(80px);
+  transition:opacity .5s cubic-bezier(0.4, 0, 0.2, 1),transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+  background:var(--bg);overflow:hidden;
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.prev{transform:translateX(-80px);}
+.slide::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(99,102,241,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.06) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+.slide-inner{
+    position:relative;z-index:1;flex:1;
+    display:flex;flex-direction:column;
+    padding:4rem 6rem;
+    padding-bottom:100px;
+    overflow-y:auto;
+}
+.slide-inner.centered {
+    justify-content: center;
+}
+.slide-inner::-webkit-scrollbar{width:8px;}
+.slide-inner::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px;}
+
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;}
+.orb1{width:700px;height:700px;background:rgba(99,102,241,.12);top:-150px;right:-150px;}
+.orb2{width:500px;height:500px;background:rgba(6,182,212,.08);bottom:-100px;left:-100px;}
+
+.nav-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(10,10,21,.95);backdrop-filter:blur(24px);
+  border-top:1px solid var(--gb);height:80px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 3rem;
+}
+.nav-info{display:flex;align-items:center;gap:1.5rem;}
+.session-badge{background:var(--p);color:#fff;padding:.4rem 1rem;border-radius:10px;font-size:1rem;font-weight:800;letter-spacing:.05em;}
+.slide-counter{font-size:1rem;color:var(--muted);font-weight:600;}
+.nav-title{font-size:1.1rem;color:var(--dim);max-width:600px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
+.nav-controls{display:flex;align-items:center;gap:1rem;}
+.btn-nav{background:var(--glass);border:1px solid var(--gb);color:var(--text);padding:.75rem 1.75rem;border-radius:10px;cursor:pointer;font-size:1.1rem;font-weight:700;transition:all .2s;font-family:inherit;}
+.btn-nav:hover{background:rgba(99,102,241,.2);border-color:var(--border);}
+.btn-nav:disabled{opacity:.3;cursor:not-allowed;}
+.btn-nav.primary{background:linear-gradient(135deg,var(--p),var(--pd));border-color:transparent;box-shadow:0 8px 24px rgba(99,102,241,.4);display:flex;align-items:center;gap:0.5rem;}
+.btn-nav.primary:hover{box-shadow:0 12px 32px rgba(99,102,241,.6);transform:translateY(-2px);}
+
+.progress-track{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,.08);z-index:200;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--c2));transition:width .4s ease;}
+.session-tabs{position:fixed;top:0;left:0;right:0;z-index:150;display:flex;background:rgba(10,10,21,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--gb);height:60px;padding-top:4px;}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:var(--dim);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;letter-spacing:.05em;text-transform:uppercase;}
+.tab:hover{color:var(--muted);}
+.tab.active{color:var(--text);border-bottom-color:var(--p);background:rgba(99,102,241,.1);}
+
+.slide-tag{font-size:1.3rem;font-weight:800;color:var(--pl);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;margin-top:60px;}
+.slide h1{font-size:clamp(3rem, 4.5vw, 4rem);font-weight:900;line-height:1.15;margin-bottom:1.25rem;}
+.slide h2{font-size:clamp(2.2rem, 3vw, 2.8rem);font-weight:900;color:#fff;margin-bottom:1.25rem;line-height:1.2;}
+.slide h3{font-size:2rem;font-weight:800;color:var(--pl);margin-bottom:1rem;margin-top:1rem;}
+.slide p{color:var(--muted);line-height:1.6;font-size:1.6rem;}
+.gradient-text{background:linear-gradient(135deg,#fff 0%,var(--pl) 50%,var(--c2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+.content-area {display: flex; flex-direction: column; flex: 1; justify-content: space-evenly;}
+.card{background:var(--card);border:1px solid var(--gb);border-radius:16px;padding:1.5rem 2rem;display:flex;flex-direction:column;justify-content:center;}
+.card-grid{display:grid;gap:1.5rem;flex:1;}
+.card-grid-2{grid-template-columns:1fr 1fr;}
+.card-grid-3{grid-template-columns:repeat(3,1fr);}
+.card.accent-p{border-left:5px solid var(--p);}
+.card.accent-c{border-left:5px solid var(--c2);}
+.card.accent-g{border-left:5px solid var(--ok);}
+.card.accent-y{border-left:5px solid var(--acc);}
+.card.accent-r{border-left:5px solid var(--err);}
+.card-icon{display:inline-flex;color:var(--text);margin-bottom:0.75rem;}
+.card-icon svg {width:42px;height:42px;stroke-width:1.5px;}
+.card-title{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:0.5rem;}
+.card-body{font-size:1.4rem;color:var(--muted);line-height:1.6;}
+
+.quote{background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-left:6px solid var(--p);border-radius:0 16px 16px 0;padding:1.5rem 2rem;font-size:1.4rem;color:var(--text);line-height:1.6;font-style:italic;margin:1rem 0;box-shadow: 0 10px 20px rgba(0,0,0,0.15);}
+.quote strong{color:var(--pl);font-style:normal;}
+
+.tbl{width:100%;border-collapse:collapse;font-size:1.4rem;}
+.tbl th{text-align:left;padding:1rem 1.5rem;background:var(--bg3);color:var(--pl);font-size:1.2rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid var(--p);}
+.tbl td{padding:1.2rem 1.5rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top;line-height:1.6;}
+.tbl tr:hover td{background:rgba(255,255,255,.03);color:var(--text);}
+.tbl code{background:rgba(99,102,241,.15);color:#a5b4fc;padding:.2rem .5rem;border-radius:6px;font-size:1.3rem;}
+
+.tag{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:8px;font-size:1.1rem;font-weight:700;letter-spacing:0.03em;}
+.tag svg{width:16px;height:16px;}
+.tag-p{background:rgba(99,102,241,.2);color:#c7d2fe;border:1px solid rgba(99,102,241,.4);}
+.tag-g{background:rgba(16,185,129,.2);color:#6ee7b7;border:1px solid rgba(16,185,129,.4);}
+
+.check-list{list-style:none;display:flex;flex-direction:column;gap:.8rem;}
+.check-list li{display:flex;align-items:flex-start;gap:.8rem;font-size:1.6rem;color:var(--muted);line-height:1.5;}
+.check-list li::before{content:'';display:inline-block;width:24px;height:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:2px;}
+
+.dot-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+.dot-list li{display:flex;align-items:flex-start;gap:.7rem;font-size:1.55rem;color:var(--muted);line-height:1.5;}
+.dot-list li::before{content:'';display:inline-block;width:20px;height:20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23818cf8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:3px;}
+
+.cols{display:grid;gap:2rem;flex:1;}
+.cols-2{grid-template-columns:1fr 1fr;}
+.cols-3{grid-template-columns:1fr 1fr 1fr;}
+
+.hdiv{height:2px;background:linear-gradient(90deg, var(--p), transparent);margin:1.5rem 0;opacity:0.6;}
+
+.cover{justify-content:center;align-items:center;text-align:center;}
+.cover-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.4);color:var(--pl);padding:.6rem 1.5rem;border-radius:999px;font-size:1rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem;}
+.cover-sub{font-size:1.4rem;color:var(--muted);max-width:800px;margin:0 auto;line-height:1.6;}
+
+.kbd-hint {position:fixed; bottom:90px; right:3rem; font-size:1rem; color:var(--dim); z-index:200; display:flex; align-items:center; gap:0.5rem;}
+.kbd {background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); padding:0.2rem 0.5rem; border-radius:4px; color:var(--muted); font-family:'JetBrains Mono', monospace;}
+
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.check-item{background:var(--card);border:1px solid var(--gb);border-radius:14px;padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;font-size:1.2rem;color:var(--muted);line-height:1.6;box-shadow: 0 4px 15px rgba(0,0,0,0.15);}
+.check-item::before{content:'';display:inline-block;width:24px;height:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'/%3E%3Cpolyline points='22 4 12 14.01 9 11.01'/%3E%3C/svg%3E");flex-shrink:0;margin-top:2px;}
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+<div class="session-tabs">
+  <div class="tab" data-ses="0" onclick="jumpSession(0)">INTRODUCCIÓN</div>
+  <div class="tab" data-ses="1" onclick="jumpSession(1)">UNIDADES</div>
+  <div class="tab" data-ses="2" onclick="jumpSession(2)">EVALUACIONES</div>
+  <div class="tab" data-ses="3" onclick="jumpSession(3)">CALENDARIO</div>
+</div>
+
+<div class="deck">
+
+<!-- 1. PORTADA -->
+<div class="slide cover" data-session="0">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered">
+    <div class="cover-badge"><i data-lucide="cpu"></i> IPSS · 2026</div>
+    <h1 class="gradient-text">INTELIGENCIA ARTIFICIAL</h1>
+    <h2 style="font-size:2.2rem; color:var(--text); margin-bottom:2rem;">Presentación de la Asignatura</h2>
+    <p class="cover-sub">Descubre los fundamentos, modelos y aplicaciones de la IA. Prepárate para desarrollar algoritmos de machine learning utilizando Python y resolver problemas reales.</p>
+  </div>
+</div>
+
+<!-- 2. AGENDA -->
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Agenda</div>
+    <h2>¿Qué veremos hoy?</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <div class="card-grid card-grid-2">
+        <div class="card accent-p">
+          <div class="card-icon"><i data-lucide="target"></i></div>
+          <div class="card-title">Competencia</div>
+          <div class="card-body">El objetivo principal de la asignatura y qué serás capaz de hacer al finalizar.</div>
+        </div>
+        <div class="card accent-c">
+          <div class="card-icon"><i data-lucide="layers"></i></div>
+          <div class="card-title">Unidades de Aprendizaje</div>
+          <div class="card-body">Exploraremos el contenido de las 3 unidades clave del curso.</div>
+        </div>
+        <div class="card accent-g">
+          <div class="card-icon"><i data-lucide="bar-chart"></i></div>
+          <div class="card-title">Evaluaciones</div>
+          <div class="card-body">Cómo serás evaluado, instrumentos y ponderaciones por unidad.</div>
+        </div>
+        <div class="card accent-y">
+          <div class="card-icon"><i data-lucide="calendar"></i></div>
+          <div class="card-title">Calendario y Recursos</div>
+          <div class="card-body">Planificación de las 12 semanas, modalidad online y bibliografía.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. ROMPEHIELO -->
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Actividad de Inicio</div>
+    <h2>Rompehielo: ¿Ficción o Realidad? 🎬🤖</h2><div class="hdiv"></div>
+    <div class="content-area" style="gap:2rem; justify-content:center;">
+        <div style="background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(16,185,129,0.15)); border: 2px solid rgba(6,182,212,0.4); border-radius: 20px; box-shadow: 0 10px 30px rgba(6,182,212,0.1); padding: 2.5rem; text-align: center;">
+            <div style="color:var(--c2); margin-bottom:1.5rem; display:flex; justify-content:center;">
+                <i data-lucide="message-square-plus" style="width:80px;height:80px;"></i>
+            </div>
+            <div style="font-size: 2.2rem; font-weight: 900; color: #fff; margin-bottom: 1rem;">Comparte en el Chat (o micrófono)</div>
+            <div style="font-size: 1.6rem; color: var(--muted); max-width: 800px; margin: 0 auto 2rem; line-height: 1.6;">
+                Menciona tu <strong>película, serie o videojuego</strong> favorito que involucre Inteligencia Artificial.<br><br>
+                ¿Crees que esa IA ya existe, existirá en la próxima década o es pura ficción?
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <span class="tag tag-p" style="font-size: 1.2rem; padding: 0.6rem 1.2rem;">Matrix</span>
+                <span class="tag tag-c" style="font-size: 1.2rem; padding: 0.6rem 1.2rem;">Terminator</span>
+                <span class="tag tag-g" style="font-size: 1.2rem; padding: 0.6rem 1.2rem;">Her</span>
+                <span class="tag tag-y" style="font-size: 1.2rem; padding: 0.6rem 1.2rem;">Black Mirror</span>
+                <span class="tag tag-r" style="font-size: 1.2rem; padding: 0.6rem 1.2rem;">Detroit: Become Human</span>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. COMPETENCIA -->
+<div class="slide" data-session="1">
+  <div class="orb orb2"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Conociendo la Asignatura</div>
+    <h2>Competencia General</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <div class="quote" style="font-size:1.8rem; line-height:1.5;">
+        "Utiliza datos a través de su recolección, análisis y entrenamiento de algoritmos permitiendo identificar problemas y proponer posibles soluciones."
+      </div>
+      <br>
+      <div class="card accent-p">
+        <div class="card-title">Unidad de Competencia Principal</div>
+        <div class="card-body">
+          <ul class="check-list">
+            <li>Desarrolla algoritmos de <strong>machine learning</strong>.</li>
+            <li>Utiliza librerías del lenguaje de programación <strong>Python</strong>.</li>
+            <li>Aplica soluciones basadas en datos a problemas reales.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. UNIDADES -->
+<div class="slide" data-session="1">
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Estructura del Curso</div>
+    <h2>Las 3 Unidades de Aprendizaje</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <div class="card-grid card-grid-3">
+        <div class="card accent-c" style="text-align:center; padding:3rem 2rem;">
+          <div class="card-icon" style="margin-bottom:1.5rem;"><i data-lucide="book-open" style="width:64px;height:64px;"></i></div>
+          <div class="card-title">UNIDAD 1</div>
+          <div class="card-body">Fundamentos y Ética de la Inteligencia Artificial</div>
+        </div>
+        <div class="card accent-y" style="text-align:center; padding:3rem 2rem;">
+          <div class="card-icon" style="margin-bottom:1.5rem;"><i data-lucide="database" style="width:64px;height:64px;"></i></div>
+          <div class="card-title">UNIDAD 2</div>
+          <div class="card-body">Preparación y Procesamiento de Datos para IA</div>
+        </div>
+        <div class="card accent-p" style="text-align:center; padding:3rem 2rem;">
+          <div class="card-icon" style="margin-bottom:1.5rem;"><i data-lucide="cpu" style="width:64px;height:64px;"></i></div>
+          <div class="card-title">UNIDAD 3</div>
+          <div class="card-body">Modelos de ML y Aplicaciones Avanzadas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 5. UNIDAD 1 -->
+<div class="slide" data-session="1">
+  <div class="slide-inner">
+    <div class="slide-tag">Contenidos Conceptuales</div>
+    <h2>Unidad 1: Fundamentos y Ética</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div>
+        <h3>Conceptos Básicos</h3>
+        <ul class="dot-list">
+          <li>Inteligencia Artificial, Machine Learning y Deep Learning</li>
+          <li>Ciencia de datos</li>
+          <li>Aprendizaje supervisado, no supervisado y por refuerzo</li>
+          <li>Redes neuronales</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Aplicaciones y Contexto</h3>
+        <ul class="dot-list">
+          <li>Ramas de la IA (Visión por computadora, NLP, Sistemas Expertos)</li>
+          <li>Introducción a <strong>Python</strong></li>
+          <li>Ética: Sesgos, Privacidad, Impacto laboral, Responsabilidad</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. UNIDAD 2 -->
+<div class="slide" data-session="1">
+  <div class="slide-inner">
+    <div class="slide-tag">Contenidos Conceptuales</div>
+    <h2>Unidad 2: Preparación de Datos</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div class="card accent-y">
+        <div class="card-title">Modelos de Regresión</div>
+        <div class="card-body">
+          <ul class="check-list">
+            <li>Regresión Lineal</li>
+            <li>Árboles de decisión</li>
+            <li>SVMR</li>
+            <li>KNNR</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent-c">
+        <div class="card-title">Modelos de Clasificación</div>
+        <div class="card-body">
+          <ul class="check-list">
+            <li>Regresión Logística</li>
+            <li>Naive Bayes</li>
+            <li>Árboles de decisión</li>
+            <li>SVMC, K-NNC</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:2rem; font-weight:bold; color:var(--text);">También se abordarán los tipos de algoritmos de machine learning, evaluación de modelos y métricas clave.</p>
+  </div>
+</div>
+
+<!-- 7. UNIDAD 3 -->
+<div class="slide" data-session="1">
+  <div class="slide-inner">
+    <div class="slide-tag">Contenidos Conceptuales</div>
+    <h2>Unidad 3: Modelos ML y Aplicaciones</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <div class="card-grid card-grid-3">
+        <div class="card accent-p">
+          <div class="card-title">Preparación</div>
+          <div class="card-body">
+            Limpieza de datos, transformación y métodos de selección para entrenar modelos robustos.
+          </div>
+        </div>
+        <div class="card accent-g">
+          <div class="card-title">Librerías Python</div>
+          <div class="card-body">
+            Implementación práctica utilizando <strong>TensorFlow</strong>, <strong>Keras</strong> y <strong>Scikit-learn</strong>.
+          </div>
+        </div>
+        <div class="card accent-c">
+          <div class="card-title">Aplicaciones (PLN)</div>
+          <div class="card-body">
+            Procesamiento de Lenguaje Natural utilizando la librería <strong>NLTK</strong> y herramientas de Python.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 8. EVALUACIONES -->
+<div class="slide" data-session="2">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Evaluaciones</div>
+    <h2>Ponderaciones del Curso</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Instancia</th>
+            <th>Evidencia</th>
+            <th>Situación Evaluativa</th>
+            <th>Instrumento</th>
+            <th>Ponderación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Unidad 1</strong></td>
+            <td>Producto</td>
+            <td>Entrega de encargo</td>
+            <td>Rúbrica</td>
+            <td><span class="tag tag-p">10%</span></td>
+          </tr>
+          <tr>
+            <td><strong>Unidad 2</strong></td>
+            <td>Producto</td>
+            <td>Entrega de encargo</td>
+            <td>Rúbrica</td>
+            <td><span class="tag tag-p">20%</span></td>
+          </tr>
+          <tr>
+            <td><strong>Unidad 3</strong></td>
+            <td>Producto</td>
+            <td>Entrega de encargo</td>
+            <td>Rúbrica</td>
+            <td><span class="tag tag-p">30%</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--text);">Examen Final</strong></td>
+            <td>Proceso</td>
+            <td>Entrega de encargo</td>
+            <td>Rúbrica</td>
+            <td><span class="tag tag-g" style="font-size:1.3rem;">40%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 9. CALENDARIO -->
+<div class="slide" data-session="3">
+  <div class="orb orb2"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Planificación</div>
+    <h2>Calendario 2° Trimestre (Online)</h2><div class="hdiv"></div>
+    <div class="content-area">
+      <table class="tbl" style="font-size:1.2rem;">
+        <thead>
+          <tr>
+            <th>Semana / Hito</th>
+            <th>Fechas</th>
+            <th>Recursos Didácticos (RDD)</th>
+            <th>Interacción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--text);">S1: Inicio</strong></td>
+            <td>30-jun al 05-jul</td>
+            <td>Bienvenida a la asignatura - INICIO U1</td>
+            <td><span style="color:var(--ok); font-weight:bold;">Sincrónica</span></td>
+          </tr>
+          <tr>
+            <td><strong>S2: Exp. Apren. 1</strong></td>
+            <td>06-jul al 12-jul</td>
+            <td>Revisión RDD U1 - Foro</td>
+            <td>Asincrónica</td>
+          </tr>
+          <tr>
+            <td><strong>S3: Exp. Apren. 1</strong></td>
+            <td>13-jul al 19-jul</td>
+            <td>Retroalimentación RDD 1 - Cuestionario</td>
+            <td><span style="color:var(--ok); font-weight:bold;">Sincrónica</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--pl);">S4: EVALUACIÓN 1</strong></td>
+            <td>17-jul al 26-jul</td>
+            <td><strong>Evaluación 1</strong></td>
+            <td>Asincrónica</td>
+          </tr>
+          <tr>
+            <td><strong>S5: Exp. Apren. 2</strong></td>
+            <td>27-jul al 02-ago</td>
+            <td>Retroalm. Ev. 1 - INICIO U2 - Foro</td>
+            <td><span style="color:var(--ok); font-weight:bold;">Sincrónica</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--pl);">S7: EVALUACIÓN 2</strong></td>
+            <td>07-ago al 16-ago</td>
+            <td><strong>Evaluación 2</strong></td>
+            <td>Asincrónica</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--pl);">S10: EVALUACIÓN 3</strong></td>
+            <td>28-ago al 06-sept</td>
+            <td><strong>Evaluación 3</strong></td>
+            <td>Asincrónica</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--warn);">S12: Cierre</strong></td>
+            <td>11-sept al 17-sept</td>
+            <td><strong>Examen Transversal Final</strong></td>
+            <td>Asincrónica</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 10. RECURSOS Y CIERRE -->
+<div class="slide cover" data-session="3">
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered" style="text-align:center;padding-top:40px;">
+    <div>
+      <div class="slide-tag" style="margin-top:0; font-size:1.4rem;">Recursos y Bibliografía</div>
+      <h2 class="gradient-text" style="font-size:clamp(2.5rem,4vw,3.5rem);margin-bottom:3rem;">Herramientas para tu éxito</h2>
+      
+      <div class="check-grid" style="text-align:left;max-width:1000px;margin:0 auto 3rem;">
+        <div class="check-item">Apuntes activadores e infografías resumen.</div>
+        <div class="check-item">Cuadernos de ejercitación en Python.</div>
+        <div class="check-item">Foros y cuestionarios formativos.</div>
+        <div class="check-item">Scikit-Learn, PyTorch, Keras y TensorFlow (Bibliografía Odilo).</div>
+      </div>
+      
+      <div class="card" style="max-width:700px;margin:0 auto;background:rgba(99,102,241,.15);border-color:rgba(99,102,241,.4); padding:2rem;">
+        <div style="font-size:1.2rem;font-weight:800;color:var(--pl);margin-bottom:.8rem; text-transform:uppercase; letter-spacing:0.1em; display:flex; align-items:center; justify-content:center; gap:0.5rem;"><i data-lucide="play-circle"></i> Próximos Pasos</div>
+        <div style="font-size:1.3rem;color:var(--text); line-height:1.5;">
+          <strong style='color:#fff'>Comenzar Unidad 1</strong><br>
+          <span style="color:var(--muted); font-size:1.1rem;">Revisar el material de Introducción, familiarizarse con Python y participar en las actividades sincrónicas de esta semana.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav-bar">
+  <div class="nav-info">
+    <span class="session-badge" id="sess-label">INTRO</span>
+    <span class="slide-counter" id="counter">1 / 1</span>
+    <span class="nav-title" id="slide-title"></span>
+  </div>
+  <div class="nav-controls">
+    <button class="btn-nav" id="btn-prev" onclick="go(-1)"><i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Anterior</button>
+    <button class="btn-nav primary" id="btn-next" onclick="go(1)">Siguiente <i data-lucide="arrow-right" style="width:18px;height:18px;"></i></button>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  <span class="kbd"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i></span> o <span class="kbd"><i data-lucide="arrow-right" style="width:14px;height:14px;"></i></span> para navegar &nbsp;&nbsp;|&nbsp;&nbsp; <span class="kbd">F</span> pantalla completa
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0;
+
+const sessionStarts = {};
+const sessionNames = ["INTRO","UNIDADES","EVALUACIÓN","CALENDARIO"];
+slides.forEach(function(s,i){
+  const ses = s.dataset.session;
+  if (sessionStarts[ses] === undefined) sessionStarts[ses] = i;
+});
+
+const slideTitles = slides.map(function(s){
+  const h = s.querySelector('h1,h2');
+  return h ? h.textContent.replace(/\s+/g,' ').trim() : '';
+});
+
+function update(){
+  slides.forEach(function(s,i){
+    s.classList.remove('active','prev');
+    if (i === cur) s.classList.add('active');
+    else if (i < cur) s.classList.add('prev');
+  });
+  document.getElementById('prog').style.width = ((cur+1)/total*100)+'%';
+  document.getElementById('counter').textContent = (cur+1)+' / '+total;
+  const t = slideTitles[cur] || '';
+  document.getElementById('slide-title').textContent = t.substring(0,60);
+  const ses = slides[cur].dataset.session;
+  document.getElementById('sess-label').textContent = sessionNames[parseInt(ses)] || 'INTRO';
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = cur === total-1;
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.classList.toggle('active', t.dataset.ses == ses);
+  });
+}
+
+function go(d){
+  cur = Math.max(0, Math.min(total-1, cur+d));
+  update();
+}
+
+function jumpSession(ses){
+  if (sessionStarts[ses] !== undefined){
+    cur = sessionStarts[ses];
+    update();
+  }
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' '){ e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp'){ e.preventDefault(); go(-1); }
+  if (e.key === 'f' || e.key === 'F'){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+  if (e.key === 'Home'){ cur=0; update(); }
+  if (e.key === 'End'){ cur=total-1; update(); }
+});
+
+var tx = 0;
+document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; });
+document.addEventListener('touchend', function(e){
+  var dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+});
+
+update();
+lucide.createIcons();
+</script>
+</body>
+</html>

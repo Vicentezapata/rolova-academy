@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Slide 13 — Actividad: Disección del Bug</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent3:#FDE047;--err:#ef4444;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tight',sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 10% 120%, #451a03 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(245,158,11,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(245,158,11,0.15);filter:blur(80px);top:-80px;left:300px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--err);text-transform:uppercase;}
+.h2{font-family:'Inter Tight','Inter',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--err),transparent);opacity:0.35;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.act-header{background:linear-gradient(135deg,rgba(239,68,68,0.12),rgba(245,158,11,0.08));border:1px solid rgba(239,68,68,0.35);border-radius:8px;padding:16px 24px;display:flex;align-items:center;gap:18px;}
+.act-icon{width:50px;height:50px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.act-info h3{font-size:17px;font-weight:800;color:var(--text);letter-spacing:-0.02em;margin-bottom:5px;}
+.act-info p{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.meta-row{display:flex;gap:10px;margin-top:8px;}
+.meta-chip{padding:4px 12px;border-radius:4px;font-size:11px;font-weight:700;border:1px solid;}
+.main-grid{display:grid;grid-template:1fr / 1fr 1fr;gap:16px;flex:1;}
+.incident-card{background:rgba(0,0,0,0.45);border:1px solid rgba(239,68,68,0.35);border-radius:8px;padding:18px 22px;display:flex;flex-direction:column;gap:10px;}
+.incident-header{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--err);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;}
+.incident-body{font-size:13px;color:var(--text-sec);line-height:1.7;font-style:italic;flex:1;}
+.note-block{background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:6px;padding:10px 14px;font-size:11.5px;color:var(--text-sec);line-height:1.6;}
+.note-block strong{color:var(--accent3);}
+.task-card{background:rgba(0,0,0,0.45);border:1px solid rgba(16,185,129,0.35);border-radius:8px;padding:18px 22px;display:flex;flex-direction:column;gap:12px;}
+.task-header{font-size:11px;color:var(--ok);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px;}
+.template-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.18);border-radius:5px;}
+.t-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ok);min-width:22px;}
+.t-text{font-size:12px;color:var(--text-sec);line-height:1.6;}
+.t-text strong{color:var(--text);}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+
+/* Lucide Animated Icons */
+.lucide-animated {
+  animation: pulse-soft 2.5s infinite ease-in-out;
+}
+@keyframes pulse-soft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<div class="slide">
+  <div class="grid-texture"></div>
+  <div class="glow"></div>
+  <div class="header">
+    <span class="tag">Actividad Práctica — Sesión 03</span>
+    <span class="h2">Disección del Bug</span>
+    <span class="tag">Individual</span>
+  </div>
+  <div class="divider"></div>
+  <div class="content">
+    <div class="act-header">
+      <div class="act-icon"><lord-icon src="https://cdn.lordicon.com/dxjqoygy.json" trigger="loop" delay="1500" colors="primary:#ffffff" style="width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;"></lord-icon></div>
+      <div class="act-info">
+        <h3>Disección del Bug — Test Case Design</h3>
+        <p>Debes diseñar un <strong>Caso de Prueba estructurado</strong> que exponga un defecto sutil pero crítico reportado en producción. El objetivo es <strong>reproducirlo de forma determinista</strong> y documentar el resultado correcto esperado.</p>
+        <div class="meta-row">
+          <div class="meta-chip" style="background:rgba(253,224,71,0.12);color:var(--accent3);border-color:rgba(253,224,71,0.35);"><lord-icon src="https://cdn.lordicon.com/wxnxiano.json" trigger="loop" delay="1500" colors="primary:#ffffff" style="width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;"></lord-icon> Buzón EVA</div>
+          <div class="meta-chip" style="background:rgba(245,158,11,0.12);color:#fcd34d;border-color:rgba(245,158,11,0.35);">⏱ 40 minutos</div>
+          <div class="meta-chip" style="background:rgba(34,211,238,0.12);color:#67e8f9;border-color:rgba(34,211,238,0.35);"><lord-icon src="https://cdn.lordicon.com/ljvjsnvh.json" trigger="loop" delay="1500" colors="primary:#ffffff" style="width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;"></lord-icon> Individual</div>
+        </div>
+      </div>
+    </div>
+    <div class="main-grid">
+      <div class="incident-card">
+        <div class="incident-header">⚠️ El Incidente (Bug Reportado en Producción):</div>
+        <div class="incident-body">
+          "Los usuarios descubrieron que si van a la pasarela de pago, ingresan una tarjeta de crédito sin fondos, hacen <strong>doble click MUY rápido</strong> en el botón 'Pagar', el sistema les descuenta el producto del inventario aunque la transacción falle."
+        </div>
+        <div class="note-block"><strong>Pista técnica:</strong> El botón no tiene protección contra doble submit. La primera petición falla en el gateway de pago, pero la segunda llega antes de que el sistema revierta el estado del inventario → Race condition clásica.</div>
+      </div>
+      <div class="task-card">
+        <div class="task-header"><lord-icon src="https://cdn.lordicon.com/nocovwne.json" trigger="loop" delay="1500" colors="primary:#ffffff" style="width:1.5em;height:1.5em;display:inline-block;vertical-align:middle;"></lord-icon> Diseña TC-XXX usando la Plantilla Oficial</div>
+        <div class="template-item"><div class="t-num">01</div><div class="t-text"><strong>Título:</strong> Nombre descriptivo que identifique el bug (incluye "doble click" y "sin fondos").</div></div>
+        <div class="template-item"><div class="t-num">02</div><div class="t-text"><strong>Precondiciones:</strong> Estado exacto del sistema: producto en inventario, tarjeta sin fondos lista, usuario autenticado.</div></div>
+        <div class="template-item"><div class="t-num">03</div><div class="t-text"><strong>Pasos precisos:</strong> Incluir el timing del doble click. ¿En qué milisegundo debe ser el segundo click para reproducirlo?</div></div>
+        <div class="template-item"><div class="t-num">04</div><div class="t-text"><strong>Resultado Esperado:</strong> El correcto (no el bug). Inventario sin cambios, mensaje de error de pago.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">13 / 20</div>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    lucide.createIcons();
+  });
+</script>
+</body>
+
+</html>

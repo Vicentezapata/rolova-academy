@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Slide 03 — El Principio del Contexto</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+
+:root{--bg:#050b1f;--bg2:#0a1f3d;--border:rgba(34,211,238,0.2);--text:#fff;--text-sec:rgba(255,255,255,0.65);--accent1:#22D3EE;--accent2:#6366f1;--accent3:#FDE047;--err:#ef4444;--ok:#10b981;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tight',sans-serif;background:var(--bg);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;background:radial-gradient(100% 80% at 70% 110%, #082f49 0%, var(--bg) 80%);}
+.grid-texture{position:absolute;inset:0;background-image:radial-gradient(rgba(14,165,233,0.08) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+.glow1{position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(14,165,233,0.2);filter:blur(70px);top:-60px;right:60px;z-index:0;}
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;z-index:10;}
+.tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--accent1);text-transform:uppercase;}
+.h2{font-family:'Inter Tight','Inter',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.02em;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:1px;background:linear-gradient(90deg,var(--accent1),transparent);opacity:0.35;z-index:10;}
+/* Asymmetric 2fr + 1fr */
+.content-area{position:absolute;left:48px;top:88px;right:48px;bottom:48px;width:auto;height:auto;display:grid;grid-template:1fr / 2fr 1fr;gap:20px;z-index:10;}
+.card{background:linear-gradient(135deg,rgba(34,211,238,0.08),rgba(99,102,241,0.04));border:1px solid var(--border);border-radius:8px;padding:24px 28px;}
+.card-tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:12px;}
+.card h3{font-family:'Inter Tight','Inter',sans-serif;font-size:19px;font-weight:700;color:var(--text);letter-spacing:-0.015em;margin-bottom:10px;}
+.card p{font-size:13px;color:var(--text-sec);line-height:1.7;}
+.quote-block{background:rgba(34,211,238,0.06);border-left:3px solid var(--accent1);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:16px;}
+.quote-block p{font-size:14px;color:var(--text);line-height:1.65;font-style:normal;}
+.quote-block strong{color:var(--accent1);}
+.principle-num{font-family:'Inter Tight','Inter',sans-serif;font-size:64px;font-weight:900;color:var(--accent1);opacity:0.12;position:absolute;top:16px;right:20px;letter-spacing:-0.05em;}
+.main-card{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:16px;}
+.factor-list{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+.factor{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;}
+.factor-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.factor-text{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.factor-text strong{color:var(--text);}
+.side-col{display:flex;flex-direction:column;gap:20px;}
+.mini-card{background:linear-gradient(135deg,rgba(34,211,238,0.08),rgba(99,102,241,0.04));border:1px solid var(--border);border-radius:8px;padding:20px 22px;display:flex;flex-direction:column;gap:8px;flex:1;}
+.mini-card .card-tag{font-size:10px;}
+.mini-card h4{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+.mini-card p{font-size:12px;color:var(--text-sec);line-height:1.6;}
+.data-big{font-family:'Inter Tight','Inter',sans-serif;font-size:32px;font-weight:800;letter-spacing:-0.03em;margin-bottom:4px;font-variant-numeric:tabular-nums;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
+
+
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="grid-texture"></div>
+  <div class="glow1"></div>
+  <div class="header">
+    <span class="tag">Sesión 01 · Selección de Tipos</span>
+    <span class="h2">El Principio del Contexto (ISTQB #6)</span>
+    <span class="tag">S1</span>
+  </div>
+  <div class="divider"></div>
+  <div class="content-area">
+    <!-- Main card: 2/3 -->
+    <div class="card main-card">
+      <div class="principle-num">6</div>
+      <div class="card-tag" style="color:var(--accent1)">Principio Fundamental ISTQB</div>
+      <div class="quote-block">
+        <p><strong>"El Testing depende del contexto."</strong><br>La selección de tipos de prueba es una <strong>decisión de inversión financiera</strong>, no solo técnica. Los recursos (tiempo y dinero) son limitados: se invierte donde el riesgo es mayor.</p>
+      </div>
+      <h3>Factores que definen la estrategia de pruebas</h3>
+      <div class="factor-list">
+        <div class="factor">
+          <div class="factor-dot" style="background:var(--accent1)"></div>
+          <div class="factor-text"><strong>Complejidad arquitectónica:</strong> Sistemas distribuidos, microservicios e integraciones necesitan más tipos de prueba que un CRUD monolítico.</div>
+        </div>
+        <div class="factor">
+          <div class="factor-dot" style="background:var(--accent2)"></div>
+          <div class="factor-text"><strong>Requisitos regulatorios:</strong> Fintech, salud y sistemas críticos están sujetos a normativas (ISO 26262, IEC 62443) que obligan a ciertos tipos de prueba.</div>
+        </div>
+        <div class="factor">
+          <div class="factor-dot" style="background:var(--accent3)"></div>
+          <div class="factor-text"><strong>Ciclo de vida del proyecto:</strong> Agile con entregas semanales favorece pruebas unitarias + integración continua; Waterfall prioriza pruebas de sistema al final.</div>
+        </div>
+        <div class="factor">
+          <div class="factor-dot" style="background:var(--ok)"></div>
+          <div class="factor-text"><strong>Probabilidad e impacto del fallo:</strong> ¿Es tecnología nueva? ¿Equipo junior? ¿Un fallo mata alguien o solo molesta?</div>
+        </div>
+      </div>
+    </div>
+    <!-- Side column: 1/3 -->
+    <div class="side-col">
+      <div class="mini-card" style="border-color:rgba(34,211,238,0.35)">
+        <div class="card-tag" style="color:var(--accent1)">Ejemplo A — Startup MVP</div>
+        <div class="data-big" style="color:var(--accent1)">1 mes</div>
+        <h4>Tiempo para lanzar</h4>
+        <p>Selección: Pruebas unitarias core, Smoke Tests manuales. Sin pruebas de carga pesadas aún. El riesgo de negocio es no llegar al mercado.</p>
+      </div>
+      <div class="mini-card" style="border-color:rgba(239,68,68,0.35)">
+        <div class="card-tag" style="color:var(--err)">Ejemplo B — App Bancaria Core</div>
+        <div class="data-big" style="color:var(--err)">~100%</div>
+        <h4>Cobertura requerida</h4>
+        <p>Pruebas estructurales estrictas, Pen-testing obligatorio, Pruebas de Estrés. El riesgo de negocio es la pérdida de fondos o datos de clientes.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">03 / 20</div>
+</div>
+</body>
+</html>

@@ -23,7 +23,7 @@ export async function GET(request, { params }) {
   try {
     const resolvedParams = await params;
     const filePathArray = resolvedParams.path;
-    const rootPath = path.join(process.cwd(), '..');
+    const rootPath = path.join(process.cwd(), 'cursos');
     
     // Unir la ruta y prevenir salir del directorio raíz padre
     const requestedPath = path.join(rootPath, ...filePathArray);

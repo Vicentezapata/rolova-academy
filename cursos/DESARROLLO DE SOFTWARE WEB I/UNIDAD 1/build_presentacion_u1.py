@@ -1,0 +1,1295 @@
+#!/usr/bin/env python3
+"""
+build_presentacion_u1.py — Genera presentacion_U1.html
+Mega Presentación Interactiva · Unidad 1 (ULTIMATE EDITION - 30+ Slides)
+"""
+import os, json
+
+DIR = os.path.dirname(os.path.abspath(__file__))
+OUT = os.path.join(DIR, 'presentacion_U1.html')
+
+S = []
+
+# ── 1. PORTADA ─────────────────────────────────────────────
+S.append({
+    'layout': 'cover',
+    'content': '''
+    <div class="cover-badge"><span class="bdot"></span>Desarrollo de Software Web I &middot; Unidad 1</div>
+    <h1 class="cover-title">Introducción a los<br><span class="gradient-text">Frameworks Modernos</span></h1>
+    <p class="cover-sub">Guía Ultimate: Creación de Interfaces y Arquitectura con Laravel y Blade</p>
+    <div class="cover-inst">Semana 2 - Semana 4</div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Bienvenidos a la Unidad 1. Esta presentación contiene todo lo necesario para dominar los fundamentos de Laravel.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 1 min</div>
+    '''
+})
+
+# ── 2. INTRODUCCIÓN ─────────────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">¿Por qué estamos <span class="gradient-text">aquí?</span></h1>
+    <p class="s-lead">El desarrollo web ha evolucionado. Ya no creamos páginas; creamos <strong>Aplicaciones Web</strong> complejas.</p>
+    <div class="s-cards three">
+      <div class="s-card"><div class="s-card-icon"><i data-lucide="monitor-smartphone"></i></div><h3>Interactividad</h3><p>Los usuarios esperan respuestas en tiempo real y diseños responsivos.</p></div>
+      <div class="s-card"><div class="s-card-icon"><i data-lucide="shield-alert"></i></div><h3>Seguridad</h3><p>Las amenazas cibernéticas son más complejas que nunca.</p></div>
+      <div class="s-card"><div class="s-card-icon"><i data-lucide="users"></i></div><h3>Escalabilidad</h3><p>Las apps deben soportar desde 10 hasta millones de usuarios.</p></div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«La web de los años 90 era solo texto y enlaces. Hoy en día, una página web es un software completo que corre en el navegador.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 3. LA EDAD OSCURA ───────────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">La <span class="gradient-text">"Edad Oscura"</span> del Código</h1>
+    <p class="s-lead">Antes de los frameworks, los desarrolladores sufrían de "Código Espagueti".</p>
+    <div class="s-split">
+      <div class="s-left">
+        <ul class="s-list">
+          <li><strong>Mezcla de lenguajes:</strong> PHP, HTML, CSS y SQL en un mismo archivo.</li>
+          <li><strong>Mantenimiento imposible:</strong> Cambiar el diseño requería modificar consultas a bases de datos.</li>
+          <li><strong>Reinvención constante:</strong> Cada desarrollador escribía su propio sistema de login desde cero.</li>
+        </ul>
+      </div>
+      <div class="s-right">
+        <div class="code-window">
+          <div class="cw-header"><div class="cw-dot r"></div><div class="cw-title">index.php (El Horror)</div></div>
+          <div class="cw-body text-xs">
+&lt;?php
+  $conn = mysqli_connect("localhost", "root", "", "db");
+  $res = mysqli_query($conn, "SELECT * FROM users");
+?&gt;
+&lt;html&gt;&lt;body&gt;
+  &lt;?php while($row = mysqli_fetch_assoc($res)) { ?&gt;
+    &lt;div class="user"&gt;&lt;?php echo $row['name']; ?&gt;&lt;/div&gt;
+  &lt;?php } ?&gt;
+&lt;/body&gt;&lt;/html&gt;
+          </div>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Miren este código. Un error de sintaxis en el HTML podría romper la consulta a la base de datos. Era una pesadilla para depurar.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 3 min</div>
+    '''
+})
+
+# ── 4. ¿QUÉ ES UN FRAMEWORK? ──────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Entonces, ¿Qué es un <span class="gradient-text">Framework</span>?</h1>
+    <p class="s-lead">Una plataforma de desarrollo preestablecida. Un marco de trabajo que proporciona herramientas listas para usar.</p>
+    <div class="info-card glow text-center" style="margin:2rem auto; max-width:800px">
+      <h3>La regla de Inversión de Control</h3>
+      <p class="mt-2">En una librería, <strong>tú</strong> llamas al código. En un framework, <strong>el framework</strong> llama a tu código.</p>
+    </div>
+    <div class="s-note">Provee la plomería (enrutamiento, seguridad, conexión a DB) para que tú te enfoques en la decoración (lógica de negocio e interfaz).</div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«La diferencia entre librería y framework es clave. jQuery es una librería: tú la llamas cuando quieres. Laravel es un framework: él dicta el flujo y tú pones tu código en los lugares que Laravel espera.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 5. VENTAJAS Y DESVENTAJAS ─────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Frameworks: <span class="gradient-text">Pros y Contras</span></h1>
+    <div class="s-split">
+      <div class="s-left">
+        <h3><i data-lucide="thumbs-up"></i> Ventajas Principales</h3>
+        <ul class="s-list mt-2">
+          <li><strong>Velocidad:</strong> Tareas comunes (login, base de datos) ya están resueltas.</li>
+          <li><strong>Seguridad:</strong> Prevención contra inyecciones SQL y XSS.</li>
+          <li><strong>Trabajo en Equipo:</strong> Estructura estandarizada conocida por todos.</li>
+        </ul>
+      </div>
+      <div class="s-right">
+        <div class="info-card" style="border-color:var(--text3)">
+          <h3 style="color:var(--text2)"><i data-lucide="alert-triangle"></i> Desventajas a considerar</h3>
+          <p class="mt-2 text-sm">Curva de aprendizaje pronunciada al inicio. Para proyectos muy simples (ej. una landing page de 1 página), usar un framework puede ser "matar una mosca con un cañón" (Overhead de rendimiento).</p>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Hagan énfasis en que no siempre se debe usar un framework. Si un cliente solo quiere una página que diga "Próximamente", usar Laravel es excesivo.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 6. ARQUITECTURA MVC: TEORÍA ───────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">El Patrón <span class="gradient-text">MVC</span></h1>
+    <p class="s-lead">El estándar de la industria. Divide la aplicación en tres capas de responsabilidad.</p>
+    <div class="cards-grid three">
+      <div class="s-card glow" style="border-color:rgba(255,179,71,.4)">
+        <div class="s-card-icon"><i data-lucide="database"></i></div>
+        <h3>Model</h3>
+        <p>Los datos.</p>
+      </div>
+      <div class="s-card glow" style="border-color:rgba(255,69,0,.4)">
+        <div class="s-card-icon"><i data-lucide="layout"></i></div>
+        <h3>View</h3>
+        <p>La interfaz (HTML).</p>
+      </div>
+      <div class="s-card glow" style="border-color:rgba(100,116,139,.4)">
+        <div class="s-card-icon"><i data-lucide="cpu"></i></div>
+        <h3>Controller</h3>
+        <p>El puente/lógica.</p>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Vamos a desglosar cada una de estas capas en las siguientes diapositivas.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 1 min</div>
+    '''
+})
+
+# ── 7. EL MODELO (M) ───────────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Capa 1: El <span class="gradient-text">Modelo (Model)</span></h1>
+    <p class="s-lead">El cerebro de los datos. Representa las entidades de tu negocio.</p>
+    <div class="s-split">
+      <div class="s-left">
+        <ul class="s-list">
+          <li>Se encarga de acceder a la Base de Datos.</li>
+          <li>Contiene las <strong>reglas de negocio</strong> (Ej: Un usuario no puede ser menor de 18 años).</li>
+          <li>En Laravel, los Modelos se comunican usando un sistema llamado <strong>Eloquent ORM</strong>.</li>
+        </ul>
+      </div>
+      <div class="s-right">
+        <div class="code-window">
+          <div class="cw-header"><div class="cw-title">Ejemplo: User.php</div></div>
+          <div class="cw-body text-xs">
+class User extends Model {
+    <span class="c-c">// Ocultar contraseñas al pedir datos</span>
+    protected $hidden = ['password'];
+    
+    <span class="c-c">// Regla: Un usuario tiene muchos posts</span>
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
+}
+          </div>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«El modelo no sabe nada de HTML ni de URLs. Su único trabajo es gestionar la información pura.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 8. LA VISTA (V) ────────────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Capa 2: La <span class="gradient-text">Vista (View)</span></h1>
+    <p class="s-lead">La cara de la app. Es lo que el usuario final ve e interactúa.</p>
+    <div class="s-split">
+      <div class="s-left">
+        <div class="code-window">
+          <div class="cw-header"><div class="cw-title">Ejemplo: perfil.blade.php</div></div>
+          <div class="cw-body text-xs">
+&lt;h1&gt;Perfil de {{ $user->name }}&lt;/h1&gt;
+&lt;div class="card"&gt;
+  &lt;p&gt;Email: {{ $user->email }}&lt;/p&gt;
+&lt;/div&gt;
+          </div>
+        </div>
+      </div>
+      <div class="s-right">
+        <ul class="s-list">
+          <li>Aquí vive el HTML, CSS y JavaScript.</li>
+          <li>Las Vistas son <strong>pasivas</strong>: no piden datos a la base de datos, solo muestran lo que el Controlador les entrega.</li>
+          <li>En Laravel se construyen usando el motor <strong>Blade</strong>.</li>
+        </ul>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Si encuentran consultas a la base de datos dentro de una Vista, están violando el patrón MVC. Las vistas solo pintan, no calculan.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 9. EL CONTROLADOR (C) ──────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Capa 3: El <span class="gradient-text">Controlador</span></h1>
+    <p class="s-lead">El director de orquesta. Conecta el Modelo con la Vista.</p>
+    <div class="s-split">
+      <div class="s-left">
+        <ul class="s-list">
+          <li>Recibe la petición HTTP del usuario.</li>
+          <li>Pide los datos necesarios al <strong>Modelo</strong>.</li>
+          <li>Le inyecta esos datos a la <strong>Vista</strong> y la retorna al navegador.</li>
+        </ul>
+      </div>
+      <div class="s-right">
+        <div class="code-window">
+          <div class="cw-header"><div class="cw-title">Ejemplo: UserController.php</div></div>
+          <div class="cw-body text-xs">
+public function show($id) {
+    <span class="c-c">// 1. Pide datos al Modelo</span>
+    $usuario = User::find($id);
+    
+    <span class="c-c">// 2. Retorna la Vista con los datos</span>
+    return view('perfil', [
+        'user' => $usuario
+    ]);
+}
+          </div>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Miren el código: El controlador le dice al Modelo User "búscame el ID 5". Toma ese resultado, y se lo pasa a la vista "perfil". Flujo perfecto.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 10. EL ECOSISTEMA PHP ──────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">El Ecosistema <span class="gradient-text">PHP Moderno</span></h1>
+    <p class="s-lead">Para usar frameworks modernos, necesitamos herramientas modernas.</p>
+    <div class="cards-grid two">
+      <div class="s-card glow">
+        <div class="s-card-icon"><i data-lucide="code-2"></i></div>
+        <h3>PHP 8+</h3>
+        <p>El lenguaje base. Hoy en día es estrictamente tipado, rápido (gracias a JIT) y altamente seguro. Ha evolucionado enormemente desde sus inicios.</p>
+      </div>
+      <div class="s-card glow">
+        <div class="s-card-icon"><i data-lucide="package"></i></div>
+        <h3>Composer</h3>
+        <p>El gestor de dependencias de PHP (equivalente a NPM en Node). Te permite descargar y actualizar librerías creadas por la comunidad.</p>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Si alguien les dice que PHP está muerto, muéstrenle Laravel. El 70% de la web todavía corre en PHP gracias a herramientas como Composer y a las mejoras de velocidad de PHP 8.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 11. HISTORIA DE LARAVEL ────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">El Origen de <span class="gradient-text">Laravel</span></h1>
+    <p class="s-lead">Creado por Taylor Otwell en 2011.</p>
+    <div class="s-split">
+      <div class="s-left">
+        <div class="info-card glow">
+          <h3>¿Por qué nació?</h3>
+          <p>Taylor Otwell creó Laravel como un intento de proporcionar una alternativa más avanzada a CodeIgniter, el cual carecía de soporte para autenticación integrada y enrutamiento complejo.</p>
+        </div>
+      </div>
+      <div class="s-right">
+        <ul class="s-list">
+          <li><strong>Filosofía:</strong> <em>"Developer Happiness"</em> (Felicidad del desarrollador).</li>
+          <li>Sintaxis limpia, expresiva y elegante.</li>
+          <li>Es Open Source, pero respaldado por una empresa millonaria.</li>
+        </ul>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«La historia de Laravel es de rebeldía. Otwell quería algo elegante como Ruby on Rails pero en PHP. Como no existía, lo programó él mismo.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 12. LARAVEL VS OTROS ───────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Laravel vs <span class="gradient-text">El Mundo</span></h1>
+    <p class="s-lead">¿Por qué elegir Laravel frente a otros frameworks PHP?</p>
+    <table style="width:100%; border-collapse:collapse; margin-top:1.5rem">
+      <tr style="border-bottom:1px solid var(--border); text-align:left">
+        <th style="padding:1rem">Característica</th>
+        <th style="padding:1rem; color:var(--p)">Laravel</th>
+        <th style="padding:1rem">Symfony</th>
+        <th style="padding:1rem">CodeIgniter</th>
+      </tr>
+      <tr style="border-bottom:1px solid var(--surface-h)">
+        <td style="padding:1rem">Curva de Aprendizaje</td>
+        <td style="padding:1rem">Media/Baja</td>
+        <td style="padding:1rem">Alta</td>
+        <td style="padding:1rem">Muy Baja</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--surface-h)">
+        <td style="padding:1rem">Comunidad</td>
+        <td style="padding:1rem"><strong>GIGANTE</strong></td>
+        <td style="padding:1rem">Grande</td>
+        <td style="padding:1rem">En declive</td>
+      </tr>
+      <tr>
+        <td style="padding:1rem">Herramientas Nativas</td>
+        <td style="padding:1rem">ORM, Auth, Colas, Websockets</td>
+        <td style="padding:1rem">Módulos separados</td>
+        <td style="padding:1rem">Básicas</td>
+      </tr>
+    </table>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Symfony es increíblemente potente pero complejo (Laravel usa componentes de Symfony por debajo). CodeIgniter es fácil pero se quedó en el pasado. Laravel es el equilibrio perfecto.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 13. EL ECOSISTEMA LARAVEL ──────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Mucho más que un <span class="gradient-text">Framework</span></h1>
+    <p class="s-lead">Laravel ha construido un ecosistema comercial completo a su alrededor.</p>
+    <div class="cards-grid three">
+      <div class="s-card"><div class="s-card-icon"><i data-lucide="cloud"></i></div><h3>Forge</h3><p>Despliegue de servidores simplificado.</p></div>
+      <div class="s-card"><div class="s-card-icon"><i data-lucide="zap"></i></div><h3>Vapor</h3><p>Despliegue Serverless (AWS Lambda).</p></div>
+      <div class="s-card"><div class="s-card-icon"><i data-lucide="layout-panel-left"></i></div><h3>Nova</h3><p>Panel de administración autogenerado.</p></div>
+    </div>
+    <div class="s-note mt-4">Saber Laravel te abre las puertas a herramientas profesionales de despliegue y gestión que la industria utiliza a diario.</div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Laravel no es solo código gratuito. Tiene servicios de pago (Forge, Vapor) que mantienen la empresa viva y garantizan que el framework seguirá existiendo por décadas.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 1 min</div>
+    '''
+})
+
+# ── 14. ESTRUCTURA DE DIRECTORIOS (VISTA GENERAL) ─────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Estructura de <span class="gradient-text">Directorios</span></h1>
+    <p class="s-lead">Al crear un proyecto nuevo, verás decenas de carpetas. No te asustes, la convención sobre configuración es tu aliada.</p>
+    <div class="s-split">
+      <div class="s-left">
+        <div class="dir-structure">
+          <div class="dir-item folder highlight"><span><i data-lucide="folder"></i> app/</span><div class="dir-desc">Backend (Modelos, Controladores).</div></div>
+          <div class="dir-item folder"><span><i data-lucide="folder"></i> bootstrap/</span><div class="dir-desc">Archivos del framework.</div></div>
+          <div class="dir-item folder"><span><i data-lucide="folder"></i> config/</span><div class="dir-desc">Configuración.</div></div>
+          <div class="dir-item folder"><span><i data-lucide="folder"></i> database/</span><div class="dir-desc">Tablas de BD (Migraciones).</div></div>
+        </div>
+      </div>
+      <div class="s-right">
+        <div class="dir-structure">
+          <div class="dir-item folder highlight"><span><i data-lucide="folder-open"></i> public/</span><div class="dir-desc">Acceso web (index.php, CSS).</div></div>
+          <div class="dir-item folder highlight"><span><i data-lucide="folder-open"></i> resources/</span><div class="dir-desc">Vistas (Frontend).</div></div>
+          <div class="dir-item folder highlight"><span><i data-lucide="folder-open"></i> routes/</span><div class="dir-desc">URLs.</div></div>
+          <div class="dir-item file highlight"><span><i data-lucide="file-code-2"></i> .env</span><div class="dir-desc">Contraseñas secretas.</div></div>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Solo trabajaremos con 4 carpetas en esta unidad: app, public, resources y routes. El resto de carpetas las iremos descubriendo con el tiempo.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 15. DIRECTORIO: APP Y PUBLIC ──────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Focus: <span class="gradient-text">app/ y public/</span></h1>
+    <div class="s-split">
+      <div class="s-left">
+        <div class="info-card">
+          <h3 style="color:var(--p)"><i data-lucide="cpu"></i> app/</h3>
+          <p class="mt-2 text-sm">El corazón de tu aplicación. Aquí vives la mayor parte del tiempo programando la lógica.</p>
+          <ul class="s-list mt-4 text-sm">
+            <li><code>app/Http/Controllers/</code> (Controladores)</li>
+            <li><code>app/Models/</code> (Modelos)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="s-right">
+        <div class="info-card">
+          <h3 style="color:var(--p)"><i data-lucide="globe"></i> public/</h3>
+          <p class="mt-2 text-sm">El <strong>ÚNICO</strong> directorio expuesto a internet. Tu servidor Apache/Nginx debe apuntar aquí.</p>
+          <ul class="s-list mt-4 text-sm">
+            <li>Contiene el <code>index.php</code> que arranca todo.</li>
+            <li>Aquí colocas tus imágenes, logos, CSS y JS compilado.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Regla de seguridad extrema: Si suben su proyecto a un hosting y apuntan el dominio a la carpeta raíz (donde está el .env), los van a hackear en 5 minutos. Siempre, siempre apunten el dominio web a la carpeta /public.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 16. DIRECTORIO: RESOURCES Y ROUTES ────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Focus: <span class="gradient-text">resources/ y routes/</span></h1>
+    <div class="s-split">
+      <div class="s-left">
+        <div class="info-card">
+          <h3 style="color:var(--p)"><i data-lucide="layout"></i> resources/</h3>
+          <p class="mt-2 text-sm">El directorio del Frontend.</p>
+          <ul class="s-list mt-4 text-sm">
+            <li><code>resources/views/</code>: Aquí van todos tus archivos <code>.blade.php</code>.</li>
+            <li><code>resources/css/</code>: CSS sin procesar (Tailwind/Sass).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="s-right">
+        <div class="info-card">
+          <h3 style="color:var(--p)"><i data-lucide="route"></i> routes/</h3>
+          <p class="mt-2 text-sm">El mapa de navegación de tu app.</p>
+          <ul class="s-list mt-4 text-sm">
+            <li><code>routes/web.php</code>: Rutas para usuarios (Navegador).</li>
+            <li><code>routes/api.php</code>: Rutas para APIs (Móviles, React).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«En esta unidad, su hogar será resources/views. Ahí diseñaremos todas las interfaces web.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 17. ARTISAN CLI: ¿QUÉ ES? ─────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Conoce a <span class="gradient-text">Artisan</span></h1>
+    <p class="s-lead">Artisan es el asistente de Interfaz de Línea de Comandos (CLI) incluido con Laravel.</p>
+    <div class="code-window mt-4" style="max-width:800px; margin:0 auto">
+      <div class="cw-header"><div class="cw-dot r"></div><div class="cw-title">Terminal</div></div>
+      <div class="cw-body">
+<span class="c-c"># Para ver todo lo que Artisan puede hacer por ti, ejecuta:</span>
+php artisan list
+      </div>
+    </div>
+    <div class="s-note mt-4">Ejecuta código PHP desde la consola, genera archivos base, limpia cachés y ejecuta migraciones.</div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Si no saben qué comandos existen, solo tipeen "php artisan" en la terminal y verán una lista gigante. Artisan es como un mago que escribe código aburrido por nosotros.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 18. ARTISAN CLI: SERVIDOR Y CACHÉ ─────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Artisan: <span class="gradient-text">Servidor y Mantenimiento</span></h1>
+    <div class="cards-grid two">
+      <div class="s-card glow">
+        <h3>Levantar el Servidor</h3>
+        <code class="mt-2 block">php artisan serve</code>
+        <p class="mt-2 text-sm">Inicia el servidor local de desarrollo de PHP. No necesitas instalar XAMPP ni WAMP para que Laravel funcione localmente.</p>
+      </div>
+      <div class="s-card glow">
+        <h3>Limpiar Caché</h3>
+        <code class="mt-2 block">php artisan optimize:clear</code>
+        <p class="mt-2 text-sm">¿Cambiaste código y no se ve en el navegador? Laravel cachea rutas y vistas para ser más rápido. Este comando borra esa memoria.</p>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«El servidor de Artisan (serve) es para desarrollo, nunca lo usen en producción.»</li>
+    <li>«Si algo misteriosamente no funciona después de un cambio, corran optimize:clear. El 50% de las veces soluciona el problema de "magia negra" del caché.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 19. ARTISAN CLI: COMANDOS MAKE ────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Artisan: <span class="gradient-text">Generadores (Make)</span></h1>
+    <p class="s-lead">No crees archivos a mano. Deja que Artisan cree la estructura base por ti.</p>
+    <ul class="s-list">
+      <li>
+        <code>php artisan make:controller NameController</code>
+        <span class="text-sm">Genera un controlador vacío.</span>
+      </li>
+      <li>
+        <code>php artisan make:model Nombre</code>
+        <span class="text-sm">Genera un modelo en <code>app/Models</code>.</span>
+      </li>
+      <li>
+        <code>php artisan make:model Nombre -m</code>
+        <span class="text-sm">El flag <code>-m</code> también crea automáticamente el archivo de migración (tabla BD).</span>
+      </li>
+    </ul>
+    <div class="s-note mt-4">
+      <strong>Recordatorio:</strong> NO existe <code>php artisan make:view</code> por defecto. Las vistas se crean manualmente como <code>nombre.blade.php</code>.
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Usar los generadores previene errores de sintaxis o problemas con los "namespaces" de PHP. Artisan coloca el archivo exacto donde debe ir.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 20. ROUTING: INTRO ────────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Enrutamiento: <span class="gradient-text">El Recepcionista</span></h1>
+    <p class="s-lead">El archivo <code>routes/web.php</code> intercepta cada petición al servidor web.</p>
+    <div class="s-split">
+      <div class="s-left">
+        <ul class="s-list text-sm">
+          <li><strong>web.php:</strong> Aquí van las rutas con interfaz web (aplican cookies, sesiones, seguridad CSRF).</li>
+          <li><strong>api.php:</strong> Aquí van rutas para APIS puras de datos (sin estado, tokens).</li>
+        </ul>
+      </div>
+      <div class="s-right">
+        <div class="code-window">
+          <div class="cw-header"><div class="cw-title">routes/web.php</div></div>
+          <div class="cw-body text-xs">
+<span class="c-p">use</span> App\\Http\\Controllers\\ProjectController;
+
+<span class="c-c">// Ruta simple</span>
+Route::get('/', function () {
+    return view('welcome');
+});
+
+<span class="c-c">// Ruta conectada a Controller</span>
+Route::get('/proyectos', [ProjectController::class, 'index']);
+          </div>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Si escriben /proyectos en el navegador, el Router busca de arriba hacia abajo en web.php hasta encontrar una coincidencia. Si no la halla, pum, 404.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 21. ROUTING: VERBOS HTTP ──────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Routing: <span class="gradient-text">Verbos HTTP</span></h1>
+    <p class="s-lead">Las rutas no solo responden a la URL, sino al "Verbo" HTTP utilizado.</p>
+    <div class="cards-grid two">
+      <div class="s-card"><h3 style="color:#28CA41">GET</h3><p class="text-sm mt-2">Para SOLICITAR datos. (Ej: Cargar la página web, ver un formulario).</p><code>Route::get(...)</code></div>
+      <div class="s-card"><h3 style="color:var(--c3)">POST</h3><p class="text-sm mt-2">Para ENVIAR datos nuevos. (Ej: Guardar el formulario relleno en la BD).</p><code>Route::post(...)</code></div>
+      <div class="s-card"><h3 style="color:#007BFF">PUT / PATCH</h3><p class="text-sm mt-2">Para ACTUALIZAR datos existentes.</p><code>Route::put(...)</code></div>
+      <div class="s-card"><h3 style="color:#FF5F57">DELETE</h3><p class="text-sm mt-2">Para ELIMINAR datos.</p><code>Route::delete(...)</code></div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«El navegador, cuando ustedes escriben una URL y dan Enter, SIEMPRE hace un GET. Para hacer un POST o un DELETE, necesitan enviar un Formulario HTML o usar JavaScript.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 3 min</div>
+    '''
+})
+
+# ── 22. ROUTING: PARÁMETROS DINÁMICOS ─────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Routing: <span class="gradient-text">Parámetros Dinámicos</span></h1>
+    <p class="s-lead">Extrae valores directamente desde la URL de forma elegante.</p>
+    <div class="code-window" style="margin:2rem auto; max-width:900px">
+      <div class="cw-header"><div class="cw-title">routes/web.php</div></div>
+      <div class="cw-body text-sm">
+<span class="c-c">// El parámetro va entre llaves {id}</span>
+Route::get('/usuarios/<span class="c-f">{id}</span>', function ($id) {
+    return 'Mostrando información del usuario ID: ' . $id;
+});
+
+<span class="c-c">// También se inyecta directamente al Controlador</span>
+Route::get('/proyectos/<span class="c-f">{id}</span>', [ProjectController::class, 'show']);
+      </div>
+    </div>
+    <div class="s-note">Al visitar <code>tusitio.com/proyectos/42</code>, el controlador recibirá la variable <code>$id = 42</code> automáticamente.</div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Adiós a las URLs horribles tipo ?id=42. Las llaves {} nos permiten tener URLs hermosas y limpias como /proyectos/42, lo cual es excelente para el SEO.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 23. CONTROLADORES EN DETALLE ──────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">El <span class="gradient-text">Controlador</span> al descubierto</h1>
+    <p class="s-lead">Organiza tu lógica agrupando peticiones relacionadas en una sola clase.</p>
+    <div class="code-window" style="margin:1rem auto; max-width:900px">
+      <div class="cw-header"><div class="cw-title">app/Http/Controllers/ProjectController.php</div></div>
+      <div class="cw-body text-xs">
+namespace App\\Http\\Controllers;
+
+use Illuminate\\Http\\Request;
+use App\\Models\\Project; <span class="c-c">// Importar el modelo</span>
+
+class ProjectController extends Controller
+{
+    public function show($id) {
+        $proyecto = Project::find($id);
+        
+        <span class="c-c">// Se pasa el dato a la vista usando un arreglo asociativo</span>
+        return view('proyectos.detalle', ['project' => $proyecto]);
+    }
+}
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Fíjense en el "return view()". El primer parámetro es el nombre del archivo blade (proyectos/detalle.blade.php). El segundo es la información que le enviamos a la vista para que la pinte.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 3 min</div>
+    '''
+})
+
+# ── 24. CONTROLADORES: RESOURCE ───────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Controladores: <span class="gradient-text">El Truco --resource</span></h1>
+    <p class="s-lead">Comando: <code>php artisan make:controller NameController --resource</code></p>
+    <p class="text-sm mt-2 mb-4">Te genera una clase con los 7 métodos estándar (RESTful) para un CRUD completo:</p>
+    <ul class="s-list" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem">
+      <li><code>index()</code> - Muestra una lista (GET)</li>
+      <li><code>create()</code> - Muestra form de crear (GET)</li>
+      <li><code>store()</code> - Guarda en BD (POST)</li>
+      <li><code>show($id)</code> - Muestra 1 elemento (GET)</li>
+      <li><code>edit($id)</code> - Muestra form editar (GET)</li>
+      <li><code>update($id)</code> - Actualiza BD (PUT)</li>
+      <li><code>destroy($id)</code> - Borra en BD (DELETE)</li>
+    </ul>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Si siguen esta convención, cualquier programador sabrá exactamente qué hace cada función de su controlador. No inventen nombres como "guardarNuevoDato", usen "store".»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 25. BLADE FUNDAMENTOS ─────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Diseñando con <span class="gradient-text">Blade</span></h1>
+    <p class="s-lead">Blade usa llaves dobles <code>{{ }}</code> para inyectar variables en el HTML. Todo archivo de vista <strong>debe terminar en <code>.blade.php</code></strong>.</p>
+    
+    <div class="cards-grid two">
+      <div class="s-card">
+        <h3>Impresión Segura (Escapada)</h3>
+        <code>{{ $nombre }}</code>
+        <p class="mt-2 text-sm text-muted">Protege contra XSS (Cross-Site Scripting). Si <code>$nombre</code> contiene un script malicioso <code>&lt;script&gt;</code>, Blade lo convierte en texto plano inofensivo automáticamente.</p>
+      </div>
+      <div class="s-card">
+        <h3>Lógica de Negocio prohibida</h3>
+        <p class="mt-2 text-sm text-muted">Blade es solo para mostrar. No hagas conexiones a base de datos ni calculos complejos dentro de tus vistas.</p>
+      </div>
+    </div>
+    <div class="s-note mt-4">Blade no restringe tu HTML. Puedes seguir usando Bootstrap, Tailwind o CSS puro libremente.</div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Seguridad web 101: Nunca confíen en el input del usuario. Blade con dobles llaves evita que scripts inyectados se ejecuten en los navegadores de otros usuarios.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 26. BLADE RAW ─────────────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Blade: Impresión <span class="gradient-text">Cruda (Raw)</span></h1>
+    <div class="s-split">
+      <div class="s-left">
+        <p class="s-lead">¿Qué pasa si la variable <strong>SÍ</strong> debe renderizar HTML intencionalmente?</p>
+        <p class="text-sm mt-4">Si recibes texto de un editor de texto enriquecido (Rich Text Editor) y usas <code>{{ }}</code>, se mostrarán las etiquetas <code>&lt;strong&gt;</code> como texto plano.</p>
+        <p class="text-sm mt-2">Usa la inyección cruda: <code>{!! $html !!}</code></p>
+      </div>
+      <div class="s-right">
+        <div class="info-card" style="border-color:#F44336">
+          <h3 style="color:#F44336"><i data-lucide="triangle-alert"></i> PELIGRO</h3>
+          <p class="text-sm mt-2">Úsalo solo si <strong>tú</strong> controlas al 100% el origen del texto. Si muestras comentarios de usuarios con <code>{!! !!}</code>, estás abriendo la puerta a que hackeen a tus visitantes (XSS).</p>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Un gran poder conlleva una gran responsabilidad. Usar inyección cruda debe hacerlos dudar. Úsenla solo para contenido creado por administradores de confianza en el panel de control.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 27. BLADE: CONDICIONALES ──────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Directivas Condicionales <span class="gradient-text">@if</span></h1>
+    <p class="s-lead">Adiós a las feas etiquetas <code>&lt;?php if(): ?&gt;</code></p>
+    <div class="s-split">
+      <div class="s-left">
+        <ul class="s-list text-sm">
+          <li><strong>@if / @elseif / @else:</strong> Condicionales clásicos. No olvides cerrar con <code>@endif</code>.</li>
+          <li><strong>@unless:</strong> Lo opuesto a IF. "Ejecuta A MENOS QUE la condición sea verdadera".</li>
+          <li><strong>@empty:</strong> Verifica si un array está vacío. Excelente para bases de datos vacías.</li>
+        </ul>
+      </div>
+      <div class="s-right">
+        <div class="code-window">
+          <div class="cw-body text-xs">
+<span class="c-p">@if</span>(count($registros) === 1)
+    &lt;p&gt;Un registro.&lt;/p&gt;
+<span class="c-p">@else</span>
+    &lt;p&gt;Múltiples registros.&lt;/p&gt;
+<span class="c-p">@endif</span>
+
+<span class="c-p">@empty</span>($proyectos)
+    &lt;div class="alert"&gt;No hay proyectos aún.&lt;/div&gt;
+<span class="c-p">@endempty</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«La directiva @empty es su mejor amiga para mostrar estados vacíos (Empty States) cuando no hay datos en la tabla. Mejora muchísimo la experiencia de usuario (UX).»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 28. BLADE: BUCLES (LOOPS) ─────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Iteraciones y la variable <span class="gradient-text">$loop</span></h1>
+    <p class="s-lead">Iterar sobre datos provenientes de la base de datos es muy común.</p>
+    <div class="s-split">
+      <div class="s-left">
+        <div class="info-card">
+          <h3 style="color:var(--p)">El Superpoder <code>$loop</code></h3>
+          <p class="text-sm mt-2">Dentro de un <code>@foreach</code>, Blade inyecta una variable especial para controlar el estado del bucle:</p>
+          <ul class="mt-2 text-sm" style="padding-left:1rem; color:var(--text2)">
+            <li><code>$loop->first</code> : ¿Es el 1ro?</li>
+            <li><code>$loop->last</code> : ¿Es el último?</li>
+            <li><code>$loop->iteration</code> : El índice (1,2,3...).</li>
+          </ul>
+        </div>
+      </div>
+      <div class="s-right">
+        <div class="code-window">
+          <div class="cw-body text-xs">
+&lt;ul&gt;
+<span class="c-p">@foreach</span>($usuarios as $user)
+    &lt;li&gt;
+        <span class="c-p">@if</span>($loop-&gt;first)
+            &lt;strong&gt;Líder:&lt;/strong&gt;
+        <span class="c-p">@endif</span>
+        
+        {{ $user-&gt;name }}
+    &lt;/li&gt;
+<span class="c-p">@endforeach</span>
+&lt;/ul&gt;
+          </div>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«En PHP puro tenían que crear una variable contador e ir sumándole 1 manualmente. $loop nos quita ese trabajo y hace que el código sea declarativo y hermoso.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 29. BLADE: LAYOUTS (HERENCIA) ─────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Reutilización 1: <span class="gradient-text">Layouts (Herencia)</span></h1>
+    <p class="s-lead">DRY (Don't Repeat Yourself). Nunca repitas el head, el navbar o el footer de tu HTML.</p>
+    
+    <div class="s-split">
+      <div class="s-left">
+        <div class="code-window">
+          <div class="cw-header"><div class="cw-title">1. El Molde (layouts/app.blade.php)</div></div>
+          <div class="cw-body text-xs">
+&lt;html&gt;
+&lt;body&gt;
+  &lt;nav&gt;Mi Navbar Global&lt;/nav&gt;
+  
+  &lt;main&gt;
+    <span class="c-c">&lt;!-- Marcador de posición --&gt;</span>
+    <span class="c-p">@yield</span>('contenido')
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+          </div>
+        </div>
+      </div>
+      <div class="s-right">
+        <div class="code-window">
+          <div class="cw-header"><div class="cw-title">2. La Página (inicio.blade.php)</div></div>
+          <div class="cw-body text-xs">
+<span class="c-c">&lt;!-- Heredar el molde --&gt;</span>
+<span class="c-p">@extends</span>('layouts.app')
+
+<span class="c-c">&lt;!-- Rellenar el marcador --&gt;</span>
+<span class="c-p">@section</span>('contenido')
+  &lt;h1&gt;Bienvenido al Inicio&lt;/h1&gt;
+  &lt;p&gt;Este texto va dentro de main.&lt;/p&gt;
+<span class="c-p">@endsection</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Este es el concepto más importante de Blade. El @yield es un hueco vacío. El @extends dice qué plantilla usar, y el @section llena ese hueco.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 3 min</div>
+    '''
+})
+
+# ── 30. BLADE: INCLUDES Y COMPONENTES ─────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Reutilización 2: <span class="gradient-text">Includes y Componentes</span></h1>
+    <p class="s-lead">Para fragmentos de UI reutilizables como tarjetas, botones o alertas.</p>
+    
+    <div class="cards-grid two">
+      <div class="s-card">
+        <h3>@include</h3>
+        <p class="mt-2 text-sm text-muted mb-2">Pega un bloque de código estático. Excelente para inyectar un footer o un sidebar que es idéntico en todos lados.</p>
+        <code>@include('partials.footer')</code>
+      </div>
+      
+      <div class="s-card glow" style="border-color:var(--p)">
+        <h3>Components</h3>
+        <p class="mt-2 text-sm text-muted mb-2">Creas etiquetas HTML personalizadas. Puedes pasarle parámetros. Es la forma moderna recomendada.</p>
+        <code>&lt;x-alert type="danger"&gt;Error&lt;/x-alert&gt;</code>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Si saben React o Vue, los Componentes de Blade les parecerán familiares. Permiten crear su propia librería de UI sin escribir Javascript.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 31. FAQ: GIT CLONE ────────────────────────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">FAQ: El problema del <span class="gradient-text">Git Clone</span></h1>
+    <p class="s-lead">¿Bajaste un proyecto de GitHub y sale <strong>Error 500</strong>? Las librerías (<code>vendor</code>) y credenciales (<code>.env</code>) NUNCA se suben a Git por seguridad.</p>
+    
+    <div class="code-window mt-4" style="max-width:800px; margin:0 auto">
+      <div class="cw-header"><div class="cw-dot r"></div><div class="cw-title">Terminal: La Receta Mágica (Ejecutar en orden)</div></div>
+      <div class="cw-body text-sm">
+<span class="c-c"># 1. Instalar las dependencias que faltan</span>
+<span class="c-p">composer</span> install
+
+<span class="c-c"># 2. Clonar el archivo de ejemplo para crear tu .env real</span>
+<span class="c-p">cp</span> .env.example .env
+
+<span class="c-c"># 3. Generar la llave de seguridad de tu app (se guarda en .env)</span>
+<span class="c-p">php artisan</span> key:generate
+
+<span class="c-c"># 4. Iniciar el servidor local</span>
+<span class="c-p">php artisan</span> serve
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Tatúense estos 4 comandos. Si clonan el proyecto de un compañero y no corre, es porque les falta ejecutar estos comandos. Es una medida de seguridad vital de Laravel.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 3 min</div>
+    '''
+})
+
+# ── 32. EL CASO DE ESTUDIO (EVALUACIÓN 1) ─────────────────
+S.append({
+    'layout': 'content',
+    'content': '''
+    <h1 class="s-title">Evaluación Práctica: <span class="gradient-text">Tech Solutions</span></h1>
+    <p class="s-lead">10% de la nota final. Deben estructurar un sistema de Gestión de Proyectos.</p>
+    <div class="s-split">
+      <div class="s-left">
+        <ul class="s-list text-sm">
+          <li><i data-lucide="check"></i> <strong>Rutas y Controllers:</strong> (GET, POST, PUT, DELETE).</li>
+          <li><i data-lucide="check"></i> <strong>Modelo Estático:</strong> Hardcodear datos de proyectos (Id, Nombre, Monto) temporalmente.</li>
+          <li><i data-lucide="check"></i> <strong>Vistas Blade:</strong> Utilizar un `Layout` maestro y Componentes.</li>
+        </ul>
+      </div>
+      <div class="s-right">
+        <div class="info-card glow">
+          <h3>Componente UF (Servicio API)</h3>
+          <p class="mt-2 text-sm">Deberán investigar cómo conectar Laravel con un servicio web externo (ej. <code>mindicador.cl</code>) para extraer el valor actual de la UF y mostrarlo en su componente.</p>
+        </div>
+      </div>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«El desafío de la API los prepara para el mundo real. Las apps modernas nunca están aisladas, siempre consumen datos de otros servidores.»</li>
+    <li>«Revisen el portal de evaluación para ver la rúbrica detallada.»</li>
+    </ol>
+    <div class="t-time">Tiempo: 2 min</div>
+    '''
+})
+
+# ── 33. CIERRE Y PRÓXIMOS PASOS ────────────────────────────
+S.append({
+    'layout': 'cover',
+    'content': '''
+    <div class="cover-badge"><span class="bdot"></span>Fin Unidad 1</div>
+    <h1 class="cover-title">Manos al<br><span class="gradient-text">Código</span></h1>
+    <p class="cover-sub">Es hora de implementar rutas, controladores y dominar las vistas Blade.</p>
+    <div class="closing-message">
+      <p>Pasen al portal de Evaluación Interactiva para desglosar la rúbrica y comenzar el proyecto "Tech Solutions".</p>
+    </div>
+    ''',
+    'teacher': '''
+    <h4>Guión del Profesor</h4>
+    <ol>
+    <li>«Con esto cerramos la parte teórica intensiva. La mejor forma de aprender el MVC y Blade es programando, cometiendo errores, y depurando.»</li>
+    <li>«Abran sus terminales, inicien un proyecto Laravel, creen su layout maestro, y comiencen a experimentar. ¡Éxito en sus evaluaciones grupales!»</li>
+    </ol>
+    <div class="t-time">Tiempo: 1 min</div>
+    '''
+})
+
+
+CSS = """
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --p:#FF4500;--p-glow:rgba(255,69,0,.35);--c2:#FF7A33;--c3:#FFB347;--c4:#FFCF70;
+  --bg:#0A0E1A;--bg2:#0F1629;--bg3:#161D33;
+  --surface:rgba(255,255,255,.04);--surface-h:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.06);--border-h:rgba(255,255,255,.12);
+  --text:#E8ECF4;--text2:#94A3B8;--text3:#64748B;
+  --radius:16px;--radius-sm:10px;
+  --font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+  font-size:16px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;overflow:hidden;-webkit-font-smoothing:antialiased;height:100vh}
+::selection{background:var(--p);color:#fff}
+.gradient-text{background:linear-gradient(135deg,var(--p),var(--c2),var(--c3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* Progress */
+.progress{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,.05);z-index:500}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--c2));transition:width .4s ease;width:0}
+
+/* Slides */
+.slides{position:fixed;inset:0;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:4rem 5rem;opacity:0;transform:translateX(50px);transition:opacity .5s ease,transform .5s ease;pointer-events:none;overflow-y:auto}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all}
+.slide.exit{opacity:0;transform:translateX(-50px)}
+.slide-inner{max-width:1150px;width:100%;position:relative}
+
+/* Typo */
+.text-sm{font-size:.85rem;line-height:1.6}
+.text-xs{font-size:.78rem;line-height:1.5}
+.text-muted{color:var(--text2)}
+.mt-2{margin-top:.75rem}
+.mt-4{margin-top:1.5rem}
+.mb-2{margin-bottom:.75rem}
+.text-center{text-align:center}
+.block{display:block}
+
+.cover{text-align:center;flex-direction:column}
+.cover .slide-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh}
+.cover-badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:.45rem 1rem;font-family:var(--mono);font-size:.72rem;color:var(--c3);margin-bottom:2rem}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--p);animation:pulse 2s infinite}
+.cover-title{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.08;letter-spacing:-.03em;margin-bottom:1.5rem}
+.cover-sub{font-size:1.2rem;color:var(--text2);margin-bottom:1.5rem}
+.cover-inst{font-size:.85rem;color:var(--text3);font-weight:500}
+.s-title{font-size:clamp(1.75rem,3.5vw,2.8rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+.s-lead{font-size:1.05rem;color:var(--text2);margin-bottom:2rem;max-width:750px;line-height:1.7}
+.s-note{font-size:.88rem;color:var(--text3);padding:1rem;background:rgba(255,179,71,.05);border:1px solid rgba(255,179,71,.1);border-radius:var(--radius-sm);margin-top:1.5rem}
+
+/* Layouts */
+.cards-grid{display:grid;gap:1.5rem;margin-top:1rem}
+.cards-grid.three{grid-template-columns:repeat(3,1fr)}
+.cards-grid.two{grid-template-columns:repeat(2,1fr)}
+.s-cards{display:grid;gap:1.5rem;margin-top:1rem}
+.s-cards.three{grid-template-columns:repeat(3,1fr)}
+.s-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;transition:all .3s}
+.s-card:hover{background:var(--surface-h);transform:translateY(-2px)}
+.s-card.glow{border-color:rgba(255,69,0,.2)}
+.s-card-icon{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,rgba(255,69,0,.15),rgba(255,122,51,.08));border:1px solid rgba(255,69,0,.12);display:flex;align-items:center;justify-content:center;margin-bottom:.75rem}
+.s-card-icon svg{width:20px;height:20px;color:var(--p)}
+.s-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+
+.s-split{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;margin-top:1.5rem}
+.info-card{background:var(--surface);border:1px solid var(--border);padding:2rem;border-radius:var(--radius)}
+.info-card.glow{border-color:rgba(255,69,0,.2);box-shadow:0 10px 30px rgba(255,69,0,.05)}
+.info-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+
+.s-list{list-style:none;display:flex;flex-direction:column;gap:1rem}
+.s-list li{display:flex;align-items:flex-start;gap:.75rem;font-size:.95rem;color:var(--text2);line-height:1.6}
+.s-list li svg{width:20px;height:20px;color:var(--p);flex-shrink:0;margin-top:3px}
+
+code{font-family:var(--mono);background:rgba(255,255,255,.1);padding:.2rem .4rem;border-radius:4px;font-size:.85em}
+
+/* Code Snippet */
+.code-window{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.3);width:100%}
+.cw-header{display:flex;align-items:center;gap:.4rem;padding:.75rem 1rem;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border)}
+.cw-dot{width:10px;height:10px;border-radius:50%}
+.cw-dot.r{background:#FF5F57}.cw-dot.y{background:#FFBD2E}.cw-dot.g{background:#28CA41}
+.cw-title{margin-left:1rem;font-family:var(--mono);font-size:.7rem;color:var(--text3)}
+.cw-body{padding:1.5rem;font-family:var(--mono);line-height:1.6;color:#A9B7C6;overflow-x:auto;white-space:pre}
+.cw-body .c-c{color:#808080}
+.cw-body .c-p{color:#CC7832}
+.cw-body .c-s{color:#6A8759}
+.cw-body .c-f{color:#FFC66D}
+
+/* Dir Structure */
+.dir-structure{display:flex;flex-direction:column;gap:.5rem;font-family:var(--mono);font-size:.85rem}
+.dir-item{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.dir-item span{display:flex;align-items:center;gap:.5rem;font-weight:700;width:120px}
+.dir-item.folder span{color:var(--c3)}
+.dir-item.file span{color:var(--text)}
+.dir-item.highlight{border-color:var(--p);background:rgba(255,69,0,.05)}
+.dir-item svg{width:16px;height:16px;flex-shrink:0}
+.dir-desc{color:var(--text2);font-family:var(--font);font-size:.85rem}
+
+/* MVC CSS Diagram */
+.mvc-diagram{display:grid;grid-template-columns:1fr 50px 1fr 50px 1fr;gap:1rem;align-items:center;justify-content:center;margin:3rem 0;}
+.mvc-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;display:flex;flex-direction:column;align-items:center}
+.mvc-box svg{width:32px;height:32px;margin-bottom:.5rem;color:var(--p)}
+.mvc-box span{font-weight:700;font-size:1.1rem;display:block}
+.mvc-box small{font-size:.75rem;color:var(--text3);display:block;margin-top:.3rem}
+.mvc-controller{border-color:rgba(255,69,0,.4)}
+.mvc-model{border-color:rgba(255,179,71,.4);grid-column:5;grid-row:1}
+.mvc-user{border-style:dashed}
+.mvc-arrow{display:flex;flex-direction:column;align-items:center;color:var(--text3)}
+.mvc-arrow svg{width:20px;height:20px}
+.mvc-arrow label{font-size:.65rem;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+/* Nav Controls */
+.nav-controls{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:1.25rem;z-index:100;background:rgba(10,14,26,.85);backdrop-filter:blur(16px);padding:.6rem 1.25rem;border-radius:50px;border:1px solid var(--border)}
+.nav-btn{width:40px;height:40px;border-radius:10px;background:var(--surface);border:1px solid var(--border);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.nav-btn:hover{background:var(--p);border-color:var(--p)}
+.counter{font-family:var(--mono);font-size:.78rem;color:var(--text3);min-width:50px;text-align:center}
+
+/* Teacher Button & Panel */
+.floating-teacher{position:fixed;top:1.25rem;right:1.25rem;z-index:100;display:flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,rgba(255,69,0,.15),rgba(255,122,51,.1));border:1px solid rgba(255,69,0,.2);color:var(--c3);padding:.55rem 1rem;border-radius:50px;cursor:pointer;font-size:.78rem;font-weight:600;transition:all .3s}
+.floating-teacher:hover{background:linear-gradient(135deg,rgba(255,69,0,.25),rgba(255,122,51,.2));transform:scale(1.03)}
+.teacher-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:190;opacity:0;pointer-events:none;transition:opacity .3s}
+.teacher-overlay.open{opacity:1;pointer-events:all}
+.teacher-panel{position:fixed;top:0;right:-440px;width:420px;height:100vh;background:var(--bg2);border-left:1px solid var(--border);z-index:200;transition:right .4s ease;overflow-y:auto}
+.teacher-panel.open{right:0}
+.tp-header{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:1}
+.tp-header h3{font-size:.92rem;font-weight:700;display:flex;align-items:center;gap:.5rem;color:var(--text)}
+.tp-close{width:32px;height:32px;border-radius:8px;background:var(--surface);border:1px solid var(--border);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.tp-body{padding:1.5rem}
+.tp-body h4{font-size:.85rem;font-weight:700;color:var(--p);margin-bottom:.75rem;margin-top:1.25rem}
+.tp-body ol{padding-left:1.25rem;display:flex;flex-direction:column;gap:.6rem}
+.tp-body li,.tp-body p{font-size:.84rem;color:var(--text2);line-height:1.6}
+.t-time{margin-top:1rem;font-family:var(--mono);font-size:.72rem;color:var(--text3);padding:.4rem .75rem;background:var(--surface);border-radius:var(--radius-sm);display:inline-block}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+"""
+
+def main():
+    n = len(S)
+    slides_html = []
+    teachers = []
+
+    for i, s in enumerate(S):
+        active = ' active' if i == 0 else ''
+        slides_html.append(f'<div class="slide {s["layout"]}{active}" data-idx="{i}"><div class="slide-inner">{s["content"]}</div></div>')
+        teachers.append(s['teacher'])
+
+    html = f"""<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><title>Presentacion U1 — DS Web I (Ultimate Edition)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>{CSS}</style>
+</head>
+<body>
+<div class="progress"><div class="progress-fill" id="progress"></div></div>
+<div class="slides" id="slides">{''.join(slides_html)}</div>
+<div class="nav-controls">
+  <button class="nav-btn" onclick="prev()"><i data-lucide="chevron-left"></i></button>
+  <span class="counter" id="counter">01 / {n:02d}</span>
+  <button class="nav-btn" onclick="next()"><i data-lucide="chevron-right"></i></button>
+  <div style="width:1px;height:24px;background:var(--border);margin:0 .25rem"></div>
+  <button class="nav-btn" onclick="toggleFullScreen()" title="Pantalla Completa"><i data-lucide="maximize"></i></button>
+</div>
+<div class="floating-teacher" onclick="toggleTeacher()">
+  <i data-lucide="message-square-plus"></i> Ayuda al Profesor
+</div>
+<div class="teacher-overlay" id="teacherOverlay" onclick="toggleTeacher()"></div>
+<div class="teacher-panel" id="teacherPanel">
+  <div class="tp-header"><h3><i data-lucide="bot"></i> Ayuda al Profesor</h3><button class="tp-close" onclick="toggleTeacher()"><i data-lucide="x"></i></button></div>
+  <div class="tp-body" id="teacherContent"></div>
+</div>
+
+<script>
+const T = {json.dumps(teachers, ensure_ascii=False)};
+const total = {n};
+let cur = 0; let teacherOpen = false;
+
+lucide.createIcons();
+updateTeacher();
+
+function go(idx) {{
+  if (idx < 0 || idx >= total) return;
+  const slides = document.querySelectorAll('.slide');
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('exit');
+  setTimeout(() => slides[cur === idx ? cur : (cur > idx ? cur : cur)].classList.remove('exit'), 500);
+  const prev = cur; cur = idx;
+  slides[cur].classList.add('active');
+  setTimeout(() => {{ if(prev !== cur) slides[prev].classList.remove('exit'); }}, 550);
+  document.getElementById('counter').textContent = String(cur+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+  document.getElementById('progress').style.width = ((cur+1)/total*100) + '%';
+  updateTeacher();
+}}
+function next() {{ go(cur+1); }}
+function prev() {{ go(cur-1); }}
+
+document.addEventListener('keydown', e => {{
+  if (e.key === 'ArrowRight' || e.key === ' ') {{ e.preventDefault(); next(); }}
+  else if (e.key === 'ArrowLeft') {{ e.preventDefault(); prev(); }}
+  else if (e.key === 'Escape' && teacherOpen) toggleTeacher();
+}});
+
+function toggleTeacher() {{
+  teacherOpen = !teacherOpen;
+  document.getElementById('teacherPanel').classList.toggle('open', teacherOpen);
+  document.getElementById('teacherOverlay').classList.toggle('open', teacherOpen);
+}}
+function updateTeacher() {{ document.getElementById('teacherContent').innerHTML = T[cur] || ''; }}
+
+function toggleFullScreen() {{
+  if (!document.fullscreenElement) {{
+    document.documentElement.requestFullscreen().catch(e => console.log(e));
+  }} else {{
+    if (document.exitFullscreen) document.exitFullscreen();
+  }}
+}}
+</script>
+</body>
+</html>"""
+    with open(OUT, 'w', encoding='utf-8') as f: f.write(html)
+    print(f'\\u2705 Presentacion U1 (Ultimate) generada: {OUT} ({n} slides)')
+
+if __name__ == '__main__': main()

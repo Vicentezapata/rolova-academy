@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidad 2 — Planificación de Pruebas | IF203IINF</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root{
+  --p:#6366f1;--pl:#818cf8;--pd:#4f46e5;--c2:#06b6d4;--acc:#f59e0b;
+  --ok:#10b981;--err:#ef4444;--warn:#f59e0b;
+  --bg:#0a0a15;--bg2:#111120;--bg3:#1a1a2e;--card:#16162a;
+  --border:rgba(99,102,241,.25);--text:#f8fafc;--muted:#cbd5e1;--dim:#94a3b8;
+  --glass:rgba(255,255,255,.05);--gb:rgba(255,255,255,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:13px;} 
+.deck{width:100vw;height:100vh;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transform:translateX(80px);
+  transition:opacity .5s cubic-bezier(0.4, 0, 0.2, 1),transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+  background:var(--bg);overflow:hidden;
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.prev{transform:translateX(-80px);}
+.slide::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(99,102,241,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.06) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+.slide-inner{
+    position:relative;z-index:1;flex:1;
+    display:flex;flex-direction:column;
+    padding:4rem 6rem;
+    padding-bottom:100px;
+    overflow-y:auto;
+}
+.slide-inner.centered { justify-content: center; }
+.slide-inner::-webkit-scrollbar{width:8px;}
+.slide-inner::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px;}
+
+/* Orbs */
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;}
+.orb1{width:700px;height:700px;background:rgba(99,102,241,.12);top:-150px;right:-150px;}
+.orb2{width:500px;height:500px;background:rgba(6,182,212,.08);bottom:-100px;left:-100px;}
+
+/* Nav */
+.nav-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(10,10,21,.95);backdrop-filter:blur(24px);
+  border-top:1px solid var(--gb);height:80px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 3rem;
+}
+.nav-info{display:flex;align-items:center;gap:1.5rem;}
+.session-badge{background:var(--p);color:#fff;padding:.4rem 1rem;border-radius:10px;font-size:1rem;font-weight:800;letter-spacing:.05em;}
+.slide-counter{font-size:1rem;color:var(--muted);font-weight:600;}
+.nav-title{font-size:1.1rem;color:var(--dim);max-width:600px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
+.nav-controls{display:flex;align-items:center;gap:1rem;}
+.btn-nav{background:var(--glass);border:1px solid var(--gb);color:var(--text);padding:.75rem 1.75rem;border-radius:10px;cursor:pointer;font-size:1.1rem;font-weight:700;transition:all .2s;font-family:inherit;}
+.btn-nav:hover{background:rgba(99,102,241,.2);border-color:var(--border);}
+.btn-nav:disabled{opacity:.3;cursor:not-allowed;}
+.btn-nav.primary{background:linear-gradient(135deg,var(--p),var(--pd));border-color:transparent;box-shadow:0 8px 24px rgba(99,102,241,.4);display:flex;align-items:center;gap:0.5rem;}
+.btn-nav.primary:hover{box-shadow:0 12px 32px rgba(99,102,241,.6);transform:translateY(-2px);}
+
+.progress-track{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,.08);z-index:200;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--c2));transition:width .4s ease;}
+.session-tabs{position:fixed;top:0;left:0;right:0;z-index:150;display:flex;background:rgba(10,10,21,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--gb);height:60px;padding-top:4px;}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:var(--dim);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;letter-spacing:.05em;text-transform:uppercase;}
+.tab:hover{color:var(--muted);}
+.tab.active{color:var(--text);border-bottom-color:var(--p);background:rgba(99,102,241,.1);}
+
+/* Typography scaled up */
+.slide-tag{font-size:1.3rem;font-weight:800;color:var(--pl);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;margin-top:60px;}
+.slide h1{font-size:clamp(3rem, 4.5vw, 4rem);font-weight:900;line-height:1.15;margin-bottom:1.25rem;}
+.slide h2{font-size:clamp(2.2rem, 3vw, 2.8rem);font-weight:900;color:#fff;margin-bottom:1.25rem;line-height:1.2;}
+.slide h3{font-size:2rem;font-weight:800;color:var(--pl);margin-bottom:1rem;margin-top:1rem;}
+.slide p{color:var(--muted);line-height:1.6;font-size:1.6rem;}
+.gradient-text{background:linear-gradient(135deg,#fff 0%,var(--pl) 50%,var(--c2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* Flexible Content Blocks */
+.content-area { display: flex; flex-direction: column; flex: 1; justify-content: space-evenly; }
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--gb);border-radius:16px;padding:1.5rem 2rem;display:flex;flex-direction:column;justify-content:center;}
+.card-grid{display:grid;gap:1.5rem;flex:1;}
+.card-grid-2{grid-template-columns:1fr 1fr;}
+.card-grid-3{grid-template-columns:repeat(3,1fr);}
+.card.accent-p{border-left:5px solid var(--p);}
+.card.accent-c{border-left:5px solid var(--c2);}
+.card.accent-g{border-left:5px solid var(--ok);}
+.card.accent-y{border-left:5px solid var(--acc);}
+.card.accent-r{border-left:5px solid var(--err);}
+.card-icon{display:inline-flex;color:var(--text);margin-bottom:0.75rem;}
+.card-icon svg {width:42px;height:42px;stroke-width:1.5px;}
+.card-title{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:0.5rem;}
+.card-body{font-size:1.55rem;color:var(--muted);line-height:1.6;}
+.card-num{font-size:1.4rem;font-weight:900;color:var(--pl);letter-spacing:.1em;margin-bottom:.5rem;opacity:0.8;}
+
+.quote{background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-left:6px solid var(--p);border-radius:0 16px 16px 0;padding:1.5rem 2rem;font-size:1.8rem;color:var(--text);line-height:1.6;font-style:italic;margin:1rem 0;box-shadow: 0 10px 20px rgba(0,0,0,0.15);}
+.quote strong{color:var(--pl);font-style:normal;}
+
+pre,code{font-family:'JetBrains Mono',monospace;}
+.code-block{background:#0d0d1f;border:1px solid var(--gb);border-radius:12px;padding:1.5rem;font-size:1.4rem;color:#a5b4fc;line-height:1.6;overflow-x:auto;white-space:pre;box-shadow:inset 0 2px 10px rgba(0,0,0,0.3);}
+.code-block .kw{color:#c084fc;font-weight:700;}.code-block .fn{color:#67e8f9;}.code-block .ok{color:#4ade80;}.code-block .er{color:#f87171;}.code-block .cm{color:#6b7280;font-style:italic;}.code-block .st{color:#fbbf24;}
+
+/* Tables scaled */
+.tbl{width:100%;border-collapse:collapse;font-size:1.4rem;}
+.tbl th{text-align:left;padding:1rem 1.5rem;background:var(--bg3);color:var(--pl);font-size:1.2rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid var(--p);}
+.tbl td{padding:1.2rem 1.5rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top;line-height:1.6;}
+.tbl tr:hover td{background:rgba(255,255,255,.03);color:var(--text);}
+.tbl code{background:rgba(99,102,241,.15);color:#a5b4fc;padding:.2rem .5rem;border-radius:6px;font-size:1.3rem;}
+
+.tag{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:8px;font-size:1.1rem;font-weight:700;letter-spacing:0.03em;}
+.tag svg{width:16px;height:16px;}
+.tag-p{background:rgba(99,102,241,.2);color:#c7d2fe;border:1px solid rgba(99,102,241,.4);}
+.tag-g{background:rgba(16,185,129,.2);color:#6ee7b7;border:1px solid rgba(16,185,129,.4);}
+.tag-y{background:rgba(245,158,11,.2);color:#fde68a;border:1px solid rgba(245,158,11,.4);}
+.tag-r{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.4);}
+.tag-c{background:rgba(6,182,212,.2);color:#a5f3fc;border:1px solid rgba(6,182,212,.4);}
+
+.check-list{list-style:none;display:flex;flex-direction:column;gap:.8rem;}
+.check-list li{display:flex;align-items:flex-start;gap:.8rem;font-size:1.6rem;color:var(--muted);line-height:1.5;}
+.check-list li::before{content:'';display:inline-block;width:24px;height:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:2px;}
+
+.dot-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+.dot-list li{display:flex;align-items:flex-start;gap:.7rem;font-size:1.55rem;color:var(--muted);line-height:1.5;}
+.dot-list li::before{content:'';display:inline-block;width:20px;height:20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23818cf8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:3px;}
+
+.cols{display:grid;gap:2rem;flex:1;}
+.cols-2{grid-template-columns:1fr 1fr;}
+.cols-3{grid-template-columns:1fr 1fr 1fr;}
+.hdiv{height:2px;background:linear-gradient(90deg, var(--p), transparent);margin:1.5rem 0;opacity:0.6;}
+
+/* Cover layout */
+.cover{justify-content:center;align-items:center;text-align:center;}
+.cover-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.4);color:var(--pl);padding:.6rem 1.5rem;border-radius:999px;font-size:1rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem;}
+.cover-sub{font-size:1.4rem;color:var(--muted);max-width:800px;margin:0 auto;line-height:1.6;}
+
+/* Activity Slide styling */
+.activity-banner {
+    background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(99,102,241,0.2));
+    border: 2px solid rgba(139,92,246,0.4);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(139,92,246,0.15);
+    flex: 1;
+    justify-content: center;
+}
+.activity-icon {
+    display:flex;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 15px rgba(139,92,246,0.5));
+    color: var(--pl);
+}
+.activity-icon svg{width:80px;height:80px;stroke-width:1.5px;}
+.activity-title { font-size: 2.2rem; font-weight: 900; color: #fff; margin-bottom: 1rem; letter-spacing: 0.05em; }
+.activity-desc { font-size: 1.3rem; color: var(--muted); max-width: 800px; line-height: 1.6; margin-bottom: 2rem; }
+
+.kbd-hint{position:fixed;bottom:90px;right:2.5rem;font-size:.9rem;color:var(--dim);display:flex;gap:.5rem;align-items:center;z-index:201;font-weight:600;}
+.kbd{background:var(--bg3);border:1px solid var(--gb);border-radius:6px;padding:.2rem .6rem;font-size:.85rem;font-family:'JetBrains Mono',monospace;color:var(--text);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .6s cubic-bezier(0.4, 0, 0.2, 1) both;}
+
+/* Teacher Note Modal */
+.teacher-btn{position:absolute;top:75px;right:2rem;z-index:100;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#fbbf24;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;}
+.teacher-btn:hover{background:rgba(245,158,11,.3);transform:scale(1.1);box-shadow:0 0 20px rgba(245,158,11,.3);}
+.teacher-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:500;justify-content:center;align-items:center;}
+.teacher-modal-overlay.open{display:flex;}
+.teacher-modal{background:var(--bg2);border:1px solid rgba(245,158,11,.3);border-radius:20px;padding:2.5rem;max-width:800px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.5);position:relative;}
+.teacher-modal-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(245,158,11,.2);}
+.teacher-modal-title{font-size:1.6rem;font-weight:800;color:#fbbf24;}
+.teacher-modal-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--muted);cursor:pointer;padding:.5rem;border-radius:8px;}
+.teacher-modal-close:hover{background:rgba(255,255,255,.1);color:#fff;}
+.teacher-modal-body{font-size:1.35rem;color:var(--muted);line-height:1.8;}
+.teacher-note-section{margin-bottom:1.25rem;padding-left:1rem;border-left:3px solid rgba(245,158,11,.3);}
+.teacher-note-section h4{font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:.5rem;}
+
+.evaluation-badge { background: linear-gradient(135deg, var(--err), var(--warn)); color: #fff; padding: 0.5rem 1.5rem; border-radius: 99px; font-weight: 800; font-size: 1.2rem; letter-spacing: 0.1em; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem;}
+</style>
+</head>
+<body>
+<div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+<div class="session-tabs" id="tabs">
+  <div class="tab active" data-ses="0" onclick="jumpSession(0)">S1 — Tipos & Herramientas</div>
+  <div class="tab" data-ses="1" onclick="jumpSession(1)">S2 — BDD & User Stories</div>
+  <div class="tab" data-ses="2" onclick="jumpSession(2)">S3 — Casos & Matriz RTM</div>
+  <div class="tab" data-ses="3" onclick="jumpSession(3)">S4 — Test Plan (IEEE 829)</div>
+  <div class="tab" data-ses="4" onclick="jumpSession(4)" style="color:var(--err);">EVALUACIÓN 2</div>
+</div>
+<div class="deck" id="deck">
+
+<!-- SESIÓN 1 -->
+<div class="slide cover" data-session="0">
+  <button class="teacher-btn" onclick="showTeacherNote(0)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in"><i data-lucide="book-open" style="width:18px;height:18px;"></i>&nbsp;IF203IINF · IPSS · 2026</div>
+        <div class="slide-tag fade-in" style="margin-top:0;">UNIDAD 2 — SESION 1</div>
+        <h1 class="gradient-text fade-in">Selección Estratégica<br>y Herramientas de Prueba</h1>
+        <p class="cover-sub fade-in">Cómo decidir qué probar, cuándo y con qué herramientas tecnológicas. Adaptación de la estrategia de QA al contexto, la complejidad y los riesgos del proyecto.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <button class="teacher-btn" onclick="showTeacherNote(1)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 1</div>
+    <h2>Factores y Contexto en la Selección</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <div class="quote" style="margin-top:0;">El Principio 6 del ISTQB dice: <strong>"El Testing depende del contexto"</strong>. La selección de pruebas es una decisión de inversión financiera, no solo técnica.</div>
+        <div class="card accent-r" style="margin-top:1.5rem;">
+            <div class="card-title">Evaluación de Riesgos</div>
+            <div class="card-body">
+                Los recursos (tiempo y dinero) son limitados. Seleccionamos el tipo de prueba según:
+                <ul class="dot-list" style="margin-top:1rem;">
+                    <li><strong>Probabilidad de fallo:</strong> ¿Es una tecnología nueva? ¿Equipo junior?</li>
+                    <li><strong>Impacto del fallo:</strong> ¿Peligro de muerte? ¿Roban datos? ¿Pierde un cliente?</li>
+                </ul>
+            </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem;">
+        <div class="card accent-c">
+          <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1rem;">
+              <div class="card-icon" style="color:var(--c2);margin:0;"><i data-lucide="zap"></i></div>
+              <div class="card-title" style="margin:0;">Ejemplo 1: Startup MVP</div>
+          </div>
+          <div class="card-body"><strong>Objetivo:</strong> Salir al mercado en 1 mes.<br><strong>Selección:</strong> Pruebas Unitarias básicas (solo core) y Smoke Tests manuales. No se invierte en Pruebas de Carga pesadas aún.</div>
+        </div>
+        <div class="card accent-p">
+          <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1rem;">
+              <div class="card-icon" style="color:var(--pl);margin:0;"><i data-lucide="shield-check"></i></div>
+              <div class="card-title" style="margin:0;">Ejemplo 2: App Bancaria Core</div>
+          </div>
+          <div class="card-body"><strong>Objetivo:</strong> Procesar transacciones internacionales.<br><strong>Selección:</strong> Pruebas Estructurales estrictas, Test de Seguridad (SAST/DAST) obligatorio, y Pruebas de Estrés.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <button class="teacher-btn" onclick="showTeacherNote(2)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 1</div>
+    <h2>El Arsenal del Tester: Herramientas por Nivel</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+            <div class="card" style="border:1px solid #3b82f6;">
+                <div class="card-title" style="color:#60a5fa;"><i data-lucide="code" style="vertical-align:middle;"></i> Nivel de Código (Unit/Static)</div>
+                <div class="card-body">
+                    Las pruebas más rápidas y baratas de ejecutar.<br><br>
+                    <strong>Herramientas clave:</strong><br>
+                    - <span class="tag tag-p">JUnit / PyTest / Jest</span> (Unitarias)<br>
+                    - <span class="tag tag-c">SonarQube</span> (Análisis Estático SAST)
+                </div>
+            </div>
+            <div class="card" style="border:1px solid #10b981;">
+                <div class="card-title" style="color:#34d399;"><i data-lucide="network" style="vertical-align:middle;"></i> Nivel de API (Integración)</div>
+                <div class="card-body">
+                    Verifican que los microservicios hablen entre sí sin depender del diseño visual UI.<br><br>
+                    <strong>Herramientas clave:</strong><br>
+                    - <span class="tag tag-g">Postman / Insomnia</span> (Manual/Scripts)<br>
+                    - <span class="tag tag-p">RestAssured / Newman</span> (Automático)
+                </div>
+            </div>
+            <div class="card" style="border:1px solid #f59e0b;">
+                <div class="card-title" style="color:#fbbf24;"><i data-lucide="layout-template" style="vertical-align:middle;"></i> Nivel de Sistema (UI / E2E)</div>
+                <div class="card-body">
+                    Prueban el sistema completo como un usuario real. Lentas y frágiles, pero esenciales.<br><br>
+                    <strong>Herramientas clave:</strong><br>
+                    - <span class="tag tag-y">Selenium / Cypress / Playwright</span> (Web)<br>
+                    - <span class="tag tag-r">Appium</span> (Mobile)
+                </div>
+            </div>
+            <div class="card" style="border:1px solid #ef4444;">
+                <div class="card-title" style="color:#f87171;"><i data-lucide="gauge" style="vertical-align:middle;"></i> Nivel No Funcional (Carga/Seguridad)</div>
+                <div class="card-body">
+                    Prueban estrés, resistencia o vulnerabilidades de inyección.<br><br>
+                    <strong>Herramientas clave:</strong><br>
+                    - <span class="tag tag-r">JMeter / k6</span> (Carga y Estrés)<br>
+                    - <span class="tag tag-c">OWASP ZAP</span> (Pen-testing dinámico DAST)
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <button class="teacher-btn" onclick="showTeacherNote(3)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Dinámica Rápida — Sesion 1</div>
+    <div class="activity-banner">
+        <div class="activity-icon"><i data-lucide="zap-fast" style="width:80px;height:80px;"></i></div>
+        <div class="activity-title">El Estratega (Modo Remate)</div>
+        <div class="activity-desc">El profesor presentará un escenario límite. Los equipos tienen 30 segundos para gritar: <strong>1 Tipo de Prueba + 1 Herramienta Específica</strong> que usarían para evitar un desastre.</div>
+        
+        <div class="cols cols-2" style="width:100%; text-align:left; margin-top:2rem; gap:1.5rem;">
+            <div class="card accent-y" style="background:rgba(0,0,0,0.5);">
+                <div class="card-title" style="color:var(--acc);">Escenario A</div>
+                <div class="card-body">CyberMonday está a 3 días y el CEO teme que el sitio web se caiga al recibir 50.000 usuarios en el primer minuto.</div>
+            </div>
+            <div class="card accent-r" style="background:rgba(0,0,0,0.5);">
+                <div class="card-title" style="color:var(--err);">Escenario B</div>
+                <div class="card-body">Una App Bancaria va a lanzar una nueva función de transferencias rápidas y temen que un hacker intercepte los fondos en tránsito de las APIs.</div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- SESIÓN 2 -->
+<div class="slide cover" data-session="1">
+  <button class="teacher-btn" onclick="showTeacherNote(4)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in"><i data-lucide="users-2" style="width:18px;height:18px;"></i>&nbsp;IF203IINF &middot; IPSS &middot; 2026</div>
+        <div class="slide-tag fade-in" style="margin-top:0;">UNIDAD 2 — SESION 2</div>
+        <h1 class="gradient-text fade-in">Requerimientos e<br>Historias de Usuario</h1>
+        <p class="cover-sub fade-in">Desde la ambigüedad del cliente hasta la especificidad técnica. Estructura de User Stories (INVEST) y automatización con Gherkin BDD usando Cucumber.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="1">
+  <button class="teacher-btn" onclick="showTeacherNote(5)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 2</div>
+    <h2>Requerimientos vs Historias de Usuario</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+            <div class="card" style="border:1px solid var(--p);">
+                <div class="card-title" style="color:var(--pl);">El Requerimiento Tradicional (SRS)</div>
+                <div class="card-body">
+                    Típico del modelo Cascada (Waterfall). Documentos extensos, enfocados en el "Qué" debe hacer el sistema desde una perspectiva técnica y a veces incomprensible para el cliente.
+                    <br><br><i>"El sistema deberá permitir la autenticación de usuarios contra el LDAP corporativo con encriptación SHA-256 dentro de un tiempo de respuesta < 200ms."</i>
+                </div>
+            </div>
+            
+            <div class="card" style="border:1px solid var(--c2);">
+                <div class="card-title" style="color:var(--c2);">La Historia de Usuario (Agile)</div>
+                <div class="card-body">
+                    Un recordatorio para tener una conversación. Enfocado en el <strong>Valor de Negocio</strong> y en el Usuario. Usa lenguaje natural y directo.
+                    <br><br><i>"<strong>COMO</strong> empleado remoto, <strong>QUIERO</strong> ingresar al sistema usando mi misma clave corporativa, <strong>PARA</strong> no tener que recordar contraseñas distintas."</i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card accent-g" style="margin-top:2rem;">
+            <div class="card-title">Criterio de Calidad: INVEST</div>
+            <div class="card-body">
+                Una buena Historia de Usuario debe ser:
+                <div style="display:flex; justify-content:space-between; margin-top:1rem;">
+                    <div><strong>I</strong>ndependiente</div>
+                    <div><strong>N</strong>egociable</div>
+                    <div><strong>V</strong>aliosa</div>
+                    <div><strong>E</strong>stimable</div>
+                    <div><strong>S</strong>mall (Pequeña)</div>
+                    <div><strong style="color:var(--ok);">T</strong>esteable (Si no es testeable, no sirve)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="1">
+  <button class="teacher-btn" onclick="showTeacherNote(6)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 2</div>
+    <h2>BDD, Gherkin y Cucumber en Profundidad</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div class="quote" style="margin-top:0; font-size:1.4rem;"><strong>BDD (Behavior-Driven Development):</strong> Diseñar pruebas basadas en el comportamiento. Permite que el código de prueba sea leído por Humanos (Clientes) y Máquinas.</div>
+        
+        <div class="card accent-y">
+            <div class="card-title">Herramienta: Cucumber (Archivo .feature)</div>
+            <div class="card-body">
+                En la industria, el archivo Gherkin no es solo un documento Word. Es un archivo que herramientas como <strong>Cucumber o SpecFlow</strong> leen y "traducen" a funciones de código automático en Java, Python o JS.
+            </div>
+        </div>
+      </div>
+      <div>
+        <div class="code-block" style="height:100%; display:flex; flex-direction:column; justify-content:center; font-size:1.15rem;">
+<span class="cm"># archivo: login.feature</span>
+<span class="kw">Funcionalidad:</span> <span class="fn">Retiro de Efectivo</span>
+
+<span class="kw">Escenario:</span> <span class="fn">Retiro exitoso con saldo suficiente</span>
+  <span class="ok">DADO</span> que la cuenta tiene un saldo de <span class="st">$1000</span>
+  <span class="ok">Y</span> la tarjeta es válida
+  <span class="c2">CUANDO</span> el usuario solicita retirar <span class="st">$200</span>
+  <span class="c2">Y</span> el cajero tiene efectivo disponible
+  <span class="p">ENTONCES</span> el cajero debe entregar <span class="st">$200</span>
+  <span class="p">Y</span> el saldo de la cuenta debe actualizarse a <span class="st">$800</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="1">
+  <button class="teacher-btn" onclick="showTeacherNote(7)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Dinámica de Equipos — Sesion 2</div>
+    <div class="activity-banner" style="background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(99,102,241,0.2)); border-color: rgba(6,182,212,0.4);">
+        <div class="activity-icon" style="color:var(--c2);"><i data-lucide="phone-off" style="width:80px;height:80px;"></i></div>
+        <div class="activity-title">Teléfono Descompuesto (Requerimientos)</div>
+        <div class="activity-desc">El profesor asume el rol de "Gerente Desesperado" y entrega un requerimiento caótico y mal redactado. Tienen 5 minutos para rescatarlo.</div>
+        
+        <div class="card" style="width:100%; text-align:left; background:rgba(0,0,0,0.5); border:1px solid var(--c2); margin-top:1.5rem;">
+            <div class="card-title" style="color:var(--c2); margin-bottom:1rem;"><i data-lucide="mail"></i> Correo del Gerente:</div>
+            <div class="card-body" style="font-style:italic;">
+                "¡Urgente! Necesitamos que si un cliente trata de pagar un producto sin stock, el sistema no explote. Y obvio, que si sí hay stock pero su tarjeta no tiene plata, le diga error. Y que todo esto pase en la página principal, ¡para ayer!"
+            </div>
+        </div>
+        
+        <div class="card" style="width:100%; text-align:left; background:rgba(0,0,0,0.5); border:1px solid var(--p); margin-top:1rem;">
+            <div class="card-title" style="color:var(--pl);"><i data-lucide="list-checks"></i> Tarea del Grupo Ágil:</div>
+            <div class="card-body">
+                1. Redacta la <strong>Historia de Usuario</strong> perfecta (COMO / QUIERO / PARA).<br>
+                2. Escribe el <strong>Archivo .feature (Gherkin)</strong> manejando al menos 2 escenarios (Éxito y Sin Fondos/Stock). ¡El mejor grupo gana!
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- SESIÓN 3 -->
+<div class="slide cover" data-session="2">
+  <button class="teacher-btn" onclick="showTeacherNote(8)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in"><i data-lucide="file-check-2" style="width:18px;height:18px;"></i>&nbsp;IF203IINF &middot; IPSS &middot; 2026</div>
+        <div class="slide-tag fade-in" style="margin-top:0;">UNIDAD 2 — SESION 3</div>
+        <h1 class="gradient-text fade-in">Diseño de Casos de Prueba<br>y Trazabilidad en la Industria</h1>
+        <p class="cover-sub fade-in">Dejando el Excel atrás: La anatomía de un Test Case infalible y cómo asegurar cobertura usando Matrices de Trazabilidad (RTM) modernas como Jira/Xray.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="2">
+  <button class="teacher-btn" onclick="showTeacherNote(9)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 3</div>
+    <h2>Anatomía del Caso de Prueba</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="quote" style="margin-top:0; font-size:1.2rem;">Un Caso de Prueba (Test Case) documenta variables bajo las cuales un evaluador determinará si la app cumple especificaciones. Debe ser tan claro que <strong>alguien nuevo (o un Robot) pueda ejecutarlo sin dudar</strong>.</div>
+        
+        <table class="tbl" style="margin-top:2rem;">
+            <thead>
+                <tr>
+                    <th style="width:20%">Campo Oficial</th>
+                    <th>Descripción</th>
+                    <th>Ejemplo Real</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>ID / Título</code></td>
+                    <td>Identificador único rastreable.</td>
+                    <td><strong>TC-001:</strong> Validar error por contraseña corta.</td>
+                </tr>
+                <tr>
+                    <td><code>Precondiciones</code></td>
+                    <td>Estado exacto del sistema ANTES de empezar.</td>
+                    <td>El sistema de BD está arriba. Usuario no logueado. Navegador en URL '/register'.</td>
+                </tr>
+                <tr>
+                    <td><code>Datos (Test Data)</code></td>
+                    <td>Archivos o variables exactas a inyectar.</td>
+                    <td>user: 'admin', pass: '123' (muy corta).</td>
+                </tr>
+                <tr>
+                    <td><code>Pasos a reproducir</code></td>
+                    <td>Acciones explícitas y secuenciales.</td>
+                    <td>1. Ingresar user.<br>2. Ingresar pass.<br>3. Hacer click en 'Registrar'.</td>
+                </tr>
+                <tr>
+                    <td><code>Resultado Esperado</code></td>
+                    <td>La validación de ÉXITO del caso (No el éxito de la función, sino el de la prueba).</td>
+                    <td>El sistema bloquea el submit y muestra alerta roja "Password debe ser > 6 chars".</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="2">
+  <button class="teacher-btn" onclick="showTeacherNote(10)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 3</div>
+    <h2>Requirement Traceability Matrix (RTM) Moderna</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div class="card accent-p">
+            <div class="card-title">¿Qué es la RTM?</div>
+            <div class="card-body">
+                Documento que rastrea <strong>cada requerimiento de negocio con sus Casos de Prueba respectivos</strong> y su estado actual de ejecución. Garantiza 100% de Cobertura Teórica.
+            </div>
+        </div>
+        
+        <div class="card accent-y" style="margin-top:1.5rem;">
+            <div class="card-title"><i data-lucide="wrench"></i> Adiós al Excel: Herramientas</div>
+            <div class="card-body">
+                Aunque empezamos en Excel para aprender, la industria usa plugins integrados:
+                <ul class="check-list" style="margin-top:0.5rem; font-size:1.3rem;">
+                    <li><strong>Xray o Zephyr</strong> (Se integran dentro de Jira).</li>
+                    <li><strong>TestRail</strong> (Gestión avanzada de test plans y reportes).</li>
+                </ul>
+                En ellos, un caso de prueba se enlaza a un Requerimiento con 1 click.
+            </div>
+        </div>
+      </div>
+      
+      <div style="display:flex; align-items:center; justify-content:center;">
+        <table class="tbl" style="font-size:1rem; background:rgba(0,0,0,0.4); border-radius:12px;">
+            <thead>
+                <tr>
+                    <th>Req ID</th>
+                    <th>Historia de Usuario</th>
+                    <th>Test Case ID Asignados</th>
+                    <th>Status Cobertura</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>REQ-01</strong></td>
+                    <td>Como Usuario quiero un Login</td>
+                    <td>TC-001 (Positivo), TC-002 (Error)</td>
+                    <td><span class="tag tag-g" style="padding:0.1rem 0.5rem;font-size:0.85rem;">Cubierto (Pass)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>REQ-02</strong></td>
+                    <td>Recuperar Clave</td>
+                    <td>TC-003</td>
+                    <td><span class="tag tag-c" style="padding:0.1rem 0.5rem;font-size:0.85rem;">Cubierto (Run pending)</span></td>
+                </tr>
+                <tr>
+                    <td><strong>REQ-03</strong></td>
+                    <td>Bloqueo tras 3 intentos (Seguridad)</td>
+                    <td><span style="color:var(--err);font-weight:bold;">¡NO HAY TEST CASOS!</span></td>
+                    <td><span class="tag tag-r" style="padding:0.1rem 0.5rem;font-size:0.85rem;">HUECO DE COBERTURA</span></td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="2">
+  <button class="teacher-btn" onclick="showTeacherNote(11)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Dinámica de Equipos — Sesion 3</div>
+    <div class="activity-banner" style="background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(245,158,11,0.2)); border-color: rgba(239,68,68,0.4);">
+        <div class="activity-icon" style="color:var(--err);"><i data-lucide="bug-off" style="width:80px;height:80px;"></i></div>
+        <div class="activity-title">Bug Bash: Rompe el Algoritmo</div>
+        <div class="activity-desc">El equipo de Desarrollo dice: "Nuestra función de calcular edad a partir de la fecha de nacimiento funciona perfecto". Gana el equipo de QA que escriba el Caso de Prueba oficial (pasos y datos) que exponga un bug crítico (Edge Cases).</div>
+        
+        <div class="card" style="width:100%; text-align:left; background:rgba(0,0,0,0.5); border:1px solid var(--ok); margin-top:1rem;">
+            <div class="card-title" style="color:var(--ok);"><i data-lucide="list-checks"></i> Tarea:</div>
+            <div class="card-body" style="font-size:1.4rem;">
+                Diseñen un Test Case oficial (ID, Precondiciones, Pasos, Resultado Esperado). Piensen en:
+                <ul class="dot-list" style="margin-top:0.5rem;">
+                    <li>Fechas en el futuro.</li>
+                    <li>Años bisiestos (29 de febrero).</li>
+                    <li>Formato de fecha inválido o vacío.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SESIÓN 4 -->
+<div class="slide cover" data-session="3">
+  <button class="teacher-btn" onclick="showTeacherNote(12)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in" style="background:rgba(16,185,129,.15); color:#34d399; border-color:#34d399;"><i data-lucide="video" style="width:18px;height:18px;"></i>&nbsp;SESION SINCRONICA &middot; TEAMS</div>
+        <div class="slide-tag fade-in" style="margin-top:0; color:#34d399;">UNIDAD 2 — SESION 4</div>
+        <h1 class="gradient-text fade-in" style="background:linear-gradient(135deg,#fff 0%,#34d399 50%,#06b6d4 100%); -webkit-background-clip:text;">El Master Test Plan<br>(Estándar IEEE 829)</h1>
+        <p class="cover-sub fade-in">El documento rector que unifica requerimientos, tipos de prueba, herramientas y cronogramas. Cómo planificar recursos y defender tu estrategia ante inversores.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="3">
+  <button class="teacher-btn" onclick="showTeacherNote(13)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 4</div>
+    <h2>Estructura del Test Plan Maestro (IEEE 829)</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="quote" style="margin-top:0; font-size:1.3rem;">El Plan de Pruebas es el <strong>documento estratégico y directivo</strong>. No detalla CÓMO apretar un botón (eso es un Test Case), sino el QUÉ, QUIÉN, CUÁNDO y CON QUÉ.</div>
+        
+        <div class="card-grid card-grid-3" style="margin-top:2rem;">
+            <div class="card accent-c">
+                <div class="card-title" style="color:var(--c2);">1. Alcance (In / Out)</div>
+                <div class="card-body">Define explícitamente <strong>qué se va a probar</strong> (ej. Funcionalidades críticas) y, vitalmente, <strong>qué NO se va a probar</strong> (ej. Integraciones de terceros). Protege al QA de expectativas imposibles.</div>
+            </div>
+            
+            <div class="card accent-p">
+                <div class="card-title" style="color:var(--pl);">2. Entorno y Recursos</div>
+                <div class="card-body">Hardware y Software necesario. (Ej: "Necesitaremos 3 servidores AWS EC2 con base de datos de staging clonada").<br>¿Quién hace qué? (Asignación de QA Analysts).</div>
+            </div>
+            
+            <div class="card accent-y">
+                <div class="card-title" style="color:var(--acc);">3. Criterios Entry/Exit</div>
+                <div class="card-body"><strong>Entry:</strong> Requisitos para empezar a probar (Ej: Código pasó CI/CD).<br><strong>Exit:</strong> Condiciones para terminar (Ej: "100% bugs críticos resueltos, matriz RTM ejecutada").</div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="3">
+  <button class="teacher-btn" onclick="showTeacherNote(14)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Actividades Sincrónicas — Sesion 4</div>
+    <div class="content-area" style="gap:2rem; justify-content:center;">
+        <div class="activity-banner" style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.15)); border-color: rgba(16,185,129,0.4); padding: 2.5rem;">
+            <div style="display:flex; align-items:center; gap:2rem; width:100%;">
+                <div class="activity-icon" style="margin:0; color:var(--ok);"><i data-lucide="presentation" style="width:80px;height:80px;"></i></div>
+                <div style="text-align:left; flex:1;">
+                    <div class="activity-title" style="margin-bottom:0.5rem; font-size:2rem;">Shark Tank QA: Defendiendo el Plan</div>
+                    <div class="activity-desc" style="font-size:1.2rem; margin-bottom:1rem;">Presentación ejecutiva (20 min por grupo).</div>
+                    <div class="card-body">Los grupos presentan el Esqueleto de su Plan de Pruebas ante el profesor y compañeros (quienes asumen el rol de "Gerentes exigentes e Inversores"). Deben defender sus <strong>Criterios de Exclusión (Out of Scope)</strong> y explicar por qué sus <strong>tipos de prueba y herramientas</strong> seleccionadas ahorran dinero o previenen desastres financieros.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- EVALUACIÓN CONTINUIDAD -->
+<div class="slide cover" data-session="4">
+  <button class="teacher-btn" onclick="showTeacherNote(15)"><i data-lucide="info"></i></button>
+  <div class="orb orb1" style="background:var(--err)"></div><div class="orb orb2" style="background:var(--warn)"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="evaluation-badge"><i data-lucide="award" style="width:20px;height:20px;"></i> EVALUACIÓN SUMATIVA 2 (40%)</div>
+        <h1 class="gradient-text fade-in" style="background:linear-gradient(135deg,#fff 0%,var(--err) 50%,var(--warn) 100%); -webkit-background-clip:text;">Proyecto QA Testing: Parte II<br>Test Plan & Automatización BDD</h1>
+        <p class="cover-sub fade-in" style="max-width: 900px; font-size: 1.6rem;">Aplicando la Planificación Estratégica, Matrices de Trazabilidad y Escenarios Gherkin al repositorio CS50 / LeetCode de la Unidad 1.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <button class="teacher-btn" onclick="showTeacherNote(16)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag" style="color:var(--err)">Contexto de Evaluación 2</div>
+    <h2>Continuidad del Repositorio (U1 -> U2)</h2><div class="hdiv" style="background:var(--err)"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <div class="card accent-c">
+            <div class="card-icon" style="color:var(--c2)"><i data-lucide="github"></i></div>
+            <div class="card-title">Retomando el Código</div>
+            <div class="card-body">
+                En la Evaluación 1, actuaste como QA Engineer definiendo el tipo de prueba y diseñando 4 casos aislados para este repositorio:<br><br>
+                <code style="display:inline-block; font-size:1.1rem; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.05); padding:0.5rem; border-radius:6px;">https://github.com/camilo-lavado/mi-leet-code-cs50</code>
+            </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:1.5rem;">
+        <div class="quote" style="border-color:var(--warn); border-left-color:var(--warn); background:rgba(245,158,11,.05);">
+            "Ahora el proyecto escaló. El cliente exige ver una <strong>documentación formal y profesional (Plan de Pruebas IEEE 829)</strong> que garantice que todos los algoritmos clave del repo estarán cubiertos, así como los <strong>escenarios Gherkin</strong> listos para la automatización futura."
+        </div>
+        <p style="font-size:1.4rem; padding: 1rem 2rem;">Entrega Individual o en Parejas. Ponderación: 40% (20% Documento, 20% Exposición). Deberás subir los archivos requeridos y prepararte para sustentar tu Plan ante el Directorio.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <button class="teacher-btn" onclick="showTeacherNote(17)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag" style="color:var(--err)">El Encargo (3 Entregables)</div>
+    <h2>Partes de la Evaluación 2</h2><div class="hdiv" style="background:var(--err)"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-3">
+            <div class="card accent-c" style="background:#0a0a15;">
+                <div class="card-title" style="color:var(--c2);">1. La Matriz RTM</div>
+                <div class="card-body" style="font-size:1.3rem;">
+                    Identifica <strong>3 algoritmos clave</strong> del repositorio (Tómalos como tus Requerimientos Funcionales). Crea una Hoja de Cálculo (Excel) construyendo una RTM que enlace estos 3 Requerimientos con al menos <strong>5 Casos de Prueba Formales</strong> en total (recicla los de la U1 y agrega nuevos). ¡Asegura 100% de cobertura!
+                </div>
+            </div>
+            
+            <div class="card accent-y" style="background:#0a0a15;">
+                <div class="card-title" style="color:var(--acc);">2. Escenarios BDD Gherkin</div>
+                <div class="card-body" style="font-size:1.3rem;">
+                    Para los algoritmos identificados, redacta <strong>4 escenarios formales</strong> usando sintaxis Gherkin (DADO, CUANDO, ENTONCES) en un documento PDF.
+                    <br><br>Obligatorio: Debes incluir escenarios de éxito y escenarios donde el algoritmo reciba "basura" (ej. <code>null</code> o letras en vez de números) simulando un UAT estricto.
+                </div>
+            </div>
+            
+            <div class="card accent-r" style="background:#0a0a15;">
+                <div class="card-title" style="color:var(--err);">3. Master Test Plan</div>
+                <div class="card-body" style="font-size:1.3rem;">
+                    Crea el Test Plan en PDF (Basado en IEEE 829). Debe contener:
+                    <ul class="dot-list" style="margin-top:0.5rem; font-size:1.2rem;">
+                        <li><strong>Alcance (In/Out):</strong> ¿Qué probarás y qué NO del repo?</li>
+                        <li><strong>Entorno:</strong> Herramientas exactas a usar (Revisa Sesión 1).</li>
+                        <li><strong>Criterios:</strong> Entry / Exit Criteria.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:1.5rem; font-size:1.2rem; color:var(--muted); text-align:center;">
+            <strong>Entrega Final:</strong> Sube tu Excel (RTM + Casos) y PDF (Gherkin + Test Plan) a la plataforma EVA. Formatos <code>.zip</code> o <code>.rar</code> serán calificados con la nota mínima.
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <button class="teacher-btn" onclick="showTeacherNote(18)"><i data-lucide="info"></i></button>
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag" style="color:var(--err)">Criterios Formales</div>
+    <h2>Rúbrica de Evaluación U2</h2><div class="hdiv" style="background:var(--err)"></div>
+    <div class="content-area" style="overflow-y:auto; padding-right:1rem;">
+      <table class="rubric-table" style="background:rgba(0,0,0,0.4); border-radius:12px; overflow:hidden; width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background:var(--bg3); font-size:1.2rem;">
+            <th style="padding:1.2rem; color:var(--err); text-align:left; border-bottom:2px solid var(--err);">Dimensión</th>
+            <th style="padding:1.2rem; color:var(--err); text-align:left; border-bottom:2px solid var(--err);">Excelente (100%)</th>
+            <th style="padding:1.2rem; color:var(--err); text-align:left; border-bottom:2px solid var(--err);">Suficiente (60%)</th>
+            <th style="padding:1.2rem; color:var(--err); text-align:left; border-bottom:2px solid var(--err);">Puntaje</th>
+          </tr>
+        </thead>
+        <tbody style="font-size:1.3rem;">
+          <tr>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06);"><strong>Plan de Pruebas (IEEE 829)</strong><br><span style="font-size:1.1rem; color:var(--dim); font-weight:normal;">Estrategia</span></td>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--muted);">El documento define claramente alcance, entorno (herramientas justificadas) y criterios lógicos de entrada/salida.</td>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--muted);">Estructura básica pero omite herramientas específicas o el "Out of scope".</td>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--err); font-weight:800;">30 pts</td>
+          </tr>
+          <tr>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06);"><strong>Matriz RTM y Casos</strong><br><span style="font-size:1.1rem; color:var(--dim); font-weight:normal;">Trazabilidad y Exhaustividad</span></td>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--muted);">Traza 3 requerimientos del repo CS50 con 5+ Casos (incluyendo negativos). Formato oficial de casos perfecto.</td>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--muted);">Traza los requerimientos, pero faltan casos negativos (Edge cases) o la plantilla de casos es débil.</td>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--err); font-weight:800;">40 pts</td>
+          </tr>
+          <tr>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06);"><strong>Automatización Gherkin</strong><br><span style="font-size:1.1rem; color:var(--dim); font-weight:normal;">Sintaxis BDD</span></td>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--muted);">4 escenarios perfectos en DADO/CUANDO/ENTONCES. Cubren fallos críticos. Lenguaje de Negocio.</td>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--muted);">Escenarios presentes pero con lenguaje muy de código ("Dado que array[0] = 1") o con sintaxis rota.</td>
+            <td style="padding:1.2rem; border-bottom:1px solid rgba(255,255,255,0.06); color:var(--err); font-weight:800;">30 pts</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav-bar">
+  <div class="nav-info">
+    <span class="session-badge" id="sess-label">S1</span>
+    <span class="slide-counter" id="counter">1 / 1</span>
+    <span class="nav-title" id="slide-title"></span>
+  </div>
+  <div class="nav-controls">
+    <button class="btn-nav" id="btn-prev" onclick="go(-1)"><i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Anterior</button>
+    <button class="btn-nav primary" id="btn-next" onclick="go(1)">Siguiente <i data-lucide="arrow-right" style="width:18px;height:18px;"></i></button>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  <span class="kbd">&larr;</span> <span class="kbd">&rarr;</span> <span class="kbd">Space</span> (Navegar)
+  <span style="margin-left:15px;" class="kbd">F</span> (Fullscreen)
+</div>
+
+<div class="teacher-modal-overlay" id="t-modal" onclick="if(event.target===this)closeTeacherNote()">
+    <div class="teacher-modal">
+        <button class="teacher-modal-close" onclick="closeTeacherNote()"><i data-lucide="x"></i></button>
+        <div class="teacher-modal-header">
+            <i data-lucide="lightbulb" style="color:#fbbf24;"></i>
+            <div class="teacher-modal-title">Ayuda al Profesor</div>
+        </div>
+        <div class="teacher-modal-body" id="t-modal-content"></div>
+    </div>
+</div>
+
+<script>
+const teacherNotesData = [
+  "<div class='teacher-note-section'><h4>Contexto de Inicio</h4>Menciona cómo los QA no solo prueban software, también lideran la <strong>estrategia de inversión</strong> de la empresa. Decidir mal las herramientas o los niveles cuesta miles de dólares.</div>",
+  "<div class='teacher-note-section'><h4>Ejemplos Reales</h4>Enfatiza que para el 'MVP', hacer automatización pesada con Selenium es un error (todo el UI va a cambiar). En el 'Banco', no hacer Pentesting DAST es ilegal y motivo de multa.</div>",
+  "<div class='teacher-note-section'><h4>Las Herramientas Importan</h4>Pide a los alumnos que anoten estas herramientas. Si buscan trabajo, poner <em>'JMeter'</em> o <em>'Cypress'</em> en su LinkedIn es lo que los reclutadores filtran (¡Keyword magic!).</div>",
+  "<div class='teacher-note-section'><h4>Instrucciones 'El Estratega'</h4>Lee los escenarios rápido y dales 30 segundos. Escenario A -> Pruebas de Carga (JMeter o k6). Escenario B -> Seguridad / DAST / API Testing (OWASP ZAP o Postman). Felicita al equipo más rápido.</div>",
+  "<div class='teacher-note-section'><h4>Inicio Sesión 2</h4>Aquí bajamos de la estrategia a la táctica. De documentos aburridos de 500 páginas (cascada) a post-its que generan conversaciones de valor (agile).</div>",
+  "<div class='teacher-note-section'><h4>INVEST</h4>T de 'Testeable' es crucial para ellos. Si la historia dice 'Quiero que el sistema sea rápido', pregúntales: '¿Cómo pruebas rápido? ¿1 segundo? ¿1 milisegundo?'. Si no es medible, no es testeable.</div>",
+  "<div class='teacher-note-section'><h4>Gherkin y Cucumber</h4>Aclárales la magia: El archivo <code>.feature</code> no es un bloc de notas. Cucumber lo parsea mediante expresiones regulares y dispara scripts en Python/Java. Esto es la base del framework BDD automatizado.</div>",
+  "<div class='teacher-note-section'><h4>Dinámica: Teléfono Descompuesto</h4>Lee el correo con tono dramático y desesperado. Dales 5 minutos. Tienen que pulirlo a: 'Como Cliente, quiero ver un aviso de falta de fondos, para no fallar el pago'. Y luego el Gherkin correspondiente.</div>",
+  "<div class='teacher-note-section'><h4>Inicio Sesión 3</h4>Ya sabemos qué probar (Estrategia) y qué requiere el usuario (BDD). Ahora escribimos las pruebas para humanos en los sistemas formales (Gestión de Casos).</div>",
+  "<div class='teacher-note-section'><h4>Plantillas y Trazabilidad</h4>Un error común de los junior es escribir 'Revisar que el login funcione'. Enséñales que el caso debe ser reproducible paso a paso sin conocer la app.</div>",
+  "<div class='teacher-note-section'><h4>Jira + Xray</h4>Muestra (o platica) cómo en Jira un <em>Story</em> tiene un botón 'Create Test'. Ese link genera la RTM automáticamente en el dashboard del Jira. Excel solo lo usamos en academia por simplicidad inicial.</div>",
+  "<div class='teacher-note-section'><h4>Dinámica: Bug Bash</h4>El objetivo es pensar fuera de la caja (Edge Cases). ¿Qué pasa si ingresan una fecha de cumpleaños en el año 3050? El equipo que presente el caso negativo más ingenioso y destructivo, gana.</div>",
+  "<div class='teacher-note-section'><h4>Inicio Sesión 4</h4>El Test Plan es el 'Anillo que los gobierna a todos'. Es el contrato entre QA y Desarrollo/Gerencia.</div>",
+  "<div class='teacher-note-section'><h4>La Importancia del 'Out of Scope'</h4>Explícales que definir qué NO probar (Ej: 'No probaremos compatibilidad con Internet Explorer 8') los salva de ser culpados en producción por bugs en plataformas obsoletas.</div>",
+  "<div class='teacher-note-section'><h4>Dinámica: Shark Tank</h4>Sé un inversor duro. '¿Por qué me estás cobrando pruebas de estrés si esta app la usarán solo 5 oficinistas?'. Fomenta que ellos defiendan su estrategia basándose en los riesgos.</div>",
+  "<div class='teacher-note-section'><h4>Evaluación 2 - Contexto</h4>Aquí se unifica la asignatura. En la U1 conocieron el repositorio CS50 y propusieron 4 casos. Ahora deben <strong>orquestar el plan completo</strong> para ese mismo código.</div>",
+  "<div class='teacher-note-section'><h4>Manejo de Dudas</h4>Asegúrate de que entiendan que los 'Requerimientos' en este caso son los enunciados formales de los problemas de LeetCode/CS50. Deben probar los límites matemáticos y lógicos de esos algoritmos.</div>",
+  "<div class='teacher-note-section'><h4>Pautas Entregables</h4>RTM en Excel es obligatoria para demostrar la trazabilidad (1 requerimiento de algoritmo -> múltiples casos de prueba positivos y negativos). Gherkin debe usar lenguaje claro (DADO un array vacío, CUANDO calculo..., ENTONCES...).</div>",
+  "<div class='teacher-note-section'><h4>Rúbrica Final</h4>El Plan de Pruebas es el documento pesado (PDF). Debe estar formateado profesionalmente. Haz énfasis en la presentación visual de sus entregables, ya que simula un reporte a gerencia.</div>"
+];
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0;
+
+const slideTitles = slides.map(s => {
+  const h = s.querySelector('h1,h2');
+  return h ? h.textContent.replace(/\s+/g,' ').trim() : '';
+});
+const slideSessions = slides.map(s => parseInt(s.getAttribute('data-session')) || 0);
+
+function update(){
+  slides.forEach((s,i) => {
+    s.classList.remove('active','prev');
+    if (i === cur) s.classList.add('active');
+    else if (i < cur) s.classList.add('prev');
+  });
+  
+  document.getElementById('prog').style.width = ((cur+1)/total*100)+'%';
+  document.getElementById('counter').textContent = (cur+1)+' / '+total;
+  document.getElementById('slide-title').textContent = (slideTitles[cur] || '').substring(0,60);
+  
+  const currentSession = slideSessions[cur];
+  const tabNames = ['S1', 'S2', 'S3', 'S4', 'EVAL'];
+  document.getElementById('sess-label').textContent = tabNames[currentSession] || 'INFO';
+  if(currentSession === 4) {
+      document.getElementById('sess-label').style.background = 'var(--err)';
+      document.getElementById('prog').style.background = 'linear-gradient(90deg, var(--err), var(--warn))';
+  } else {
+      document.getElementById('sess-label').style.background = 'var(--p)';
+      document.getElementById('prog').style.background = 'linear-gradient(90deg, var(--p), var(--c2))';
+  }
+  
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const activeTab = document.querySelector(`.tab[data-ses="${currentSession}"]`);
+  if(activeTab) activeTab.classList.add('active');
+
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = cur === total-1;
+}
+
+function jumpSession(ses){
+  const targetIndex = slideSessions.indexOf(ses);
+  if(targetIndex !== -1) {
+    cur = targetIndex;
+    update();
+  }
+}
+
+function go(d){
+  cur = Math.max(0, Math.min(total-1, cur+d));
+  update();
+}
+
+function showTeacherNote(i) {
+    const data = teacherNotesData[i];
+    if(!data) return;
+    document.getElementById('t-modal-content').innerHTML = data;
+    document.getElementById('t-modal').classList.add('open');
+}
+function closeTeacherNote() {
+    document.getElementById('t-modal').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); go(-1); }
+  if (e.key === 'f' || e.key === 'F'){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+  if (e.key === 'Home') { cur=0; update(); }
+  if (e.key === 'End') { cur=total-1; update(); }
+});
+
+update();
+lucide.createIcons();
+</script>
+</body>
+</html>

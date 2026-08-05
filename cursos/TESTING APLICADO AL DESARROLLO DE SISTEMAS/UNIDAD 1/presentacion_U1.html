@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidad 1 — Testing de Software | IF203IINF</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Cytoscape.js for interactive diagram -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.23.0/cytoscape.min.js"></script>
+<script src="https://unpkg.com/dagre@0.8.5/dist/dagre.min.js"></script>
+<script src="https://unpkg.com/cytoscape-dagre@2.4.0/cytoscape-dagre.js"></script>
+<style>
+:root{
+  --p:#6366f1;--pl:#818cf8;--pd:#4f46e5;--c2:#06b6d4;--acc:#f59e0b;
+  --ok:#10b981;--err:#ef4444;--warn:#f59e0b;
+  --bg:#0a0a15;--bg2:#111120;--bg3:#1a1a2e;--card:#16162a;
+  --border:rgba(99,102,241,.25);--text:#f8fafc;--muted:#cbd5e1;--dim:#94a3b8;
+  --glass:rgba(255,255,255,.05);--gb:rgba(255,255,255,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:13px;} /* Restored original perceived font sizes */
+.deck{width:100vw;height:100vh;position:relative;overflow:hidden;}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transform:translateX(80px);
+  transition:opacity .5s cubic-bezier(0.4, 0, 0.2, 1),transform .5s cubic-bezier(0.4, 0, 0.2, 1);
+  background:var(--bg);overflow:hidden;
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide.prev{transform:translateX(-80px);}
+.slide::before{
+  content:'';position:absolute;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(99,102,241,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,.06) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+/* Flex layouts to fill screen */
+.slide-inner{
+    position:relative;z-index:1;flex:1;
+    display:flex;flex-direction:column;
+    padding:4rem 6rem; /* Increased padding */
+    padding-bottom:100px;
+    overflow-y:auto;
+}
+/* Center content vertically if desired */
+.slide-inner.centered {
+    justify-content: center;
+}
+.slide-inner::-webkit-scrollbar{width:8px;}
+.slide-inner::-webkit-scrollbar-thumb{background:var(--p);border-radius:4px;}
+
+/* Orbs for visual flair */
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;}
+.orb1{width:700px;height:700px;background:rgba(99,102,241,.12);top:-150px;right:-150px;}
+.orb2{width:500px;height:500px;background:rgba(6,182,212,.08);bottom:-100px;left:-100px;}
+
+/* Nav */
+.nav-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(10,10,21,.95);backdrop-filter:blur(24px);
+  border-top:1px solid var(--gb);height:80px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 3rem;
+}
+.nav-info{display:flex;align-items:center;gap:1.5rem;}
+.session-badge{background:var(--p);color:#fff;padding:.4rem 1rem;border-radius:10px;font-size:1rem;font-weight:800;letter-spacing:.05em;}
+.slide-counter{font-size:1rem;color:var(--muted);font-weight:600;}
+.nav-title{font-size:1.1rem;color:var(--dim);max-width:600px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;}
+.nav-controls{display:flex;align-items:center;gap:1rem;}
+.btn-nav{background:var(--glass);border:1px solid var(--gb);color:var(--text);padding:.75rem 1.75rem;border-radius:10px;cursor:pointer;font-size:1.1rem;font-weight:700;transition:all .2s;font-family:inherit;}
+.btn-nav:hover{background:rgba(99,102,241,.2);border-color:var(--border);}
+.btn-nav:disabled{opacity:.3;cursor:not-allowed;}
+.btn-nav.primary{background:linear-gradient(135deg,var(--p),var(--pd));border-color:transparent;box-shadow:0 8px 24px rgba(99,102,241,.4);display:flex;align-items:center;gap:0.5rem;}
+.btn-nav.primary:hover{box-shadow:0 12px 32px rgba(99,102,241,.6);transform:translateY(-2px);}
+
+.progress-track{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(255,255,255,.08);z-index:200;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--c2));transition:width .4s ease;}
+.session-tabs{position:fixed;top:0;left:0;right:0;z-index:150;display:flex;background:rgba(10,10,21,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--gb);height:60px;padding-top:4px;}
+.tab{flex:1;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;color:var(--dim);cursor:pointer;border-bottom:3px solid transparent;transition:all .2s;letter-spacing:.05em;text-transform:uppercase;}
+.tab:hover{color:var(--muted);}
+.tab.active{color:var(--text);border-bottom-color:var(--p);background:rgba(99,102,241,.1);}
+
+/* Typography scaled up */
+.slide-tag{font-size:1.3rem;font-weight:800;color:var(--pl);letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;margin-top:60px;}
+.slide h1{font-size:clamp(3rem, 4.5vw, 4rem);font-weight:900;line-height:1.15;margin-bottom:1.25rem;}
+.slide h2{font-size:clamp(2.2rem, 3vw, 2.8rem);font-weight:900;color:#fff;margin-bottom:1.25rem;line-height:1.2;}
+.slide h3{font-size:2rem;font-weight:800;color:var(--pl);margin-bottom:1rem;margin-top:1rem;}
+.slide p{color:var(--muted);line-height:1.6;font-size:1.6rem;}
+.gradient-text{background:linear-gradient(135deg,#fff 0%,var(--pl) 50%,var(--c2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* Flexible Content Blocks */
+.content-area {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-evenly;
+}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--gb);border-radius:16px;padding:1.5rem 2rem;display:flex;flex-direction:column;justify-content:center;}
+.card-grid{display:grid;gap:1.5rem;flex:1;}
+.card-grid-2{grid-template-columns:1fr 1fr;}
+.card-grid-3{grid-template-columns:repeat(3,1fr);}
+.card.accent-p{border-left:5px solid var(--p);}
+.card.accent-c{border-left:5px solid var(--c2);}
+.card.accent-g{border-left:5px solid var(--ok);}
+.card.accent-y{border-left:5px solid var(--acc);}
+.card.accent-r{border-left:5px solid var(--err);}
+.card-icon{display:inline-flex;color:var(--text);margin-bottom:0.75rem;}
+.card-icon svg {width:42px;height:42px;stroke-width:1.5px;}
+.card-title{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:0.5rem;}
+.card-body{font-size:1.4rem;color:var(--muted);line-height:1.6;}
+.card-num{font-size:1.4rem;font-weight:900;color:var(--pl);letter-spacing:.1em;margin-bottom:.5rem;opacity:0.8;}
+
+.quote{background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-left:6px solid var(--p);border-radius:0 16px 16px 0;padding:1.5rem 2rem;font-size:1.4rem;color:var(--text);line-height:1.6;font-style:italic;margin:1rem 0;box-shadow: 0 10px 20px rgba(0,0,0,0.15);}
+.quote strong{color:var(--pl);font-style:normal;}
+
+pre,code{font-family:'JetBrains Mono',monospace;}
+.code-block{background:#0d0d1f;border:1px solid var(--gb);border-radius:12px;padding:1.5rem;font-size:1.4rem;color:#a5b4fc;line-height:1.6;overflow-x:auto;white-space:pre;box-shadow:inset 0 2px 10px rgba(0,0,0,0.3);}
+.code-block .kw{color:#c084fc;font-weight:700;}.code-block .fn{color:#67e8f9;}.code-block .ok{color:#4ade80;}.code-block .er{color:#f87171;}.code-block .cm{color:#6b7280;font-style:italic;}.code-block .st{color:#fbbf24;}
+
+/* Tables scaled */
+.tbl{width:100%;border-collapse:collapse;font-size:1.4rem;}
+.tbl th{text-align:left;padding:1rem 1.5rem;background:var(--bg3);color:var(--pl);font-size:1.2rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;border-bottom:2px solid var(--p);}
+.tbl td{padding:1.2rem 1.5rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top;line-height:1.6;}
+.tbl tr:hover td{background:rgba(255,255,255,.03);color:var(--text);}
+.tbl code{background:rgba(99,102,241,.15);color:#a5b4fc;padding:.2rem .5rem;border-radius:6px;font-size:1.3rem;}
+
+.tag{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:8px;font-size:1.1rem;font-weight:700;letter-spacing:0.03em;}
+.tag svg{width:16px;height:16px;}
+.tag-p{background:rgba(99,102,241,.2);color:#c7d2fe;border:1px solid rgba(99,102,241,.4);}
+.tag-g{background:rgba(16,185,129,.2);color:#6ee7b7;border:1px solid rgba(16,185,129,.4);}
+.tag-y{background:rgba(245,158,11,.2);color:#fde68a;border:1px solid rgba(245,158,11,.4);}
+.tag-r{background:rgba(239,68,68,.2);color:#fca5a5;border:1px solid rgba(239,68,68,.4);}
+.tag-c{background:rgba(6,182,212,.2);color:#a5f3fc;border:1px solid rgba(6,182,212,.4);}
+
+.check-list{list-style:none;display:flex;flex-direction:column;gap:.8rem;}
+.check-list li{display:flex;align-items:flex-start;gap:.8rem;font-size:1.6rem;color:var(--muted);line-height:1.5;}
+.check-list li::before{content:'';display:inline-block;width:24px;height:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310b981' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:2px;}
+
+.dot-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+.dot-list li{display:flex;align-items:flex-start;gap:.7rem;font-size:1.55rem;color:var(--muted);line-height:1.5;}
+.dot-list li::before{content:'';display:inline-block;width:20px;height:20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23818cf8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E");flex-shrink:0;margin-top:3px;}
+
+.cols{display:grid;gap:2rem;flex:1;}
+.cols-2{grid-template-columns:1fr 1fr;}
+.cols-3{grid-template-columns:1fr 1fr 1fr;}
+
+.hdiv{height:2px;background:linear-gradient(90deg, var(--p), transparent);margin:1.5rem 0;opacity:0.6;}
+
+/* Dynamic Text-Fit support across slides */
+[style*="text-fit"], [data-text-fit], .text-fit {
+  overflow: hidden;
+}
+
+/* Principles layout */
+.principle{display:flex;gap:1.5rem;padding:2rem;border-radius:16px;background:var(--card);border:1px solid var(--gb);align-items:center;box-shadow: 0 4px 15px rgba(0,0,0,0.2);}
+.principle-num{font-size:4rem;font-weight:900;color:var(--pl);opacity:.4;min-width:80px;text-align:center;}
+.principle-text{flex:1;}
+.principle-text .ptitle{font-size:22px;font-weight:800;color:#fff;margin-bottom:.5rem;}
+.principle-text .pdesc{font-size:18px;color:var(--muted);line-height:1.6;}
+
+/* Cover layout */
+.cover{justify-content:center;align-items:center;text-align:center;}
+.cover-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.4);color:var(--pl);padding:.6rem 1.5rem;border-radius:999px;font-size:1rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem;}
+.cover-sub{font-size:1.4rem;color:var(--muted);max-width:800px;margin:0 auto;line-height:1.6;}
+
+/* Activity Slide styling */
+.activity-banner {
+    background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(99,102,241,0.2));
+    border: 2px solid rgba(139,92,246,0.4);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(139,92,246,0.15);
+    flex: 1;
+    justify-content: center;
+}
+.activity-icon {
+    display:flex;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 0 15px rgba(139,92,246,0.5));
+    color: var(--pl);
+}
+.activity-icon svg{width:80px;height:80px;stroke-width:1.5px;}
+.activity-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+.activity-desc {
+    font-size: 1.3rem;
+    color: var(--muted);
+    max-width: 800px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+.check-item{background:var(--card);border:1px solid var(--gb);border-radius:14px;padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;font-size:1.2rem;color:var(--muted);line-height:1.6;box-shadow: 0 4px 15px rgba(0,0,0,0.15);}
+.check-item::before{content:'';display:inline-block;width:24px;height:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334d399' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'/%3E%3Cpolyline points='22 4 12 14.01 9 11.01'/%3E%3C/svg%3E");flex-shrink:0;margin-top:2px;}
+
+.timeline{position:relative;padding-left:2.5rem;flex:1;display:flex;flex-direction:column;justify-content:space-between;}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(to bottom,var(--p),var(--c2),transparent);border-radius:2px;}
+.tl-item{position:relative;}
+.tl-dot{position:absolute;left:-2.85rem;top:.4rem;width:18px;height:18px;border-radius:50%;background:var(--p);border:3px solid var(--bg);box-shadow:0 0 12px var(--p);display:flex;align-items:center;justify-content:center;}
+.tl-label{font-size:.9rem;font-weight:800;color:var(--pl);letter-spacing:.1em;margin-bottom:.25rem;}
+.tl-title{font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:.25rem;}
+.tl-desc{font-size:1.1rem;color:var(--muted);line-height:1.5;}
+
+.kbd-hint{position:fixed;bottom:90px;right:2.5rem;font-size:.9rem;color:var(--dim);display:flex;gap:.5rem;align-items:center;z-index:201;font-weight:600;}
+.kbd{background:var(--bg3);border:1px solid var(--gb);border-radius:6px;padding:.2rem .6rem;font-size:.85rem;font-family:'JetBrains Mono',monospace;color:var(--text);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .6s cubic-bezier(0.4, 0, 0.2, 1) both;}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+.pulse{animation:pulse 2.5s ease-in-out infinite;}
+
+/* Teacher Help Button & Modal */
+.teacher-btn{position:absolute;top:75px;right:2rem;z-index:100;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#fbbf24;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;font-size:0;}
+.teacher-btn:hover{background:rgba(245,158,11,.3);transform:scale(1.1);box-shadow:0 0 20px rgba(245,158,11,.3);}
+.teacher-btn svg{width:24px;height:24px;pointer-events:none;}
+.teacher-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);z-index:500;justify-content:center;align-items:center;}
+.teacher-modal-overlay.open{display:flex;}
+.teacher-modal{background:var(--bg2);border:1px solid rgba(245,158,11,.3);border-radius:20px;padding:2.5rem;max-width:800px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.5);position:relative;}
+.teacher-modal::-webkit-scrollbar{width:6px;}
+.teacher-modal::-webkit-scrollbar-thumb{background:var(--acc);border-radius:3px;}
+.teacher-modal-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid rgba(245,158,11,.2);}
+.teacher-modal-header svg{color:#fbbf24;width:28px;height:28px;flex-shrink:0;}
+.teacher-modal-title{font-size:1.6rem;font-weight:800;color:#fbbf24;}
+.teacher-modal-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--muted);cursor:pointer;padding:.5rem;border-radius:8px;transition:all .2s;}
+.teacher-modal-close:hover{background:rgba(255,255,255,.1);color:#fff;}
+.teacher-modal-close svg{width:20px;height:20px;}
+.teacher-modal-body{font-size:1.35rem;color:var(--muted);line-height:1.8;}
+.teacher-modal-body strong{color:#fbbf24;}
+.teacher-modal-body em{color:var(--pl);font-style:normal;}
+.teacher-note-section{margin-bottom:1.25rem;padding-left:1rem;border-left:3px solid rgba(245,158,11,.3);}
+.teacher-note-section h4{font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:.5rem;}
+
+/* Periodic Table of Testing Tools */
+.periodic-table {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  gap: 4px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.pt-element {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: default;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.pt-element:hover {
+  transform: scale(1.6) !important;
+  z-index: 20;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+}
+.pt-element .symbol {
+  font-size: 1rem;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 2px;
+}
+.pt-element .name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.pt-element .type {
+  font-size: 0.5rem;
+  opacity: 0.8;
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.pt-icon {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  opacity: 0.4;
+  width: 12px;
+  height: 12px;
+}
+.pt-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pt-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.pt-legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+/* PT Colors */
+.pt-unit { background: linear-gradient(135deg, #059669, #047857); border: 1px solid #10b981; } /* Emerald */
+.pt-api { background: linear-gradient(135deg, #0284c7, #0369a1); border: 1px solid #0ea5e9; } /* Sky */
+.pt-e2e { background: linear-gradient(135deg, #7c3aed, #6d28d9); border: 1px solid #8b5cf6; } /* Violet */
+.pt-mob { background: linear-gradient(135deg, #d946ef, #c026d3); border: 1px solid #e879f9; } /* Fuchsia */
+.pt-vis { background: linear-gradient(135deg, #0d9488, #0f766e); border: 1px solid #14b8a6; } /* Teal */
+.pt-perf { background: linear-gradient(135deg, #d97706, #b45309); border: 1px solid #f59e0b; } /* Amber */
+.pt-sec { background: linear-gradient(135deg, #dc2626, #b91c1c); border: 1px solid #ef4444; } /* Red */
+.pt-ops { background: linear-gradient(135deg, #ea580c, #c2410c); border: 1px solid #f97316; } /* Orange */
+.pt-mgt { background: linear-gradient(135deg, #475569, #334155); border: 1px solid #64748b; } /* Slate */
+.pt-bdd { background: linear-gradient(135deg, #ec4899, #be185d); border: 1px solid #f472b6; } /* Pink */
+.pt-ci { background: linear-gradient(135deg, #52525b, #3f3f46); border: 1px solid #71717a; } /* Zinc */
+</style>
+</head>
+<body>
+<div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+<div class="session-tabs" id="tabs">
+  <div class="tab active" data-ses="0" onclick="jumpSession(0)">S1 — Fundamentos</div>
+  <div class="tab" data-ses="1" onclick="jumpSession(1)">S2 — Unitaria e Integracion</div>
+  <div class="tab" data-ses="2" onclick="jumpSession(2)">S3 — Técnicas Básicas</div>
+  <div class="tab" data-ses="3" onclick="jumpSession(3)">S4 — El Plan (Intro)</div>
+  <div class="tab" data-ses="4" onclick="jumpSession(4)">S5 — Taxonomía de Pruebas</div>
+</div>
+<div class="deck" id="deck">
+
+<div class="slide cover" data-session="0">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in"><i data-lucide="book-open" style="width:18px;height:18px;"></i>&nbsp;IF203IINF · IPSS · 2026</div>
+        <div class="slide-tag fade-in" style="margin-top:0;">UNIDAD 1 — SESION 1</div>
+        <h1 class="gradient-text fade-in">Introduccion al Testing<br>y Principios Fundamentales</h1>
+        <p class="cover-sub fade-in">¿Qué es el testing? ¿Por qué importa? Análisis detallado de los 7 principios ISTQB y la taxonomía completa de errores de software. Casos de estudio y costos.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 1</div>
+    <h2>Agenda de la Sesion (Desglose)</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+        <div class="card accent-p"><div class="card-num">01</div><div class="card-title">Impacto Financiero y Reputacional</div><div class="card-body">Desglose del costo del error a lo largo del SDLC. Casos: Therac-25 (pérdida de vidas), Ariane 5 (pérdida financiera), Y2K.</div></div>
+        <div class="card accent-c"><div class="card-num">02</div><div class="card-title">Definición Exhaustiva del Testing</div><div class="card-body">Diferencia crítica entre Validación (construir lo correcto) y Verificación (construir correctamente). El QA como filosofía.</div></div>
+        <div class="card accent-g"><div class="card-num">03</div><div class="card-title">La Taxonomía del Fallo</div><div class="card-body">Error (psicológico) -> Defecto (estructural) -> Falla (comportamiento observable). Trazabilidad de la causa raíz.</div></div>
+        <div class="card accent-y"><div class="card-num">04</div><div class="card-title">Análisis Profundo de los 7 Principios</div><div class="card-body">Interpretación de cada principio ISTQB con ejemplos aplicados al desarrollo ágil y tradicional moderno.</div></div>
+        <div class="card accent-r"><div class="card-num">05</div><div class="card-title">Matriz de Severidad vs Prioridad</div><div class="card-body">Clasificaciones funcionales vs no funcionales. Cómo decidir qué arreglar primero (Bloqueante, Crítico, Mayor, Menor).</div></div>
+        <div class="card" style="border-left:5px solid #8b5cf6; background: rgba(139,92,246,0.1);"><div class="card-num">06</div><div class="card-title">Práctica Forense</div><div class="card-body">Actividad "Detective de Bugs": aplicando la taxonomía a un desastre real.</div></div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 1</div>
+    <h2>El Costo del Error a través del Ciclo (SDLC)</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        
+<svg viewBox="0 0 400 200" style="width:100%; height:auto; max-height: 35vh; margin-bottom:1.5rem;">
+    <!-- Grid -->
+    <path d="M50,150 L380,150" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
+    <path d="M50,150 L50,20" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
+    <!-- Curve -->
+    <path d="M50,140 Q 200,140 350,30" stroke="#ef4444" stroke-width="5" fill="none" class="pulse-path"/>
+    <!-- Points -->
+    <circle cx="50" cy="140" r="8" fill="#34d399"/>
+    <text x="35" y="175" fill="white" font-size="14" font-weight="600">Requisitos</text>
+    
+    <circle cx="125" cy="135" r="8" fill="#10b981"/>
+    <text x="110" y="175" fill="white" font-size="14" font-weight="600">Diseño</text>
+    
+    <circle cx="200" cy="120" r="8" fill="#fcd34d"/>
+    <text x="180" y="175" fill="white" font-size="14" font-weight="600">Código</text>
+    
+    <circle cx="275" cy="90" r="8" fill="#f97316"/>
+    <text x="255" y="175" fill="white" font-size="14" font-weight="600">Testing</text>
+    
+    <circle cx="350" cy="30" r="10" fill="#ef4444" class="pulse-point"/>
+    <text x="320" y="175" fill="white" font-size="14" font-weight="600">Producción</text>
+    
+    <text x="10" y="90" fill="white" font-size="14" font-weight="bold" transform="rotate(-90 20,90)">Costo ($)</text>
+</svg>
+<style>
+@keyframes pulse-p { 0% { r:8; } 50% { r:14; } 100% { r:8; } }
+.pulse-point { animation: pulse-p 2s infinite ease-in-out; }
+</style>
+
+        <div class="quote" style="margin-top:0;">El "Efecto Bola de Nieve": Un error arquitectónico detectado en Producción obliga a reescribir código, migrar datos y parchar APIs.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:1rem;">
+        <div class="card accent-r">
+          <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1rem;">
+              <div class="card-icon" style="color:#f87171;margin:0;"><i data-lucide="rocket"></i></div>
+              <div class="card-title" style="margin:0;">Ariane 5 (Pérdida Financiera)</div>
+          </div>
+          <div class="card-body">Se reutilizó código del Ariane 4 que asumía velocidades menores. Al superar la velocidad límite, una variable <code>float</code> de 64-bit causó un <i>overflow</i> al convertirse en un <code>int</code> de 16-bit. <br><br><strong>Consecuencia:</strong> Pérdida total en 37s ($370M). <strong>Lección:</strong> Reutilizar código sin probar el nuevo contexto viola principios de testing.</div>
+        </div>
+        <div class="card accent-p">
+          <div style="display:flex; align-items:center; gap:1.5rem; margin-bottom:1rem;">
+              <div class="card-icon" style="color:#c084fc;margin:0;"><i data-lucide="shield-alert"></i></div>
+              <div class="card-title" style="margin:0;">Knight Capital (Pérdida de Negocio)</div>
+          </div>
+          <div class="card-body">En 2012, un código huérfano (no testeado durante un despliegue) se activó por error, ejecutando millones de compras de acciones en minutos. <br><br><strong>Consecuencia:</strong> Pérdida de $440M en 45 min y quiebra. <strong>Lección:</strong> Faltaron pruebas de regresión y aislamientos de entorno.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 1</div>
+    <h2>Testing: Validación vs. Verificación</h2><div class="hdiv"></div>
+    <div class="content-area">
+        
+<div style="display:flex; justify-content:space-between; align-items:stretch; background:var(--glass); padding:2rem; border-radius:16px; margin-bottom:2rem; width:100%; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+    <div style="text-align:center; flex:1; display:flex; flex-direction:column; justify-content:center;"><div style="background:var(--p); color:white; padding:1.2rem; border-radius:12px; font-weight:800; font-size:1.4rem;">Requisitos</div></div>
+    <div style="color:var(--muted); margin:0 15px; display:flex; align-items:center;"><i data-lucide="arrow-right" style="width:32px;height:32px;"></i></div>
+    <div style="text-align:center; flex:1; display:flex; flex-direction:column; justify-content:center;"><div style="background:var(--c2); color:white; padding:1.2rem; border-radius:12px; font-weight:800; font-size:1.4rem;">Diseño</div></div>
+    <div style="color:var(--muted); margin:0 15px; display:flex; align-items:center;"><i data-lucide="arrow-right" style="width:32px;height:32px;"></i></div>
+    <div style="text-align:center; flex:1; display:flex; flex-direction:column; justify-content:center;"><div style="background:var(--ok); color:white; padding:1.2rem; border-radius:12px; font-weight:800; font-size:1.4rem;">Desarrollo</div></div>
+    <div style="color:var(--muted); margin:0 15px; display:flex; align-items:center;"><i data-lucide="arrow-right" style="width:32px;height:32px;"></i></div>
+    <div style="text-align:center; flex:1; display:flex; flex-direction:column; justify-content:center;"><div style="background:var(--err); color:white; padding:1.2rem; border-radius:12px; font-weight:900; font-size:1.5rem; box-shadow:0 0 25px rgba(239,68,68,0.6); transform:scale(1.05);">Testing</div></div>
+    <div style="color:var(--muted); margin:0 15px; display:flex; align-items:center;"><i data-lucide="arrow-right" style="width:32px;height:32px;"></i></div>
+    <div style="text-align:center; flex:1; display:flex; flex-direction:column; justify-content:center;"><div style="background:var(--acc); color:white; padding:1.2rem; border-radius:12px; font-weight:800; font-size:1.4rem;">Despliegue</div></div>
+</div>
+
+        
+        <div class="cols cols-2" style="margin-top:2rem;">
+            <div class="card accent-p">
+                <div style="display:flex;gap:1.5rem;align-items:center;margin-bottom:1rem;">
+                    <div class="card-icon" style="color:var(--p);"><i data-lucide="check-circle-2"></i></div>
+                    <div class="card-title" style="margin:0;">Validación (Negocio)</div>
+                </div>
+                <div class="card-body">
+                    <strong>¿Estamos construyendo el producto CORRECTO?</strong><br>
+                    Asegura que el software cumple con las necesidades reales del usuario y resuelve su problema.
+                    <ul class="dot-list" style="margin-top:1rem;">
+                        <li>Se evalúa contra Requerimientos de Usuario.</li>
+                        <li>Participa el cliente final.</li>
+                        <li>Ej: <i>"¿El botón de pago es fácil de encontrar?"</i></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card accent-c">
+                <div style="display:flex;gap:1.5rem;align-items:center;margin-bottom:1rem;">
+                    <div class="card-icon" style="color:var(--c2);"><i data-lucide="check-square"></i></div>
+                    <div class="card-title" style="margin:0;">Verificación (Técnica)</div>
+                </div>
+                <div class="card-body">
+                    <strong>¿Estamos construyendo CORRECTAMENTE el producto?</strong><br>
+                    Asegura que el software cumple de manera precisa con su documentación técnica y arquitectura.
+                    <ul class="dot-list" style="margin-top:1rem;">
+                        <li>Se evalúa contra Especificaciones del Sistema.</li>
+                        <li>Participa el equipo DEV y QA técnico.</li>
+                        <li>Ej: <i>"¿La API encripta el password en SHA-256?"</i></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 1</div>
+    <h2>Taxonomía: Error, Defecto y Falla</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div style="display:flex;align-items:center;justify-content:center;gap:2rem;margin-bottom:2rem;flex-wrap:wrap;">
+        <div style="flex:1;background:rgba(239,68,68,.1);border:3px solid rgba(239,68,68,.5);border-radius:16px;padding:2rem;color:#f87171;font-size:1.6rem;font-weight:900;text-align:center;"><i data-lucide="user-x" style="width:60px;height:60px;margin-bottom:1rem;"></i><br>Error<br><span style="font-size:1.1rem;font-weight:600;opacity:0.8;">(Acción Humana)</span></div>
+        <div style="color:var(--pl);"><i data-lucide="arrow-right" style="width:48px;height:48px;"></i></div>
+        <div style="flex:1;background:rgba(99,102,241,.1);border:3px solid rgba(99,102,241,.5);border-radius:16px;padding:2rem;color:#a5b4fc;font-size:1.6rem;font-weight:900;text-align:center;"><i data-lucide="bug" style="width:60px;height:60px;margin-bottom:1rem;"></i><br>Defecto<br><span style="font-size:1.1rem;font-weight:600;opacity:0.8;">(Código/Artifact)</span></div>
+        <div style="color:var(--pl);"><i data-lucide="arrow-right" style="width:48px;height:48px;"></i></div>
+        <div style="flex:1;background:rgba(245,158,11,.1);border:3px solid rgba(245,158,11,.5);border-radius:16px;padding:2rem;color:#fcd34d;font-size:1.6rem;font-weight:900;text-align:center;"><i data-lucide="alert-octagon" style="width:60px;height:60px;margin-bottom:1rem;"></i><br>Falla<br><span style="font-size:1.1rem;font-weight:600;opacity:0.8;">(Comportamiento)</span></div>
+        </div>
+        
+        <div class="card-grid card-grid-3">
+        <div class="card accent-r">
+            <div class="tag tag-r" style="margin-bottom:1rem; align-self:flex-start;">Causa Raíz</div>
+            <div class="card-body">Una distracción, cansancio, malentendido de los requisitos o falta de conocimiento del desarrollador o analista.<br><br><strong>El humano se equivoca.</strong></div>
+        </div>
+        <div class="card accent-p">
+            <div class="tag tag-p" style="margin-bottom:1rem; align-self:flex-start;">Manifestación Estática</div>
+            <div class="card-body">El error humano genera una pieza de código incorrecta (el <i>bug</i>). Puede existir en el código por años sin causar daño si nunca se ejecuta ese camino específico.</div>
+        </div>
+        <div class="card accent-y">
+            <div class="tag tag-y" style="margin-bottom:1rem; align-self:flex-start;">Manifestación Dinámica</div>
+            <div class="card-body">Cuando el software está corriendo y pasa exactamente por el Defecto bajo ciertas condiciones, el sistema colapsa o entrega un resultado erróneo al usuario.</div>
+        </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 1</div>
+    <h2>Los 7 Principios (Parte 1: 1 al 4)</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+        <div class="principle" style="flex-direction:column; align-items:flex-start; gap:1rem;">
+            <div style="display:flex; align-items:center; gap:1rem;"><div class="principle-num" style="min-width:auto;">01</div><div class="ptitle" style="color:var(--pl);">El testing muestra defectos</div></div>
+            <div class="pdesc">El testing puede demostrar empíricamente que existen defectos, pero <strong>no puede probar matemáticamente que no los hay</strong>. El testing reduce la probabilidad de fallas ocultas, pero no es una garantía absoluta de perfección.</div>
+        </div>
+        <div class="principle" style="flex-direction:column; align-items:flex-start; gap:1rem;">
+            <div style="display:flex; align-items:center; gap:1rem;"><div class="principle-num" style="min-width:auto;">02</div><div class="ptitle" style="color:var(--pl);">El testing exhaustivo es imposible</div></div>
+            <div class="pdesc">Probar TODAS las combinaciones de datos (entradas, precondiciones, estados) es inviable. Una simple pantalla de login con 2 campos de 10 caracteres genera trillones de combinaciones. Se debe <strong>priorizar por riesgo corporativo</strong>.</div>
+        </div>
+        <div class="principle" style="flex-direction:column; align-items:flex-start; gap:1rem;">
+            <div style="display:flex; align-items:center; gap:1rem;"><div class="principle-num" style="min-width:auto;">03</div><div class="ptitle" style="color:var(--pl);">Testing temprano (Shift-Left)</div></div>
+            <div class="pdesc">El testing no es una "fase al final". Debe comenzar en el levantamiento de requisitos. Validar un diseño o un documento de arquitectura ahorra tener que re-codificar sistemas enteros meses después.</div>
+        </div>
+        <div class="principle" style="flex-direction:column; align-items:flex-start; gap:1rem;">
+            <div style="display:flex; align-items:center; gap:1rem;"><div class="principle-num" style="min-width:auto;">04</div><div class="ptitle" style="color:var(--pl);">Agrupación de defectos (Pareto)</div></div>
+            <div class="pdesc">El 80% de los defectos operativos suele concentrarse en el 20% de los módulos centrales. Los sistemas de pago o integración legacy suelen ser nidos de bugs. <strong>Allí debe ir el esfuerzo de QA.</strong></div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 1</div>
+    <h2>Los 7 Principios (Parte 2: 5 al 7)</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="cols cols-2">
+            <div class="principle" style="flex-direction:column; align-items:flex-start; gap:1rem;">
+                <div style="display:flex; align-items:center; gap:1rem;"><div class="principle-num" style="min-width:auto;">05</div><div class="ptitle" style="color:var(--pl);">La paradoja del pesticida</div></div>
+                <div class="pdesc">Si corres los mismos 100 tests todos los días, dejarán de encontrar bugs nuevos, porque el código ya se inmunizó contra ellos (ya se arreglaron). Los tests <strong>deben ser revisados, rotados y ampliados</strong> constantemente para explorar nuevos caminos del software.</div>
+            </div>
+            <div class="principle" style="flex-direction:column; align-items:flex-start; gap:1rem;">
+                <div style="display:flex; align-items:center; gap:1rem;"><div class="principle-num" style="min-width:auto;">06</div><div class="ptitle" style="color:var(--pl);">El testing depende del contexto</div></div>
+                <div class="pdesc">No se puede usar la misma metodología para todo. Una web promocional de Coca-Cola requiere énfasis en UI/UX y cargas masivas rápidas, pero puede tolerar un bug menor. Un software de control de tráfico aéreo requiere rigor matemático, certificación DO-178C y tolerancia cero a fallas.</div>
+            </div>
+        </div>
+        <div class="principle" style="margin-top:2rem; border-color:var(--err); background:rgba(239,68,68,0.05);">
+            <div class="principle-num" style="color:var(--err);">07</div>
+            <div class="principle-text">
+                <div class="ptitle" style="color:var(--err); font-size:1.6rem;">La ilusión de la ausencia de defectos (Falsa Seguridad)</div>
+                <div class="pdesc">Puedes tener un sistema con cobertura de código 100%, automatizado perfectamente, y 0 bugs reportados... pero si el software es difícil de usar, no cumple las normativas legales actuales, o no es lo que el cliente realmente necesitaba para su proceso de ventas, <strong>el proyecto es un fracaso absoluto.</strong> Calidad no es solo "falta de errores".</div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="0">
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Actividad Práctica — Sesion 1</div>
+    <div class="activity-banner">
+        <div class="activity-icon"><i data-lucide="scan-search" style="width:80px;height:80px;"></i></div>
+        <div class="activity-title">Detective de Bugs</div>
+        <div class="activity-desc">Aplicando la Teoría a la Práctica Real. Lee el caso histórico asignado (Therac-25 o Knight Capital) y elabora un Análisis Forense detallado.</div>
+        
+        <div class="card-grid card-grid-3" style="width:100%; text-align:left; margin-top:2rem;">
+            <div class="card accent-c" style="background:rgba(0,0,0,0.5);">
+                <div class="card-title" style="color:var(--c2);">1. Mapear el Desastre</div>
+                <div class="card-body">Clasifica qué fue exactamente el Error humano, el Defecto en el código, y la Falla del sistema en el caso estudiado. Se súper específico con la taxonomía.</div>
+            </div>
+            <div class="card accent-p" style="background:rgba(0,0,0,0.5);">
+                <div class="card-title" style="color:var(--pl);">2. Conectar Principios</div>
+                <div class="card-body">¿Qué principios del ISTQB fueron violados gravemente por el equipo original? (Ej: ¿Probaron exhaustivamente? ¿Fue un testing temprano?).</div>
+            </div>
+            <div class="card accent-g" style="background:rgba(0,0,0,0.5);">
+                <div class="card-title" style="color:var(--ok);">3. Informe Forense</div>
+                <div class="card-body">Redacta una conclusión técnica sobre cómo se podría haber mitigado este escenario utilizando metodologías modernas de aseguramiento de calidad.</div>
+            </div>
+        </div>
+        
+        <div style="margin-top:2.5rem; display:flex; gap:1rem; justify-content:center;">
+            <span class="tag tag-p"><i data-lucide="message-square"></i> Foro EVA</span> 
+            <span class="tag tag-y"><i data-lucide="clock"></i> 30 minutos</span> 
+            <span class="tag tag-g"><i data-lucide="star"></i> Puntos de participación</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide cover" data-session="1">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in"><i data-lucide="layers" style="width:18px;height:18px;"></i>&nbsp;IF203IINF &middot; IPSS &middot; 2026</div>
+        <div class="slide-tag fade-in" style="margin-top:0;">UNIDAD 1 — SESION 2</div>
+        <h1 class="gradient-text fade-in">Niveles de Prueba:<br>Unitarias e Integracion</h1>
+        <p class="cover-sub fade-in">Desglose técnico de la Pirámide de Cohn. Desde el aislamiento de funciones (Mocks y Stubs) hasta la topología de integración (Top-down, Bottom-up).</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="1">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 2</div>
+    <h2>La Piramide de Automatización (Mike Cohn)</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2" style="align-items:stretch;">
+      <div style="display:flex;">
+        
+<div style="display:flex; flex-direction:column; align-items:center; width:100%; gap:6px; margin: 2rem 0; flex:1; justify-content:center;">
+    <div style="width:25%; background:var(--err); color:white; text-align:center; padding:1.2rem; font-weight:900; border-radius:12px 12px 0 0; font-size:1.2rem; box-shadow:0 4px 6px rgba(0,0,0,0.3); text-transform:uppercase; letter-spacing:2px;">Aceptación</div>
+    <div style="width:50%; background:var(--acc); color:white; text-align:center; padding:1.5rem; font-weight:900; border-radius:6px; font-size:1.4rem; box-shadow:0 4px 6px rgba(0,0,0,0.3); text-transform:uppercase; letter-spacing:2px;">Sistema</div>
+    <div style="width:75%; background:var(--p); color:white; text-align:center; padding:1.8rem; font-weight:900; border-radius:6px; font-size:1.6rem; box-shadow:0 4px 6px rgba(0,0,0,0.3); text-transform:uppercase; letter-spacing:2px;">Integración</div>
+    <div style="width:100%; background:var(--ok); color:white; text-align:center; padding:2.2rem; font-weight:900; border-radius:0 0 12px 12px; font-size:1.8rem; box-shadow:0 4px 6px rgba(0,0,0,0.3); text-transform:uppercase; letter-spacing:2px;">Unitarias</div>
+</div>
+
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;gap:1.5rem;padding: 2rem 0;">
+        <div class="card accent-r"><div style="display:flex;align-items:center;gap:1.5rem;"><div class="card-icon" style="color:var(--err);margin:0;"><i data-lucide="award"></i></div><div><div class="card-title">Aceptacion / UI</div><div class="card-body">Prueban flujos visuales completos. Son <strong>lentas</strong>, frágiles ante cambios de CSS/HTML, y muy <strong>costosas</strong> de mantener. Deben ser pocas.</div></div></div></div>
+        <div class="card accent-y"><div style="display:flex;align-items:center;gap:1.5rem;"><div class="card-icon" style="color:var(--acc);margin:0;"><i data-lucide="layout"></i></div><div><div class="card-title">Sistema (E2E)</div><div class="card-body">Atraviesan Front, Back y Base de Datos como si fuera un usuario real. Detectan problemas globales de infraestructura.</div></div></div></div>
+        <div class="card accent-p"><div style="display:flex;align-items:center;gap:1.5rem;"><div class="card-icon" style="color:var(--p);margin:0;"><i data-lucide="link"></i></div><div><div class="card-title">Integracion (Servicios)</div><div class="card-body">Prueban la capa de APIs, WebServices y queries a BD. No hay UI. Son rápidas y verifican lógica de negocio pesada.</div></div></div></div>
+        <div class="card accent-g"><div style="display:flex;align-items:center;gap:1.5rem;"><div class="card-icon" style="color:var(--ok);margin:0;"><i data-lucide="microscope"></i></div><div><div class="card-title">Unitarias (La Base)</div><div class="card-body">Verifican métodos y clases aisladas. Corren en <strong>milisegundos</strong>. Constituyen la inmensa mayoría de las pruebas de un proyecto sano.</div></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="1">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 2</div>
+    <h2>Testing Unitario Aislado: Mocks y Stubs</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:center; gap:2rem;">
+        <div class="quote" style="margin-top:0;">Una Prueba Unitaria genuina <strong>NUNCA</strong> debe conectarse a una base de datos real, red, ni sistema de archivos. Debe ser 100% aislada (pura en memoria).</div>
+        
+        <div class="card accent-g">
+            <div class="card-title">¿Qué pasa si mi función necesita leer de BD?</div>
+            <div class="card-body">
+                Se utilizan <strong>Dobles de Prueba (Test Doubles)</strong>: objetos falsos programados para simular el comportamiento de las dependencias externas.
+                <ul class="dot-list" style="margin-top:1rem;">
+                    <li><strong>Stubs:</strong> Devuelven datos "harcodeados" fijos. (Ej: <i>"Cuando llamen al servicio Clima, devuelve siempre 25°C"</i>).</li>
+                    <li><strong>Mocks:</strong> Verifican interacciones. (Ej: <i>"Verificar que el servicio de Email fue llamado exactamente 1 vez con el parámetro X"</i>).</li>
+                </ul>
+            </div>
+        </div>
+      </div>
+      <div>
+        <div class="code-block" style="height:100%; display:flex; flex-direction:column; justify-content:center;">
+<span class="cm"># Función original a probar</span>
+<span class="kw">def</span> <span class="fn">liquidar_sueldo</span>(empleado_id, BD, BancoAPI):
+    empleado = BD.<span class="fn">obtener</span>(empleado_id)
+    sueldo = empleado.sueldo_base - impuesto
+    BancoAPI.<span class="fn">transferir</span>(empleado.cuenta, sueldo)
+    <span class="kw">return</span> <span class="ok">True</span>
+
+<span class="cm"># Test Unitario (pytest) usando Mocks</span>
+<span class="kw">def</span> <span class="fn">test_liquidar_sueldo</span>(mocker):
+    <span class="cm"># Arrange: Preparamos los dobles</span>
+    mock_BD = mocker.<span class="fn">Mock</span>()
+    mock_BD.obtener.<span class="fn">return_value</span> = Empleado(sueldo_base=1000)
+    mock_Banco = mocker.<span class="fn">Mock</span>()
+    
+    <span class="cm"># Act: Ejecutamos función</span>
+    resultado = <span class="fn">liquidar_sueldo</span>(1, mock_BD, mock_Banco)
+    
+    <span class="cm"># Assert: Verificamos</span>
+    <span class="kw">assert</span> resultado == <span class="ok">True</span>
+    mock_Banco.transferir.<span class="fn">assert_called_once_with</span>(cuenta, 800)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="1">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 2</div>
+    <h2>Pruebas de Integración: Topologías de Ensamble</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+            <div class="card accent-r">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div class="card-title" style="color:var(--err);">Enfoque Big Bang (Evitar)</div>
+                    <i data-lucide="bomb" style="color:var(--err); width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    Se espera a que todos los módulos estén codificados y se unen de una sola vez.<br><br>
+                    <strong>Problema crítico:</strong> Si el sistema falla, es increíblemente complejo aislar cuál de las 50 conexiones nuevas fue la que provocó el fallo. Produce cuellos de botella masivos al final del ciclo.
+                </div>
+            </div>
+            
+            <div class="card accent-c">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div class="card-title" style="color:var(--c2);">Top-Down (De UI a BD)</div>
+                    <i data-lucide="arrow-down" style="color:var(--c2); width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    Se prueba el flujo principal de control primero (el orquestador). Los módulos de bajo nivel que aún no existen se reemplazan por <strong>Stubs</strong>.<br><br>
+                    <strong>Ventaja:</strong> Valida tempranamente la arquitectura global y la lógica de negocio mayor.
+                </div>
+            </div>
+            
+            <div class="card accent-g">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div class="card-title" style="color:var(--ok);">Bottom-Up (De BD a UI)</div>
+                    <i data-lucide="arrow-up" style="color:var(--ok); width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    Se prueban primero los componentes base (ej: acceso a datos). Para probarlos sin la UI superior, se construyen <strong>Drivers</strong> (programas temporales que los llaman).<br><br>
+                    <strong>Ventaja:</strong> Los cimientos técnicos quedan hiper-validados desde el día 1.
+                </div>
+            </div>
+            
+            <div class="card accent-p">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div class="card-title" style="color:var(--p);">Integración Continua (CI)</div>
+                    <i data-lucide="git-merge" style="color:var(--p); width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    La topología estándar de la industria ágil (DevOps). Cada commit de código ensambla y testea la integración automáticamente en un servidor (Jenkins, GitHub Actions). Detecta roturas instantáneamente.
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="1">
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Actividad Práctica — Sesion 2</div>
+    <div class="activity-banner">
+        <div class="activity-icon"><i data-lucide="hammer" style="width:80px;height:80px;"></i></div>
+        <div class="activity-title">El Arquitecto del Test</div>
+        <div class="activity-desc">Como Analista QA de un e-commerce crítico, debes diseñar la estrategia presupuestaria basándote en la Pirámide de Testing.</div>
+        
+        <div class="card" style="width:100%; text-align:left; background:rgba(0,0,0,0.5); border:1px solid var(--p); margin-top:1.5rem;">
+            <div class="card-title" style="color:var(--pl); margin-bottom:1.5rem; display:flex; align-items:center; gap:0.5rem;"><i data-lucide="clipboard-list"></i> Instrucciones Detalladas:</div>
+            <div class="card-body">
+                Se te entrega un presupuesto cerrado de <strong>"100 Puntos de Esfuerzo (HH)"</strong>.<br><br>
+                1. Distribuye de forma porcentual estos puntos entre los 4 niveles (Unitaria, Integración, Sistema, Aceptación). ¿Cuánto le darás a cada piso de la pirámide?<br>
+                2. Justifica técnica y financieramente por qué asignaste esa distribución. Apóyate en el principio del "Costo de encontrar bugs".<br>
+                3. Define <strong>exactamente</strong> 1 prueba de ejemplo que automatizarías en cada nivel para el flujo: "Agregar Producto al Carro de Compras".
+            </div>
+        </div>
+        
+        <div style="margin-top:2.5rem; display:flex; gap:1rem; justify-content:center;">
+            <span class="tag tag-p"><i data-lucide="upload-cloud"></i> Buzón EVA</span> 
+            <span class="tag tag-y"><i data-lucide="clock"></i> 45 minutos</span> 
+            <span class="tag tag-c"><i data-lucide="user"></i> Individual</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide cover" data-session="2">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in"><i data-lucide="users" style="width:18px;height:18px;"></i>&nbsp;IF203IINF &middot; IPSS &middot; 2026</div>
+        <div class="slide-tag fade-in" style="margin-top:0;">UNIDAD 1 — SESION 3</div>
+        <h1 class="gradient-text fade-in">Niveles de Prueba:<br>Sistema y Aceptacion</h1>
+        <p class="cover-sub fade-in">Evaluando el todo unificado. Diferenciación técnica de Pruebas de Sistema (Funcionales vs Rendimiento) y las fases Alpha/Beta de Aceptación con Gherkin.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="2">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 3</div>
+    <h2>Pruebas de Sistema (System Testing)</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="quote" style="margin-top:0;">El entorno de prueba debe ser <strong>idéntico o homólogo</strong> al entorno de producción (hardware, red, configuración). Se evalúa la "caja negra" completa.</div>
+        
+        <div class="cols cols-2" style="margin-top:2rem;">
+            <div class="card accent-c">
+                <div class="card-title">Vertiente 1: Verificación Funcional Completa</div>
+                <div class="card-body">
+                    Se valida que el sistema cumple explícitamente con los Requisitos Funcionales del documento de especificación (SRS).
+                    <ul class="check-list" style="margin-top:1.5rem;">
+                        <li>Pruebas End-to-End (E2E) de flujos de usuario largos (Ej: Registro -> Compra -> Despacho).</li>
+                        <li>Verificación de interfaces gráficas completas (UI).</li>
+                        <li>Validación de persistencia real en la Base de Datos.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card accent-y">
+                <div class="card-title">Vertiente 2: Atributos de Calidad (No Funcional)</div>
+                <div class="card-body">
+                    El sistema hace lo correcto, pero ¿lo hace BIEN y de forma segura?
+                    <ul class="check-list" style="margin-top:1.5rem;">
+                        <li><strong>Carga (Load):</strong> ¿Soporta 1,000 usuarios concurrentes sin degradarse?</li>
+                        <li><strong>Estrés (Stress):</strong> ¿Qué pasa si inyectamos 10,000 usuarios? (Validar que el fallo sea controlado).</li>
+                        <li><strong>Seguridad:</strong> Inyección SQL, Cross-Site Scripting, accesos de roles no autorizados.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="2">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 3</div>
+    <h2>Pruebas de Aceptación (UAT): Fases</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card accent-g" style="margin-bottom:2rem;">
+            <div class="card-title" style="display:flex; align-items:center; gap:1rem;"><i data-lucide="shield-check" style="color:var(--ok);"></i> La meta final: El "Sign-off"</div>
+            <div class="card-body">
+                El UAT no es para encontrar bugs (si hay bugs obvios aquí, la fase de Sistema falló). Su único objetivo es obtener la <strong>firma de aceptación formal</strong> del cliente para liberar el pago y pasar a producción.
+            </div>
+        </div>
+        
+        <div class="cols cols-2">
+            <div class="card" style="border:1px solid var(--p);">
+                <div class="card-title" style="color:var(--pl);">Pruebas Alpha</div>
+                <div class="card-body">
+                    <ul class="dot-list">
+                        <li>Se realizan en el entorno de los <strong>desarrolladores (in-house)</strong>.</li>
+                        <li>Ejecutadas por un grupo interno selecto o stakeholders internos.</li>
+                        <li>El entorno está totalmente controlado por la empresa de software.</li>
+                        <li>Último filtro fuerte antes de exponer el producto al mundo.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card" style="border:1px solid var(--c2);">
+                <div class="card-title" style="color:var(--c2);">Pruebas Beta (o Pilotaje)</div>
+                <div class="card-body">
+                    <ul class="dot-list">
+                        <li>Se realizan en el entorno de los <strong>clientes/usuarios reales</strong>.</li>
+                        <li>El desarrollador pierde control del hardware y red donde se ejecuta.</li>
+                        <li>Feedback real ("Beta pública" de juegos o software SaaS).</li>
+                        <li>Mide adopción, usabilidad subjetiva e imprevistos ambientales.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="2">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 3</div>
+    <h2>Generación de Criterios de Aceptación (BDD)</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div>
+          <p style="margin-bottom:1.5rem;">Para evitar los requerimientos vagos del cliente ("Quiero que el sistema sea rápido y seguro"), usamos <strong>Behavior-Driven Development (BDD)</strong> y lenguaje <strong>Gherkin</strong>.</p>
+          <ul class="check-list" style="margin-bottom:2rem;">
+              <li><strong>Gherkin</strong> es un lenguaje puente entre el Negocio y QA/Desarrollo.</li>
+              <li>Fuerza a ser específicos y medibles.</li>
+              <li>Permite automatizar fácilmente usando herramientas como Cucumber o Behave.</li>
+          </ul>
+          <div class="card accent-p" style="padding: 1rem 1.5rem; margin-top: 1rem;">
+              <strong style="color:var(--p);">Sintaxis Fundamental:</strong><br>
+              <span style="color:var(--ok);">DADO (Given):</span> El estado inicial o precondición.<br>
+              <span style="color:var(--ok);">CUANDO (When):</span> El evento o acción que dispara la prueba.<br>
+              <span style="color:var(--ok);">ENTONCES (Then):</span> El resultado observable o medible.
+          </div>
+      </div>
+      <div class="card accent-y" style="background:#0a0a15;">
+          <div class="card-title" style="font-size:1.3rem;">Ejemplo de Traducción a Gherkin</div>
+          <div style="margin-bottom:1rem;">
+              <span class="tag tag-r"><i data-lucide="frown"></i> Requisito Vago</span><br>
+              <i style="color:var(--muted); display:block; margin-top:0.5rem;">"El login debe bloquear la cuenta si intentan hackear."</i>
+          </div>
+          <div>
+              <span class="tag tag-g"><i data-lucide="smile"></i> Criterio de Aceptación (Gherkin)</span>
+              <pre style="font-size:1.1rem; color:#fde68a; line-height:1.4; margin-top:0.5rem; background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.2);">Escenario: Bloqueo por fuerza bruta
+DADO que existe un usuario "juan@mail.com" activo
+Y la política de bloqueo es de 3 intentos
+
+CUANDO ingresa contraseñas erradas 3 veces seguidas
+Y presiona el botón de Ingreso
+
+ENTONCES el sistema debe cambiar su estado a "Bloqueado"
+Y enviar un email de alerta de seguridad
+Y no permitir el login en los próximos 15 minutos.</pre>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="2">
+  <div class="orb orb2"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 3</div>
+    <h2>Estructura de Escenarios Gherkin y Buenas Prácticas</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2" style="gap:1.5rem; align-items:stretch;">
+      <div>
+        <div class="card accent-c" data-text-fit="grow consistent" style="margin-bottom:1.25rem; background:#0a0a15; padding:1.25rem; text-fit: grow consistent;">
+          <div class="card-title" style="color:var(--c2); font-size:1.15rem; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+            <i data-lucide="zap"></i> CUANDO... ENTONCES (Acción Única)
+          </div>
+          <p style="font-size:0.95rem; line-height:1.4; margin-bottom:0.75rem; color:var(--text);">
+            Úsalo para <strong>acciones atómicas y aisladas</strong> del usuario. Mantiene tus escenarios pequeños, legibles y altamente específicos para una sola regla de negocio.
+          </p>
+          <div style="background:rgba(6,182,212,0.05); border:1px solid rgba(6,182,212,0.25); border-radius:8px; padding:0.75rem;">
+            <span class="tag" style="background:rgba(6,182,212,0.2); color:#a5f3fc; border:none; margin-bottom:0.5rem; font-size:0.75rem;"><i data-lucide="code" style="width:12px;height:12px;"></i> Ejemplo: Acción Atómica</span>
+            <pre style="font-size:0.92rem; color:#a5f3fc; line-height:1.4; margin:0; font-family:monospace;">DADO que el usuario está en la página de pago
+CUANDO el usuario hace clic en "Realizar Pedido"
+ENTONCES debe mostrarse la confirmación del pedido</pre>
+          </div>
+        </div>
+
+        <div class="card accent-y" data-text-fit="grow consistent" style="background:#0a0a15; padding:1.25rem; text-fit: grow consistent;">
+          <div class="card-title" style="color:var(--warn); font-size:1.15rem; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+            <i data-lucide="git-commit"></i> CUANDO... Y... ENTONCES (Acciones Encadenadas)
+          </div>
+          <p style="font-size:0.95rem; line-height:1.4; margin-bottom:0.75rem; color:var(--text);">
+            Úsalo cuando una historia requiere una <strong>secuencia de acciones interdependientes</strong> para alcanzar el estado final. Los pasos intermedios "Y" representan estados transicionales.
+          </p>
+          <div style="background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.25); border-radius:8px; padding:0.75rem;">
+            <span class="tag" style="background:rgba(245,158,11,0.2); color:#fde68a; border:none; margin-bottom:0.5rem; font-size:0.75rem;"><i data-lucide="list-ordered" style="width:12px;height:12px;"></i> Ejemplo: Flujo Secuencial</span>
+            <pre style="font-size:0.92rem; color:#fde68a; line-height:1.4; margin:0; font-family:monospace;">DADO que el usuario tiene un artículo en su carrito
+CUANDO el usuario ingresa su código de descuento
+Y el usuario selecciona envío rápido
+Y el usuario hace clic en "Realizar Pedido"
+ENTONCES debe mostrarse la confirmación del pedido</pre>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div class="card accent-p" data-text-fit="grow consistent" style="background:linear-gradient(145deg, #111827, #1f2937); border:1px solid var(--p); padding:1.5rem; margin-bottom:0; flex-grow:1; text-fit: grow consistent;">
+          <div class="card-title" style="color:var(--pl); font-size:1.3rem; display:flex; align-items:center; gap:0.6rem; margin-bottom:1.2rem;">
+            <i data-lucide="check-circle-2" style="color:var(--p);"></i> Buenas Prácticas en Gherkin
+          </div>
+          
+          <div style="margin-bottom:1.5rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem;">
+              <span class="tag tag-r" style="font-size:0.75rem;"><i data-lucide="x-circle" style="width:12px;height:12px;"></i> Evitar "Y entonces" (And then)</span>
+            </div>
+            <p style="font-size:0.95rem; line-height:1.5; color:var(--text); margin:0;">
+              En la sintaxis Gherkin estándar, <strong>no existe</strong> una palabra clave técnica "Y entonces". En su lugar, simplemente utilizas <code>Y</code> (<code>And</code>) como una continuación limpia de un <code>CUANDO</code> o de un <code>ENTONCES</code>.
+            </p>
+          </div>
+
+          <div style="margin-bottom:1.5rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.4rem;">
+              <span class="tag tag-y" style="font-size:0.75rem;"><i data-lucide="alert-triangle" style="width:12px;height:12px;"></i> Cuidado con la Sobrecomplicación</span>
+            </div>
+            <p style="font-size:0.95rem; line-height:1.5; color:var(--text); margin:0;">
+              Si te encuentras encadenando demasiados pasos <code>CUANDO</code> e <code>Y</code> (<strong>más de 3 o 4 pasos transicionales</strong>), es muy probable que el escenario esté intentando cubrir demasiados casos de uso a la vez. Es mejor <strong>dividirlo en escenarios distintos e independientes</strong>.
+            </p>
+          </div>
+
+          <div style="background:rgba(236,72,153,0.08); border-left:3px solid var(--p); padding:0.8rem 1rem; border-radius:4px;">
+            <div style="font-weight:700; color:var(--pl); font-size:0.9rem; margin-bottom:0.3rem;"><i data-lucide="lightbulb" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;"></i> Regla de Oro en BDD:</div>
+            <p style="font-size:0.88rem; line-height:1.4; color:#fbcfe8; margin:0;">
+              Cada escenario debe validar una única regla de negocio medible. La claridad para el negocio siempre está por sobre ahorrar líneas de código.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="2">
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Actividad Práctica — Sesion 3</div>
+    <div class="activity-banner" style="background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(239,68,68,0.2)); border-color: rgba(245,158,11,0.4); box-shadow: 0 10px 40px rgba(245,158,11,0.15);">
+        <div class="activity-icon" style="color:#f59e0b; filter: drop-shadow(0 0 20px rgba(245,158,11,0.5));"><i data-lucide="user-search" style="width:80px;height:80px;"></i></div>
+        <div class="activity-title">El Cliente Misterioso (Gherkin)</div>
+        <div class="activity-desc">Como QA, debes traducir los requerimientos ambiguos (normales en la industria) del cliente a Criterios de Aceptación (Acceptance Criteria) que un autómata y el negocio puedan comprender y validar matemáticamente.</div>
+        
+        <div class="cols cols-2" style="width:100%; text-align:left; margin-top:1.5rem; gap:1.5rem;">
+            <div class="card" style="background:rgba(0,0,0,0.5); border:1px solid var(--err);">
+                <div class="card-title" style="color:var(--err); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;"><i data-lucide="frown"></i> Requisito Vago Inicial:</div>
+                <div class="card-body" style="font-style:italic;">
+                    "Quiero que los usuarios VIP puedan tener envío gratis en el e-commerce, pero solo si compran harto, y el sistema debería avisarles de alguna forma si les falta poco para que agreguen algo más."
+                </div>
+            </div>
+            <div class="card" style="background:rgba(0,0,0,0.5); border:1px solid var(--ok);">
+                <div class="card-title" style="color:var(--ok); margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem;"><i data-lucide="list-checks"></i> Tu Misión (BDD):</div>
+                <div class="card-body">
+                    Construye 3 Criterios de Aceptación precisos, resolviendo las ambigüedades técnicas ("harto", "poco", "avisar"), usando Gherkin:<br><br>
+                    <strong style="color:var(--ok);">DADO</strong> [estado inicial claro del sistema]<br>
+                    <strong style="color:var(--ok);">CUANDO</strong> [acción específica del usuario/sistema]<br>
+                    <strong style="color:var(--ok);">ENTONCES</strong> [verificación exacta de UI o back-end]
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top:2.5rem; display:flex; gap:1rem; justify-content:center;">
+            <span class="tag tag-y"><i data-lucide="message-square"></i> Foro EVA</span> 
+            <span class="tag tag-p"><i data-lucide="clock"></i> 40 minutos</span> 
+            <span class="tag tag-g"><i data-lucide="user"></i> Individual</span>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide cover" data-session="3">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in" style="background:rgba(16,185,129,.15); color:#34d399; border-color:#34d399;"><i data-lucide="video" style="width:18px;height:18px;"></i>&nbsp;SESION SINCRONICA &middot; TEAMS</div>
+        <div class="slide-tag fade-in" style="margin-top:0; color:#34d399;">UNIDAD 1 — SESION 4</div>
+        <h1 class="gradient-text fade-in" style="background:linear-gradient(135deg,#fff 0%,#34d399 50%,#06b6d4 100%); -webkit-background-clip:text;">Caja Blanca, Caja Negra<br>y Estrategias de Regresión</h1>
+        <p class="cover-sub fade-in">Desglose profundo de metodologías de cobertura. Diferencia entre Regresión Exhaustiva vs Sanity Checks. Dinámicas grupales de clasificación en vivo.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="3">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 4</div>
+    <h2>Plan de Prueba vs. Casos de Prueba</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <p style="margin-bottom:2rem;">Para entender cómo probar un sistema, debemos diferenciar la estrategia global de la ejecución específica, y cómo estos se mapean a los <strong>Niveles de Prueba</strong>.</p>
+        
+        <div class="cols cols-2">
+            <div class="card accent-p">
+                <div class="card-title" style="display:flex; align-items:center; gap:1rem;"><i data-lucide="map" style="color:var(--p);"></i> Test Plan (Plan de Prueba)</div>
+                <div class="card-body">
+                    Es el <strong>documento maestro o estratégico</strong>. Describe el alcance, enfoque, recursos y cronograma de las actividades de prueba.
+                    <ul class="check-list" style="margin-top:1rem;">
+                        <li><strong>Propósito:</strong> Responder al <i>"¿Qué vamos a probar y cómo nos organizamos?"</i></li>
+                        <li><strong>Relación con Niveles:</strong> Un Plan abarca <strong>todos los niveles</strong> (define cuándo se hacen las Unitarias, cuándo el UAT, etc).</li>
+                        <li><strong>Ejemplo:</strong> "Plan de Prueba para el Módulo de Pagos Q3".</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card accent-c">
+                <div class="card-title" style="display:flex; align-items:center; gap:1rem;"><i data-lucide="file-text" style="color:var(--c2);"></i> Test Case (Caso de Prueba)</div>
+                <div class="card-body">
+                    Es el <strong>escenario táctico y reproducible</strong>. Conjunto de precondiciones, inputs, acciones y resultados esperados.
+                    <ul class="check-list" style="margin-top:1rem;">
+                        <li><strong>Propósito:</strong> Responder al <i>"¿Cuáles son los pasos exactos para verificar esta función?"</i></li>
+                        <li><strong>Relación con Niveles:</strong> Cada Caso de Prueba pertenece a un <strong>nivel específico</strong> (Ej: Caso Unitario, Caso de Sistema).</li>
+                        <li><strong>Ejemplo:</strong> "Login con password vacío".</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-top:2rem; background:rgba(0,0,0,0.4); border-color:var(--gb);">
+            <div class="card-title" style="font-size:1.3rem; color:var(--muted); text-align:center;">¿Cómo se estructura en la vida real? (Jerarquía)</div>
+            <div style="display:flex; justify-content:center; gap:3rem; margin-top:1rem; font-family:'JetBrains Mono', monospace; font-size:1.2rem; color:var(--text);">
+                <div style="color:var(--p);">📁 Plan de Prueba Global</div>
+                <div>↳ <span style="color:var(--ok);">📝 Casos Unitarios (Devs)</span></div>
+                <div>↳ <span style="color:var(--c2);">📝 Casos de Sistema (QA)</span></div>
+                <div>↳ <span style="color:var(--warn);">📝 Casos UAT (Cliente)</span></div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="3">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 4</div>
+    <h2>Caja Blanca vs. Caja Negra: Técnicas</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div style="display:flex; justify-content:center; align-items:center; gap:4rem; margin:1rem 0 3rem;">
+            <!-- Caja Blanca -->
+            <div style="width:200px; height:200px; border:4px solid var(--p); border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(255,255,255,0.08); position:relative;">
+                <div style="color:var(--p); margin-bottom:1rem;"><i data-lucide="box" style="width:64px;height:64px;"></i></div>
+                <div style="font-weight:900; color:var(--text); font-size:1.4rem;">Caja Blanca</div>
+                <div style="position:absolute; bottom:15px; font-size:1rem; color:var(--muted); font-family:monospace;">if(x>0) {...}</div>
+            </div>
+            <div style="font-size:3rem; color:var(--dim); font-weight:900;">VS</div>
+            <!-- Caja Negra -->
+            <div style="width:200px; height:200px; border:4px solid var(--err); border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#000; position:relative; box-shadow:0 0 25px rgba(0,0,0,0.6);">
+                <div style="color:var(--err); margin-bottom:1rem;"><i data-lucide="package" style="width:64px;height:64px;"></i></div>
+                <div style="font-weight:900; color:var(--text); font-size:1.4rem;">Caja Negra</div>
+                <div style="position:absolute; bottom:15px; font-size:1rem; color:var(--muted); font-weight:bold;">IN &#8594; ??? &#8594; OUT</div>
+            </div>
+        </div>
+        
+        <div class="cols cols-2">
+        <div class="card" style="border:2px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem;">
+            <div style="text-align:center;margin-bottom:1.5rem;"><span class="tag tag-p" style="font-size:1.1rem;padding:.4rem 1.2rem;"><i data-lucide="braces"></i> CAJA BLANCA (Estructural)</span></div>
+            <div class="card-body">
+                <strong>¿Qué medir matemáticamente? (Cobertura)</strong>
+                <ul class="check-list" style="margin-top:1rem;">
+                    <li><strong>Sentencias:</strong> ¿Se ejecutó cada línea de código al menos una vez?</li>
+                    <li><strong>Decisiones (Branches):</strong> ¿El <code>IF</code> y el <code>ELSE</code> fueron recorridos en tests separados?</li>
+                    <li><strong>Mutaciones:</strong> Si altero el código a propósito, ¿mis tests fallan?</li>
+                </ul>
+            </div>
+        </div>
+        <div class="card" style="border:2px solid rgba(255,255,255,.12);border-radius:16px;padding:2rem;">
+            <div style="text-align:center;margin-bottom:1.5rem;"><span class="tag tag-r" style="font-size:1.1rem;padding:.4rem 1.2rem;"><i data-lucide="eye-off"></i> CAJA NEGRA (Funcional)</span></div>
+            <div class="card-body">
+                <strong>¿Cómo diseñar tests sin ver el código?</strong>
+                <ul class="check-list" style="margin-top:1rem;">
+                    <li><strong>Valores Límite (BVA):</strong> Probar justos los bordes. Si acepta 1 a 100, probar 0, 1, 100 y 101.</li>
+                    <li><strong>Partición de Equivalencia:</strong> Elegir valores aleatorios dentro de clases válidas e inválidas para reducir repetición.</li>
+                    <li><strong>Transición de Estados:</strong> Evaluar los flujos de "Enviado -> Pagado -> Despachado".</li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="3">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 4</div>
+    <h2>Cómo Diseñar un Caso de Prueba Formal</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div>
+          <p style="margin-bottom:1.5rem;">Un <strong>Caso de Prueba (Test Case)</strong> documenta un escenario específico para verificar una funcionalidad concreta. Su objetivo es que sea reproducible por cualquier otro QA.</p>
+          <ul class="check-list" style="margin-bottom:2rem;">
+              <li><strong>Precondiciones:</strong> El estado exacto del sistema ANTES de la prueba (ej: "Usuario logueado").</li>
+              <li><strong>Datos de Prueba:</strong> Qué inputs vamos a inyectar (ej: "RUT = 12345678-9").</li>
+              <li><strong>Pasos a Ejecutar:</strong> Secuencia cronológica y determinista (1. Click aquí, 2. Escribir allá).</li>
+              <li><strong>Resultado Esperado:</strong> Qué debe pasar matemáticamente o visualmente (el test FALLA si el resultado real es distinto al esperado).</li>
+          </ul>
+      </div>
+      <div class="card accent-c" style="background:#0a0a15;">
+          <div class="card-title" style="font-size:1.3rem;">Plantilla Estándar en la Industria</div>
+          <pre style="font-size:1.1rem; color:#a5b4fc; line-height:1.4;">ID: CP-LOGIN-01
+Nombre: Login con credenciales inválidas
+Nivel: Sistema | Técnica: Caja Negra (Equivalencia)
+
+Precondición: Estar en la URL /login. DB limpia.
+Datos: usuario="test@test.com", pass="errado"
+
+Pasos:
+ 1. Escribir usuario en input 'email'
+ 2. Escribir pass en input 'password'
+ 3. Click en botón 'Ingresar'
+
+Resultado Esperado:
+ - No debe iniciar sesión.
+ - Debe aparecer toast rojo: "Credenciales inválidas"
+ - Tiempo de respuesta < 1s.</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="3">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag">Sesion 4</div>
+    <h2>Regresión Exhaustiva vs. Sanity Checks</h2><div class="hdiv"></div>
+    <div class="content-area cols cols-2">
+      <div style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div class="quote" style="margin-top:0;">El Testing de <strong>Regresión</strong> asegura que el nuevo código introducido (un bug fix o nueva feature) no haya roto, colateralmente, el software funcional existente.</div>
+        
+        <div class="card accent-c">
+            <div class="card-title">Selección de Suite de Regresión</div>
+            <div class="card-body">
+                En grandes corporaciones, una suite completa de regresión puede tardar de 10 a 24 horas en correr. No se puede ejecutar completa en cada <i>commit</i>.
+                <br><br>
+                <strong>Estrategia de priorización:</strong> Ejecutar pruebas enfocadas al módulo que fue alterado, o depender de la automatización en la Nube (AWS/Azure) con CI/CD de integración diaria.
+            </div>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div class="card accent-y" style="height:100%; border:2px dashed var(--warn);">
+            <div class="card-title" style="color:var(--warn); display:flex; gap:1rem;"><i data-lucide="zap"></i> Sanity Testing (Prueba de Cordura)</div>
+            <div class="card-body">
+                Es un subconjunto <strong>mínimo y muy acotado</strong> de la prueba de regresión.<br><br>
+                <strong>Propósito:</strong> Cuando el equipo de dev hace un despliegue crítico de emergencia (Hotfix), QA hace un "Sanity" rápido de 15 minutos solo al componente tocado, para confirmar que la aplicación "sigue cuerda" y el fix funcionó, antes de proceder con pruebas completas.<br><br>
+                <strong>Smoke Testing (Prueba de Humo):</strong> Similar, pero enfocado solo a las funcionalidades absolutamente vitales (Ej: Login y Pagar). Si falla, se devuelve a dev inmediatamente, "echando humo".
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="3">
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered">
+    <div class="slide-tag">Actividades Sincrónicas — Sesion 4</div>
+    
+    <div class="content-area" style="gap:2rem; justify-content:center;">
+        <div class="activity-banner" style="background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(16,185,129,0.15)); border-color: rgba(6,182,212,0.4); box-shadow: 0 10px 30px rgba(6,182,212,0.1); padding: 2.5rem;">
+            <div style="display:flex; align-items:center; gap:2rem; width:100%;">
+                <div class="activity-icon" style="margin:0; color:var(--c2);"><i data-lucide="dices" style="width:80px;height:80px;"></i></div>
+                <div style="text-align:left; flex:1;">
+                    <div class="activity-title" style="margin-bottom:0.5rem; font-size:2rem;">La Caja Misteriosa (Gamificación)</div>
+                    <div class="activity-desc" style="font-size:1.2rem; margin-bottom:1rem;">Dinámica cronometrada en Teams.</div>
+                    <div class="card-body">Se proyectarán 10 especificaciones de tests técnicos en pantalla por solo 20 segundos cada uno. Los equipos deben decidir mediante encuesta rápida si la técnica a usar requiere un enfoque de Caja Blanca, Caja Negra, o Mixta (Gris), y justificar su técnica en 1 línea.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="activity-banner" style="background: linear-gradient(135deg, rgba(239,68,68,0.15), rgba(245,158,11,0.15)); border-color: rgba(239,68,68,0.4); box-shadow: 0 10px 30px rgba(239,68,68,0.1); padding: 2.5rem;">
+            <div style="display:flex; align-items:center; gap:2rem; width:100%;">
+                <div class="activity-icon" style="margin:0; color:var(--acc);"><i data-lucide="network" style="width:80px;height:80px;"></i></div>
+                <div style="text-align:left; flex:1;">
+                    <div class="activity-title" style="margin-bottom:0.5rem; font-size:2rem;">Laboratorio Grupal: QA Audit en Acción</div>
+                    <div class="activity-desc" style="font-size:1.2rem; margin-bottom:1rem;">Salas separadas (Breakout rooms - 40 min).</div>
+                    <div class="card-body">Se entrega a cada grupo un documento de arquitectura de un producto ficticio crítico (App Banca Móvil, Software Cuidado Médico ICU, E-commerce). <br><strong>Entregable:</strong> El grupo presenta una "Estrategia Global de Test", listando explícitamente dónde aplicarán pruebas Unitarias, E2E, Carga y Seguridad para garantizar que el producto no cause una falla letal o millonaria.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide cover" data-session="3">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="slide-inner centered" style="text-align:center;padding-top:80px;">
+    <div>
+        <div class="slide-tag" style="margin-top:0; font-size:1.4rem;">Cierre — Unidad 1</div>
+        <h2 class="gradient-text" style="font-size:clamp(2.5rem,4vw,3.5rem);margin-bottom:3rem;">Qué logramos en esta Unidad?</h2>
+        
+        <div class="check-grid" style="text-align:left;max-width:1000px;margin:0 auto 3rem;">
+        <div class="check-item">Dominar y argumentar los 7 principios ISTQB y su impacto en el SDLC.</div>
+        <div class="check-item">Diseñar estrategias de inversión de calidad usando la Pirámide de Automatización.</div>
+        <div class="check-item">Aplicar técnicas de Caja Blanca (Cobertura) y Caja Negra (Valores Límite).</div>
+        <div class="check-item">Diferenciar Validación (Negocio) vs Verificación (Técnico).</div>
+        <div class="check-item">Redactar Criterios UAT sin ambigüedades en sintaxis BDD (Gherkin).</div>
+        <div class="check-item">Orquestar topologías de Integración (Top-Down, Bottom-up) y Regresión.</div>
+        </div>
+        
+        <div class="card" style="max-width:700px;margin:0 auto;background:rgba(99,102,241,.15);border-color:rgba(99,102,241,.4); padding:2rem;">
+        <div style="font-size:1.2rem;font-weight:800;color:var(--pl);margin-bottom:.8rem; text-transform:uppercase; letter-spacing:0.1em; display:flex; align-items:center; justify-content:center; gap:0.5rem;"><i data-lucide="compass"></i> Preparando la Unidad 2</div>
+        <div style="font-size:1.3rem;color:var(--text); line-height:1.5;"><strong style='color:#fff'>Diseño y Construcción de Planes de Prueba</strong><br><span style="color:var(--muted); font-size:1.1rem;">Matrices de Trazabilidad (RTM), Casos de Prueba Avanzados y Jira/Xray.</span></div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide cover" data-session="4">
+  <div class="orb orb1"></div><div class="orb orb2" style="background:rgba(124,58,237,.1);"></div>
+  <div class="slide-inner centered" style="padding-top:80px;">
+    <div>
+        <div class="cover-badge fade-in"><i data-lucide="layers" style="width:18px;height:18px;"></i>&nbsp;Capítulo Especial</div>
+        <div class="slide-tag fade-in" style="margin-top:0;">Sesion 5</div>
+        <h1 class="gradient-text fade-in" style="background:linear-gradient(135deg,#fff 0%,#a5b4fc 50%,#7c3aed 100%);-webkit-background-clip:text;">Taxonomía y<br>Tipos de Pruebas</h1>
+        <p class="cover-sub fade-in">Exploración detallada del ecosistema de QA: Pruebas Funcionales (Qué hace) vs No Funcionales (Cómo lo hace), junto a sus herramientas de industria.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4" id="slide-diagram">
+  <div class="orb orb1"></div>
+  <div class="slide-inner" style="padding-bottom:100px;">
+    <div class="slide-tag" style="color:#a5b4fc;">Mapa Interactivo</div>
+    <h2>Diagrama Completo de Pruebas de Software</h2><div class="hdiv"></div>
+    <p style="margin-bottom:1.5rem; font-size:1.3rem;">Haz <strong style="color:#a5b4fc;">clic en un nodo</strong> para expandir o colapsar sus hijos. Arrastra los nodos y usa la rueda del mouse para hacer zoom. Usa los botones <em>Expandir/Colapsar</em> para controlar toda la vista.</p>
+    <div id="cy-container" style="flex:1; position:relative; border-radius:16px; border:1px solid var(--gb); background:rgba(10,10,21,.8); overflow:hidden; min-height:400px;">
+      <div id="cy" style="width:100%; height:100%; position:absolute; inset:0;"></div>
+    </div>
+    <div style="display:flex; gap:2rem; justify-content:center; margin-top:1.5rem; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:.5rem;"><span style="width:18px;height:18px;border-radius:4px;background:#6366f1;display:inline-block;"></span><span style="color:var(--muted);font-size:1.2rem;">Prueba Funcional</span></div>
+        <div style="display:flex; align-items:center; gap:.5rem;"><span style="width:18px;height:18px;border-radius:4px;background:#7c3aed;display:inline-block;"></span><span style="color:var(--muted);font-size:1.2rem;">Prueba No Funcional</span></div>
+        <div style="display:flex; align-items:center; gap:.5rem;"><span style="width:18px;height:18px;border-radius:4px;background:#a5b4fc;display:inline-block;"></span><span style="color:var(--muted);font-size:1.2rem;">Nivel / Subtipo</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag" style="color:#6366f1;">Pruebas Funcionales</div>
+    <h2>Funcionales: Base y End-to-End</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+            <div class="card" style="border-left:5px solid #6366f1;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Unitarias (Función/Método)</div>
+                    <i data-lucide="puzzle" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> Prueba la pieza de código más pequeña de forma aislada.<br>
+                    <strong>Herramientas:</strong> <span style="color:#a5b4fc;">JUnit (Java), PyTest (Python), Jest (JS)</span>.<br>
+                    <strong>Objetivo:</strong> Asegurar que la lógica matemática o condicional interna sea perfecta.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #6366f1;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Integración (Módulos)</div>
+                    <i data-lucide="git-merge" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> Prueba cuando 2 o más unidades se comunican entre sí.<br>
+                    <strong>Herramientas:</strong> <span style="color:#a5b4fc;">Postman, RestAssured</span>.<br>
+                    <strong>Objetivo:</strong> Validar el contrato de datos (ej: el Backend recibe lo que el Frontend envió).
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #6366f1;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Sistema (End-to-End)</div>
+                    <i data-lucide="globe" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> Prueba el sistema completo ensamblado, tal cual lo usará el cliente.<br>
+                    <strong>Herramientas:</strong> <span style="color:#a5b4fc;">Cypress, Selenium, Playwright</span>.<br>
+                    <strong>Objetivo:</strong> Detectar fallas de infraestructura o flujos de usuario rotos.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #6366f1;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Aceptación (UAT / Alfa / Beta)</div>
+                    <i data-lucide="thumbs-up" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> Prueba final ejecutada por los clientes o Product Owners.<br>
+                    <strong>Herramientas:</strong> <span style="color:#a5b4fc;">Cucumber (BDD), Excel/TestRail</span>.<br>
+                    <strong>Objetivo:</strong> Validar si el software realmente resuelve el problema de negocio.
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag" style="color:#6366f1;">Pruebas Funcionales</div>
+    <h2>Funcionales: Operaciones Específicas</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+            <div class="card" style="border-left:5px solid #6366f1;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Humo (Smoke) y Sanidad</div>
+                    <i data-lucide="flame" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>Humo:</strong> Prueba hiper-rápida (5 min) para ver si la app "enciende" tras un despliegue.<br>
+                    <strong>Sanidad:</strong> Prueba enfocada solo en el bug que el developer jura haber arreglado recién.<br>
+                    <strong>Objetivo:</strong> Evitar perder tiempo testeando a fondo una versión que viene rota de fábrica.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #6366f1;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Regresión y Confirmación</div>
+                    <i data-lucide="history" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>Regresión:</strong> Asegurar que un código nuevo no haya roto cosas viejas que sí funcionaban. Fundamental automatizarlas.<br>
+                    <strong>Confirmación:</strong> Retestear un bug reportado para confirmar que se solucionó y cerrarlo en Jira.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #6366f1; grid-column: span 2;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">API y UI (Niveles Visuales e Internos)</div>
+                    <i data-lucide="layout" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem; display:flex; gap:2rem;">
+                    <div style="flex:1;"><strong>Pruebas de API:</strong> Pruebas backend directas a los endpoints (sin diseño gráfico). Son ultra rápidas, estables y seguras. <br><span style="color:#a5b4fc;">Herramientas: Insomnia, SoapUI.</span></div>
+                    <div style="flex:1;"><strong>Pruebas de UI:</strong> Interacción visual simulando clicks en botones y completando formularios web/móvil. <br><span style="color:#a5b4fc;">Herramientas: Appium (Móvil), Selenium.</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag" style="color:#7c3aed;">Pruebas No Funcionales</div>
+    <h2>No Funcionales: Rendimiento y Seguridad</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+            <div class="card" style="border-left:5px solid #7c3aed;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Rendimiento (Performance)</div>
+                    <i data-lucide="activity" style="color:#7c3aed; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <ul class="dot-list" style="margin-bottom:1rem;">
+                        <li><strong>Carga:</strong> 100 usuarios normales, ¿cuánto demora en cargar?</li>
+                        <li><strong>Estrés:</strong> 10.000 usuarios, ¿dónde colapsa el servidor?</li>
+                        <li><strong>Picos (Spike):</strong> Black Friday. De 0 a 1M usuarios en un segundo.</li>
+                        <li><strong>Resistencia (Soak):</strong> 50 usuarios constantes por 48 horas (buscando fugas de memoria).</li>
+                    </ul>
+                    <strong>Herramientas:</strong> <span style="color:#c4b5fd;">JMeter, k6, Gatling, LoadRunner</span>.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #7c3aed;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Seguridad</div>
+                    <i data-lucide="shield-alert" style="color:#7c3aed; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <ul class="dot-list" style="margin-bottom:1rem;">
+                        <li><strong>Pentesting:</strong> Hackers éticos manuales buscando vulnerabilidades explotables.</li>
+                        <li><strong>SAST (Estático):</strong> Bots que leen tu código fuente buscando malas prácticas (ej: contraseñas hardcodeadas).</li>
+                        <li><strong>DAST (Dinámico):</strong> Bots que atacan tu web en ejecución (ej: inyectando SQL en los inputs).</li>
+                    </ul>
+                    <strong>Herramientas:</strong> <span style="color:#c4b5fd;">SonarQube (SAST), OWASP ZAP (DAST), Burp Suite</span>.
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag" style="color:#7c3aed;">Pruebas No Funcionales</div>
+    <h2>No Funcionales: Experiencia y Entorno</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+            <div class="card" style="border-left:5px solid #7c3aed;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Usabilidad (UX)</div>
+                    <i data-lucide="users" style="color:#7c3aed; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> Mide la facilidad con la que una persona real usa el sistema.<br>
+                    <ul class="dot-list" style="margin-top:1rem;">
+                        <li><strong>Heurística:</strong> Expertos evalúan si cumple leyes de diseño (ej: Nielsen).</li>
+                        <li><strong>Usuarios:</strong> Pruebas de "Heatmaps" y grabaciones de sesión.</li>
+                    </ul><br>
+                    <strong>Herramientas:</strong> <span style="color:#c4b5fd;">Hotjar, CrazyEgg, Figma Prototypes</span>.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #7c3aed;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Compatibilidad</div>
+                    <i data-lucide="smartphone" style="color:#7c3aed; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> ¿Se ve bien en Chrome, Safari y Firefox? ¿Funciona en Android 10 y iOS 17? ¿En pantalla gigante y celular pequeño?<br><br>
+                    Mantener laboratorios físicos de celulares es muy caro, por lo que se usa la nube.<br><br>
+                    <strong>Herramientas:</strong> <span style="color:#c4b5fd;">BrowserStack, Sauce Labs</span>.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #7c3aed; grid-column: span 2;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Instalación y Localización (L10n)</div>
+                    <i data-lucide="globe" style="color:#7c3aed; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem; display:flex; gap:2rem;">
+                    <div style="flex:1;"><strong>Instalación:</strong> Asegurar que la App se instale, actualice y desinstale sin dejar basura en el sistema operativo del usuario.</div>
+                    <div style="flex:1;"><strong>Localización:</strong> Adaptar idioma, zona horaria, formatos de moneda y diseño (ej: el árabe se lee de derecha a izquierda).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag" style="color:#6366f1;">Pruebas Funcionales</div>
+    <h2>Funcionales: Tendencias de Industria</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-3">
+            <div class="card" style="border-left:5px solid #6366f1;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Exploratoria</div>
+                    <i data-lucide="map" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> Testing libre sin casos de prueba estrictos. Depende de la intuición y experiencia del QA para "romper" la app.<br><br>
+                    <strong>Herramientas:</strong> <span style="color:#a5b4fc;">Xray Exploratory App, Session-Based Testing</span>.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #6366f1;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Contrato (Contract)</div>
+                    <i data-lucide="handshake" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> Valida que dos microservicios se comuniquen respetando un esquema acordado (contrato) sin levantar todo el entorno E2E.<br><br>
+                    <strong>Herramientas:</strong> <span style="color:#a5b4fc;">Pact, Spring Cloud Contract</span>.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #6366f1;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Mutación</div>
+                    <i data-lucide="dna" style="color:#6366f1; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> "Probar las pruebas". Inyecta bugs a propósito en el código base para verificar si los tests unitarios son capaces de detectarlos y fallar.<br><br>
+                    <strong>Herramientas:</strong> <span style="color:#a5b4fc;">Stryker (JS/C#), PIT (Java)</span>.
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <div class="orb orb1"></div>
+  <div class="slide-inner">
+    <div class="slide-tag" style="color:#7c3aed;">Pruebas No Funcionales</div>
+    <h2>No Funcionales: Nuevas Tendencias</h2><div class="hdiv"></div>
+    <div class="content-area">
+        <div class="card-grid card-grid-2">
+            <div class="card" style="border-left:5px solid #7c3aed;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Chaos Engineering</div>
+                    <i data-lucide="bomb" style="color:#7c3aed; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>¿Qué es?</strong> Apagar servidores aleatoriamente en producción para probar la resiliencia y el "Disaster Recovery". Netflix lo popularizó.<br>
+                    <strong>Herramientas:</strong> <span style="color:#c4b5fd;">Chaos Monkey, LitmusChaos</span>.
+                </div>
+            </div>
+            
+            <div class="card" style="border-left:5px solid #7c3aed;">
+                <div style="display:flex; justify-content:space-between;">
+                    <div class="card-title">Accesibilidad (a11y) y Compliance</div>
+                    <i data-lucide="eye" style="color:#7c3aed; width:32px; height:32px;"></i>
+                </div>
+                <div class="card-body" style="margin-top:1rem;">
+                    <strong>a11y:</strong> Asegurar que personas con discapacidades (visuales, motoras) puedan usar la app mediante lectores de pantalla (Leyes WCAG/ADA).<br>
+                    <strong>Compliance:</strong> Pruebas legales para GDPR (Europa) o leyes de protección de datos.
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" style="border-left:5px solid #7c3aed; margin-top:1.5rem;">
+            <div style="display:flex; justify-content:space-between;">
+                <div class="card-title">Otras menciones vitales en Enterprise</div>
+                <i data-lucide="building-2" style="color:#7c3aed; width:32px; height:32px;"></i>
+            </div>
+            <div class="card-body" style="margin-top:1rem; display:flex; gap:2rem;">
+                <div style="flex:1;"><strong>A/B Testing:</strong> Mostrar 2 versiones distintas de la UI a usuarios diferentes para medir estadísticamente cuál genera más ventas/clicks.</div>
+                <div style="flex:1;"><strong>Migración de Datos (ETL):</strong> Pruebas críticas al cambiar de base de datos o sistema. Valida que no se pierda ni mutile la data del cliente.</div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-session="4">
+  <div class="orb orb1"></div>
+  <div class="slide-inner centered" style="max-width:98%; padding-top:40px; padding-bottom:60px;">
+    <div class="slide-tag" style="color:#f59e0b; text-align:center;">Ecosistema de QA</div>
+    <h2 style="text-align:center;">Tabla Periódica de Testing</h2><div class="hdiv" style="margin:0 auto 2rem;"></div>
+    
+    <div class="periodic-table">
+        <!-- Fila 1: 2 Elementos -->
+        <div class="pt-element pt-unit"><i data-lucide="puzzle" class="pt-icon"></i><div class="symbol">JUn</div><div class="name">JUnit</div><div class="type">Unit</div></div>
+        <div style="grid-column: span 16;"></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-alert" class="pt-icon"></i><div class="symbol">Snr</div><div class="name">SonarQube</div><div class="type">SAST</div></div>
+        
+        <!-- Fila 2: 8 Elementos -->
+        <div class="pt-element pt-unit"><i data-lucide="puzzle" class="pt-icon"></i><div class="symbol">PyT</div><div class="name">PyTest</div><div class="type">Unit</div></div>
+        <div class="pt-element pt-unit"><i data-lucide="puzzle" class="pt-icon"></i><div class="symbol">Jst</div><div class="name">Jest</div><div class="type">Unit</div></div>
+        <div style="grid-column: span 10;"></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-alert" class="pt-icon"></i><div class="symbol">Zap</div><div class="name">OWASP ZAP</div><div class="type">DAST</div></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-alert" class="pt-icon"></i><div class="symbol">Brp</div><div class="name">Burp Suite</div><div class="type">Pentest</div></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-alert" class="pt-icon"></i><div class="symbol">Chx</div><div class="name">Checkmarx</div><div class="type">SAST</div></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-alert" class="pt-icon"></i><div class="symbol">Snk</div><div class="name">Snyk</div><div class="type">SCA</div></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-alert" class="pt-icon"></i><div class="symbol">Frt</div><div class="name">Fortify</div><div class="type">SAST</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge" class="pt-icon"></i><div class="symbol">Psm</div><div class="name">Postman</div><div class="type">API</div></div>
+
+        <!-- Fila 3: 8 Elementos -->
+        <div class="pt-element pt-unit"><i data-lucide="puzzle" class="pt-icon"></i><div class="symbol">NUn</div><div class="name">NUnit</div><div class="type">Unit</div></div>
+        <div class="pt-element pt-unit"><i data-lucide="puzzle" class="pt-icon"></i><div class="symbol">Mch</div><div class="name">Mocha</div><div class="type">Unit</div></div>
+        <div style="grid-column: span 10;"></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge" class="pt-icon"></i><div class="symbol">Ins</div><div class="name">Insomnia</div><div class="type">API</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge" class="pt-icon"></i><div class="symbol">RAs</div><div class="name">RestAssured</div><div class="type">API</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge" class="pt-icon"></i><div class="symbol">Krt</div><div class="name">Karate</div><div class="type">API BDD</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge" class="pt-icon"></i><div class="symbol">SUI</div><div class="name">SoapUI</div><div class="type">API</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge" class="pt-icon"></i><div class="symbol">SpT</div><div class="name">SuperTest</div><div class="type">API</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge" class="pt-icon"></i><div class="symbol">Swg</div><div class="name">Swagger</div><div class="type">API Docs</div></div>
+
+        <!-- Fila 4: 18 Elementos -->
+        <div class="pt-element pt-unit"><i data-lucide="puzzle" class="pt-icon"></i><div class="symbol">PHP</div><div class="name">PHPUnit</div><div class="type">Unit</div></div>
+        <div class="pt-element pt-api"><i data-lucide="handshake" class="pt-icon"></i><div class="symbol">Pct</div><div class="name">Pact</div><div class="type">Contract</div></div>
+        <div class="pt-element pt-api"><i data-lucide="handshake" class="pt-icon"></i><div class="symbol">Tvn</div><div class="name">Tavern</div><div class="type">Contract</div></div>
+        <div class="pt-element pt-api"><i data-lucide="handshake" class="pt-icon"></i><div class="symbol">SCC</div><div class="name">Sp. Contract</div><div class="type">Contract</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge" class="pt-icon"></i><div class="symbol">WkM</div><div class="name">WireMock</div><div class="type">API Mock</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge" class="pt-icon"></i><div class="symbol">MtB</div><div class="name">Mountebank</div><div class="type">API Mock</div></div>
+        <div class="pt-element pt-unit"><i data-lucide="puzzle" class="pt-icon"></i><div class="symbol">Moc</div><div class="name">Mockito</div><div class="type">Mock</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity" class="pt-icon"></i><div class="symbol">JMt</div><div class="name">JMeter</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity" class="pt-icon"></i><div class="symbol">k6</div><div class="name">k6</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity" class="pt-icon"></i><div class="symbol">Gtl</div><div class="name">Gatling</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity" class="pt-icon"></i><div class="symbol">Loc</div><div class="name">Locust</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity" class="pt-icon"></i><div class="symbol">Art</div><div class="name">Artillery</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity" class="pt-icon"></i><div class="symbol">LdR</div><div class="name">LoadRunner</div><div class="type">Load</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe" class="pt-icon"></i><div class="symbol">Sel</div><div class="name">Selenium</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe" class="pt-icon"></i><div class="symbol">Cyp</div><div class="name">Cypress</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe" class="pt-icon"></i><div class="symbol">Plw</div><div class="name">Playwright</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe" class="pt-icon"></i><div class="symbol">Ppt</div><div class="name">Puppeteer</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe" class="pt-icon"></i><div class="symbol">WdI</div><div class="name">WebdriverIO</div><div class="type">Web E2E</div></div>
+
+        <!-- Fila 5: 18 Elementos -->
+        <div class="pt-element pt-e2e"><i data-lucide="globe" class="pt-icon"></i><div class="symbol">TCf</div><div class="name">TestCafe</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="smartphone" class="pt-icon"></i><div class="symbol">App</div><div class="name">Appium</div><div class="type">Movil E2E</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="smartphone" class="pt-icon"></i><div class="symbol">Esp</div><div class="name">Espresso</div><div class="type">Movil Nat</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="smartphone" class="pt-icon"></i><div class="symbol">XCU</div><div class="name">XCUITest</div><div class="type">Movil Nat</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="smartphone" class="pt-icon"></i><div class="symbol">Dtx</div><div class="name">Detox</div><div class="type">Movil E2E</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="smartphone" class="pt-icon"></i><div class="symbol">BSt</div><div class="name">BrowserStack</div><div class="type">Cloud</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="smartphone" class="pt-icon"></i><div class="symbol">SLb</div><div class="name">Sauce Labs</div><div class="type">Cloud</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="camera" class="pt-icon"></i><div class="symbol">Pcy</div><div class="name">Percy</div><div class="type">Visual</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="camera" class="pt-icon"></i><div class="symbol">Apl</div><div class="name">Applitools</div><div class="type">Visual</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="camera" class="pt-icon"></i><div class="symbol">BJS</div><div class="name">BackstopJS</div><div class="type">Visual</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="eye" class="pt-icon"></i><div class="symbol">Axe</div><div class="name">Axe</div><div class="type">a11y</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="eye" class="pt-icon"></i><div class="symbol">Lgh</div><div class="name">Lighthouse</div><div class="type">a11y</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="eye" class="pt-icon"></i><div class="symbol">P11</div><div class="name">Pa11y</div><div class="type">a11y</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up" class="pt-icon"></i><div class="symbol">Cuc</div><div class="name">Cucumber</div><div class="type">BDD UAT</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up" class="pt-icon"></i><div class="symbol">SpF</div><div class="name">SpecFlow</div><div class="type">BDD UAT</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up" class="pt-icon"></i><div class="symbol">Bhv</div><div class="name">Behave</div><div class="type">BDD UAT</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up" class="pt-icon"></i><div class="symbol">Srn</div><div class="name">Serenity</div><div class="type">BDD UAT</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up" class="pt-icon"></i><div class="symbol">RbF</div><div class="name">Robot FW</div><div class="type">ATDD</div></div>
+
+        <!-- Fila 6: 18 Elementos -->
+        <div class="pt-element pt-bdd"><i data-lucide="server" class="pt-icon"></i><div class="symbol">LcS</div><div class="name">LocalStack</div><div class="type">AWS Mock</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="bomb" class="pt-icon"></i><div class="symbol">C.M.</div><div class="name">Chaos Mk</div><div class="type">Chaos</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="bomb" class="pt-icon"></i><div class="symbol">Grm</div><div class="name">Gremlin</div><div class="type">Chaos</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="bomb" class="pt-icon"></i><div class="symbol">Ltm</div><div class="name">Litmus</div><div class="type">Chaos</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="dna" class="pt-icon"></i><div class="symbol">Str</div><div class="name">Stryker</div><div class="type">Mutation</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="dna" class="pt-icon"></i><div class="symbol">PIT</div><div class="name">PIT</div><div class="type">Mutation</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="network" class="pt-icon"></i><div class="symbol">Txi</div><div class="name">Toxiproxy</div><div class="type">Net Sim</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="list-checks" class="pt-icon"></i><div class="symbol">Jra</div><div class="name">Jira</div><div class="type">Track</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="list-checks" class="pt-icon"></i><div class="symbol">Xry</div><div class="name">Xray</div><div class="type">T. Mgmt</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="list-checks" class="pt-icon"></i><div class="symbol">TRl</div><div class="name">TestRail</div><div class="type">T. Mgmt</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="list-checks" class="pt-icon"></i><div class="symbol">Zph</div><div class="name">Zephyr</div><div class="type">T. Mgmt</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="pie-chart" class="pt-icon"></i><div class="symbol">Alr</div><div class="name">Allure</div><div class="type">Report</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="pie-chart" class="pt-icon"></i><div class="symbol">RPt</div><div class="name">ReportPortal</div><div class="type">Report</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="server" class="pt-icon"></i><div class="symbol">Dck</div><div class="name">Docker</div><div class="type">Entorno</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="server" class="pt-icon"></i><div class="symbol">K8s</div><div class="name">Kubernetes</div><div class="type">Entorno</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="infinity" class="pt-icon"></i><div class="symbol">Jnk</div><div class="name">Jenkins</div><div class="type">CI/CD</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="infinity" class="pt-icon"></i><div class="symbol">GHA</div><div class="name">GH Actions</div><div class="type">CI/CD</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="infinity" class="pt-icon"></i><div class="symbol">GLC</div><div class="name">GitLab CI</div><div class="type">CI/CD</div></div>
+    </div>
+    
+    <div class="pt-legend">
+        <div class="pt-legend-item"><div class="pt-legend-color pt-unit"></div> Unitarias</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-api"></div> API / Contrato</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-e2e"></div> E2E Web</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-mob"></div> Mobile / BDD</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-vis"></div> Visual / Accesibilidad</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-perf"></div> Carga y Rendimiento</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-sec"></div> Seguridad SAST/DAST</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-ops"></div> Ingeniería del Caos</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-mgt"></div> Gestión / CI-CD</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- Teacher Help Modal -->
+<div class="teacher-modal-overlay" id="teacher-overlay" onclick="if(event.target===this)closeTeacherModal()">
+  <div class="teacher-modal">
+    <button class="teacher-modal-close" onclick="closeTeacherModal()"><i data-lucide="x"></i></button>
+    <div class="teacher-modal-header">
+      <i data-lucide="book-open-check"></i>
+      <span class="teacher-modal-title" id="teacher-title">Notas del Profesor</span>
+    </div>
+    <div class="teacher-modal-body" id="teacher-body"></div>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <div class="nav-info">
+    <span class="session-badge" id="sess-label">S1</span>
+    <span class="slide-counter" id="counter">1 / 1</span>
+    <span class="nav-title" id="slide-title"></span>
+  </div>
+  <div class="nav-controls">
+    <button class="btn-nav" id="btn-prev" onclick="go(-1)"><i data-lucide="arrow-left" style="width:18px;height:18px;"></i> Anterior</button>
+    <button class="btn-nav primary" id="btn-next" onclick="go(1)">Siguiente <i data-lucide="arrow-right" style="width:18px;height:18px;"></i></button>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  <span class="kbd"><i data-lucide="arrow-left" style="width:14px;height:14px;"></i></span> o <span class="kbd"><i data-lucide="arrow-right" style="width:14px;height:14px;"></i></span> para navegar &nbsp;&nbsp;|&nbsp;&nbsp; <span class="kbd">F</span> pantalla completa &nbsp;&nbsp;|&nbsp;&nbsp; <span class="kbd" style="background:rgba(245,158,11,.15);color:#fbbf24;border-color:rgba(245,158,11,.4);">?</span> notas del profesor
+</div>
+
+<script>
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0;
+
+const sessionStarts = {};
+const sessionNames = ["S1","S2","S3","S4","S5"];
+slides.forEach(function(s,i){
+  const ses = s.dataset.session;
+  if (sessionStarts[ses] === undefined) sessionStarts[ses] = i;
+});
+
+const slideTitles = slides.map(function(s){
+  const h = s.querySelector('h1,h2');
+  return h ? h.textContent.replace(/\s+/g,' ').trim() : '';
+});
+
+function update(){
+  slides.forEach(function(s,i){
+    s.classList.remove('active','prev');
+    if (i === cur) s.classList.add('active');
+    else if (i < cur) s.classList.add('prev');
+  });
+  document.getElementById('prog').style.width = ((cur+1)/total*100)+'%';
+  document.getElementById('counter').textContent = (cur+1)+' / '+total;
+  const t = slideTitles[cur] || '';
+  document.getElementById('slide-title').textContent = t.substring(0,60);
+  const ses = slides[cur].dataset.session;
+  document.getElementById('sess-label').textContent = sessionNames[parseInt(ses)] || 'S1';
+  document.getElementById('btn-prev').disabled = cur === 0;
+  document.getElementById('btn-next').disabled = cur === total-1;
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.classList.toggle('active', t.dataset.ses == ses);
+  });
+  applyTextFit();
+}
+
+function go(d){
+  cur = Math.max(0, Math.min(total-1, cur+d));
+  update();
+}
+
+function jumpSession(ses){
+  if (sessionStarts[ses] !== undefined){
+    cur = sessionStarts[ses];
+    update();
+  }
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' '){ e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp'){ e.preventDefault(); go(-1); }
+  if (e.key === 'f' || e.key === 'F'){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+  if (e.key === 'Home'){ cur=0; update(); }
+  if (e.key === 'End'){ cur=total-1; update(); }
+});
+
+var tx = 0;
+document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; });
+document.addEventListener('touchend', function(e){
+  var dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+});
+
+update();
+
+// === DYNAMIC TEXT-FIT ENGINE (text-fit: [ none | grow | shrink ] || [ consistent | per-line | per-line-all ]) ===
+function applyTextFit() {
+  var activeSlide = slides[cur];
+  if (!activeSlide) return;
+  
+  var fitElements = activeSlide.querySelectorAll('[style*="text-fit"], [data-text-fit], .text-fit');
+  fitElements.forEach(function(el) {
+    var styleAttr = el.getAttribute('style') || '';
+    var match = styleAttr.match(/text-fit:\s*([^;]+)/i) || [];
+    var val = (match[1] || el.dataset.textFit || '').trim().toLowerCase();
+    
+    if (!val || val === 'none') return;
+    
+    var isGrow = val.indexOf('grow') !== -1;
+    var isShrink = val.indexOf('shrink') !== -1;
+    var isConsistent = val.indexOf('consistent') !== -1;
+    
+    var targets = (el.children.length > 0 && isConsistent) ? 
+      Array.prototype.slice.call(el.querySelectorAll('p, pre, span, div, h1, h2, h3, h4, code, li, .card-title, .card-body')) : 
+      [el];
+      
+    targets.forEach(function(t) {
+      if (!t.dataset.origSize) {
+        var cs = window.getComputedStyle(t);
+        t.dataset.origSize = parseFloat(cs.fontSize) || 16;
+      }
+    });
+    
+    var origContainerSize = parseFloat(el.dataset.origSize || window.getComputedStyle(el).fontSize) || 16;
+    if (!el.dataset.origSize) el.dataset.origSize = origContainerSize;
+    
+    var minScale = 0.55;
+    var maxScale = isGrow ? 2.3 : 1.0;
+    
+    var low = minScale, high = maxScale, best = minScale;
+    
+    while (low <= high) {
+      var mid = (low + high) / 2;
+      
+      if (isConsistent && targets.length > 1) {
+        targets.forEach(function(t) {
+          t.style.fontSize = (parseFloat(t.dataset.origSize) * mid) + 'px';
+        });
+      } else {
+        el.style.fontSize = (origContainerSize * mid) + 'px';
+      }
+      
+      var overflow = (el.scrollHeight > el.clientHeight + 2) || (el.scrollWidth > el.clientWidth + 2);
+      if (el.parentElement && (el.parentElement.classList.contains('card') || el.parentElement.classList.contains('content-area') || el.parentElement.classList.contains('cols'))) {
+        var p = el.parentElement;
+        if (p.scrollHeight > p.clientHeight + 2 || p.scrollWidth > p.clientWidth + 2) {
+          overflow = true;
+        }
+      }
+      
+      if (!overflow) {
+        best = mid;
+        low = mid + 0.05;
+      } else {
+        high = mid - 0.05;
+      }
+    }
+    
+    if (isConsistent && targets.length > 1) {
+      targets.forEach(function(t) {
+        t.style.fontSize = (parseFloat(t.dataset.origSize) * best) + 'px';
+      });
+    } else {
+      el.style.fontSize = (origContainerSize * best) + 'px';
+    }
+  });
+}
+
+window.addEventListener('resize', applyTextFit);
+setTimeout(applyTextFit, 50);
+
+
+// === TEACHER NOTES SYSTEM ===
+var teacherNotes = ['<div class=\'teacher-note-section\'><h4>Contexto de apertura</h4>Bienvenida al curso. Explica que esta asignatura es <strong>práctica y no teórica</strong>: los alumnos van a ejecutar pruebas reales, no solo leer sobre ellas. Menciona que el testing es una de las áreas con <strong>mayor demanda laboral</strong> en la industria IT actual (QA Engineers, SDET). Aclara que el enfoque será <em>Aprender Haciendo (ABP)</em>.</div><div class=\'teacher-note-section\'><h4>Puntos clave para decir</h4>El testing no es "buscar errores": es un proceso sistemático de <strong>aseguramiento de calidad</strong> que abarca desde los requisitos hasta producción. Comparte alguna anécdota: el bug de Ariane 5 (1996, $370M perdidos por un overflow), o el caso de Knight Capital (2012, $440M en 45 minutos por un deploy sin pruebas de regresión).</div>', '<div class=\'teacher-note-section\'><h4>Cómo usar esta slide</h4>Esta es tu <strong>mapa de ruta</strong> para la clase. Recórrelo rápidamente para que los alumnos sepan qué van a aprender hoy. Esto les da estructura mental y reduce la ansiedad del "¿cuánto falta?".</div><div class=\'teacher-note-section\'><h4>Tip pedagógico</h4>Pregunta al inicio: <em>"¿Alguien aquí ha probado su propio código antes de entregarlo? ¿Cómo lo hicieron?"</em>. Esto activa conocimiento previo y genera engagement inmediato.</div>', '<div class=\'teacher-note-section\'><h4>El mensaje central</h4>Esta es una de las slides más importantes de toda la unidad. El gráfico muestra que <strong>el costo de corregir un bug crece exponencialmente</strong> conforme avanza el ciclo de desarrollo. Un error detectado en requisitos cuesta ~$1. El mismo error detectado en producción puede costar <strong>$10,000 o más</strong> (por retrabajo, pérdida de clientes, daño reputacional).</div><div class=\'teacher-note-section\'><h4>Datos concretos para mencionar</h4>Según IBM Systems Sciences Institute, corregir un error en producción es <strong>100x más caro</strong> que corregirlo en diseño. Esto justifica todo el "Shift-Left Testing": probar ANTES, no DESPUÉS.</div><div class=\'teacher-note-section\'><h4>Ejemplo práctico</h4>Imagina un sistema de facturación que calcula mal el IVA. Si lo detectas en el diseño (revisando la fórmula en un documento), arreglarlo toma 5 minutos. Si llega a producción y ya emitiste 10,000 facturas incorrectas al SII, hay que corregir cada factura, notificar clientes, y posiblemente enfrentar multas tributarias.</div>', '<div class=\'teacher-note-section\'><h4>La diferencia clave</h4><strong>Verificación</strong> = ¿Estamos construyendo el producto CORRECTAMENTE? (contra especificaciones técnicas). <strong>Validación</strong> = ¿Estamos construyendo el producto CORRECTO? (contra las necesidades reales del cliente). Son complementarias, nunca excluyentes.</div><div class=\'teacher-note-section\'><h4>Analogía útil</h4>Piensa en construir una casa. <em>Verificación</em>: revisar que los cimientos tengan la profundidad correcta según el plano del ingeniero. <em>Validación</em>: preguntarle al dueño si realmente quería 3 dormitorios o 4. Puedes construir perfectamente algo que nadie necesitaba.</div><div class=\'teacher-note-section\'><h4>Pregunta para la clase</h4>"Si un software pasa TODAS las pruebas técnicas pero el cliente dice que no le sirve, ¿es un producto de calidad?" La respuesta es NO. Esto conecta directamente con el Principio 7 del ISTQB.</div>', '<div class=\'teacher-note-section\'><h4>La cadena causal</h4>Enfatiza que estos tres conceptos forman una <strong>cadena causal</strong>: ERROR (humano comete un equívoco) → DEFECTO (el equívoco queda plasmado en el código/documento) → FALLA (el defecto se manifiesta cuando el software se ejecuta bajo ciertas condiciones).</div><div class=\'teacher-note-section\'><h4>Punto importante</h4>Un <strong>defecto puede existir por años sin causar fallas</strong> si nunca se ejecuta ese camino del código. Ejemplo: un bug en la función de "exportar a PDF" que nadie usa. Existe, pero no falla visiblemente. Eso no significa que no sea un riesgo latente.</div><div class=\'teacher-note-section\'><h4>Actividad rápida sugerida</h4>Pide a los alumnos que identifiquen en un caso hipotético cuál fue el Error, cuál el Defecto, y cuál la Falla. Ejemplo: "Un programador cansado (Error) escribe > en vez de >= (Defecto). El sistema cobra $0 a clientes con saldo exacto (Falla)."</div>', '<div class=\'teacher-note-section\'><h4>Contexto ISTQB</h4>Estos 7 principios provienen del <strong>ISTQB Foundation Level Syllabus</strong>, el estándar internacional de certificación en testing. Son la base filosófica que guía TODO el trabajo de un QA profesional.</div><div class=\'teacher-note-section\'><h4>Principio 1: El testing muestra defectos</h4>Enfatiza la frase: "la ausencia de evidencia no es evidencia de ausencia". Que no encuentres bugs NO significa que no existan. Solo reduces la probabilidad.</div><div class=\'teacher-note-section\'><h4>Principio 2: Testing exhaustivo imposible</h4>Ejemplo concreto: un formulario con 5 campos de texto libre de 20 caracteres tiene más combinaciones posibles que átomos en el universo observable. Por eso se usan técnicas como <em>Partición de Equivalencias</em> y <em>Análisis de Valores Límite</em>.</div><div class=\'teacher-note-section\'><h4>Principio 3: Shift-Left</h4>Conecta con la slide del costo del error. Si testeas desde los requisitos, ahorras dinero exponencialmente.</div><div class=\'teacher-note-section\'><h4>Principio 4: Pareto 80/20</h4>En la práctica real, los módulos de pagos, autenticación e integraciones legacy concentran la mayoría de los bugs. Allí debe enfocarse el esfuerzo del equipo QA.</div>', '<div class=\'teacher-note-section\'><h4>Principio 5: Paradoja del pesticida</h4>Analogía agrícola: si rocías el mismo pesticida siempre, los insectos se vuelven resistentes. Lo mismo con los tests: si ejecutas los mismos 200 tests automatizados todos los días, eventualmente dejan de encontrar bugs nuevos porque el código ya fue corregido para esos escenarios. Hay que <strong>rotar, ampliar y crear tests nuevos</strong> constantemente.</div><div class=\'teacher-note-section\'><h4>Principio 6: Depende del contexto</h4>No es lo mismo probar un juego móvil que un marcapasos. El nivel de rigor, las herramientas, la documentación y la tolerancia a fallas cambian radicalmente según el dominio. Pregunta a la clase: "¿Qué pasaría si el software de un avión tuviera la misma calidad que una app de delivery?"</div><div class=\'teacher-note-section\'><h4>Principio 7: Falsa seguridad (EL MÁS IMPORTANTE)</h4>Este principio es contra-intuitivo. Puedes tener 100% de cobertura de código, 0 bugs, CI/CD perfecto... pero si el producto no resuelve el problema de negocio del cliente, <strong>el proyecto fracasó</strong>. Calidad = utilidad + confiabilidad + experiencia, no solo "ausencia de errores".</div>', "<div class='teacher-note-section'><h4>Instrucciones para el profesor</h4>Esta es la actividad práctica de la Sesión 1. Divide al curso en grupos de 3-4 personas. Asigna a cada grupo un <strong>caso histórico de desastre de software</strong>: Therac-25 (radiación letal), Knight Capital (pérdida financiera), o Boeing 737 MAX (MCAS).</div><div class='teacher-note-section'><h4>Qué deben entregar</h4>Un mini-informe forense que mapee: 1) El ERROR humano original, 2) El DEFECTO en el código/proceso, 3) La FALLA observable, y 4) Qué PRINCIPIOS del ISTQB se violaron. Tiempo sugerido: 30 minutos + 10 min de exposición por grupo.</div><div class='teacher-note-section'><h4>Cierre de la actividad</h4>Conecta las conclusiones con la importancia del testing temprano y la cultura de calidad. Estos casos reales generan un impacto emocional fuerte que los alumnos recordarán.</div>", '<div class=\'teacher-note-section\'><h4>Transición a la Sesión 2</h4>Haz un breve recap de la Sesión 1 (principios, taxonomía). Ahora pasamos de la <strong>filosofía</strong> a la <strong>práctica</strong>: ¿cómo se organizan las pruebas en un proyecto real? Presenta el concepto de "niveles" como capas de una cebolla: cada nivel prueba un alcance diferente del sistema.</div><div class=\'teacher-note-section\'><h4>Pregunta de enganche</h4>"¿Qué creen que es más importante: probar cada función individual, o probar el sistema completo como lo usaría un usuario real?" La respuesta correcta es: AMBAS, pero en proporciones diferentes (pirámide de automatización).</div>', '<div class=\'teacher-note-section\'><h4>Concepto de Mike Cohn</h4>La pirámide de automatización es un modelo que indica <strong>cuántas pruebas de cada tipo</strong> debería tener un proyecto sano. La base (unitarias) debe ser la más amplia porque son rápidas, baratas y estables. La cima (UI/Aceptación) debe ser la más estrecha porque son lentas, frágiles y caras.</div><div class=\'teacher-note-section\'><h4>Anti-patrón: El "Ice Cream Cone"</h4>Muchas empresas cometen el error de invertir la pirámide: tienen toneladas de tests manuales de UI y casi cero unitarios. Esto es el "cono de helado" y es una receta para el desastre: suites de prueba que tardan horas, son frágiles y no detectan bugs a tiempo.</div><div class=\'teacher-note-section\'><h4>Números reales</h4>Google sugiere la proporción 70/20/10: 70% unitarias, 20% integración, 10% E2E. Esto no es una regla rígida, pero da una guía clara.</div>', '<div class=\'teacher-note-section\'><h4>Concepto central</h4>Una prueba unitaria genuina <strong>NUNCA</strong> debe tocar una base de datos real, una red real, ni un sistema de archivos. Debe ser 100% aislada y correr en memoria. ¿Por qué? Porque si tu test falla, quieres saber que falló TU código, no que se cayó el servidor de la BD.</div><div class=\'teacher-note-section\'><h4>Dobles de Prueba (Test Doubles)</h4>Explica la diferencia: <strong>Stubs</strong> = objetos falsos que devuelven datos fijos ("cuando llamen al servicio clima, devuelve 25°C"). <strong>Mocks</strong> = objetos que además VERIFICAN interacciones ("el servicio de email fue llamado exactamente 1 vez con estos parámetros").</div><div class=\'teacher-note-section\'><h4>Ejemplo del código</h4>Recorre el ejemplo de la slide línea por línea. Muestra el patrón AAA: <em>Arrange</em> (preparar mocks), <em>Act</em> (ejecutar función), <em>Assert</em> (verificar resultado). Este patrón es universal en TODOS los frameworks de testing.</div>', "<div class='teacher-note-section'><h4>El problema que resuelven</h4>Las unitarias prueban piezas aisladas, pero ¿qué pasa cuando las conectas? La integración valida que los <strong>contratos entre módulos</strong> se respeten: que el Frontend envíe lo que el Backend espera, que la API devuelva el formato correcto, etc.</div><div class='teacher-note-section'><h4>Big Bang vs Incremental</h4>Big Bang = ensamblar todo de golpe al final. Es caótico y hace imposible aislar la causa de las fallas. Lo correcto es integrar <strong>incrementalmente</strong>: Top-Down (empezar por el orquestador, usar stubs abajo) o Bottom-Up (empezar por la base de datos, usar drivers arriba).</div><div class='teacher-note-section'><h4>CI/CD en la práctica</h4>Menciona que la industria moderna usa <strong>Integración Continua</strong>: cada commit dispara automáticamente las pruebas de integración en un servidor (Jenkins, GitHub Actions). Si algo se rompe, se detecta en minutos, no en semanas.</div>", '<div class=\'teacher-note-section\'><h4>Instrucciones para el profesor</h4>Esta actividad busca que los alumnos <strong>diseñen una estrategia de pruebas</strong> para un sistema dado. Presenta un escenario: "Una fintech que procesa pagos necesita un plan de testing para su nuevo módulo de transferencias internacionales."</div><div class=\'teacher-note-section\'><h4>Qué deben decidir</h4>1) ¿Qué proporción de unitarias/integración/E2E usarían? 2) ¿Qué topología de integración elegirían y por qué? 3) ¿Qué módulos son críticos para enfoque Pareto? Tiempo: 25 min de diseño + 15 min de presentación.</div>', '<div class=\'teacher-note-section\'><h4>Transición a la Sesión 3</h4>Recap rápido: ya cubrimos unitarias e integración (la base y el medio de la pirámide). Ahora subimos a la <strong>cima</strong>: pruebas que evalúan el sistema completo tal como lo verá el usuario final, y pruebas donde el CLIENTE decide si el software es aceptable.</div><div class=\'teacher-note-section\'><h4>Cambio de perspectiva</h4>En unitarias e integración, el protagonista es el <strong>desarrollador/QA técnico</strong>. En sistema y aceptación, el protagonista pasa a ser el <strong>usuario final y el Product Owner</strong>. Esto implica un cambio de lenguaje: de "aserciones de código" a "criterios de aceptación de negocio".</div>', '<div class=\'teacher-note-section\'><h4>Qué abarca</h4>Las pruebas de sistema evalúan el <strong>software completo integrado</strong> en un entorno que simula producción. Se prueba el flujo completo: desde que el usuario abre el navegador hasta que recibe la confirmación de su compra, pasando por frontend, backend, base de datos, servicios externos, etc.</div><div class=\'teacher-note-section\'><h4>Herramientas</h4>Cypress y Playwright son las herramientas modernas preferidas para E2E web. Selenium sigue siendo relevante pero es más frágil. Para mobile: Appium. Estas pruebas son las más <strong>lentas y costosas</strong> de mantener, por eso deben ser pocas y enfocadas en los flujos críticos de negocio.</div><div class=\'teacher-note-section\'><h4>Consejo práctico</h4>Recomienda a los alumnos que identifiquen los 5-10 "happy paths" más importantes del negocio y automaticen SOLO esos. No intenten automatizar todo el sistema a nivel E2E.</div>', '<div class=\'teacher-note-section\'><h4>El momento de la verdad</h4>UAT = User Acceptance Testing. Es cuando el <strong>cliente o Product Owner</strong> prueba el software y decide: "Sí, esto es lo que pedí" o "No, esto no me sirve". Es la última barrera antes de producción.</div><div class=\'teacher-note-section\'><h4>Fases Alfa y Beta</h4><strong>Alfa</strong>: pruebas internas dentro de la empresa, con usuarios controlados. <strong>Beta</strong>: se libera a un grupo reducido de usuarios reales externos para obtener feedback del mundo real. Muchas apps usan "beta testers" registrados o programas de acceso anticipado.</div><div class=\'teacher-note-section\'><h4>Conexión con BDD</h4>Las pruebas de aceptación se escriben idealmente en formato <em>Given-When-Then</em> (Gherkin) para que sean legibles por personas no técnicas. Herramientas como Cucumber permiten ejecutar estos escenarios automáticamente.</div>', '<div class=\'teacher-note-section\'><h4>Puente entre Negocio y QA</h4>El gran valor de BDD (Behavior-Driven Development) es eliminar el teléfono roto entre lo que el cliente quiere, lo que el programador codifica y lo que el tester prueba. Al escribir requisitos como comportamiento en lenguaje natural estructurado (Gherkin), todos hablan el mismo idioma.</div><div class=\'teacher-note-section\'><h4>Sintaxis Universal</h4>Enfatiza que <strong>DADO (Given)</strong> es el contexto o precondición, <strong>CUANDO (When)</strong> es el evento o acción detonante, y <strong>ENTONCES (Then)</strong> es la aserción o resultado medible y observable. Muestra cómo el ejemplo del bloqueo por fuerza bruta transforma una frase vaga en una prueba matemática y automatizable.</div>', '<div class=\'teacher-note-section\'><h4>Acción Única vs Acciones Encadenadas</h4>Explica a los alumnos la diferencia fundamental en el diseño de escenarios: cuando evaluamos un comportamiento atómico (como hacer clic en un botón) usamos un solo <strong>CUANDO... ENTONCES</strong>. Pero en flujos transicionales o multi-paso (llenar carrito, aplicar cupón, elegir envío), usamos <strong>CUANDO... Y... ENTONCES</strong> para reflejar la secuencia de interdependencias.</div><div class=\'teacher-note-section\'><h4>Evitar Anti-patrones y Sobrecomplicación</h4>Puntos críticos para la clase: 1) Aclara que no existe el keyword "Y entonces" en Gherkin; se usa simplemente <strong>Y (And)</strong> para encadenar. 2) Advierte sobre el peligro de escenarios de más de 3 o 4 pasos "Cuando/Y": cuando un escenario crece demasiado, se vuelve frágil, difícil de depurar y está probando múltiples reglas a la vez. ¡Es mejor dividirlo en escenarios limpios e independientes!</div>', '<div class=\'teacher-note-section\'><h4>Instrucciones para la Actividad</h4>En esta dinámica "El Cliente Misterioso", los alumnos experimentan la realidad de la industria: los clientes nunca entregan requisitos perfectos en formato Gherkin. Pídeles que analicen el requisito vago del envío gratis para usuarios VIP y lo desglosen en 3 criterios formales usando DADO-CUANDO-ENTONCES.</div><div class=\'teacher-note-section\'><h4>Puntos de evaluación del profesor</h4>Revisa que en las respuestas de los grupos: 1) Definan exactamente cuánto es "comprar harto" (ej: saldo del carrito >= $50.000). 2) Definan exactamente qué significa "avisarles si les falta poco" (ej: banner de alerta si el saldo está entre $40.000 y $49.999). 3) Respeten las buenas prácticas recién aprendidas: acciones atómicas claras y sin sobrecomplicar más de 3 o 4 pasos por escenario.</div>', "<div class='teacher-note-section'><h4>Transición</h4>Hasta aquí hemos visto los <strong>niveles</strong> de prueba (unitaria, integración, sistema, aceptación). Ahora vamos a ver las <strong>técnicas</strong>: Caja Blanca (mirando el código) vs Caja Negra (sin mirar el código). Son enfoques complementarios que todo QA debe dominar.</div><div class='teacher-note-section'><h4>Analogía</h4>Caja Negra = eres un usuario que prueba la app desde afuera, sin saber cómo funciona por dentro. Caja Blanca = eres un mecánico que abre el motor y revisa cada pieza internamente.</div>", '<div class=\'teacher-note-section\'><h4>Caja Blanca (White Box)</h4>El tester tiene acceso al código fuente. Técnicas: <strong>Cobertura de sentencias</strong> (¿se ejecutó cada línea?), <strong>Cobertura de ramas</strong> (¿se probó cada if/else?), <strong>Cobertura de caminos</strong> (¿se recorrió cada combinación de decisiones?). Herramientas: Istanbul (JS), JaCoCo (Java), Coverage.py (Python).</div><div class=\'teacher-note-section\'><h4>Caja Negra (Black Box)</h4>El tester NO ve el código. Técnicas: <strong>Partición de Equivalencias</strong> (dividir inputs en clases válidas/inválidas), <strong>Valores Límite</strong> (probar en los bordes: 0, 1, -1, MAX), <strong>Tabla de Decisión</strong> (combinaciones de condiciones).</div><div class=\'teacher-note-section\'><h4>¿Cuál es mejor?</h4>Ninguna es "mejor". En la práctica se combinan. Un equipo maduro usa Caja Blanca para las unitarias (el dev conoce su código) y Caja Negra para las pruebas de sistema/aceptación (el QA simula un usuario real).</div>', '<div class=\'teacher-note-section\'><h4>Diferencia crítica</h4><strong>Regresión Exhaustiva</strong> = re-ejecutar TODA la suite de pruebas después de cada cambio. Es completa pero lenta y costosa. Ideal para releases grandes. <strong>Sanity/Smoke Check</strong> = prueba rápida (5-15 min) para verificar que la app "enciende" y las funciones críticas no están rotas. Se hace antes de invertir tiempo en testing profundo.</div><div class=\'teacher-note-section\'><h4>Cuándo usar cada uno</h4>Smoke: después de cada deploy a un entorno de QA, para decidir si vale la pena testear. Sanity: después de un hotfix, para confirmar que el bug se arregló sin romper otras cosas. Regresión completa: antes de cada release a producción.</div><div class=\'teacher-note-section\'><h4>Automatización</h4>La regresión es el candidato #1 para automatizar. Si tu suite de regresión manual toma 3 días, automatizarla puede reducirlo a 30 minutos. Esto es un ROI enorme.</div>', "<div class='teacher-note-section'><h4>Instrucciones para el profesor</h4>Esta actividad cierra las 4 sesiones principales de la Unidad 1. Cada grupo recibe los artefactos de testing de OTRO grupo y los debe auditar. El objetivo es desarrollar <strong>pensamiento crítico</strong> y capacidad de revisión entre pares.</div><div class='teacher-note-section'><h4>Qué deben evaluar</h4>1) ¿Los casos de prueba cubren los flujos críticos? 2) ¿Usaron las técnicas adecuadas (Caja Blanca/Negra)? 3) ¿La proporción de la pirámide es sana? 4) ¿Los reportes de bugs son claros y reproducibles?</div>", '<div class=\'teacher-note-section\'><h4>Cierre motivacional</h4>Esta slide resume TODO lo aprendido. Recórrela con orgullo: los alumnos ahora dominan los fundamentos teóricos Y prácticos del testing. Desde los 7 principios ISTQB hasta la diferencia entre un Mock y un Stub, pasando por la pirámide de automatización.</div><div class=\'teacher-note-section\'><h4>Conexión con la Unidad 2</h4>Adelanta que en la Unidad 2 pasarán de "entender qué es el testing" a "PLANIFICAR pruebas para proyectos reales": escribirán Casos de Prueba formales, Matrices de Trazabilidad (RTM) y Planes de Prueba completos.</div>', "<div class='teacher-note-section'><h4>Introducción al capítulo especial</h4>Este capítulo es un <strong>catálogo exhaustivo</strong> de todos los tipos de pruebas que existen en la industria. La gran división: <strong>Funcionales</strong> (verifican QUÉ hace el software) vs <strong>No Funcionales</strong> (verifican CÓMO lo hace: rendimiento, seguridad, usabilidad, etc.).</div><div class='teacher-note-section'><h4>Tip para el profesor</h4>No intentes memorizar todo. El objetivo es que los alumnos <strong>conozcan que existen</strong> estos tipos de pruebas y sepan cuándo aplicar cada uno. Es un mapa mental, no un examen de memoria.</div>", '<div class=\'teacher-note-section\'><h4>Cómo usar este diagrama</h4>Este diagrama es <strong>100% interactivo</strong>. Puedes arrastrar los nodos, hacer zoom con la rueda del mouse, y hacer clic en un nodo para resaltarlo junto con sus conexiones. Úsalo como herramienta exploratoria en clase: pide a los alumnos que identifiquen visualmente las ramas del árbol.</div><div class=\'teacher-note-section\'><h4>Dinámica sugerida</h4>Proyecta el diagrama y pregunta: "¿Cuántos tipos de pruebas funcionales ven?" Luego haz zoom en la rama de No Funcionales y pregunta: "¿Cuáles de estas creen que son las más ignoradas por los equipos de desarrollo?" Esto genera debate y pensamiento crítico.</div><div class=\'teacher-note-section\'><h4>Navegación</h4>Los colores codifican las categorías: <strong>Índigo</strong> = Funcionales, <strong>Violeta</strong> = No Funcionales, <strong>Lavanda claro</strong> = Subtipos/Niveles. El nodo central "Pruebas de Software" tiene un borde destacado para servir como punto de partida visual.</div>', "<div class='teacher-note-section'><h4>Las 4 fundamentales</h4>Estas son las pruebas funcionales que todo proyecto DEBE tener: <strong>Unitarias</strong> (la pieza más pequeña), <strong>Integración</strong> (2+ piezas conectadas), <strong>Sistema</strong> (todo ensamblado), <strong>Aceptación</strong> (el cliente valida). Van de menor a mayor alcance.</div><div class='teacher-note-section'><h4>Herramientas para mencionar</h4>JUnit/PyTest/Jest para unitarias. Postman/RestAssured para integración de APIs. Cypress/Selenium/Playwright para E2E. Cucumber para UAT en formato Gherkin (Given-When-Then). Estas son las herramientas que los alumnos usarán en sus trabajos reales.</div><div class='teacher-note-section'><h4>Ejemplo práctico</h4>Para un e-commerce: Unitaria = verificar que calcularDescuento(100, 10) retorne 90. Integración = verificar que el carrito envía el precio correcto a la pasarela de pago. Sistema = completar una compra completa de principio a fin. UAT = el Product Owner confirma que el flujo de compra cumple los requisitos de negocio.</div>", '<div class=\'teacher-note-section\'><h4>Smoke vs Sanity: la diferencia sutil</h4><strong>Smoke</strong> = "¿La build enciende?" Es un chequeo ultra-rápido post-deploy. Si falla, se rechaza la build inmediatamente. <strong>Sanity</strong> = "¿El bug que dijeron que arreglaron realmente está arreglado?" Es más enfocado en un área específica.</div><div class=\'teacher-note-section\'><h4>Regresión: el pilar de la calidad continua</h4>Cada vez que agregas código nuevo, puedes romper algo viejo. La regresión re-ejecuta los tests existentes para detectar estas "roturas silenciosas". Es el tipo de prueba que MÁS se beneficia de la automatización.</div><div class=\'teacher-note-section\'><h4>API vs UI: niveles de la interfaz</h4>Pruebas de API = enviar requests HTTP directamente a los endpoints. Son rápidas y estables porque no dependen del diseño visual. Pruebas de UI = simular clicks reales del usuario. Son frágiles porque cualquier cambio de CSS puede romperlas. La tendencia moderna es maximizar pruebas de API y minimizar las de UI.</div>', "<div class='teacher-note-section'><h4>Rendimiento: los 4 jinetes</h4><strong>Carga</strong>: ¿cuánto aguanta con tráfico normal? (100 usuarios). <strong>Estrés</strong>: ¿dónde se rompe? (10,000 usuarios). <strong>Picos (Spike)</strong>: ¿sobrevive un Black Friday? (de 0 a 1M en segundos). <strong>Resistencia (Soak)</strong>: ¿funciona bien durante 48 horas continuas? (detecta memory leaks).</div><div class='teacher-note-section'><h4>Herramientas de rendimiento</h4>JMeter (Apache, gratis, el más popular), k6 (moderno, scripts en JS), Gatling (Scala, para devs), LoadRunner (enterprise, costoso). Para proyectos de alumnos, JMeter o k6 son ideales.</div><div class='teacher-note-section'><h4>Seguridad: la tríada</h4><strong>Pentesting</strong> = hackers éticos atacan manualmente la app buscando vulnerabilidades (requiere experiencia). <strong>SAST</strong> = herramientas que leen el código fuente buscando patrones peligrosos (ej: SonarQube detecta SQL injection potencial). <strong>DAST</strong> = herramientas que atacan la app EN EJECUCIÓN inyectando payloads maliciosos (ej: OWASP ZAP). La combinación de los 3 es la defensa ideal.</div>", '<div class=\'teacher-note-section\'><h4>Usabilidad: más allá de "se ve bonito"</h4>La usabilidad mide si un usuario REAL puede completar tareas de forma <strong>eficiente, efectiva y satisfactoria</strong>. No es lo mismo que diseño gráfico. Un formulario puede ser hermoso pero imposible de completar en celular. Las 10 Heurísticas de Jakob Nielsen son el estándar para evaluar usabilidad.</div><div class=\'teacher-note-section\'><h4>Herramientas de usabilidad</h4>Hotjar y CrazyEgg generan <strong>mapas de calor (heatmaps)</strong> y grabaciones de sesiones reales de usuarios. Figma permite crear prototipos interactivos para hacer testing de usabilidad ANTES de programar (ahorrando tiempo y dinero).</div><div class=\'teacher-note-section\'><h4>Compatibilidad</h4>¿Se ve bien en Chrome, Safari, Firefox y Edge? ¿Funciona en Android 10, 14 e iOS 17? Mantener un laboratorio físico con 50 celulares es carísimo. <strong>BrowserStack y Sauce Labs</strong> ofrecen acceso a miles de dispositivos reales en la nube por una suscripción mensual.</div><div class=\'teacher-note-section\'><h4>Instalación y Localización</h4>Instalación: que la app se instale, actualice y desinstale limpiamente. Localización (L10n): adaptar idioma, moneda, zona horaria, y dirección de lectura (ej: el árabe se lee de derecha a izquierda, lo que puede romper layouts CSS completos).</div>', "<div class='teacher-note-section'><h4>El valor de la Exploratoria</h4>Mientras las pruebas automatizadas buscan confirmar lo que YA sabemos, las <strong>Pruebas Exploratorias</strong> buscan encontrar lo que NO sabíamos que estaba roto. Requieren un QA con pensamiento crítico, no un bot que siga un guión.</div><div class='teacher-note-section'><h4>El problema que resuelve Contract Testing</h4>Cuando tienes 50 microservicios, levantar todo el ecosistema para probar si el Servicio A se conecta con el B es lentísimo (E2E). El <strong>Contract Testing</strong> permite probar la conexión de forma aislada, asegurando que ambos respeten la estructura de datos pactada.</div><div class='teacher-note-section'><h4>Mutación: probando al probador</h4>Si escribes una prueba unitaria, ¿cómo sabes que es buena? El testing de mutación altera tu código fuente en ejecución (ej: cambia un '+' por un '-'). Si tu prueba unitaria sigue pasando, tu prueba es inútil (no detectó el bug). Es el nivel máximo de exigencia en testing.</div>", '<div class=\'teacher-note-section\'><h4>Ingeniería del Caos</h4>Creado por Netflix con su herramienta <em>Chaos Monkey</em>. En vez de esperar a que algo falle, apagan servidores de producción a propósito en horario laboral para comprobar que los sistemas de respaldo (Disaster Recovery) funcionen sin que el cliente lo note.</div><div class=\'teacher-note-section\'><h4>La importancia legal de la Accesibilidad (a11y)</h4>La accesibilidad ya no es un "nice to have". En muchos países existen demandas millonarias contra empresas por violar la ley ADA al tener sitios web que un ciego no puede navegar con un lector de pantalla. Es un riesgo legal y corporativo.</div><div class=\'teacher-note-section\'><h4>Migración de Datos y Compliance</h4><strong>Compliance:</strong> Pruebas que los abogados adoran. ¿Tu app de salud cumple con HIPAA? ¿Tu e-commerce con PCI-DSS? <strong>ETL:</strong> Al migrar de Oracle a PostgreSQL, ¿se copiaron los 10 millones de registros sin alterar ni un solo acento o decimal?</div>', '<div class=\'teacher-note-section\'><h4>Propósito de esta vista</h4>La idea de la "Tabla Periódica" es ayudar a los alumnos a categorizar mentalmente el inmenso mar de herramientas que existe en QA. No necesitan aprender a usar todas, pero sí deben saber a qué categoría pertenece cada una (por sus colores).</div><div class=\'teacher-note-section\'><h4>Destacados por fila</h4><strong>Fila 1:</strong> Unitarias y Seguridad (análisis de código). <strong>Fila 2:</strong> Mocks (dobles), API testing y Pruebas de Carga/Rendimiento (simulación de tráfico). <strong>Fila 3:</strong> Pruebas visuales E2E (Web y Mobile), herramientas de gestión (Jira/TestRail) y orquestadores CI/CD (Jenkins/GitHub Actions).</div><div class=\'teacher-note-section\'><h4>Recomendación para los alumnos</h4>Sugiere que para conseguir su primer empleo como QA Automatizador, dominar una herramienta verde (ej: JUnit), una azul (ej: Postman) y una violeta (ej: Cypress) los hace candidatos extremadamente competitivos.</div>', "<div class='teacher-note-section'><h4>Notas adicionales</h4>Si esta slide es de cierre o transición, aprovecha para hacer un resumen rápido de los conceptos vistos y motivar a los alumnos a seguir explorando las herramientas mencionadas en sus propios proyectos.</div>"];
+
+// Inject help button into each slide
+slides.forEach(function(s, i) {
+  var btn = document.createElement('button');
+  btn.className = 'teacher-btn';
+  btn.title = 'Notas del Profesor';
+  btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>';
+  btn.setAttribute('data-slide-index', i);
+  btn.onclick = function() { openTeacherModal(i); };
+  // Insert into slide-inner if exists, else into slide
+  var inner = s.querySelector('.slide-inner');
+  if (inner) { s.insertBefore(btn, inner); } else { s.appendChild(btn); }
+});
+
+function openTeacherModal(idx) {
+  var overlay = document.getElementById('teacher-overlay');
+  var title = document.getElementById('teacher-title');
+  var body = document.getElementById('teacher-body');
+  var slideTitle = slideTitles[idx] || 'Slide ' + (idx+1);
+  // Clean HTML tags from title
+  var cleanTitle = slideTitle.replace(/<[^>]*>/g, ' ').trim();
+  title.textContent = 'Slide ' + (idx+1) + ': ' + cleanTitle;
+  body.innerHTML = (teacherNotes[idx] || '<p>No hay notas disponibles para esta slide.</p>');
+  overlay.classList.add('open');
+}
+
+function closeTeacherModal() {
+  document.getElementById('teacher-overlay').classList.remove('open');
+}
+
+// Keyboard shortcut: ? or H to toggle
+document.addEventListener('keydown', function(e) {
+  if (e.key === '?' || e.key === 'h' || e.key === 'H') {
+    var overlay = document.getElementById('teacher-overlay');
+    if (overlay.classList.contains('open')) {
+      closeTeacherModal();
+    } else {
+      openTeacherModal(cur);
+    }
+  }
+  if (e.key === 'Escape') { closeTeacherModal(); }
+});
+
+lucide.createIcons();
+
+// === CYTOSCAPE DIAGRAM (lazy init) ===
+var cyInitialized = false;
+function initCyDiagram() {
+  if (cyInitialized) return;
+  var container = document.getElementById('cy');
+  if (!container) return;
+  cyInitialized = true;
+
+  var rawData = [
+    { id: 'root', text: 'Pruebas de Software', parent: null, type: 'root' },
+
+    // === FUNCIONALES ===
+    { id: 'funcionales', text: 'Pruebas Funcionales', parent: 'root', type: 'branch', colorGroup: 'functional' },
+    { id: 'unitarias', text: 'Unitarias', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'unitarias_nivel', text: 'JUnit / PyTest / Jest', parent: 'unitarias', type: 'subleaf' },
+    { id: 'integracion', text: 'Integración', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'integracion_nivel', text: 'Postman / RestAssured', parent: 'integracion', type: 'subleaf' },
+    { id: 'sistema', text: 'Sistema (E2E)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'sistema_nivel', text: 'Cypress / Playwright', parent: 'sistema', type: 'subleaf' },
+    { id: 'uat', text: 'Aceptación (UAT)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'alfa', text: 'Alfa', parent: 'uat', type: 'subleaf' },
+    { id: 'beta', text: 'Beta', parent: 'uat', type: 'subleaf' },
+    { id: 'humo', text: 'Humo (Smoke)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'humo_nivel', text: 'Verificación de Build', parent: 'humo', type: 'subleaf' },
+    { id: 'sanidad', text: 'Sanidad (Sanity)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'sanidad_nivel', text: 'Verificación de Fix', parent: 'sanidad', type: 'subleaf' },
+    { id: 'api', text: 'API Testing', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'api_nivel', text: 'Insomnia / SoapUI', parent: 'api', type: 'subleaf' },
+    { id: 'ui', text: 'UI Testing', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'ui_nivel', text: 'Selenium / Appium', parent: 'ui', type: 'subleaf' },
+    { id: 'regresion', text: 'Regresión', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'regresion_nivel', text: 'Suite Automatizada CI', parent: 'regresion', type: 'subleaf' },
+    { id: 'confirmacion', text: 'Confirmación', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'confirmacion_nivel', text: 'Re-test de Bug', parent: 'confirmacion', type: 'subleaf' },
+    { id: 'exploratoria', text: 'Exploratoria', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'exploratoria_nivel', text: 'Session-Based / Ad-hoc', parent: 'exploratoria', type: 'subleaf' },
+    { id: 'contrato', text: 'Contrato (Contract)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'contrato_nivel', text: 'Pact / Spring Cloud', parent: 'contrato', type: 'subleaf' },
+    { id: 'mutacion', text: 'Mutación', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+    { id: 'mutacion_nivel', text: 'Stryker / PIT', parent: 'mutacion', type: 'subleaf' },
+
+    // === NO FUNCIONALES ===
+    { id: 'no-funcionales', text: 'Pruebas No Funcionales', parent: 'root', type: 'branch', colorGroup: 'non-functional' },
+    { id: 'rendimiento', text: 'Rendimiento', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'carga', text: 'De Carga', parent: 'rendimiento', type: 'subleaf' },
+    { id: 'estres', text: 'De Estrés', parent: 'rendimiento', type: 'subleaf' },
+    { id: 'resistencia', text: 'Resistencia (Soak)', parent: 'rendimiento', type: 'subleaf' },
+    { id: 'picos', text: 'Picos (Spike)', parent: 'rendimiento', type: 'subleaf' },
+    { id: 'escalabilidad', text: 'Escalabilidad', parent: 'rendimiento', type: 'subleaf' },
+    { id: 'seguridad', text: 'Seguridad', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'pentesting', text: 'Pentesting', parent: 'seguridad', type: 'subleaf' },
+    { id: 'sast', text: 'SAST (Estático)', parent: 'seguridad', type: 'subleaf' },
+    { id: 'dast', text: 'DAST (Dinámico)', parent: 'seguridad', type: 'subleaf' },
+    { id: 'compliance', text: 'Compliance / GDPR', parent: 'seguridad', type: 'subleaf' },
+    { id: 'usabilidad', text: 'Usabilidad (UX)', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'expertos', text: 'Heurística (Nielsen)', parent: 'usabilidad', type: 'subleaf' },
+    { id: 'usuarios', text: 'User Testing', parent: 'usabilidad', type: 'subleaf' },
+    { id: 'ab_testing', text: 'A/B Testing', parent: 'usabilidad', type: 'subleaf' },
+    { id: 'accesibilidad', text: 'Accesibilidad (a11y)', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'wcag', text: 'WCAG 2.1 / ADA', parent: 'accesibilidad', type: 'subleaf' },
+    { id: 'screen_reader', text: 'Screen Readers', parent: 'accesibilidad', type: 'subleaf' },
+    { id: 'compatibilidad', text: 'Compatibilidad', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'navegadores', text: 'Cross-Browser', parent: 'compatibilidad', type: 'subleaf' },
+    { id: 'sistemas', text: 'Cross-OS', parent: 'compatibilidad', type: 'subleaf' },
+    { id: 'mobile', text: 'Mobile-Specific', parent: 'compatibilidad', type: 'subleaf' },
+    { id: 'instalacion', text: 'Instalación', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'instalacion_nivel', text: 'Deploy / Rollback', parent: 'instalacion', type: 'subleaf' },
+    { id: 'localizacion', text: 'Localización (L10n)', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'localizacion_nivel', text: 'Idioma / Moneda / RTL', parent: 'localizacion', type: 'subleaf' },
+    { id: 'chaos', text: 'Chaos Engineering', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'chaos_nivel', text: 'Chaos Monkey / Litmus', parent: 'chaos', type: 'subleaf' },
+    { id: 'disaster', text: 'Disaster Recovery', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'disaster_nivel', text: 'Failover / Backup', parent: 'disaster', type: 'subleaf' },
+    { id: 'migracion', text: 'Migración de Datos', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+    { id: 'migracion_nivel', text: 'ETL / Schema Diff', parent: 'migracion', type: 'subleaf' }
+  ];
+
+  var elements = [];
+  rawData.forEach(function(item) {
+    elements.push({ group: 'nodes', data: { id: item.id, label: item.text, type: item.type, colorGroup: item.colorGroup } });
+    if (item.parent) {
+      elements.push({ group: 'edges', data: { source: item.parent, target: item.id } });
+    }
+  });
+
+  var cy = cytoscape({
+    container: container,
+    elements: elements,
+    style: [
+      { selector: 'node', style: {
+        'background-color': '#334155', 'label': 'data(label)', 'color': '#fff',
+        'text-valign': 'center', 'text-halign': 'center', 'font-size': '12px',
+        'text-wrap': 'wrap', 'text-max-width': '90px', 'padding': '8px',
+        'shape': 'round-rectangle', 'width': 'label', 'height': 'label',
+        'font-family': 'Inter, sans-serif', 'font-weight': '600',
+        'border-width': '2px', 'border-color': 'rgba(255,255,255,0.1)'
+      }},
+      { selector: 'node[type="root"]', style: {
+        'background-color': '#1e293b', 'font-size': '15px', 'font-weight': 'bold',
+        'padding': '12px', 'border-color': '#818cf8', 'border-width': '3px'
+      }},
+      { selector: 'node[type="branch"]', style: {
+        'font-size': '13px', 'font-weight': 'bold', 'padding': '10px'
+      }},
+      { selector: 'node[colorGroup="functional"]', style: { 'background-color': '#6366f1' } },
+      { selector: 'node[colorGroup="non-functional"]', style: { 'background-color': '#7c3aed' } },
+      { selector: 'node[type="subleaf"]', style: {
+        'background-color': '#a5b4fc', 'color': '#1e293b', 'font-size': '10px',
+        'font-weight': '500', 'border-color': 'rgba(99,102,241,0.3)', 'padding': '6px'
+      }},
+      { selector: 'edge', style: {
+        'width': 1.5, 'line-color': 'rgba(148,163,184,0.35)',
+        'target-arrow-color': 'rgba(148,163,184,0.35)',
+        'target-arrow-shape': 'triangle', 'curve-style': 'bezier'
+      }},
+      { selector: ':selected', style: {
+        'border-color': '#fbbf24', 'border-width': '4px',
+        'background-color': '#f59e0b'
+      }}
+    ],
+    layout: { name: 'dagre', padding: 20, rankDir: 'TB', spacingFactor: 0.95, rankSep: 50, nodeSep: 15 },
+    minZoom: 0.15, maxZoom: 2.5, boxSelectionEnabled: false
+  });
+
+  // === COLLAPSE / EXPAND SYSTEM ===
+  // Build parent->children map from rawData
+  var childrenMap = {};
+  rawData.forEach(function(item) {
+    if (item.parent) {
+      if (!childrenMap[item.parent]) childrenMap[item.parent] = [];
+      childrenMap[item.parent].push(item.id);
+    }
+  });
+
+  // Track collapsed state per node
+  var collapsed = {};
+
+  // Get all descendants recursively
+  function getDescendants(nodeId) {
+    var desc = [];
+    var kids = childrenMap[nodeId] || [];
+    kids.forEach(function(kid) {
+      desc.push(kid);
+      desc = desc.concat(getDescendants(kid));
+    });
+    return desc;
+  }
+
+  // Initially collapse everything except root and branches
+  rawData.forEach(function(item) {
+    if (childrenMap[item.id] && item.type !== 'root') {
+      collapsed[item.id] = true;
+    }
+  });
+
+  // Hide all non-root, non-branch nodes initially
+  function applyVisibility() {
+    var visible = { 'root': true, 'funcionales': true, 'no-funcionales': true };
+    // Walk tree: a node is visible if all its ancestors are expanded
+    function walkVisible(nodeId) {
+      var kids = childrenMap[nodeId] || [];
+      kids.forEach(function(kidId) {
+        if (!collapsed[nodeId]) {
+          visible[kidId] = true;
+          walkVisible(kidId);
+        }
+      });
+    }
+    walkVisible('root');
+
+    cy.batch(function() {
+      cy.nodes().forEach(function(n) {
+        if (visible[n.id()]) {
+          n.style('display', 'element');
+        } else {
+          n.style('display', 'none');
+        }
+      });
+      cy.edges().forEach(function(e) {
+        var src = e.source().id();
+        var tgt = e.target().id();
+        if (visible[src] && visible[tgt]) {
+          e.style('display', 'element');
+        } else {
+          e.style('display', 'none');
+        }
+      });
+    });
+
+    // Update labels with +/- indicator
+    cy.nodes().forEach(function(n) {
+      var nodeId = n.id();
+      var item = rawData.find(function(d) { return d.id === nodeId; });
+      if (item && childrenMap[nodeId]) {
+        var base = item.text;
+        if (collapsed[nodeId]) {
+          n.data('label', base + ' [+]');
+        } else {
+          n.data('label', base + ' [−]');
+        }
+      }
+    });
+  }
+
+  // Apply initial visibility
+  applyVisibility();
+
+  // Re-layout with animation
+  function reLayout() {
+    cy.layout({
+      name: 'dagre', padding: 20, rankDir: 'TB',
+      spacingFactor: 0.95, rankSep: 50, nodeSep: 15,
+      animate: true, animationDuration: 400,
+      animationEasing: 'ease-in-out-cubic'
+    }).run();
+  }
+
+  reLayout();
+
+  // Toggle collapse on click
+  cy.on('tap', 'node', function(evt) {
+    var nodeId = evt.target.id();
+    if (childrenMap[nodeId]) {
+      if (collapsed[nodeId]) {
+        collapsed[nodeId] = false;
+      } else {
+        collapsed[nodeId] = true;
+        // Also collapse all descendants
+        getDescendants(nodeId).forEach(function(descId) {
+          if (childrenMap[descId]) collapsed[descId] = true;
+        });
+      }
+      applyVisibility();
+      reLayout();
+    }
+  });
+
+  // Expand All / Collapse All buttons
+  var btnContainer = document.createElement('div');
+  btnContainer.style.cssText = 'position:absolute;top:10px;right:10px;z-index:10;display:flex;gap:8px;';
+  btnContainer.innerHTML = '<button id="cy-expand" style="background:rgba(99,102,241,.2);border:1px solid rgba(99,102,241,.4);color:#a5b4fc;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:Inter;font-size:11px;font-weight:700;">Expandir Todo</button><button id="cy-collapse" style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#fbbf24;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:Inter;font-size:11px;font-weight:700;">Colapsar Todo</button>';
+  document.getElementById('cy-container').appendChild(btnContainer);
+
+  document.getElementById('cy-expand').addEventListener('click', function(e) {
+    e.stopPropagation();
+    Object.keys(collapsed).forEach(function(k) { collapsed[k] = false; });
+    applyVisibility();
+    reLayout();
+  });
+  document.getElementById('cy-collapse').addEventListener('click', function(e) {
+    e.stopPropagation();
+    rawData.forEach(function(item) {
+      if (childrenMap[item.id] && item.type !== 'root') collapsed[item.id] = true;
+    });
+    applyVisibility();
+    reLayout();
+  });
+}
+
+// Lazy-init: only init diagram when the diagram slide becomes active
+var origUpdate = update;
+update = function() {
+  origUpdate();
+  var diagSlide = document.getElementById('slide-diagram');
+  if (diagSlide && diagSlide.classList.contains('active') && !cyInitialized) {
+    setTimeout(initCyDiagram, 300);
+  }
+};
+
+</script>
+</body>
+</html>
