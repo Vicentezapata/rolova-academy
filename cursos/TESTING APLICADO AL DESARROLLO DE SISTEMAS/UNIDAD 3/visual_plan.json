@@ -1,0 +1,391 @@
+{
+  "theme": "dark_tech",
+  "title": "Unidad 3 — Testing Aplicado al Desarrollo de Sistemas",
+  "slides": [
+    {
+      "slide_index": 0,
+      "page_type": "cover",
+      "title": "Automatización y Ciclo de Vida del Defecto",
+      "part_label": "UNIDAD 03",
+      "layout_hint": "single-focus",
+      "card_types": [
+        "text"
+      ],
+      "decoration_hints": [
+        "W1",
+        "W10"
+      ],
+      "speaker_notes": "Bienvenida a la Unidad 3. Explicaremos los fundamentos de la automatización y el ciclo de vida de los defectos.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">UNIDAD 03</p>\n  <h1 style=\"font-family:var(--display-font); font-size:64px; font-weight:800; color:var(--text-primary); line-height:1.05; letter-spacing:-0.04em; margin:0;\">Automatización y Ciclo de Vida del Defecto</h1>\n  <p style=\"color:var(--text-secondary); font-size:24px; max-width:55ch; line-height:1.6; margin:0;\">Fundamentos de la automatización de pruebas y gestión integral del ciclo de vida del defecto en proyectos de software.</p>\n</div>"
+    },
+    {
+      "slide_index": 1,
+      "page_type": "toc",
+      "title": "Tabla de Contenidos",
+      "part_label": "UNIDAD 03",
+      "layout_hint": "mixed-grid",
+      "card_types": [
+        "data"
+      ],
+      "decoration_hints": [
+        "W5"
+      ],
+      "speaker_notes": "Visión general de los 4 capítulos que componen esta unidad.",
+      "html_content": "<div style=\"display:grid; grid-template:1fr 1fr / 1fr 1fr; gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\">\n    <h3 style=\"color:var(--accent-1); font-size:24px;\">Parte 1</h3>\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px; margin:12px 0;\">Automatización</h2>\n    <p style=\"color:var(--text-secondary); font-size:18px;\">Fundamentos y beneficios.</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\">\n    <h3 style=\"color:var(--accent-2); font-size:24px;\">Parte 2</h3>\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px; margin:12px 0;\">Ciclo de Vida</h2>\n    <p style=\"color:var(--text-secondary); font-size:18px;\">Gestión y fases de un defecto.</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-3); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\">\n    <h3 style=\"color:var(--accent-3); font-size:24px;\">Parte 3</h3>\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px; margin:12px 0;\">Herramientas</h2>\n    <p style=\"color:var(--text-secondary); font-size:18px;\">Stack técnico y tendencias (IA).</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-4); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\">\n    <h3 style=\"color:var(--accent-4); font-size:24px;\">Parte 4</h3>\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px; margin:12px 0;\">Buenas Prácticas</h2>\n    <p style=\"color:var(--text-secondary); font-size:18px;\">Estrategias y anti-patrones.</p>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 2,
+      "page_type": "section",
+      "title": "Parte 1: Automatización de Pruebas",
+      "part_label": "PART 01",
+      "layout_hint": "single-focus",
+      "card_types": [
+        "text"
+      ],
+      "decoration_hints": [
+        "W3"
+      ],
+      "speaker_notes": "Iniciamos con el primer tema clave: La Automatización.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">PART 01</p>\n  <h1 style=\"font-family:var(--display-font); font-size:56px; font-weight:800; color:var(--text-primary); margin:0;\">Automatización de Pruebas</h1>\n</div>"
+    },
+    {
+      "slide_index": 3,
+      "page_type": "content",
+      "title": "¿Qué es la Automatización de Pruebas?",
+      "part_label": "PART 01",
+      "layout_hint": "hero-top",
+      "card_types": [
+        "text",
+        "quote"
+      ],
+      "decoration_hints": [
+        "W1"
+      ],
+      "speaker_notes": "Definición de automatización. El uso de software para controlar la ejecución de pruebas.",
+      "html_content": "<div style=\"display:grid; grid-template:auto 1fr / repeat(3,1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/-1; background:linear-gradient(135deg, var(--card-bg-from), var(--card-bg-to)); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px 32px; display:flex; align-items:center; gap:24px;\">\n    <div style=\"flex:1;\">\n      <h2 style=\"font-family:var(--display-font); font-size:36px; color:var(--text-primary); margin:8px 0;\">¿Qué es la Automatización de Pruebas?</h2>\n    </div>\n  </div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-1);\">01</p><h3 style=\"color:var(--text-primary);\">Precisión</h3></div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-2);\">02</p><h3 style=\"color:var(--text-primary);\">Velocidad</h3></div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-3);\">03</p><h3 style=\"color:var(--text-primary);\">Cobertura</h3></div>\n</div>"
+    },
+    {
+      "slide_index": 4,
+      "page_type": "content",
+      "title": "Manual vs Automatizado",
+      "part_label": "PART 01",
+      "layout_hint": "symmetric",
+      "card_types": [
+        "comparison"
+      ],
+      "decoration_hints": [
+        "W5"
+      ],
+      "speaker_notes": "Comparación directa. Lo manual es susceptible a error y tedioso, lo automatizado es rápido y repetible.",
+      "html_content": "<div style=\"display:grid; grid-template:1fr / 1fr 1fr; gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Pruebas Manuales / TDD</h2>\n    <ul style=\"color:var(--text-secondary); font-size:18px; margin-top:20px; line-height:1.8;\">\n      <li>Susceptible a error humano</li>\n      <li>Tedioso y repetitivo</li>\n      <li>Difícil de escalar</li>\n    </ul>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Automatizadas / BDD</h2>\n    <ul style=\"color:var(--text-secondary); font-size:18px; margin-top:20px; line-height:1.8;\">\n      <li>Ejecución rápida y repetible</li>\n      <li>Liberan tiempo para testing exploratorio</li>\n      <li>Integración continua (CI/CD)</li>\n    </ul>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 5,
+      "page_type": "content",
+      "title": "Beneficios Clave",
+      "part_label": "PART 01",
+      "layout_hint": "primary-secondary",
+      "card_types": [
+        "text",
+        "data"
+      ],
+      "decoration_hints": [
+        "W10"
+      ],
+      "speaker_notes": "Eficiencia, reducción de costos, mejor cobertura e integración continua.",
+      "html_content": "<div style=\"display:grid; grid-template:1fr 1fr / 2fr 1fr; gap:20px; height:100%;\">\n  <div style=\"grid-row:1/-1; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:36px;\">Beneficios Clave</h2>\n    <p style=\"color:var(--text-secondary); font-size:20px; margin-top:20px; line-height:1.6;\">Es fundamental entender las métricas de impacto que la automatización trae a un proyecto de software, como la mejora de la cobertura, eficiencia y detección temprana.</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;\">\n    <h3 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">80%</h3>\n    <p style=\"color:var(--text-secondary);\">Reducción de Tiempo</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;\">\n    <h3 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">95%</h3>\n    <p style=\"color:var(--text-secondary);\">Cobertura Aumentada</p>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 6,
+      "page_type": "content",
+      "title": "¿Cuándo Automatizar?",
+      "part_label": "PART 01",
+      "layout_hint": "l-shape",
+      "card_types": [
+        "text",
+        "diagram"
+      ],
+      "decoration_hints": [
+        "W2"
+      ],
+      "speaker_notes": "No todo se automatiza. Pruebas de regresión sí, pruebas exploratorias no.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">¿Cuándo Automatizar?</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">No todo se automatiza. Pruebas de regresión sí, pruebas exploratorias no.</p>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 7,
+      "page_type": "section",
+      "title": "Parte 2: Ciclo de Vida del Defecto",
+      "part_label": "PART 02",
+      "layout_hint": "single-focus",
+      "card_types": [
+        "text"
+      ],
+      "decoration_hints": [
+        "W3"
+      ],
+      "speaker_notes": "Pasamos a cómo se gestionan los bugs una vez encontrados.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">PART 02</p>\n  <h1 style=\"font-family:var(--display-font); font-size:56px; font-weight:800; color:var(--text-primary); margin:0;\">Ciclo de Vida del Defecto</h1>\n</div>"
+    },
+    {
+      "slide_index": 8,
+      "page_type": "content",
+      "title": "¿Qué es un Defecto?",
+      "part_label": "PART 02",
+      "layout_hint": "single-focus",
+      "card_types": [
+        "quote"
+      ],
+      "decoration_hints": [
+        "W1"
+      ],
+      "speaker_notes": "Un defecto o bug es cualquier desviación del comportamiento esperado.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">¿Qué es un Defecto?</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">Un defecto o bug es cualquier desviación del comportamiento esperado.</p>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 9,
+      "page_type": "content",
+      "title": "Etapas del Ciclo de Vida",
+      "part_label": "PART 02",
+      "layout_hint": "waterfall",
+      "card_types": [
+        "timeline"
+      ],
+      "decoration_hints": [
+        "W5"
+      ],
+      "speaker_notes": "Desde el reporte hasta el cierre.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; gap:20px; height:100%;\">\n  <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:36px; margin:0;\">Etapas del Ciclo de Vida</h2>\n  <div style=\"display:flex; flex-direction:column; gap:12px; flex:1; justify-content:center;\">\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-1); padding:16px; border-radius:4px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">1. Reporte y Registro</p></div>\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-2); padding:16px; border-radius:4px; margin-left:40px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">2. Análisis y Priorización</p></div>\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-3); padding:16px; border-radius:4px; margin-left:80px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">3. Asignación y Trabajo</p></div>\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-4); padding:16px; border-radius:4px; margin-left:120px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">4. Corrección y Pruebas Unitarias</p></div>\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-1); padding:16px; border-radius:4px; margin-left:160px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">5. Pruebas de Regresión y Resolución</p></div>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 10,
+      "page_type": "content",
+      "title": "Fase 1: Reporte y Registro",
+      "part_label": "PART 02",
+      "layout_hint": "three-column",
+      "card_types": [
+        "text"
+      ],
+      "decoration_hints": [
+        "W7"
+      ],
+      "speaker_notes": "La importancia de documentar bien: pasos, entorno, severidad.",
+      "html_content": "<div style=\"display:grid; grid-template:1fr / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-1); font-size:24px; margin-bottom:12px;\">Paso 1</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Descripción clara del defecto y pasos para reproducir.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-2); font-size:24px; margin-bottom:12px;\">Paso 2</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Detallar el entorno (OS, red, dispositivo).</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-3); font-size:24px; margin-bottom:12px;\">Paso 3</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Impacto esperado vs Impacto real.</p></div>\n</div>"
+    },
+    {
+      "slide_index": 11,
+      "page_type": "content",
+      "title": "Fase 2: Análisis y Priorización",
+      "part_label": "PART 02",
+      "layout_hint": "primary-secondary",
+      "card_types": [
+        "matrix-chart"
+      ],
+      "decoration_hints": [
+        "W10"
+      ],
+      "speaker_notes": "Severidad (impacto técnico) vs Prioridad (impacto de negocio).",
+      "html_content": "<div style=\"display:grid; grid-template:1fr 1fr / 2fr 1fr; gap:20px; height:100%;\">\n  <div style=\"grid-row:1/-1; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:36px;\">Fase 2: Análisis y Priorización</h2>\n    <p style=\"color:var(--text-secondary); font-size:20px; margin-top:20px; line-height:1.6;\">Es fundamental entender las métricas de impacto que la automatización trae a un proyecto de software, como la mejora de la cobertura, eficiencia y detección temprana.</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;\">\n    <h3 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">80%</h3>\n    <p style=\"color:var(--text-secondary);\">Reducción de Tiempo</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;\">\n    <h3 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">95%</h3>\n    <p style=\"color:var(--text-secondary);\">Cobertura Aumentada</p>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 12,
+      "page_type": "content",
+      "title": "Fases 3 y 4: Trabajo y Corrección",
+      "part_label": "PART 02",
+      "layout_hint": "t-shape",
+      "card_types": [
+        "text",
+        "comparison"
+      ],
+      "decoration_hints": [
+        "W2"
+      ],
+      "speaker_notes": "El desarrollador analiza, codifica la solución y aplica pruebas unitarias.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">Fases 3 y 4: Trabajo y Corrección</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">El desarrollador analiza, codifica la solución y aplica pruebas unitarias.</p>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 13,
+      "page_type": "content",
+      "title": "Fase 5: Pruebas de Regresión",
+      "part_label": "PART 02",
+      "layout_hint": "mixed-grid",
+      "card_types": [
+        "text",
+        "data"
+      ],
+      "decoration_hints": [
+        "W5"
+      ],
+      "speaker_notes": "Asegurar que el parche no rompió nada más.",
+      "html_content": "<div style=\"display:grid; grid-template:repeat(2, 1fr) / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/3; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Fase 5: Pruebas de Regresión</h2><p style=\"color:var(--text-secondary); font-size:18px;\">Ecosistema robusto de herramientas.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Selenium</h3><p style=\"color:var(--text-secondary);\">Web automatization</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Appium</h3><p style=\"color:var(--text-secondary);\">Mobile testing</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-3); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Cucumber</h3><p style=\"color:var(--text-secondary);\">BDD Framework</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-4); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Robot FW</h3><p style=\"color:var(--text-secondary);\">Keyword-driven</p></div>\n</div>"
+    },
+    {
+      "slide_index": 14,
+      "page_type": "section",
+      "title": "Parte 3: Herramientas y Tendencias",
+      "part_label": "PART 03",
+      "layout_hint": "single-focus",
+      "card_types": [
+        "text"
+      ],
+      "decoration_hints": [
+        "W3"
+      ],
+      "speaker_notes": "El ecosistema actual y hacia dónde va el testing.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">PART 03</p>\n  <h1 style=\"font-family:var(--display-font); font-size:56px; font-weight:800; color:var(--text-primary); margin:0;\">Herramientas y Tendencias</h1>\n</div>"
+    },
+    {
+      "slide_index": 15,
+      "page_type": "content",
+      "title": "El Stack de Automatización",
+      "part_label": "PART 03",
+      "layout_hint": "mixed-grid",
+      "card_types": [
+        "text"
+      ],
+      "decoration_hints": [
+        "W10"
+      ],
+      "speaker_notes": "Selenium, Appium, Cucumber, Robot Framework.",
+      "html_content": "<div style=\"display:grid; grid-template:repeat(2, 1fr) / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/3; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">El Stack de Automatización</h2><p style=\"color:var(--text-secondary); font-size:18px;\">Ecosistema robusto de herramientas.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Selenium</h3><p style=\"color:var(--text-secondary);\">Web automatization</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Appium</h3><p style=\"color:var(--text-secondary);\">Mobile testing</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-3); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Cucumber</h3><p style=\"color:var(--text-secondary);\">BDD Framework</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-4); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Robot FW</h3><p style=\"color:var(--text-secondary);\">Keyword-driven</p></div>\n</div>"
+    },
+    {
+      "slide_index": 16,
+      "page_type": "content",
+      "title": "Integración Continua (CI/CD)",
+      "part_label": "PART 03",
+      "layout_hint": "hero-top",
+      "card_types": [
+        "diagram",
+        "text"
+      ],
+      "decoration_hints": [
+        "W1"
+      ],
+      "speaker_notes": "El testing dentro del pipeline DevOps.",
+      "html_content": "<div style=\"display:grid; grid-template:auto 1fr / repeat(3,1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/-1; background:linear-gradient(135deg, var(--card-bg-from), var(--card-bg-to)); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px 32px; display:flex; align-items:center; gap:24px;\">\n    <div style=\"flex:1;\">\n      <h2 style=\"font-family:var(--display-font); font-size:36px; color:var(--text-primary); margin:8px 0;\">Integración Continua (CI/CD)</h2>\n    </div>\n  </div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-1);\">01</p><h3 style=\"color:var(--text-primary);\">Precisión</h3></div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-2);\">02</p><h3 style=\"color:var(--text-primary);\">Velocidad</h3></div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-3);\">03</p><h3 style=\"color:var(--text-primary);\">Cobertura</h3></div>\n</div>"
+    },
+    {
+      "slide_index": 17,
+      "page_type": "content",
+      "title": "Frameworks: BDD vs TDD",
+      "part_label": "PART 03",
+      "layout_hint": "symmetric",
+      "card_types": [
+        "comparison"
+      ],
+      "decoration_hints": [
+        "W5"
+      ],
+      "speaker_notes": "Behavior Driven Development (Gherkin) vs Test Driven Development.",
+      "html_content": "<div style=\"display:grid; grid-template:1fr / 1fr 1fr; gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Pruebas Manuales / TDD</h2>\n    <ul style=\"color:var(--text-secondary); font-size:18px; margin-top:20px; line-height:1.8;\">\n      <li>Susceptible a error humano</li>\n      <li>Tedioso y repetitivo</li>\n      <li>Difícil de escalar</li>\n    </ul>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Automatizadas / BDD</h2>\n    <ul style=\"color:var(--text-secondary); font-size:18px; margin-top:20px; line-height:1.8;\">\n      <li>Ejecución rápida y repetible</li>\n      <li>Liberan tiempo para testing exploratorio</li>\n      <li>Integración continua (CI/CD)</li>\n    </ul>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 18,
+      "page_type": "content",
+      "title": "Tendencia: Codeless Testing",
+      "part_label": "PART 03",
+      "layout_hint": "single-focus",
+      "card_types": [
+        "quote"
+      ],
+      "decoration_hints": [
+        "W7"
+      ],
+      "speaker_notes": "Herramientas que graban acciones o usan drag-and-drop.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">Tendencia: Codeless Testing</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">Herramientas que graban acciones o usan drag-and-drop.</p>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 19,
+      "page_type": "content",
+      "title": "Inteligencia Artificial en QA",
+      "part_label": "PART 03",
+      "layout_hint": "three-column",
+      "card_types": [
+        "data",
+        "text"
+      ],
+      "decoration_hints": [
+        "W2"
+      ],
+      "speaker_notes": "Self-healing tests y generación de casos con IA.",
+      "html_content": "<div style=\"display:grid; grid-template:1fr / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-1); font-size:24px; margin-bottom:12px;\">Paso 1</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Descripción clara del defecto y pasos para reproducir.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-2); font-size:24px; margin-bottom:12px;\">Paso 2</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Detallar el entorno (OS, red, dispositivo).</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-3); font-size:24px; margin-bottom:12px;\">Paso 3</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Impacto esperado vs Impacto real.</p></div>\n</div>"
+    },
+    {
+      "slide_index": 20,
+      "page_type": "section",
+      "title": "Parte 4: Buenas Prácticas",
+      "part_label": "PART 04",
+      "layout_hint": "single-focus",
+      "card_types": [
+        "text"
+      ],
+      "decoration_hints": [
+        "W3"
+      ],
+      "speaker_notes": "Estrategias para no fracasar automatizando.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">PART 04</p>\n  <h1 style=\"font-family:var(--display-font); font-size:56px; font-weight:800; color:var(--text-primary); margin:0;\">Buenas Prácticas</h1>\n</div>"
+    },
+    {
+      "slide_index": 21,
+      "page_type": "content",
+      "title": "Pirámide del Testing",
+      "part_label": "PART 04",
+      "layout_hint": "l-shape",
+      "card_types": [
+        "diagram",
+        "text"
+      ],
+      "decoration_hints": [
+        "W10"
+      ],
+      "speaker_notes": "Muchas pruebas unitarias, algunas de integración, pocas de UI.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">Pirámide del Testing</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">Muchas pruebas unitarias, algunas de integración, pocas de UI.</p>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 22,
+      "page_type": "content",
+      "title": "Errores Comunes (Anti-patrones)",
+      "part_label": "PART 04",
+      "layout_hint": "mixed-grid",
+      "card_types": [
+        "text"
+      ],
+      "decoration_hints": [
+        "W5"
+      ],
+      "speaker_notes": "Automatizar todo, no mantener scripts, ignorar falsos positivos.",
+      "html_content": "<div style=\"display:grid; grid-template:repeat(2, 1fr) / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/3; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Errores Comunes (Anti-patrones)</h2><p style=\"color:var(--text-secondary); font-size:18px;\">Ecosistema robusto de herramientas.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Selenium</h3><p style=\"color:var(--text-secondary);\">Web automatization</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Appium</h3><p style=\"color:var(--text-secondary);\">Mobile testing</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-3); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Cucumber</h3><p style=\"color:var(--text-secondary);\">BDD Framework</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-4); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Robot FW</h3><p style=\"color:var(--text-secondary);\">Keyword-driven</p></div>\n</div>"
+    },
+    {
+      "slide_index": 23,
+      "page_type": "content",
+      "title": "Knowledge Check",
+      "part_label": "PART 04",
+      "layout_hint": "single-focus",
+      "card_types": [
+        "quote"
+      ],
+      "decoration_hints": [
+        "W1"
+      ],
+      "speaker_notes": "Pregunta: ¿Qué tipo de pruebas es mejor dejar manuales?",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">Knowledge Check</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">Pregunta: ¿Qué tipo de pruebas es mejor dejar manuales?</p>\n  </div>\n</div>"
+    },
+    {
+      "slide_index": 24,
+      "page_type": "end",
+      "title": "Conclusión",
+      "part_label": "UNIDAD 03",
+      "layout_hint": "single-focus",
+      "card_types": [
+        "text"
+      ],
+      "decoration_hints": [
+        "W1",
+        "W10"
+      ],
+      "speaker_notes": "Resumen final y cierre de la clase.",
+      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:24px;\">\n  <h1 style=\"font-family:var(--display-font); font-size:64px; font-weight:800; color:var(--text-primary); margin:0;\">Gracias</h1>\n  <p style=\"color:var(--text-secondary); font-size:24px; max-width:40ch;\">El testing automatizado no reemplaza al QA, lo empodera.</p>\n</div>"
+    }
+  ]
+}

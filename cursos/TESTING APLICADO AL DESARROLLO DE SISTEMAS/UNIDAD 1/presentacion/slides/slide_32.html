@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg-primary: #0a0612;
+    --bg-secondary: #1a0d2e;
+    --glass-bg: rgba(155,100,255,0.10);
+    --glass-border: rgba(155,100,255,0.30);
+    --glass-border-soft: rgba(196,168,255,0.18);
+    --card-radius: 12px;
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255,255,255,0.65);
+    --text-tertiary: rgba(255,255,255,0.45);
+    --accent-1: #9b64ff;
+    --accent-2: #c4a8ff;
+    --accent-3: #6d3df0;
+    --display-font: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --body-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --serif-italic-font: 'Instrument Serif', 'Editorial New', 'Fraunces', Georgia, serif;
+    --mono-font: 'JetBrains Mono', 'DM Mono', 'Courier New', monospace;
+  }
+
+  :root[data-theme="light"] {
+    --bg-primary: #f0eaff;
+    --bg-secondary: #ffffff;
+    --glass-bg: rgba(155,100,255,0.05);
+    --glass-border: rgba(155,100,255,0.40);
+    --glass-border-soft: rgba(109,61,240,0.25);
+    --text-primary: #1a0d2e;
+    --text-secondary: rgba(26,13,46,0.75);
+    --text-tertiary: rgba(26,13,46,0.55);
+    --accent-1: #6d3df0;
+    --accent-2: #4a1d96;
+    --accent-3: #9b64ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100vw; height: 100vh; overflow: hidden; }
+  body {
+    background: radial-gradient(ellipse 110% 85% at 50% -15%, var(--bg-secondary) 0%, var(--bg-primary) 55%, #06030d 100%);
+    color: var(--text-primary);
+    font-family: var(--body-font);
+    font-feature-settings: 'ss01', 'cv11', 'calt', 'kern', 'liga', 'ccmp';
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+  }
+
+  .aurora-glow {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 78% 22%, rgba(155, 100, 255, 0.42) 0%, transparent 38%),
+      radial-gradient(circle at 18% 75%, rgba(109, 61, 240, 0.28) 0%, transparent 35%),
+      radial-gradient(circle at 50% 110%, rgba(196, 168, 255, 0.18) 0%, transparent 40%);
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .grid-dot {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(196,168,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(196,168,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .bottom-line {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-1) 35%, var(--accent-2) 50%, var(--accent-1) 65%, transparent);
+    opacity: 0.6;
+  }
+
+  .corner-tl { position: absolute; top: 22px; left: 22px; width: 24px; height: 24px; border-top: 1px solid rgba(155,100,255,0.45); border-left: 1px solid rgba(155,100,255,0.45); }
+  .corner-br { position: absolute; bottom: 22px; right: 22px; width: 24px; height: 24px; border-bottom: 1px solid rgba(155,100,255,0.45); border-right: 1px solid rgba(155,100,255,0.45); }
+
+  .stage {
+    position: relative;
+    width: 100%; height: 100%;
+    padding: 56px 80px;
+    display: flex; flex-direction: column;
+    z-index: 2;
+  }
+
+  .top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px;
+  }
+  .logo {
+    font-family: var(--display-font);
+    font-size: 14px; font-weight: 700; letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-mark {
+    width: 20px; height: 20px; border-radius: 5px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+    box-shadow: 0 0 14px rgba(155,100,255,0.55), inset 0 0 6px rgba(255,255,255,0.18);
+  }
+  .nav {
+    font-family: var(--mono-font);
+    font-size: 11px; opacity: 0.6;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; gap: 24px;
+  }
+  .nav .sep { opacity: 0.35; }
+
+  .label {
+    font-family: var(--body-font);
+    font-size: 11px; letter-spacing: 0.20em;
+    color: var(--accent-2);
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .label .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-1);
+    box-shadow: 0 0 12px var(--accent-1), 0 0 4px #fff;
+    display: inline-block;
+  }
+
+  .headline {
+    font-family: var(--display-font);
+    font-size: 54px; font-weight: 700;
+    letter-spacing: -0.045em; line-height: 1;
+    margin-top: 10px; margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+  .headline.hero {
+    font-size: 80px; line-height: 0.95; margin-top: 22px;
+  }
+  .headline em {
+    font-family: var(--serif-italic-font);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--accent-2);
+  }
+
+  .deck {
+    font-family: var(--body-font);
+    font-size: 18px; line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 800px;
+    margin-top: 22px;
+    letter-spacing: -0.005em;
+    font-weight: 400;
+  }
+  .deck em {
+    font-family: var(--serif-italic-font);
+    font-style: italic;
+    color: var(--accent-2);
+    font-weight: 400;
+    font-size: 20px;
+  }
+
+  .glass-card {
+    padding: 22px 24px 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 12px 40px -12px rgba(155,100,255,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+    margin-bottom: 20px;
+  }
+  .glass-card .gc-label {
+    font-family: var(--mono-font);
+    font-size: 10px; color: var(--accent-2); letter-spacing: 0.18em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px; margin-bottom:10px;
+  }
+  .glass-card .gc-label .pulse {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent-1); box-shadow: 0 0 8px var(--accent-1); display: inline-block;
+  }
+  .glass-card .gc-title {
+    font-family: var(--display-font); font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom:8px;
+  }
+  .glass-card .gc-cap {
+    font-family: var(--body-font); font-size: 14px; color: var(--text-secondary); line-height:1.5;
+  }
+  
+  .glass-pill {
+    padding: 8px 14px;
+    background: rgba(196,168,255,0.08);
+    border: 1px solid var(--glass-border-soft);
+    border-radius: 999px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    font-family: var(--mono-font);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-bottom: 15px;
+  }
+  .glass-pill .glyph {
+    font-family: var(--serif-italic-font); font-style: italic; font-size: 12px; color: var(--text-primary); letter-spacing: 0; text-transform: none;
+  }
+
+  .content-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;
+  }
+  .content-grid-3 {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px;
+  }
+
+  .footer {
+    position: absolute; bottom: 18px; left: 80px; right: 80px;
+    display: flex; justify-content: space-between;
+    font-family: var(--body-font);
+    font-size: 10px; opacity: 0.5;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    z-index: 3;
+    font-weight: 500;
+  }
+  
+  .code-block {
+    font-family: var(--mono-font);
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--glass-border-soft);
+    padding: 20px;
+    border-radius: 8px;
+    color: #c4a8ff;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  
+  .keyword { color: #ff79c6; }
+  .function { color: #50fa7b; }
+  .string { color: #f1fa8c; }
+  .comment { color: #6272a4; font-style: italic; }
+
+</style>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.23.0/cytoscape.min.js"></script>
+<script src="https://unpkg.com/dagre@0.8.5/dist/dagre.min.js"></script>
+<script src="https://unpkg.com/cytoscape-dagre@2.4.0/cytoscape-dagre.js"></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+  <div class="aurora-glow"></div>
+  <div class="grid-dot"></div>
+  <div class="corner-tl"></div>
+  <div class="corner-br"></div>
+  <div class="bottom-line"></div>
+  <div class="stage">
+    <div class="top">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        Testing Aplicado - U1
+      </div>
+      <div class="nav">
+        <span>S5 · TAXONOMÍA</span>
+        <span class="sep">·</span>
+        <span>TESTING</span>
+      </div>
+    </div>
+    
+    <div class="slide-content">
+      
+      <div style="text-align:center; margin-bottom: 10px;">
+        <div class="glass-pill"><span>INTERACTIVO</span><span class="glyph">Mapa</span></div>
+        <h2 class="headline" style="font-size:36px; margin-top:5px; margin-bottom:5px;">Diagrama Completo de Pruebas</h2>
+      </div>
+
+      <p style="text-align:center; margin-bottom:1.5rem; font-size:1.1rem; color:var(--text-secondary);">Haz <strong style="color:var(--accent-2);">clic en un nodo</strong> para expandir o colapsar sus hijos. Arrastra y usa scroll para zoom.</p>
+      <div id="cy-container" style="flex:1; position:relative; border-radius:16px; border:1px solid var(--glass-border); background:rgba(10,10,21,.8); overflow:hidden; min-height:350px; width: 100%;">
+        <div id="cy" style="width:100%; height:100%; position:absolute; inset:0;"></div>
+      </div>
+      <div style="display:flex; gap:2rem; justify-content:center; margin-top:1.5rem; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:.5rem;"><span style="width:18px;height:18px;border-radius:4px;background:#6366f1;display:inline-block;"></span><span style="color:var(--text-secondary);font-size:1.1rem;">Funcional</span></div>
+          <div style="display:flex; align-items:center; gap:.5rem;"><span style="width:18px;height:18px;border-radius:4px;background:#7c3aed;display:inline-block;"></span><span style="color:var(--text-secondary);font-size:1.1rem;">No Funcional</span></div>
+          <div style="display:flex; align-items:center; gap:.5rem;"><span style="width:18px;height:18px;border-radius:4px;background:#a5b4fc;display:inline-block;"></span><span style="color:var(--text-secondary);font-size:1.1rem;">Subtipo</span></div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <span>IPSS — INGENIERÍA EN INFORMÁTICA</span>
+      <span>05 / 2026</span>
+    </div>
+  </div>
+  
+  <script>
+    lucide.createIcons();
+    // Forward keyboard shortcuts to parent
+    document.addEventListener('keydown', e => {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({type: 'forward-key', key: e.key}, '*');
+      }
+    });
+    // Listen for theme toggle
+    window.addEventListener('message', e => {
+      if (e.data && e.data.type === 'theme-toggle') {
+        document.documentElement.setAttribute('data-theme', e.data.theme);
+      }
+    });
+
+    // === CYTOSCAPE DIAGRAM ===
+    function initCyDiagram() {
+      var container = document.getElementById('cy');
+      if (!container) return;
+      
+      var rawData = [
+        { id: 'root', text: 'Pruebas de Software', parent: null, type: 'root' },
+
+        // === FUNCIONALES ===
+        { id: 'funcionales', text: 'Pruebas Funcionales', parent: 'root', type: 'branch', colorGroup: 'functional' },
+        { id: 'unitarias', text: 'Unitarias', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'unitarias_nivel', text: 'JUnit / PyTest / Jest', parent: 'unitarias', type: 'subleaf' },
+        { id: 'integracion', text: 'Integración', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'integracion_nivel', text: 'Postman / RestAssured', parent: 'integracion', type: 'subleaf' },
+        { id: 'sistema', text: 'Sistema (E2E)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'sistema_nivel', text: 'Cypress / Playwright', parent: 'sistema', type: 'subleaf' },
+        { id: 'uat', text: 'Aceptación (UAT)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'alfa', text: 'Alfa', parent: 'uat', type: 'subleaf' },
+        { id: 'beta', text: 'Beta', parent: 'uat', type: 'subleaf' },
+        { id: 'humo', text: 'Humo (Smoke)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'humo_nivel', text: 'Verificación de Build', parent: 'humo', type: 'subleaf' },
+        { id: 'sanidad', text: 'Sanidad (Sanity)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'sanidad_nivel', text: 'Verificación de Fix', parent: 'sanidad', type: 'subleaf' },
+        { id: 'api', text: 'API Testing', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'api_nivel', text: 'Insomnia / SoapUI', parent: 'api', type: 'subleaf' },
+        { id: 'ui', text: 'UI Testing', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'ui_nivel', text: 'Selenium / Appium', parent: 'ui', type: 'subleaf' },
+        { id: 'regresion', text: 'Regresión', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'regresion_nivel', text: 'Suite Automatizada CI', parent: 'regresion', type: 'subleaf' },
+        { id: 'confirmacion', text: 'Confirmación', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'confirmacion_nivel', text: 'Re-test de Bug', parent: 'confirmacion', type: 'subleaf' },
+        { id: 'exploratoria', text: 'Exploratoria', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'exploratoria_nivel', text: 'Session-Based / Ad-hoc', parent: 'exploratoria', type: 'subleaf' },
+        { id: 'contrato', text: 'Contrato (Contract)', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'contrato_nivel', text: 'Pact / Spring Cloud', parent: 'contrato', type: 'subleaf' },
+        { id: 'mutacion', text: 'Mutación', parent: 'funcionales', type: 'leaf', colorGroup: 'functional' },
+        { id: 'mutacion_nivel', text: 'Stryker / PIT', parent: 'mutacion', type: 'subleaf' },
+
+        // === NO FUNCIONALES ===
+        { id: 'no-funcionales', text: 'Pruebas No Funcionales', parent: 'root', type: 'branch', colorGroup: 'non-functional' },
+        { id: 'rendimiento', text: 'Rendimiento', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'carga', text: 'De Carga', parent: 'rendimiento', type: 'subleaf' },
+        { id: 'estres', text: 'De Estrés', parent: 'rendimiento', type: 'subleaf' },
+        { id: 'resistencia', text: 'Resistencia (Soak)', parent: 'rendimiento', type: 'subleaf' },
+        { id: 'picos', text: 'Picos (Spike)', parent: 'rendimiento', type: 'subleaf' },
+        { id: 'escalabilidad', text: 'Escalabilidad', parent: 'rendimiento', type: 'subleaf' },
+        { id: 'seguridad', text: 'Seguridad', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'pentesting', text: 'Pentesting', parent: 'seguridad', type: 'subleaf' },
+        { id: 'sast', text: 'SAST (Estático)', parent: 'seguridad', type: 'subleaf' },
+        { id: 'dast', text: 'DAST (Dinámico)', parent: 'seguridad', type: 'subleaf' },
+        { id: 'compliance', text: 'Compliance / GDPR', parent: 'seguridad', type: 'subleaf' },
+        { id: 'usabilidad', text: 'Usabilidad (UX)', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'expertos', text: 'Heurística (Nielsen)', parent: 'usabilidad', type: 'subleaf' },
+        { id: 'usuarios', text: 'User Testing', parent: 'usabilidad', type: 'subleaf' },
+        { id: 'ab_testing', text: 'A/B Testing', parent: 'usabilidad', type: 'subleaf' },
+        { id: 'accesibilidad', text: 'Accesibilidad (a11y)', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'wcag', text: 'WCAG 2.1 / ADA', parent: 'accesibilidad', type: 'subleaf' },
+        { id: 'screen_reader', text: 'Screen Readers', parent: 'accesibilidad', type: 'subleaf' },
+        { id: 'compatibilidad', text: 'Compatibilidad', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'navegadores', text: 'Cross-Browser', parent: 'compatibilidad', type: 'subleaf' },
+        { id: 'sistemas', text: 'Cross-OS', parent: 'compatibilidad', type: 'subleaf' },
+        { id: 'mobile', text: 'Mobile-Specific', parent: 'compatibilidad', type: 'subleaf' },
+        { id: 'instalacion', text: 'Instalación', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'instalacion_nivel', text: 'Deploy / Rollback', parent: 'instalacion', type: 'subleaf' },
+        { id: 'localizacion', text: 'Localización (L10n)', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'localizacion_nivel', text: 'Idioma / Moneda / RTL', parent: 'localizacion', type: 'subleaf' },
+        { id: 'chaos', text: 'Chaos Engineering', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'chaos_nivel', text: 'Chaos Monkey / Litmus', parent: 'chaos', type: 'subleaf' },
+        { id: 'disaster', text: 'Disaster Recovery', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'disaster_nivel', text: 'Failover / Backup', parent: 'disaster', type: 'subleaf' },
+        { id: 'migracion', text: 'Migración de Datos', parent: 'no-funcionales', type: 'leaf', colorGroup: 'non-functional' },
+        { id: 'migracion_nivel', text: 'ETL / Schema Diff', parent: 'migracion', type: 'subleaf' }
+      ];
+
+      var elements = [];
+      rawData.forEach(function(item) {
+        elements.push({ group: 'nodes', data: { id: item.id, label: item.text, type: item.type, colorGroup: item.colorGroup } });
+        if (item.parent) {
+          elements.push({ group: 'edges', data: { source: item.parent, target: item.id } });
+        }
+      });
+
+      var cy = cytoscape({
+        container: container,
+        elements: elements,
+        style: [
+          { selector: 'node', style: {
+            'background-color': '#334155', 'label': 'data(label)', 'color': '#fff',
+            'text-valign': 'center', 'text-halign': 'center', 'font-size': '12px',
+            'text-wrap': 'wrap', 'text-max-width': '90px', 'padding': '8px',
+            'shape': 'round-rectangle', 'width': 'label', 'height': 'label',
+            'font-family': 'Inter, sans-serif', 'font-weight': '600',
+            'border-width': '2px', 'border-color': 'rgba(255,255,255,0.1)'
+          }},
+          { selector: 'node[type="root"]', style: {
+            'background-color': '#1e293b', 'font-size': '15px', 'font-weight': 'bold',
+            'padding': '12px', 'border-color': '#818cf8', 'border-width': '3px'
+          }},
+          { selector: 'node[type="branch"]', style: {
+            'font-size': '13px', 'font-weight': 'bold', 'padding': '10px'
+          }},
+          { selector: 'node[colorGroup="functional"]', style: { 'background-color': '#6366f1' } },
+          { selector: 'node[colorGroup="non-functional"]', style: { 'background-color': '#7c3aed' } },
+          { selector: 'node[type="subleaf"]', style: {
+            'background-color': '#a5b4fc', 'color': '#1e293b', 'font-size': '10px',
+            'font-weight': '500', 'border-color': 'rgba(99,102,241,0.3)', 'padding': '6px'
+          }},
+          { selector: 'edge', style: {
+            'width': 1.5, 'line-color': 'rgba(148,163,184,0.35)',
+            'target-arrow-color': 'rgba(148,163,184,0.35)',
+            'target-arrow-shape': 'triangle', 'curve-style': 'bezier'
+          }},
+          { selector: ':selected', style: {
+            'border-color': '#fbbf24', 'border-width': '4px',
+            'background-color': '#f59e0b'
+          }}
+        ],
+        layout: { name: 'dagre', padding: 20, rankDir: 'TB', spacingFactor: 0.95, rankSep: 50, nodeSep: 15 },
+        minZoom: 0.15, maxZoom: 2.5, boxSelectionEnabled: false
+      });
+
+      // === COLLAPSE / EXPAND SYSTEM ===
+      var childrenMap = {};
+      rawData.forEach(function(item) {
+        if (item.parent) {
+          if (!childrenMap[item.parent]) childrenMap[item.parent] = [];
+          childrenMap[item.parent].push(item.id);
+        }
+      });
+
+      var collapsed = {};
+      function getDescendants(nodeId) {
+        var desc = [];
+        var kids = childrenMap[nodeId] || [];
+        kids.forEach(function(kid) {
+          desc.push(kid);
+          desc = desc.concat(getDescendants(kid));
+        });
+        return desc;
+      }
+
+      rawData.forEach(function(item) {
+        if (childrenMap[item.id] && item.type !== 'root') {
+          collapsed[item.id] = true;
+        }
+      });
+
+      function applyVisibility() {
+        var visible = { 'root': true, 'funcionales': true, 'no-funcionales': true };
+        function walkVisible(nodeId) {
+          var kids = childrenMap[nodeId] || [];
+          kids.forEach(function(kidId) {
+            if (!collapsed[nodeId]) {
+              visible[kidId] = true;
+              walkVisible(kidId);
+            }
+          });
+        }
+        walkVisible('root');
+
+        cy.batch(function() {
+          cy.nodes().forEach(function(n) {
+            if (visible[n.id()]) {
+              n.style('display', 'element');
+            } else {
+              n.style('display', 'none');
+            }
+          });
+          cy.edges().forEach(function(e) {
+            var src = e.source().id();
+            var tgt = e.target().id();
+            if (visible[src] && visible[tgt]) {
+              e.style('display', 'element');
+            } else {
+              e.style('display', 'none');
+            }
+          });
+        });
+
+        cy.nodes().forEach(function(n) {
+          var nodeId = n.id();
+          var item = rawData.find(function(d) { return d.id === nodeId; });
+          if (item && childrenMap[nodeId]) {
+            var base = item.text;
+            if (collapsed[nodeId]) {
+              n.data('label', base + ' [+]');
+            } else {
+              n.data('label', base + ' [−]');
+            }
+          }
+        });
+      }
+
+      applyVisibility();
+
+      function reLayout() {
+        cy.layout({
+          name: 'dagre', padding: 20, rankDir: 'TB',
+          spacingFactor: 0.95, rankSep: 50, nodeSep: 15,
+          animate: true, animationDuration: 400,
+          animationEasing: 'ease-in-out-cubic'
+        }).run();
+      }
+
+      reLayout();
+
+      cy.on('tap', 'node', function(evt) {
+        var nodeId = evt.target.id();
+        if (childrenMap[nodeId]) {
+          if (collapsed[nodeId]) {
+            collapsed[nodeId] = false;
+          } else {
+            collapsed[nodeId] = true;
+            getDescendants(nodeId).forEach(function(descId) {
+              if (childrenMap[descId]) collapsed[descId] = true;
+            });
+          }
+          applyVisibility();
+          reLayout();
+        }
+      });
+
+      var btnContainer = document.createElement('div');
+      btnContainer.style.cssText = 'position:absolute;top:10px;right:10px;z-index:10;display:flex;gap:8px;';
+      btnContainer.innerHTML = '<button id="cy-expand" style="background:rgba(99,102,241,.2);border:1px solid rgba(99,102,241,.4);color:#a5b4fc;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:Inter;font-size:11px;font-weight:700;">Expandir Todo</button><button id="cy-collapse" style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.4);color:#fbbf24;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:Inter;font-size:11px;font-weight:700;">Colapsar Todo</button>';
+      document.getElementById('cy-container').appendChild(btnContainer);
+
+      document.getElementById('cy-expand').addEventListener('click', function(e) {
+        e.stopPropagation();
+        Object.keys(collapsed).forEach(function(k) { collapsed[k] = false; });
+        applyVisibility();
+        reLayout();
+      });
+      document.getElementById('cy-collapse').addEventListener('click', function(e) {
+        e.stopPropagation();
+        rawData.forEach(function(item) {
+          if (childrenMap[item.id] && item.type !== 'root') collapsed[item.id] = true;
+        });
+        applyVisibility();
+        reLayout();
+      });
+    }
+    
+    // Initialize diagram after load
+    setTimeout(initCyDiagram, 300);
+
+  </script>
+
+</body>
+</html>

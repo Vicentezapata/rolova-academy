@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg-primary: #0a0612;
+    --bg-secondary: #1a0d2e;
+    --glass-bg: rgba(155,100,255,0.10);
+    --glass-border: rgba(155,100,255,0.30);
+    --glass-border-soft: rgba(196,168,255,0.18);
+    --card-radius: 12px;
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255,255,255,0.65);
+    --text-tertiary: rgba(255,255,255,0.45);
+    --accent-1: #9b64ff;
+    --accent-2: #c4a8ff;
+    --accent-3: #6d3df0;
+    --display-font: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --body-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --serif-italic-font: 'Instrument Serif', 'Editorial New', 'Fraunces', Georgia, serif;
+    --mono-font: 'JetBrains Mono', 'DM Mono', 'Courier New', monospace;
+  }
+
+  :root[data-theme="light"] {
+    --bg-primary: #f0eaff;
+    --bg-secondary: #ffffff;
+    --glass-bg: rgba(155,100,255,0.05);
+    --glass-border: rgba(155,100,255,0.40);
+    --glass-border-soft: rgba(109,61,240,0.25);
+    --text-primary: #1a0d2e;
+    --text-secondary: rgba(26,13,46,0.75);
+    --text-tertiary: rgba(26,13,46,0.55);
+    --accent-1: #6d3df0;
+    --accent-2: #4a1d96;
+    --accent-3: #9b64ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100vw; height: 100vh; overflow: hidden; }
+  body {
+    background: radial-gradient(ellipse 110% 85% at 50% -15%, var(--bg-secondary) 0%, var(--bg-primary) 55%, #06030d 100%);
+    color: var(--text-primary);
+    font-family: var(--body-font);
+    font-feature-settings: 'ss01', 'cv11', 'calt', 'kern', 'liga', 'ccmp';
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+  }
+
+  .aurora-glow {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 78% 22%, rgba(155, 100, 255, 0.42) 0%, transparent 38%),
+      radial-gradient(circle at 18% 75%, rgba(109, 61, 240, 0.28) 0%, transparent 35%),
+      radial-gradient(circle at 50% 110%, rgba(196, 168, 255, 0.18) 0%, transparent 40%);
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .grid-dot {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(196,168,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(196,168,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .bottom-line {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-1) 35%, var(--accent-2) 50%, var(--accent-1) 65%, transparent);
+    opacity: 0.6;
+  }
+
+  .corner-tl { position: absolute; top: 22px; left: 22px; width: 24px; height: 24px; border-top: 1px solid rgba(155,100,255,0.45); border-left: 1px solid rgba(155,100,255,0.45); }
+  .corner-br { position: absolute; bottom: 22px; right: 22px; width: 24px; height: 24px; border-bottom: 1px solid rgba(155,100,255,0.45); border-right: 1px solid rgba(155,100,255,0.45); }
+
+  .stage {
+    position: relative;
+    width: 100%; height: 100%;
+    padding: 56px 80px;
+    display: flex; flex-direction: column;
+    z-index: 2;
+  }
+
+  .top {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px;
+  }
+  .logo {
+    font-family: var(--display-font);
+    font-size: 14px; font-weight: 700; letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-mark {
+    width: 20px; height: 20px; border-radius: 5px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+    box-shadow: 0 0 14px rgba(155,100,255,0.55), inset 0 0 6px rgba(255,255,255,0.18);
+  }
+  .nav {
+    font-family: var(--mono-font);
+    font-size: 11px; opacity: 0.6;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; gap: 24px;
+  }
+  .nav .sep { opacity: 0.35; }
+
+  .label {
+    font-family: var(--body-font);
+    font-size: 11px; letter-spacing: 0.20em;
+    color: var(--accent-2);
+    font-weight: 600;
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .label .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-1);
+    box-shadow: 0 0 12px var(--accent-1), 0 0 4px #fff;
+    display: inline-block;
+  }
+
+  .headline {
+    font-family: var(--display-font);
+    font-size: 54px; font-weight: 700;
+    letter-spacing: -0.045em; line-height: 1;
+    margin-top: 10px; margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+  .headline.hero {
+    font-size: 80px; line-height: 0.95; margin-top: 22px;
+  }
+  .headline em {
+    font-family: var(--serif-italic-font);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--accent-2);
+  }
+
+  .deck {
+    font-family: var(--body-font);
+    font-size: 18px; line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 800px;
+    margin-top: 22px;
+    letter-spacing: -0.005em;
+    font-weight: 400;
+  }
+  .deck em {
+    font-family: var(--serif-italic-font);
+    font-style: italic;
+    color: var(--accent-2);
+    font-weight: 400;
+    font-size: 20px;
+  }
+
+  .glass-card {
+    padding: 22px 24px 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 12px 40px -12px rgba(155,100,255,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+    margin-bottom: 20px;
+  }
+  .glass-card .gc-label {
+    font-family: var(--mono-font);
+    font-size: 10px; color: var(--accent-2); letter-spacing: 0.18em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px; margin-bottom:10px;
+  }
+  .glass-card .gc-label .pulse {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent-1); box-shadow: 0 0 8px var(--accent-1); display: inline-block;
+  }
+  .glass-card .gc-title {
+    font-family: var(--display-font); font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom:8px;
+  }
+  .glass-card .gc-cap {
+    font-family: var(--body-font); font-size: 14px; color: var(--text-secondary); line-height:1.5;
+  }
+  
+  .glass-pill {
+    padding: 8px 14px;
+    background: rgba(196,168,255,0.08);
+    border: 1px solid var(--glass-border-soft);
+    border-radius: 999px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    font-family: var(--mono-font);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-bottom: 15px;
+  }
+  .glass-pill .glyph {
+    font-family: var(--serif-italic-font); font-style: italic; font-size: 12px; color: var(--text-primary); letter-spacing: 0; text-transform: none;
+  }
+
+  .content-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;
+  }
+  .content-grid-3 {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px;
+  }
+
+  .footer {
+    position: absolute; bottom: 18px; left: 80px; right: 80px;
+    display: flex; justify-content: space-between;
+    font-family: var(--body-font);
+    font-size: 10px; opacity: 0.5;
+    letter-spacing: 0.12em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    z-index: 3;
+    font-weight: 500;
+  }
+  
+  .code-block {
+    font-family: var(--mono-font);
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--glass-border-soft);
+    padding: 20px;
+    border-radius: 8px;
+    color: #c4a8ff;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  
+  .keyword { color: #ff79c6; }
+  .function { color: #50fa7b; }
+  .string { color: #f1fa8c; }
+  .comment { color: #6272a4; font-style: italic; }
+
+  /* Periodic Table of Testing Tools */
+  .periodic-table {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    gap: 4px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  .pt-element {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+  .pt-element:hover {
+    transform: scale(1.6) !important;
+    z-index: 20;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+  }
+  .pt-element .symbol {
+    font-size: 1rem;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 2px;
+  }
+  .pt-element .name {
+    font-size: 0.65rem;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .pt-element .type {
+    font-size: 0.5rem;
+    opacity: 0.8;
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .pt-icon {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    opacity: 0.4;
+    width: 12px;
+    height: 12px;
+  }
+  .pt-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .pt-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+  .pt-legend-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+  }
+  /* PT Colors */
+  .pt-unit { background: linear-gradient(135deg, #059669, #047857); border: 1px solid #10b981; } /* Emerald */
+  .pt-api { background: linear-gradient(135deg, #0284c7, #0369a1); border: 1px solid #0ea5e9; } /* Sky */
+  .pt-e2e { background: linear-gradient(135deg, #7c3aed, #6d28d9); border: 1px solid #8b5cf6; } /* Violet */
+  .pt-mob { background: linear-gradient(135deg, #d946ef, #c026d3); border: 1px solid #e879f9; } /* Fuchsia */
+  .pt-vis { background: linear-gradient(135deg, #0d9488, #0f766e); border: 1px solid #14b8a6; } /* Teal */
+  .pt-perf { background: linear-gradient(135deg, #d97706, #b45309); border: 1px solid #f59e0b; } /* Amber */
+  .pt-sec { background: linear-gradient(135deg, #dc2626, #b91c1c); border: 1px solid #ef4444; } /* Red */
+  .pt-ops { background: linear-gradient(135deg, #ea580c, #c2410c); border: 1px solid #f97316; } /* Orange */
+  .pt-mgt { background: linear-gradient(135deg, #475569, #334155); border: 1px solid #64748b; } /* Slate */
+  .pt-bdd { background: linear-gradient(135deg, #ec4899, #be185d); border: 1px solid #f472b6; } /* Pink */
+  .pt-ci { background: linear-gradient(135deg, #52525b, #3f3f46); border: 1px solid #71717a; } /* Zinc */
+
+</style>
+<script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+  <div class="aurora-glow"></div>
+  <div class="grid-dot"></div>
+  <div class="corner-tl"></div>
+  <div class="corner-br"></div>
+  <div class="bottom-line"></div>
+  <div class="stage">
+    <div class="top">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        Testing Aplicado - U1
+      </div>
+      <div class="nav">
+        <span>S5 · TAXONOMÍA</span>
+        <span class="sep">·</span>
+        <span>TESTING</span>
+      </div>
+    </div>
+    
+    <div class="slide-content" style="padding-top: 10px;">
+      
+      <div style="text-align:center; margin-bottom: 20px;">
+        <div class="glass-pill"><span>ECOSISTEMA</span><span class="glyph">QA</span></div>
+        <h2 class="headline" style="font-size:36px; margin-top:5px; margin-bottom:5px;">Tabla Periódica de Testing</h2>
+      </div>
+
+      <div class="periodic-table" style="transform: scale(0.65); transform-origin: top center; margin-top: -10px;">
+        <!-- Fila 1: 2 Elementos -->
+        <div class="pt-element pt-unit"><i data-lucide="puzzle"  class="pt-icon"></i><div class="symbol">JUn</div><div class="name">JUnit</div><div class="type">Unit</div></div>
+        <div style="grid-column: span 16;"></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-check"  class="pt-icon"></i><div class="symbol">Snr</div><div class="name">SonarQube</div><div class="type">SAST</div></div>
+        
+        <!-- Fila 2: 8 Elementos -->
+        <div class="pt-element pt-unit"><i data-lucide="puzzle"  class="pt-icon"></i><div class="symbol">PyT</div><div class="name">PyTest</div><div class="type">Unit</div></div>
+        <div class="pt-element pt-unit"><i data-lucide="puzzle"  class="pt-icon"></i><div class="symbol">Jst</div><div class="name">Jest</div><div class="type">Unit</div></div>
+        <div style="grid-column: span 10;"></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-check"  class="pt-icon"></i><div class="symbol">Zap</div><div class="name">OWASP ZAP</div><div class="type">DAST</div></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-check"  class="pt-icon"></i><div class="symbol">Brp</div><div class="name">Burp Suite</div><div class="type">Pentest</div></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-check"  class="pt-icon"></i><div class="symbol">Chx</div><div class="name">Checkmarx</div><div class="type">SAST</div></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-check"  class="pt-icon"></i><div class="symbol">Snk</div><div class="name">Snyk</div><div class="type">SCA</div></div>
+        <div class="pt-element pt-sec"><i data-lucide="shield-check"  class="pt-icon"></i><div class="symbol">Frt</div><div class="name">Fortify</div><div class="type">SAST</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge"  class="pt-icon"></i><div class="symbol">Psm</div><div class="name">Postman</div><div class="type">API</div></div>
+
+        <!-- Fila 3: 8 Elementos -->
+        <div class="pt-element pt-unit"><i data-lucide="puzzle"  class="pt-icon"></i><div class="symbol">NUn</div><div class="name">NUnit</div><div class="type">Unit</div></div>
+        <div class="pt-element pt-unit"><i data-lucide="puzzle"  class="pt-icon"></i><div class="symbol">Mch</div><div class="name">Mocha</div><div class="type">Unit</div></div>
+        <div style="grid-column: span 10;"></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge"  class="pt-icon"></i><div class="symbol">Ins</div><div class="name">Insomnia</div><div class="type">API</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge"  class="pt-icon"></i><div class="symbol">RAs</div><div class="name">RestAssured</div><div class="type">API</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge"  class="pt-icon"></i><div class="symbol">Krt</div><div class="name">Karate</div><div class="type">API BDD</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge"  class="pt-icon"></i><div class="symbol">SUI</div><div class="name">SoapUI</div><div class="type">API</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge"  class="pt-icon"></i><div class="symbol">SpT</div><div class="name">SuperTest</div><div class="type">API</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge"  class="pt-icon"></i><div class="symbol">Swg</div><div class="name">Swagger</div><div class="type">API Docs</div></div>
+
+        <!-- Fila 4: 18 Elementos -->
+        <div class="pt-element pt-unit"><i data-lucide="puzzle"  class="pt-icon"></i><div class="symbol">PHP</div><div class="name">PHPUnit</div><div class="type">Unit</div></div>
+        <div class="pt-element pt-api"><i data-lucide="handshake"  class="pt-icon"></i><div class="symbol">Pct</div><div class="name">Pact</div><div class="type">Contract</div></div>
+        <div class="pt-element pt-api"><i data-lucide="handshake"  class="pt-icon"></i><div class="symbol">Tvn</div><div class="name">Tavern</div><div class="type">Contract</div></div>
+        <div class="pt-element pt-api"><i data-lucide="handshake"  class="pt-icon"></i><div class="symbol">SCC</div><div class="name">Sp. Contract</div><div class="type">Contract</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge"  class="pt-icon"></i><div class="symbol">WkM</div><div class="name">WireMock</div><div class="type">API Mock</div></div>
+        <div class="pt-element pt-api"><i data-lucide="git-merge"  class="pt-icon"></i><div class="symbol">MtB</div><div class="name">Mountebank</div><div class="type">API Mock</div></div>
+        <div class="pt-element pt-unit"><i data-lucide="puzzle"  class="pt-icon"></i><div class="symbol">Moc</div><div class="name">Mockito</div><div class="type">Mock</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity"  class="pt-icon"></i><div class="symbol">JMt</div><div class="name">JMeter</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity"  class="pt-icon"></i><div class="symbol">k6</div><div class="name">k6</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity"  class="pt-icon"></i><div class="symbol">Gtl</div><div class="name">Gatling</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity"  class="pt-icon"></i><div class="symbol">Loc</div><div class="name">Locust</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity"  class="pt-icon"></i><div class="symbol">Art</div><div class="name">Artillery</div><div class="type">Load</div></div>
+        <div class="pt-element pt-perf"><i data-lucide="activity"  class="pt-icon"></i><div class="symbol">LdR</div><div class="name">LoadRunner</div><div class="type">Load</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe"  class="pt-icon"></i><div class="symbol">Sel</div><div class="name">Selenium</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe"  class="pt-icon"></i><div class="symbol">Cyp</div><div class="name">Cypress</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe"  class="pt-icon"></i><div class="symbol">Plw</div><div class="name">Playwright</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe"  class="pt-icon"></i><div class="symbol">Ppt</div><div class="name">Puppeteer</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-e2e"><i data-lucide="globe"  class="pt-icon"></i><div class="symbol">WdI</div><div class="name">WebdriverIO</div><div class="type">Web E2E</div></div>
+
+        <!-- Fila 5: 18 Elementos -->
+        <div class="pt-element pt-e2e"><i data-lucide="globe"  class="pt-icon"></i><div class="symbol">TCf</div><div class="name">TestCafe</div><div class="type">Web E2E</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="database"  class="pt-icon"></i><div class="symbol">App</div><div class="name">Appium</div><div class="type">Movil E2E</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="database"  class="pt-icon"></i><div class="symbol">Esp</div><div class="name">Espresso</div><div class="type">Movil Nat</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="database"  class="pt-icon"></i><div class="symbol">XCU</div><div class="name">XCUITest</div><div class="type">Movil Nat</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="database"  class="pt-icon"></i><div class="symbol">Dtx</div><div class="name">Detox</div><div class="type">Movil E2E</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="database"  class="pt-icon"></i><div class="symbol">BSt</div><div class="name">BrowserStack</div><div class="type">Cloud</div></div>
+        <div class="pt-element pt-mob"><i data-lucide="database"  class="pt-icon"></i><div class="symbol">SLb</div><div class="name">Sauce Labs</div><div class="type">Cloud</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="wrench"  class="pt-icon"></i><div class="symbol">Pcy</div><div class="name">Percy</div><div class="type">Visual</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="wrench"  class="pt-icon"></i><div class="symbol">Apl</div><div class="name">Applitools</div><div class="type">Visual</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="wrench"  class="pt-icon"></i><div class="symbol">BJS</div><div class="name">BackstopJS</div><div class="type">Visual</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="eye"  class="pt-icon"></i><div class="symbol">Axe</div><div class="name">Axe</div><div class="type">a11y</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="eye"  class="pt-icon"></i><div class="symbol">Lgh</div><div class="name">Lighthouse</div><div class="type">a11y</div></div>
+        <div class="pt-element pt-vis"><i data-lucide="eye"  class="pt-icon"></i><div class="symbol">P11</div><div class="name">Pa11y</div><div class="type">a11y</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up"  class="pt-icon"></i><div class="symbol">Cuc</div><div class="name">Cucumber</div><div class="type">BDD UAT</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up"  class="pt-icon"></i><div class="symbol">SpF</div><div class="name">SpecFlow</div><div class="type">BDD UAT</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up"  class="pt-icon"></i><div class="symbol">Bhv</div><div class="name">Behave</div><div class="type">BDD UAT</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up"  class="pt-icon"></i><div class="symbol">Srn</div><div class="name">Serenity</div><div class="type">BDD UAT</div></div>
+        <div class="pt-element pt-bdd"><i data-lucide="thumbs-up"  class="pt-icon"></i><div class="symbol">RbF</div><div class="name">Robot FW</div><div class="type">ATDD</div></div>
+
+        <!-- Fila 6: 18 Elementos -->
+        <div class="pt-element pt-bdd"><i data-lucide="database"  class="pt-icon"></i><div class="symbol">LcS</div><div class="name">LocalStack</div><div class="type">AWS Mock</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="alert-octagon"  class="pt-icon"></i><div class="symbol">C.M.</div><div class="name">Chaos Mk</div><div class="type">Chaos</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="alert-octagon"  class="pt-icon"></i><div class="symbol">Grm</div><div class="name">Gremlin</div><div class="type">Chaos</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="alert-octagon"  class="pt-icon"></i><div class="symbol">Ltm</div><div class="name">Litmus</div><div class="type">Chaos</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="puzzle"  class="pt-icon"></i><div class="symbol">Str</div><div class="name">Stryker</div><div class="type">Mutation</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="puzzle"  class="pt-icon"></i><div class="symbol">PIT</div><div class="name">PIT</div><div class="type">Mutation</div></div>
+        <div class="pt-element pt-ops"><i data-lucide="webhook"  class="pt-icon"></i><div class="symbol">Txi</div><div class="name">Toxiproxy</div><div class="type">Net Sim</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="layers"  class="pt-icon"></i><div class="symbol">Jra</div><div class="name">Jira</div><div class="type">Track</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="layers"  class="pt-icon"></i><div class="symbol">Xry</div><div class="name">Xray</div><div class="type">T. Mgmt</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="layers"  class="pt-icon"></i><div class="symbol">TRl</div><div class="name">TestRail</div><div class="type">T. Mgmt</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="layers"  class="pt-icon"></i><div class="symbol">Zph</div><div class="name">Zephyr</div><div class="type">T. Mgmt</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="activity"  class="pt-icon"></i><div class="symbol">Alr</div><div class="name">Allure</div><div class="type">Report</div></div>
+        <div class="pt-element pt-mgt"><i data-lucide="activity"  class="pt-icon"></i><div class="symbol">RPt</div><div class="name">ReportPortal</div><div class="type">Report</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="database"  class="pt-icon"></i><div class="symbol">Dck</div><div class="name">Docker</div><div class="type">Entorno</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="database"  class="pt-icon"></i><div class="symbol">K8s</div><div class="name">Kubernetes</div><div class="type">Entorno</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="webhook"  class="pt-icon"></i><div class="symbol">Jnk</div><div class="name">Jenkins</div><div class="type">CI/CD</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="webhook"  class="pt-icon"></i><div class="symbol">GHA</div><div class="name">GH Actions</div><div class="type">CI/CD</div></div>
+        <div class="pt-element pt-ci"><i data-lucide="webhook"  class="pt-icon"></i><div class="symbol">GLC</div><div class="name">GitLab CI</div><div class="type">CI/CD</div></div>
+      </div>
+      
+      <div class="pt-legend" style="transform: scale(0.85); transform-origin: top center;">
+        <div class="pt-legend-item"><div class="pt-legend-color pt-unit"></div> Unitarias</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-api"></div> API / Contrato</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-e2e"></div> E2E Web</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-mob"></div> Mobile / BDD</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-vis"></div> Visual / Accesibilidad</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-perf"></div> Carga y Rendimiento</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-sec"></div> Seguridad SAST/DAST</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-ops"></div> Ingeniería del Caos</div>
+        <div class="pt-legend-item"><div class="pt-legend-color pt-mgt"></div> Gestión / CI-CD</div>
+      </div>
+      
+    </div>
+    
+    <div class="footer">
+      <span>IPSS — INGENIERÍA EN INFORMÁTICA</span>
+      <span>05 / 2026</span>
+    </div>
+  </div>
+  
+  <script>
+    lucide.createIcons();
+    // Forward keyboard shortcuts to parent
+    document.addEventListener('keydown', e => {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({type: 'forward-key', key: e.key}, '*');
+      }
+    });
+    // Listen for theme toggle
+    window.addEventListener('message', e => {
+      if (e.data && e.data.type === 'theme-toggle') {
+        document.documentElement.setAttribute('data-theme', e.data.theme);
+      }
+    });
+  </script>
+
+</body>
+</html>

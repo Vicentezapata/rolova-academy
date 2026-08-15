@@ -1,0 +1,445 @@
+﻿<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visor de PresentaciÃ³n U1</title>
+<script src="notas_orador.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #000;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  }
+  .toolbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 48px;
+    background: rgba(0,0,0,0.8); border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    z-index: 1000; backdrop-filter: blur(10px);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .toolbar:hover, .toolbar:focus-within { opacity: 1; }
+  
+  :fullscreen .toolbar { display: none !important; }
+  :fullscreen .nav-hint { display: none !important; }
+
+  .toolbar button {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; padding: 6px 16px; border-radius: 6px; cursor: pointer;
+    font-size: 14px; transition: background 0.2s;
+  }
+  .toolbar button:hover { background: rgba(255,255,255,0.2); }
+  .toolbar button:disabled { opacity: 0.3; cursor: not-allowed; }
+  .page-info { font-size: 14px; color: rgba(255,255,255,0.7); min-width: 80px; text-align: center; }
+  
+  .stage {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+  }
+  
+  .slide-wrap {
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+  
+  /* Overview Mode */
+  .stage.overview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 24px;
+    align-content: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    background: transparent;
+    box-shadow: none;
+    aspect-ratio: auto;
+    height: calc(100vh - 60px);
+  }
+  .stage.overview .slide-wrap {
+    display: block !important;
+    position: relative;
+    width: 256px; height: 144px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border 0.2s, transform 0.2s;
+  }
+  .stage.overview .slide-wrap:hover {
+    border-color: #22D3EE;
+    transform: scale(1.05);
+  }
+  .stage.overview .slide-wrap.active {
+    border-color: #6366f1;
+  }
+  .stage.overview .slide-frame {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    transform-origin: top left !important;
+    transform: scale(0.2) !important;
+    pointer-events: none;
+  }
+  
+  .slide-frame {
+    width: 1280px; height: 720px;
+    transform-origin: center center;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border: none;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  
+  
+  .nav-hint {
+    position: fixed; bottom: 12px;
+    color: rgba(255,255,255,0.25); font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button id="btn-prev" onclick="nav(-1)">Prev</button>
+  <span class="page-info" id="page-info">1 / 34</span>
+  <button id="btn-next" onclick="nav(1)">Next</button>
+  <div style="width:1px;height:16px;background:rgba(255,255,255,0.2);margin:0 8px"></div>
+  <button onclick="toggleOverview()">Grid</button>
+  <button onclick="document.documentElement.requestFullscreen()">FS</button>
+  <button onclick="openPresenter()">Presenter</button>
+</div>
+
+<div class="stage" id="stage">
+  <div class="slide-wrap" id="wrap-0" onclick="if(isOverview) { toggleOverview(); show(0); }"><iframe class="slide-frame" id="slide-0" src="slides/slide_00.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-1" onclick="if(isOverview) { toggleOverview(); show(1); }"><iframe class="slide-frame" id="slide-1" src="slides/slide_01.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-2" onclick="if(isOverview) { toggleOverview(); show(2); }"><iframe class="slide-frame" id="slide-2" src="slides/slide_02.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-3" onclick="if(isOverview) { toggleOverview(); show(3); }"><iframe class="slide-frame" id="slide-3" src="slides/slide_03.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-4" onclick="if(isOverview) { toggleOverview(); show(4); }"><iframe class="slide-frame" id="slide-4" src="slides/slide_04.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-5" onclick="if(isOverview) { toggleOverview(); show(5); }"><iframe class="slide-frame" id="slide-5" src="slides/slide_05.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-6" onclick="if(isOverview) { toggleOverview(); show(6); }"><iframe class="slide-frame" id="slide-6" src="slides/slide_06.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-7" onclick="if(isOverview) { toggleOverview(); show(7); }"><iframe class="slide-frame" id="slide-7" src="slides/slide_07.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-8" onclick="if(isOverview) { toggleOverview(); show(8); }"><iframe class="slide-frame" id="slide-8" src="slides/slide_08.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-9" onclick="if(isOverview) { toggleOverview(); show(9); }"><iframe class="slide-frame" id="slide-9" src="slides/slide_09.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-10" onclick="if(isOverview) { toggleOverview(); show(10); }"><iframe class="slide-frame" id="slide-10" src="slides/slide_10.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-11" onclick="if(isOverview) { toggleOverview(); show(11); }"><iframe class="slide-frame" id="slide-11" src="slides/slide_11.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-12" onclick="if(isOverview) { toggleOverview(); show(12); }"><iframe class="slide-frame" id="slide-12" src="slides/slide_12.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-13" onclick="if(isOverview) { toggleOverview(); show(13); }"><iframe class="slide-frame" id="slide-13" src="slides/slide_13.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-14" onclick="if(isOverview) { toggleOverview(); show(14); }"><iframe class="slide-frame" id="slide-14" src="slides/slide_14.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-15" onclick="if(isOverview) { toggleOverview(); show(15); }"><iframe class="slide-frame" id="slide-15" src="slides/slide_15.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-16" onclick="if(isOverview) { toggleOverview(); show(16); }"><iframe class="slide-frame" id="slide-16" src="slides/slide_16.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-17" onclick="if(isOverview) { toggleOverview(); show(17); }"><iframe class="slide-frame" id="slide-17" src="slides/slide_17.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-18" onclick="if(isOverview) { toggleOverview(); show(18); }"><iframe class="slide-frame" id="slide-18" src="slides/slide_18.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-19" onclick="if(isOverview) { toggleOverview(); show(19); }"><iframe class="slide-frame" id="slide-19" src="slides/slide_19.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-20" onclick="if(isOverview) { toggleOverview(); show(20); }"><iframe class="slide-frame" id="slide-20" src="slides/slide_20.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-21" onclick="if(isOverview) { toggleOverview(); show(21); }"><iframe class="slide-frame" id="slide-21" src="slides/slide_21.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-22" onclick="if(isOverview) { toggleOverview(); show(22); }"><iframe class="slide-frame" id="slide-22" src="slides/slide_22.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-23" onclick="if(isOverview) { toggleOverview(); show(23); }"><iframe class="slide-frame" id="slide-23" src="slides/slide_23.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-24" onclick="if(isOverview) { toggleOverview(); show(24); }"><iframe class="slide-frame" id="slide-24" src="slides/slide_24.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-25" onclick="if(isOverview) { toggleOverview(); show(25); }"><iframe class="slide-frame" id="slide-25" src="slides/slide_25.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-26" onclick="if(isOverview) { toggleOverview(); show(26); }"><iframe class="slide-frame" id="slide-26" src="slides/slide_26.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-27" onclick="if(isOverview) { toggleOverview(); show(27); }"><iframe class="slide-frame" id="slide-27" src="slides/slide_27.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-28" onclick="if(isOverview) { toggleOverview(); show(28); }"><iframe class="slide-frame" id="slide-28" src="slides/slide_28.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-29" onclick="if(isOverview) { toggleOverview(); show(29); }"><iframe class="slide-frame" id="slide-29" src="slides/slide_29.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-30" onclick="if(isOverview) { toggleOverview(); show(30); }"><iframe class="slide-frame" id="slide-30" src="slides/slide_30.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-31" onclick="if(isOverview) { toggleOverview(); show(31); }"><iframe class="slide-frame" id="slide-31" src="slides/slide_31.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-32" onclick="if(isOverview) { toggleOverview(); show(32); }"><iframe class="slide-frame" id="slide-32" src="slides/slide_32.html"></iframe></div>
+  <div class="slide-wrap" id="wrap-33" onclick="if(isOverview) { toggleOverview(); show(33); }"><iframe class="slide-frame" id="slide-33" src="slides/slide_33.html"></iframe></div>
+
+</div>
+<div class="nav-hint" id="nav-hint">Use Left/Right arrows or Space to navigate. ESC to exit fullscreen.</div>
+
+<script>
+  let cur = 0;
+  const total = 25;
+  let isOverview = false;
+  const bc = new BroadcastChannel('ppt_channel');
+
+  
+  function fitSlides() {
+    if (isOverview) {
+      document.querySelectorAll('.slide-frame').forEach(el => el.style.transform = '');
+      return;
+    }
+    const stage = document.getElementById('stage');
+    const sw = stage.clientWidth;
+    const sh = stage.clientHeight;
+    const scale = Math.min(sw / 1280, sh / 720);
+    document.querySelectorAll('.slide-frame').forEach(el => {
+      el.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    });
+  }
+  window.addEventListener('resize', fitSlides);
+  setTimeout(fitSlides, 100);
+
+  function show(idx) {
+    document.querySelectorAll('.slide-wrap').forEach((el, i) => {
+      if (isOverview) {
+        el.style.display = 'block';
+        if (i === idx) el.classList.add('active');
+        else el.classList.remove('active');
+      } else {
+        el.style.display = i === idx ? 'block' : 'none';
+        el.classList.remove('active');
+      }
+    });
+    document.getElementById('page-info').innerText = (idx + 1) + " / " + total;
+    document.getElementById('btn-prev').disabled = idx === 0;
+    document.getElementById('btn-next').disabled = idx === total - 1;
+    bc.postMessage({ type: 'goto', idx: idx });
+  }
+
+  function nav(dir) {
+    let next = cur + dir;
+    if (next >= 0 && next < total) {
+      cur = next;
+      show(cur);
+    }
+  }
+
+  function toggleOverview() {
+    isOverview = !isOverview;
+    fitSlides();
+    const stage = document.getElementById('stage');
+    if (isOverview) {
+      stage.classList.add('overview');
+      document.getElementById('nav-hint').style.display = 'none';
+    } else {
+      stage.classList.remove('overview');
+      document.getElementById('nav-hint').style.display = 'block';
+    }
+    show(cur);
+  }
+
+  document.addEventListener('keydown', e => {
+    let k = e.key.toLowerCase();
+    if (['arrowleft', 'arrowup', 'arrowright', 'arrowdown', ' '].includes(k)) e.preventDefault();
+    if (k === 'arrowleft' || k === 'arrowup') nav(-1);
+    if (k === 'arrowright' || k === 'arrowdown' || k === ' ') nav(1);
+    if (k === 'o') toggleOverview();
+    if (k === 's') openPresenter();
+    if (k === 'f') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {});
+      else document.exitFullscreen();
+    }
+  });
+
+  // Listen for messages from iframes
+  window.addEventListener('message', e => {
+    if (e.data && e.data.type === 'forward-key') {
+      let k = e.data.key.toLowerCase();
+      if (k === 'arrowleft' || k === 'arrowup') nav(-1);
+      if (k === 'arrowright' || k === 'arrowdown' || k === ' ') nav(1);
+      if (k === 'o') toggleOverview();
+      if (k === 's') openPresenter();
+      if (k === 'f') {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => {});
+        else document.exitFullscreen();
+      }
+    }
+  });
+
+  // Listen for presenter sync
+  bc.onmessage = e => {
+    if (e.data.type === 'goto' && e.data.idx !== cur) {
+      cur = e.data.idx;
+      show(cur);
+    }
+  };
+
+  show(cur);
+
+  function openPresenter() {
+    const w = window.open('', 'presenter', 'width=1280,height=820,menubar=no,toolbar=no');
+    
+    const presenterHtml = `<!DOCTYPE html>
+<html>
+<head>
+<title>Presenter View</title>
+<style>
+  body { margin:0; background:#0d1117; color:#c9d1d9; font-family:-apple-system,sans-serif; overflow:hidden; user-select:none; }
+  #stage { position:relative; width:100vw; height:100vh; overflow:hidden; }
+  .pcard { position:absolute; background:#161b22; border:1px solid #30363d; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.5); overflow:hidden; display:flex; flex-direction:column; }
+  .pcard-head { padding:8px 12px; background:#21262d; border-bottom:1px solid #30363d; font-size:12px; font-weight:600; letter-spacing:0.05em; display:flex; align-items:center; gap:8px; cursor:move; }
+  .pcard-dot { width:8px; height:8px; border-radius:50%; background:var(--dot-color,#8b949e); }
+  .pcard-body { flex:1; position:relative; overflow:hidden; }
+  .pcard-preview .pcard-body { background:#000; }
+  .pcard-preview iframe { position:absolute; top:0; left:0; width:1280px; height:720px; border:none; transform-origin:top left; }
+  .pcard-notes .pcard-body { padding:14px 18px; overflow-y:auto; font-size:18px; line-height:1.75; }
+  .pcard-notes .pcard-body strong { color:#f0883e; }
+  .pcard-timer .pcard-body { display:flex; flex-direction:column; gap:14px; padding:18px 20px; justify-content:center; }
+  .timer-display { font-size:42px; font-weight:700; color:#3fb950; line-height:1; }
+  .timer-row { display:flex; gap:12px; font-size:14px; color:#8b949e; }
+  .timer-controls { display:flex; gap:8px; flex-wrap:wrap; }
+  .timer-btn { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:#e6edf3; padding:6px 12px; border-radius:6px; cursor:pointer; }
+  .pcard-resize { position:absolute; right:0; bottom:0; width:18px; height:18px; cursor:nwse-resize; z-index:5; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="pcard pcard-preview" id="card-cur" style="--dot-color:#58a6ff">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">CURRENT</span></div>
+    <div class="pcard-body"><iframe id="iframe-cur"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+  <div class="pcard pcard-preview" id="card-nxt" style="--dot-color:#bc8cff">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">NEXT</span></div>
+    <div class="pcard-body"><iframe id="iframe-nxt"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+  <div class="pcard pcard-notes" id="card-notes" style="--dot-color:#f0883e">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">SPEAKER SCRIPT</span></div>
+    <div class="pcard-body" id="notes-body"></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+  <div class="pcard pcard-timer" id="card-timer" style="--dot-color:#3fb950">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">TIMER</span></div>
+    <div class="pcard-body">
+      <div class="timer-display" id="timer-display">00:00</div>
+      <div class="timer-row">Slide <span id="timer-count"></span></div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="btn-prev">Prev</button>
+        <button class="timer-btn" id="btn-next">Next</button>
+        <button class="timer-btn" id="btn-reset">Reset</button>
+      </div>
+    </div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+</div>
+<script>
+  // Add variables directly to window from parent
+  window.idx = 0;
+  window.total = 34;
+  window.speakerNotes = window.opener.speakerNotes;
+  
+  function initPresenter() {
+    const bc = new BroadcastChannel('ppt_channel');
+    
+    function initLayout() {
+      let w = window.innerWidth || 1280;
+      let h = window.innerHeight || 820;
+      document.getElementById('card-cur').style.cssText = \`left: 16px; top: 16px; width: \${w*0.55 - 24}px; height: \${h*0.62 - 16}px\`;
+      document.getElementById('card-nxt').style.cssText = \`left: \${w*0.55 + 8}px; top: 16px; width: \${w - w*0.55 - 24}px; height: \${h*0.42 - 16}px\`;
+      document.getElementById('card-notes').style.cssText = \`left: \${w*0.55 + 8}px; top: \${h*0.42 + 8}px; width: \${w - w*0.55 - 24}px; height: \${h - h*0.42 - 16}px\`;
+      document.getElementById('card-timer').style.cssText = \`left: 16px; top: \${h*0.62 + 8}px; width: \${w*0.55 - 24}px; height: \${h - h*0.62 - 16}px\`;
+    }
+    initLayout();
+    
+    let iframeCur = document.getElementById('iframe-cur');
+    let iframeNxt = document.getElementById('iframe-nxt');
+    
+    function fitIframe(iframe) {
+        let cw = iframe.parentElement.clientWidth;
+        let ch = iframe.parentElement.clientHeight;
+        let scale = Math.min(cw/1280, ch/720);
+        iframe.style.transform = \`scale(\${scale})\`;
+    }
+    
+    function renderState() {
+      document.getElementById('timer-count').innerText = (window.idx+1) + " / " + window.total;
+      let n = window.speakerNotes && window.speakerNotes[window.idx];
+      document.getElementById('notes-body').innerHTML = n || '<span style="color:#6e7681;font-style:italic">Sin guion</span>';
+      
+      iframeCur.src = "slides/slide_" + String(window.idx).padStart(2, '0') + ".html";
+      let nxt = window.idx + 1 < window.total ? window.idx + 1 : window.idx;
+      iframeNxt.src = "slides/slide_" + String(nxt).padStart(2, '0') + ".html";
+      
+      setTimeout(() => { fitIframe(iframeCur); fitIframe(iframeNxt); }, 50);
+      
+      bc.postMessage({ type: 'goto', idx: window.idx });
+    }
+    
+    window.addEventListener('resize', () => {
+        fitIframe(iframeCur); fitIframe(iframeNxt);
+    });
+    
+    document.getElementById('btn-prev').onclick = () => { if(window.idx>0){ window.idx--; renderState(); } };
+    document.getElementById('btn-next').onclick = () => { if(window.idx<window.total-1){ window.idx++; renderState(); } };
+    
+    bc.onmessage = e => {
+      if(e.data.type === 'goto' && e.data.idx !== window.idx) { window.idx = e.data.idx; renderState(); }
+    };
+    
+    let startT = Date.now();
+    let timerEl = document.getElementById('timer-display');
+    setInterval(() => {
+      let diff = Math.floor((Date.now() - startT)/1000);
+      let m = Math.floor(diff/60).toString().padStart(2,'0');
+      let s = (diff%60).toString().padStart(2,'0');
+      timerEl.innerText = m + ':' + s;
+    }, 1000);
+    document.getElementById('btn-reset').onclick = () => { startT = Date.now(); };
+    
+    document.addEventListener('keydown', e => {
+      if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', ' '].includes(e.key)) e.preventDefault();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if(window.idx>0){ window.idx--; renderState(); } }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { if(window.idx<window.total-1){ window.idx++; renderState(); } }
+    });
+    
+    // Drag handlers
+    document.querySelectorAll('[data-drag]').forEach(h => {
+      h.onmousedown = e => {
+        let card = h.closest('.pcard');
+        let stX = e.clientX, stY = e.clientY;
+        let startL = parseInt(card.style.left) || 0, startT = parseInt(card.style.top) || 0;
+        card.style.zIndex = 999;
+        function onMove(ev) {
+          card.style.left = (startL + ev.clientX - stX) + 'px';
+          card.style.top = (startT + ev.clientY - stY) + 'px';
+        }
+        function onUp() { card.style.zIndex = ''; document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      };
+    });
+    
+    // Resize handlers
+    document.querySelectorAll('[data-resize]').forEach(h => {
+      h.onmousedown = e => {
+        let card = h.closest('.pcard');
+        e.stopPropagation(); e.preventDefault();
+        let stX = e.clientX, stY = e.clientY;
+        let startW = parseInt(card.style.width) || card.offsetWidth, startH = parseInt(card.style.height) || card.offsetHeight;
+        card.style.zIndex = 999;
+        function onMove(ev) {
+          card.style.width = Math.max(180, startW + ev.clientX - stX) + 'px';
+          card.style.height = Math.max(100, startH + ev.clientY - stY) + 'px';
+          fitIframe(card.querySelector('iframe'));
+        }
+        function onUp() { card.style.zIndex = ''; document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      };
+    });
+    
+    renderState();
+  }
+  
+  initPresenter();
+<\/script>
+</body>
+</html>`;
+    
+    w.document.write(presenterHtml);
+    w.document.close();
+  }
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,17 @@
+/* html-ppt :: full-decks-utilities.css */
+/* Extra utility classes used in full decks or left unused in single-page templates */
+
+.stack>*+*{margin-top:14px}
+.fill{flex:1}
+.sp-t{padding-top:24px}.sp-b{padding-bottom:24px}
+.mb-s{margin-bottom:8px}
+.mb-m{margin-bottom:18px}
+.card-soft{background:var(--surface-2);border:1px solid var(--border)}
+.card-outline{background:transparent;border:1.5px solid var(--border-strong);box-shadow:none}
+.card-hover{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.card-hover:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.divider{height:1px;background:var(--border);width:100%}
+.hidden{display:none!important}
+.nowrap{white-space:nowrap}
+.tr{text-align:right}.tc{text-align:center}.tl{text-align:left}
+.uppercase{text-transform:uppercase;letter-spacing:.12em}

@@ -45,7 +45,11 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tigh
 .check-dot svg{width:14px;height:14px;}
 .slide-num{position:absolute;bottom:18px;right:36px;font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.18);z-index:10;}
 
-
+/* Interactive additions */
+.clickable { cursor: pointer; border-bottom: 1px dotted rgba(255,255,255,0.4); padding-bottom: 2px; transition: all 0.2s; }
+.clickable:hover { color: var(--accent1); border-bottom-color: var(--accent1); }
+.rtm-table code.clickable { border-bottom: none; cursor: pointer; transition: all 0.2s; }
+.rtm-table code.clickable:hover { background: var(--accent1); color: #000; }
 </style>
 
 <style>
@@ -92,11 +96,11 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tigh
           <tr><th>Req ID</th><th>Historia de Usuario</th><th>Test Case(s)</th><th>Cobertura</th><th>Status</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>REQ-01</code></td><td>Login con credenciales válidas</td><td><code>TC-001</code>, <code>TC-002</code></td><td>100%</td><td><span class="badge badge-pass">PASS</span></td></tr>
-          <tr><td><code>REQ-02</code></td><td>Recuperación de contraseña</td><td><code>TC-003</code>, <code>TC-004</code></td><td>100%</td><td><span class="badge badge-pass">PASS</span></td></tr>
-          <tr><td><code>REQ-03</code></td><td>Bloqueo tras 3 intentos fallidos</td><td><span style="color:var(--err);font-weight:700;font-family:JetBrains Mono,monospace;font-size:11px;">¡FALTA!</span></td><td>0%</td><td><span class="badge badge-pend">PENDIENTE</span></td></tr>
-          <tr><td><code>REQ-04</code></td><td>Integración SSO con LDAP</td><td><code>TC-005</code>, <code>TC-006</code></td><td>67%</td><td><span class="badge badge-fail">FAIL</span></td></tr>
-          <tr><td><code>REQ-05</code></td><td>Suscripción Newsletter</td><td><code>TC-007</code>, <code>TC-008</code>, <code>TC-009</code></td><td>100%</td><td><span class="badge badge-pass">PASS</span></td></tr>
+          <tr><td><code>REQ-01</code></td><td><span class="clickable" onclick="showDetail('REQ-01')">Login con credenciales válidas</span></td><td><code class="clickable" onclick="showDetail('TC-001')">TC-001</code>, <code class="clickable" onclick="showDetail('TC-002')">TC-002</code></td><td>100%</td><td><span class="badge badge-pass">PASS</span></td></tr>
+          <tr><td><code>REQ-02</code></td><td><span class="clickable" onclick="showDetail('REQ-02')">Recuperación de contraseña</span></td><td><code class="clickable" onclick="showDetail('TC-003')">TC-003</code>, <code class="clickable" onclick="showDetail('TC-004')">TC-004</code></td><td>100%</td><td><span class="badge badge-pass">PASS</span></td></tr>
+          <tr><td><code>REQ-03</code></td><td><span class="clickable" onclick="showDetail('REQ-03')">Bloqueo tras 3 intentos fallidos</span></td><td><span style="color:var(--err);font-weight:700;font-family:JetBrains Mono,monospace;font-size:11px;">¡FALTA!</span></td><td>0%</td><td><span class="badge badge-pend">PENDIENTE</span></td></tr>
+          <tr><td><code>REQ-04</code></td><td><span class="clickable" onclick="showDetail('REQ-04')">Integración SSO con LDAP</span></td><td><code class="clickable" onclick="showDetail('TC-005')">TC-005</code>, <code class="clickable" onclick="showDetail('TC-006')">TC-006</code></td><td>67%</td><td><span class="badge badge-fail">FAIL</span></td></tr>
+          <tr><td><code>REQ-05</code></td><td><span class="clickable" onclick="showDetail('REQ-05')">Suscripción Newsletter</span></td><td><code class="clickable" onclick="showDetail('TC-007')">TC-007</code>, <code class="clickable" onclick="showDetail('TC-008')">TC-008</code>, <code class="clickable" onclick="showDetail('TC-009')">TC-009</code></td><td>100%</td><td><span class="badge badge-pass">PASS</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -121,5 +125,40 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter','Inter Tigh
   </div>
   <div class="slide-num">12 / 20</div>
 </div>
+
+<!-- Modal Interactivo -->
+<div id="detailModal" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(5px); z-index:100; align-items:center; justify-content:center;">
+  <div style="background:#161b22; border:1px solid var(--accent3); border-radius:12px; padding:24px; width:550px; color:#fff; position:relative; box-shadow:0 20px 40px rgba(0,0,0,0.6);">
+    <button onclick="document.getElementById('detailModal').style.display='none'" style="position:absolute; top:16px; right:16px; background:transparent; border:none; color:var(--text-sec); font-size:18px; cursor:pointer;">&times;</button>
+    <h3 id="modalTitle" style="color:var(--accent3); margin-bottom:12px; font-family:'Inter Tight',sans-serif; font-size:18px;"></h3>
+    <pre id="modalContent" style="white-space:pre-wrap; font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--text); background:#050b1f; padding:16px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); line-height:1.6;"></pre>
+  </div>
+</div>
+
+<script>
+const details = {
+  'REQ-01': { title: 'Historia de Usuario: REQ-01', content: 'COMO usuario registrado\nQUIERO iniciar sesión con mis credenciales\nPARA acceder a mi panel personal.' },
+  'REQ-02': { title: 'Historia de Usuario: REQ-02', content: 'COMO usuario registrado\nQUIERO poder recuperar mi contraseña usando mi email\nPARA recuperar el acceso si la olvido.' },
+  'REQ-03': { title: 'Historia de Usuario: REQ-03', content: 'COMO administrador de seguridad\nQUIERO que la cuenta se bloquee tras 3 intentos fallidos\nPARA prevenir ataques de fuerza bruta.' },
+  'REQ-04': { title: 'Historia de Usuario: REQ-04', content: 'COMO administrador de sistemas\nQUIERO que los usuarios inicien sesión usando LDAP\nPARA centralizar la gestión de identidades.' },
+  'REQ-05': { title: 'Historia de Usuario: REQ-05', content: 'COMO visitante del sitio\nQUIERO suscribirme al boletín de noticias\nPARA recibir novedades periódicamente.' },
+  'TC-001': { title: 'Test Case: TC-001', content: 'Feature: Login\n\n  Scenario: Login exitoso con credenciales correctas\n    Given que estoy en la página de login\n    When ingreso "admin" y "1234"\n    And presiono entrar\n    Then veo mi panel personal' },
+  'TC-002': { title: 'Test Case: TC-002', content: 'Feature: Login\n\n  Scenario: Error al usar credenciales inválidas\n    Given que estoy en la página de login\n    When ingreso "admin" y "errado"\n    And presiono entrar\n    Then veo mensaje "Credenciales incorrectas"' },
+  'TC-003': { title: 'Test Case: TC-003', content: 'Feature: Recuperación\n\n  Scenario: Envío de correo de recuperación\n    Given que pido recuperar mi clave\n    When ingreso "user@correo.com"\n    Then se muestra un mensaje de envío exitoso' },
+  'TC-004': { title: 'Test Case: TC-004', content: 'Feature: Recuperación\n\n  Scenario: Error con email no registrado\n    Given que pido recuperar mi clave\n    When ingreso "noexiste@correo.com"\n    Then veo mensaje "Usuario no encontrado"' },
+  'TC-005': { title: 'Test Case: TC-005', content: 'Feature: SSO\n\n  Scenario: Login mediante LDAP exitoso\n    Given que uso el portal corporativo\n    When ingreso con credenciales del dominio\n    Then el sistema me reconoce y permite el acceso' },
+  'TC-006': { title: 'Test Case: TC-006', content: 'Feature: SSO\n\n  Scenario: Fallo de conexión con LDAP\n    Given que el servidor LDAP está caído\n    When intento iniciar sesión\n    Then veo mensaje "Servicio temporalmente no disponible"' },
+  'TC-007': { title: 'Test Case: TC-007', content: 'Feature: Newsletter\n\n  Scenario: Suscripción válida\n    Given que veo el form de newsletter\n    When ingreso "test@mail.com"\n    Then veo mensaje de "Suscripción exitosa"' },
+  'TC-008': { title: 'Test Case: TC-008', content: 'Feature: Newsletter\n\n  Scenario: Suscripción con email repetido\n    Given que veo el form de newsletter\n    When ingreso un email ya suscrito\n    Then veo mensaje "Ya estás suscrito"' },
+  'TC-009': { title: 'Test Case: TC-009', content: 'Feature: Newsletter\n\n  Scenario: Error de validación de email\n    Given que veo el form de newsletter\n    When ingreso "test_sin_arroba.com"\n    Then veo mensaje "Email inválido"' }
+};
+
+function showDetail(id) {
+  const data = details[id] || {title: 'Detalle: ' + id, content: 'Información no disponible.'};
+  document.getElementById('modalTitle').innerText = data.title;
+  document.getElementById('modalContent').innerText = data.content;
+  document.getElementById('detailModal').style.display = 'flex';
+}
+</script>
 </body>
 </html>

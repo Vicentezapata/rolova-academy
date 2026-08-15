@@ -20,63 +20,85 @@ function PlanetCore({ theme, isSelected }) {
   switch(theme.type) {
     case 'plasma':
       return (
-        <>
+        <mesh>
           <sphereGeometry args={[0.85, 64, 64]} />
           <MeshDistortMaterial 
             color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity} 
-            distort={0.4} speed={2} roughness={0.2} metalness={0.8}
+            distort={0.5} speed={4} roughness={0.2} metalness={0.8}
           />
-        </>
+        </mesh>
       );
     case 'crystal':
       return (
-        <>
-          <dodecahedronGeometry args={[0.85, 0]} />
-          <meshPhysicalMaterial 
-            color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity * 0.4}
-            roughness={0.1} metalness={0.8} transmission={0.3} thickness={1} flatShading
-          />
-        </>
+        <group>
+          <mesh>
+            <octahedronGeometry args={[0.85, 0]} />
+            <meshPhysicalMaterial 
+              color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity * 0.4}
+              roughness={0.1} metalness={0.8} transmission={0.9} thickness={1} flatShading
+            />
+          </mesh>
+          <mesh scale={0.65}>
+            <octahedronGeometry args={[1, 0]} />
+            <meshBasicMaterial color={theme.ring} wireframe />
+          </mesh>
+        </group>
       );
     case 'hologram':
       return (
-        <>
-          <icosahedronGeometry args={[0.85, 1]} />
-          <meshStandardMaterial 
-            color={theme.color} emissive={theme.color} emissiveIntensity={isSelected ? 3 : 1.8}
-            wireframe roughness={0.1} metalness={0.1}
-          />
-        </>
+        <group>
+          <mesh>
+            <sphereGeometry args={[0.85, 16, 16]} />
+            <meshStandardMaterial 
+              color={theme.color} emissive={theme.color} emissiveIntensity={isSelected ? 3 : 1.5}
+              wireframe roughness={0.1} metalness={0.1}
+            />
+          </mesh>
+          <mesh scale={0.35}>
+            <icosahedronGeometry args={[1, 0]} />
+            <meshStandardMaterial color={theme.ring} emissive={theme.ring} emissiveIntensity={2} />
+          </mesh>
+        </group>
       );
     case 'energy':
       return (
-        <>
-          <torusKnotGeometry args={[0.55, 0.18, 128, 16]} />
+        <mesh>
+          <torusKnotGeometry args={[0.55, 0.18, 128, 32]} />
           <MeshWobbleMaterial 
-            color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity}
-            factor={1} speed={2} roughness={0.4} metalness={0.6}
+            color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity * 1.5}
+            factor={2} speed={3} roughness={0.2} metalness={0.8}
           />
-        </>
+        </mesh>
       );
     case 'glass':
       return (
-        <>
-          <sphereGeometry args={[0.85, 32, 32]} />
-          <meshPhysicalMaterial 
-            color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity * 0.8}
-            roughness={0.05} metalness={0.1} transmission={0.9} ior={1.5} clearcoat={1}
-          />
-        </>
+        <group>
+          <mesh>
+            <sphereGeometry args={[0.75, 32, 32]} />
+            <meshPhysicalMaterial 
+              color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity * 0.8}
+              roughness={0.05} metalness={0.1} transmission={0.9} ior={1.5} clearcoat={1}
+            />
+          </mesh>
+          <mesh rotation={[Math.PI/4, 0, 0]}>
+            <torusGeometry args={[0.95, 0.02, 32, 64]} />
+            <meshBasicMaterial color={theme.ring} />
+          </mesh>
+          <mesh rotation={[-Math.PI/4, Math.PI/2, 0]}>
+            <torusGeometry args={[0.95, 0.02, 32, 64]} />
+            <meshBasicMaterial color={theme.color} />
+          </mesh>
+        </group>
       );
     default:
       return (
-        <>
+        <mesh>
           <icosahedronGeometry args={[0.85, 2]} />
           <meshStandardMaterial 
             color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity} 
             metalness={0.5} roughness={0.15}
           />
-        </>
+        </mesh>
       );
   }
 }
@@ -129,7 +151,7 @@ export default function SkillStation({ course, position, courseIndex, onSelect, 
       </mesh>
 
       {/* Planet core — clickable */}
-      <mesh
+      <group
         ref={coreRef}
         onClick={(e) => { e.stopPropagation(); onSelect(course); }}
         onPointerOver={() => document.body.style.cursor = 'pointer'}
@@ -145,7 +167,7 @@ export default function SkillStation({ course, position, courseIndex, onSelect, 
             <span className="station-hint">← Clic para ver</span>
           </div>
         </Html>
-      </mesh>
+      </group>
     </group>
   );
 }

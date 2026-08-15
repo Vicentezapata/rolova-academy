@@ -57,7 +57,7 @@ body {
 .sun-orange { position: absolute; right: 96px; top: 96px; width: 148px; height: 148px; border-radius: 50%; background: radial-gradient(circle at 35% 32%, #ec946a 0%, var(--orange) 48%, #b75a23 100%); box-shadow: 0 0 0 8px rgba(244, 233, 208, 1), 0 0 0 9px rgba(107, 68, 35, 0.55); z-index: 2; }
 .sun-orange-ring { position: absolute; right: 76px; top: 76px; width: 188px; height: 188px; border-radius: 50%; border: 2px dashed rgba(107, 68, 35, 0.42); z-index: 2; }
 .sun-mustard { position: absolute; left: 78px; bottom: 110px; width: 96px; height: 96px; border-radius: 50%; background: radial-gradient(circle at 38% 35%, #ecc35a 0%, var(--mustard) 55%, #9a7813 100%); box-shadow: 0 0 0 6px rgba(244, 233, 208, 1), 0 0 0 7px rgba(107, 68, 35, 0.45); z-index: 2; }
-.arc-half { position: absolute; left: 60px; top: 290px; width: 78px; height: 156px; border-radius: 0 156px 156px 0; background: var(--vermilion); z-index: 2; }
+.arc-half { position: absolute; left: 60px; top: 290px; width: 156px; height: 156px; border-radius: 50%; background: var(--vermilion); z-index: 2; }
 .vinyl { position: absolute; right: 96px; bottom: 96px; width: 168px; height: 168px; border-radius: 50%; background: radial-gradient(circle at center, var(--vermilion) 0 18px, var(--ink) 18px 22px, #1d100a 22px 36px, var(--ink) 36px 38px, #1d100a 38px 56px, var(--ink) 56px 58px, #1d100a 58px 78px, var(--ink) 78px 80px, #1d100a 80px 84px); box-shadow: 0 0 0 4px rgba(244, 233, 208, 1), 0 0 0 6px rgba(107, 68, 35, 0.55); z-index: 4; }
 .vinyl-center-dot { position: absolute; right: 174px; bottom: 174px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg-cream); z-index: 5; }
 .grain { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.08; pointer-events: none; z-index: 9; }
@@ -174,16 +174,21 @@ td{padding:.85rem 1rem;border-bottom:1px solid rgba(255,255,255,.04);color:var(-
 tr:hover td{background:rgba(108,59,255,.04)}
 .th-accent{color:var(--p) !important}
 .badge{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .65rem;border-radius:50px;font-size:.72rem;font-weight:700;font-family:var(--mono)}
-.badge.green{background:rgba(80,250,123,.1);color:#50FA7B;border:1px solid rgba(80,250,123,.2)}
-.badge.purple{background:rgba(108,59,255,.1);color:var(--c3);border:1px solid rgba(108,59,255,.2)}
-.badge.orange{background:rgba(255,184,108,.1);color:#FFB86C;border:1px solid rgba(255,184,108,.2)}
-.badge.red{background:rgba(255,85,85,.1);color:#FF5555;border:1px solid rgba(255,85,55,.2)}
+.badge.green{background:rgba(34,95,45,.15);color:#225f2d;border:1px solid rgba(34,95,45,.3)}
+.badge.purple{background:rgba(81,45,168,.15);color:#512da8;border:1px solid rgba(81,45,168,.3)}
+.badge.orange{background:rgba(179,80,0,.15);color:#b35000;border:1px solid rgba(179,80,0,.3)}
+.badge.red{background:rgba(168,43,43,.15);color:#a82b2b;border:1px solid rgba(168,43,43,.3)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .slide.active .slide-inner{animation:fadeUp .5s ease forwards}
 
 
-.slide-inner { z-index: 10; position: relative; }
+.slide-inner { z-index: 10; position: relative; max-height: 100%; overflow-y: auto; width: 100%; padding-right: 1rem; }
+.slide-inner::-webkit-scrollbar { width: 8px; }
+.slide-inner::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+.slide-inner::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
+.slide-inner::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.4); }
+
 .cover-title, .s-title { font-family: var(--display-font); color: var(--brown); text-shadow: 2px 2px 0 rgba(193, 77, 63, 0.18); }
 .gradient-text { background: none; color: var(--vermilion); -webkit-text-fill-color: var(--vermilion); }
 .cover-badge { border-color: var(--brown); color: var(--brown); background: rgba(244, 233, 208, 0.8); }
@@ -191,7 +196,12 @@ tr:hover td{background:rgba(108,59,255,.04)}
 .s-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 rgba(42, 24, 16, 0.85); }
 code { background: rgba(224, 122, 62, 0.15); border: 1px solid rgba(224, 122, 62, 0.3); color: var(--vermilion); font-weight:700;}
 .code-window { background: rgba(255,255,255,0.6); box-shadow: 4px 4px 0 rgba(42, 24, 16, 0.85); border: 2px solid var(--ink); }
-.cw-body { color: var(--ink); font-weight: 600; }
+.cw-body { font-family: var(--mono); white-space: pre-wrap; padding: 1rem 1.5rem; font-size: 0.9rem; line-height: 1.6; color: var(--ink); font-weight: 500; text-align: left; max-height: 50vh; overflow-y: auto; }
+.cw-body::-webkit-scrollbar { width: 8px; }
+.cw-body::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 4px; }
+.cw-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 4px; }
+.cw-body::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.4); }
+
 .cw-body .c-c { color: rgba(42, 24, 16, 0.4); font-style: italic; }
 .cw-body .c-p { color: var(--brown); }
 .cw-body .c-s { color: var(--vermilion); }
@@ -226,12 +236,12 @@ code { background: rgba(224, 122, 62, 0.15); border: 1px solid rgba(224, 122, 62
 <div class="slide content" data-idx="28"><div class="slide-inner">
   <h1 class="s-title">Errores <span class="gradient-text">frecuentes</span> y soluciones</h1>
   <div class="cards-grid two">
-    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/dxjqnldd.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FF5555">SQLSTATE[42S02]: Table not found</h3><p class="text-sm">Olvidaste ejecutar <code>php artisan migrate</code>.</p></div>
-    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/dxjqnldd.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FF5555">Add [campo] to fillable property</h3><p class="text-sm">El campo no est&aacute; en <code>$fillable</code> del modelo.</p></div>
-    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/dxjqnldd.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FFB86C">419 Page Expired (CSRF)</h3><p class="text-sm">Olvidaste <code>@csrf</code> en el formulario POST.</p></div>
-    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/dxjqnldd.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FFB86C">Class not found en Seeder</h3><p class="text-sm">Ejecuta <code>composer dump-autoload</code>.</p></div>
-    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/dxjqnldd.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FFB86C">Trying to get property of null</h3><p class="text-sm">Usa <code>findOrFail()</code> en lugar de <code>find()</code>.</p></div>
-    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/dxjqnldd.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FF5555">Target class does not exist (Factory)</h3><p class="text-sm">El modelo no tiene <code>use HasFactory</code>.</p></div>
+    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/usownftb.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FF5555">SQLSTATE[42S02]: Table not found</h3><p class="text-sm">Olvidaste ejecutar <code>php artisan migrate</code>.</p></div>
+    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/usownftb.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FF5555">Add [campo] to fillable property</h3><p class="text-sm">El campo no est&aacute; en <code>$fillable</code> del modelo.</p></div>
+    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/usownftb.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FFB86C">419 Page Expired (CSRF)</h3><p class="text-sm">Olvidaste <code>@csrf</code> en el formulario POST.</p></div>
+    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/usownftb.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FFB86C">Class not found en Seeder</h3><p class="text-sm">Ejecuta <code>composer dump-autoload</code>.</p></div>
+    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/usownftb.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FFB86C">Trying to get property of null</h3><p class="text-sm">Usa <code>findOrFail()</code> en lugar de <code>find()</code>.</p></div>
+    <div class="s-card"><div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/usownftb.json" trigger="loop" colors="primary:#c14d3f,secondary:#d4a82a" style="width:24px;height:24px"></lord-icon></div><h3 style="color:#FF5555">Target class does not exist (Factory)</h3><p class="text-sm">El modelo no tiene <code>use HasFactory</code>.</p></div>
   </div>
 </div></div>
 

@@ -19,13 +19,13 @@ export default function Rocket({ targetPosition }) {
     // 1. Determine the target destination
     if (targetPosition) {
       // If a planet is selected, go near it (hovering slightly above and in front)
-      targetVec.current.set(targetPosition[0], targetPosition[1] + 2, targetPosition[2] + 2);
+      targetVec.current.set(targetPosition[0], targetPosition[1] + 3, targetPosition[2] + 3);
     } else {
       // If no planet is selected, orbit around the whole system leisurely
       targetVec.current.set(
-        Math.cos(t * 0.2) * 14, 
-        Math.sin(t * 0.3) * 3 + 2, 
-        Math.sin(t * 0.2) * 14
+        Math.cos(t * 0.3) * 10, 
+        Math.sin(t * 0.4) * 2 + 2, 
+        Math.sin(t * 0.3) * 10
       );
     }
 
@@ -51,11 +51,15 @@ export default function Rocket({ targetPosition }) {
     
     // 5. Engine flicker effect
     const engineLight = groupRef.current.getObjectByName('engineLight');
-    const engineGlow = groupRef.current.getObjectByName('engineGlow');
-    if (engineLight && engineGlow) {
+    const engineGlow1 = groupRef.current.getObjectByName('engineGlow1');
+    const engineGlow2 = groupRef.current.getObjectByName('engineGlow2');
+    
+    if (engineLight) {
         const flicker = 1 + Math.sin(t * 30) * 0.2;
-        engineLight.intensity = (targetPosition ? 8 : 4) * flicker;
-        engineGlow.scale.setScalar(targetPosition ? 1.2 : 0.8 + flicker * 0.1);
+        engineLight.intensity = (targetPosition ? 10 : 5) * flicker;
+        const s = targetPosition ? 1.3 : 0.9 + flicker * 0.1;
+        if (engineGlow1) engineGlow1.scale.setScalar(s);
+        if (engineGlow2) engineGlow2.scale.setScalar(s);
     }
   });
 
@@ -66,48 +70,58 @@ export default function Rocket({ targetPosition }) {
         We rotate this inner group by 90deg on X so the nose points to +Z.
         This makes groupRef.current.lookAt() work correctly.
       */}
-      <group rotation={[Math.PI / 2, 0, 0]}>
+      <group rotation={[Math.PI / 2, 0, 0]} scale={[2.2, 2.2, 2.2]}>
         
-        {/* Rocket Body */}
-        <mesh position={[0, 0, 0]}>
-          <cylinderGeometry args={[0.2, 0.3, 1.2, 12]} />
-          <meshStandardMaterial color="#e2e8f0" metalness={0.6} roughness={0.3} />
+        {/* Main Fuselage (Sleek dark wedge) */}
+        <mesh position={[0, 0, 0]} scale={[0.4, 1, 0.25]}>
+          <cylinderGeometry args={[0, 0.8, 2, 4]} />
+          <meshStandardMaterial color="#0f172a" metalness={0.9} roughness={0.2} />
         </mesh>
         
-        {/* Rocket Nose */}
-        <mesh position={[0, 0.9, 0]}>
-          <coneGeometry args={[0.2, 0.6, 12]} />
-          <meshStandardMaterial color="#d946ef" metalness={0.8} roughness={0.2} />
-        </mesh>
-        
-        {/* Fins */}
-        <mesh position={[0, -0.4, 0]}>
-          <boxGeometry args={[0.9, 0.5, 0.04]} />
-          <meshStandardMaterial color="#06b6d4" metalness={0.5} roughness={0.4} />
-        </mesh>
-        <mesh position={[0, -0.4, 0]} rotation={[0, Math.PI / 2, 0]}>
-          <boxGeometry args={[0.9, 0.5, 0.04]} />
-          <meshStandardMaterial color="#06b6d4" metalness={0.5} roughness={0.4} />
+        {/* Glowing Cockpit Canopy */}
+        <mesh position={[0, 0.2, 0.1]} scale={[0.2, 0.5, 0.15]}>
+          <cylinderGeometry args={[0, 0.8, 1, 4]} />
+          <meshStandardMaterial color="#0ea5e9" metalness={0.9} roughness={0.1} emissive="#0284c7" emissiveIntensity={1} />
         </mesh>
 
-        {/* Engine Nozzle */}
-        <mesh position={[0, -0.65, 0]}>
-          <cylinderGeometry args={[0.15, 0.25, 0.3, 12]} />
-          <meshStandardMaterial color="#334155" metalness={0.9} roughness={0.1} />
+        {/* Delta Wings */}
+        <mesh position={[0, -0.3, -0.05]} scale={[1.8, 0.8, 0.05]} rotation={[0, Math.PI / 4, 0]}>
+          {/* 4-sided cylinder rotated 45deg = wide diamond */}
+          <cylinderGeometry args={[0, 0.8, 1.2, 4]} />
+          <meshStandardMaterial color="#1e293b" metalness={0.9} roughness={0.3} />
         </mesh>
 
-        {/* Engine Fire/Glow */}
-        <mesh position={[0, -0.9, 0]} name="engineGlow">
-          <sphereGeometry args={[0.18, 12, 12]} />
-          <meshBasicMaterial color="#fde047" transparent opacity={0.8} />
-          {/* Inner hotter core */}
-          <mesh position={[0, 0.05, 0]}>
-            <sphereGeometry args={[0.1, 8, 8]} />
-            <meshBasicMaterial color="#ffffff" />
-          </mesh>
+        {/* Wing Cannons / Sensors */}
+        <mesh position={[-1.2, -0.5, -0.05]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.8, 8]} />
+          <meshStandardMaterial color="#94a3b8" metalness={1} roughness={0.1} />
         </mesh>
-        
-        <pointLight name="engineLight" position={[0, -1, 0]} color="#f59e0b" distance={8} intensity={5} />
+        <mesh position={[1.2, -0.5, -0.05]}>
+          <cylinderGeometry args={[0.02, 0.02, 0.8, 8]} />
+          <meshStandardMaterial color="#94a3b8" metalness={1} roughness={0.1} />
+        </mesh>
+
+        {/* Twin Ion Engines */}
+        <mesh position={[-0.25, -0.9, 0]}>
+          <cylinderGeometry args={[0.08, 0.12, 0.3, 12]} />
+          <meshStandardMaterial color="#334155" metalness={0.9} roughness={0.2} />
+        </mesh>
+        <mesh position={[0.25, -0.9, 0]}>
+          <cylinderGeometry args={[0.08, 0.12, 0.3, 12]} />
+          <meshStandardMaterial color="#334155" metalness={0.9} roughness={0.2} />
+        </mesh>
+
+        {/* Engine Ion Glows (Blue/Cyan) */}
+        <mesh position={[-0.25, -1.15, 0]} name="engineGlow1">
+          <capsuleGeometry args={[0.06, 0.2, 4, 8]} />
+          <meshBasicMaterial color="#06b6d4" transparent opacity={0.9} />
+        </mesh>
+        <mesh position={[0.25, -1.15, 0]} name="engineGlow2">
+          <capsuleGeometry args={[0.06, 0.2, 4, 8]} />
+          <meshBasicMaterial color="#06b6d4" transparent opacity={0.9} />
+        </mesh>
+
+        <pointLight name="engineLight" position={[0, -1.5, 0]} color="#06b6d4" distance={20} intensity={10} />
       </group>
     </group>
   );

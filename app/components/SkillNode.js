@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html, QuadraticBezierLine } from '@react-three/drei';
+import { Html, QuadraticBezierLine, MeshDistortMaterial, MeshWobbleMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 const TYPE_ICONS = {
@@ -108,7 +108,7 @@ export default function SkillNode({
         />
       </mesh>
 
-      {/* Main node sphere */}
+      {/* Main node object */}
       <mesh
         ref={meshRef}
         position={position}
@@ -116,14 +116,44 @@ export default function SkillNode({
         onPointerOut={(e) => { e.stopPropagation(); setHovered(false); }}
         onClick={handleClick}
       >
-        <sphereGeometry args={[nodeSize, 32, 32]} />
-        <meshStandardMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={hovered ? 2.5 : 0.8}
-          metalness={0.3}
-          roughness={0.2}
-        />
+        {material.type === 'html' && (
+          <>
+            <icosahedronGeometry args={[nodeSize, 0]} />
+            <meshStandardMaterial color={color} wireframe={true} emissive={color} emissiveIntensity={hovered ? 2.5 : 0.8} />
+          </>
+        )}
+        
+        {material.type === 'ppt-output' && (
+          <>
+            <sphereGeometry args={[nodeSize, 64, 64]} />
+            <MeshDistortMaterial color={color} emissive={color} emissiveIntensity={hovered ? 2.5 : 0.8} distort={0.5} speed={3} />
+          </>
+        )}
+
+        {material.type === 'folder' && (
+          <>
+            <sphereGeometry args={[nodeSize * 0.8, 32, 32]} />
+            <meshStandardMaterial color={color} metalness={0.9} roughness={0.1} emissive={color} emissiveIntensity={hovered ? 1.5 : 0.2} />
+            <mesh rotation={[-Math.PI / 3, 0, 0]}>
+              <ringGeometry args={[nodeSize * 1.2, nodeSize * 1.5, 32]} />
+              <meshBasicMaterial color={color} side={THREE.DoubleSide} transparent opacity={0.5} />
+            </mesh>
+          </>
+        )}
+
+        {material.type === 'pdf' && (
+          <>
+            <octahedronGeometry args={[nodeSize, 2]} />
+            <MeshWobbleMaterial color={color} emissive={color} emissiveIntensity={hovered ? 2.5 : 0.8} factor={1.5} speed={2} />
+          </>
+        )}
+
+        {(!['html', 'ppt-output', 'folder', 'pdf'].includes(material.type)) && (
+          <>
+            <torusKnotGeometry args={[nodeSize * 0.6, nodeSize * 0.15, 100, 16]} />
+            <meshStandardMaterial color={color} metalness={0.8} roughness={0.2} emissive={color} emissiveIntensity={hovered ? 2.5 : 0.5} />
+          </>
+        )}
 
         {/* HTML label */}
         <Html

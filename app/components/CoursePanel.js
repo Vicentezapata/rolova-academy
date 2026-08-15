@@ -1,4 +1,5 @@
 "use client";
+import { useState } from 'react';
 
 const TYPE_ICONS = {
   html: '🖥️',
@@ -48,6 +49,8 @@ function MaterialRow({ item, coursePath, accent }) {
   const icon  = TYPE_ICONS[item.type]  || TYPE_ICONS.default;
   const label = TYPE_LABELS[item.type] || TYPE_LABELS.default;
 
+  const [isExporting, setIsExporting] = useState(false);
+
   const url = item.type === 'ppt-output'
     ? `/api/file/${coursePath}/${item.previewUrl}`
     : `/api/file/${coursePath}/${item.url}`;
@@ -57,6 +60,40 @@ function MaterialRow({ item, coursePath, accent }) {
     window.open(url, '_blank');
   };
 
+  const handleExport = async (e) => {
+    e.stopPropagation();
+    if (isExporting) return;
+    
+    setIsExporting(true);
+    try {
+      const res = await fetch('/api/export-pptx', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          url: url,
+          title: item.name.replace(/\.[^/.]+$/, '') 
+        })
+      });
+
+      if (!res.ok) throw new Error('Error al generar PPTX');
+
+      const blob = await res.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = `${item.name.replace(/\.[^/.]+$/, '')}.pptx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (err) {
+      alert('Hubo un error exportando la presentación.');
+      console.error(err);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="cp-material-row" onClick={handleOpen} style={{ cursor: item.type === 'folder' ? 'default' : 'pointer' }}>
       <span className="cp-material-icon">{icon}</span>
@@ -64,6 +101,13 @@ function MaterialRow({ item, coursePath, accent }) {
         <span className="cp-material-name">{item.name.replace(/\.[^/.]+$/, '')}</span>
         <span className="cp-material-type">{label}</span>
       </div>
+      
+      {item.type === 'ppt-output' && (
+        <button className="cp-open-btn" style={{ '--accent': '#f59e0b', marginRight: '8px' }} onClick={handleExport} disabled={isExporting}>
+          {isExporting ? '⏳ Exportando...' : '📥 Exportar PPTX'}
+        </button>
+      )}
+
       {item.type !== 'folder' && (
         <button className="cp-open-btn" style={{ '--accent': accent }} onClick={(e) => { e.stopPropagation(); handleOpen(); }}>
           ▶ Abrir
