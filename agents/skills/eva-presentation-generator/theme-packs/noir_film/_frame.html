@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<title>{{SLIDE_TITLE}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:ital,opsz,wght@1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DEL PACK — ver theme-packs/TOKENS.md
+   Noir Film: monocromo absoluto. Grano de película, líneas de
+   barrido, marco de proyección y perforaciones de 35 mm.
+   ============================================================ */
+:root{
+  --bg:#0a0a0a; --bg2:#111111;
+  --text:#fafafa; --text-sec:rgba(250,250,250,0.62); --text-ter:rgba(250,250,250,0.32);
+  --strong:#fafafa;
+
+  /* Sin color. Los tres acentos son valores de gris: es la firma. */
+  --a1:#fafafa; --a2:rgba(250,250,250,0.62); --a3:#8a8a8a;
+  --ok:#c8c8c8; --warn:#9a9a9a; --err:#e0e0e0;
+  --a1-t:rgba(250,250,250,0.07); --a1-b:rgba(250,250,250,0.55);
+  --a2-t:rgba(250,250,250,0.045); --a2-b:rgba(250,250,250,0.28);
+  --a3-t:rgba(138,138,138,0.10); --a3-b:rgba(138,138,138,0.45);
+  --ok-t:rgba(200,200,200,0.07); --ok-b:rgba(200,200,200,0.40);
+  --warn-t:rgba(154,154,154,0.08); --warn-b:rgba(154,154,154,0.40);
+  --err-t:rgba(224,224,224,0.08); --err-b:rgba(224,224,224,0.50);
+
+  --card-bg:rgba(250,250,250,0.015); --border:rgba(250,250,250,0.14);
+  --bw:1px; --rule-h:1px;
+  --radius:0px; --radius-lg:0px;
+  --radius-sm:0px; --radius-pill:0px;
+  --shadow:none; --shadow-sm:none;
+  --inset-bg:rgba(250,250,250,0.025); --inset-border:rgba(250,250,250,0.12);
+  --hi-bg:rgba(250,250,250,0.09);
+  --hairline:rgba(250,250,250,0.14);
+  --zebra:rgba(250,250,250,0.025);
+  --thead-bg:rgba(250,250,250,0.08);
+
+  --code-bg:#111111; --code-fg:#fafafa;
+  --c-kw:#fafafa; --c-fn:#c8c8c8; --c-str:#9a9a9a; --c-cm:rgba(250,250,250,0.32); --c-num:#e0e0e0;
+
+  --display:'Inter Tight','Inter',-apple-system,sans-serif;
+  --display-xl:'Inter Tight','Inter',-apple-system,sans-serif;
+  --body:'Inter',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Source Serif 4','Iowan Old Style',Georgia,serif;
+  --title-shadow:none;
+  --em-family:var(--serif); --em-style:italic; --em-weight:300;
+  --heavy:700;
+
+  --mermaid-primary:#111111; --mermaid-text:#fafafa; --mermaid-border:#fafafa;
+  --mermaid-line:#8a8a8a; --mermaid-secondary:#0a0a0a; --mermaid-tertiary:#151515;
+}
+{{SHARED_CSS}}
+
+.h1,.h2,.h3,h1,h2,h3{letter-spacing:-0.045em;}
+.tag,.kicker{letter-spacing:0.30em;font-weight:500;}
+.slide-num{letter-spacing:0.20em;}
+/* El divisor arranca con un tramo blanco sólido de 96px, como en la hoja de contactos. */
+.divider{background:rgba(250,250,250,0.14);opacity:1;}
+.divider::after{content:'';position:absolute;left:0;top:0;width:96px;height:1px;background:#fafafa;}
+
+/* ============================================================
+   DECORACIONES DE FIRMA DEL PACK
+   Grano de emulsión, viñeta, barrido, marco de proyección,
+   escuadras y las perforaciones de 35 mm a ambos lados.
+   ============================================================ */
+.deco-a{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:{{VIGNETTE}};}
+
+/* Grano real por turbulencia fractal, en dos frecuencias. */
+.deco-b{position:absolute;inset:0;z-index:5;pointer-events:none;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.10 0'/></filter><rect width='220' height='220' filter='url(%23c)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='2.4' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/></filter><rect width='120' height='120' filter='url(%23f)'/></svg>"),
+    linear-gradient(180deg, rgba(250,250,250,0.018) 1px, transparent 1px);
+  background-size:220px 220px, 120px 120px, 100% 3px;}
+
+/* Marco de proyección, escuadras y perforaciones de 35 mm. */
+.deco-c{position:absolute;inset:18px;z-index:5;pointer-events:none;
+  border:1px solid rgba(250,250,250,0.08);
+  background-repeat:repeat-y, repeat-y;
+  background-image:
+    repeating-linear-gradient(180deg, rgba(250,250,250,0.22) 0 8px, transparent 8px 68px),
+    repeating-linear-gradient(180deg, rgba(250,250,250,0.22) 0 8px, transparent 8px 68px);
+  background-size:14px calc(100% - 180px), 14px calc(100% - 180px);
+  background-position:12px 72px, calc(100% - 26px) 72px;}
+.deco-c::before,.deco-c::after{content:'';position:absolute;width:18px;height:18px;}
+.deco-c::before{top:0;left:0;border-top:1px solid #fafafa;border-left:1px solid #fafafa;}
+.deco-c::after{bottom:0;right:0;border-bottom:1px solid #fafafa;border-right:1px solid #fafafa;}
+
+.slide{background:{{BG}};}
+
+{{EXTRA_CSS}}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="{{SLIDE_TITLE}}">
+  <div class="deco-a" aria-hidden="true"></div>
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+{{BODY}}
+  <div class="slide-num">{{SLIDE_NUM}} / {{TOTAL}}</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

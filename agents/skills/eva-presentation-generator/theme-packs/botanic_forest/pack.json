@@ -1,0 +1,35 @@
+{
+  "id": "botanic_forest",
+  "name": "Botanic Forest",
+  "source": "Recreado desde style-gallery/botanic_forest.html sobre el contrato de tokens",
+  "best_for": ["Sostenibilidad", "Medio ambiente", "Outdoor", "Diario de campo"],
+  "preset": "forest_field",
+  "decoration": "grain_sun_ridge",
+  "notes": "Display serif con cursiva dorada para el énfasis. Cartas casi transparentes, radio 4px, sin sombra. La cordillera al pie es parte de la identidad: deja aire en la banda inferior.",
+  "palette": {
+    "bg": "#122318",
+    "text": "#e8efe2",
+    "a1": "#ff8c42",
+    "a2": "#7a9a6f",
+    "a3": "#e8b86d"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. SUN se queda siempre en la franja superior, fuera del área de contenido, como en la referencia.",
+  "background_rhythm": [
+    {
+      "SUN": "top:-30px;right:220px;",
+      "BG": "radial-gradient(ellipse 70% 55% at 82% 18%, rgba(255,140,66,0.18) 0%, rgba(255,140,66,0) 60%), radial-gradient(ellipse 80% 60% at 15% 85%, rgba(122,154,111,0.10) 0%, rgba(122,154,111,0) 65%), linear-gradient(165deg, #1a2e1f 0%, #122318 45%, #0d1a14 80%, #0a1410 100%)"
+    },
+    {
+      "SUN": "top:-46px;right:-40px;",
+      "BG": "radial-gradient(ellipse 65% 50% at 18% 20%, rgba(255,140,66,0.15) 0%, rgba(255,140,66,0) 62%), radial-gradient(ellipse 75% 55% at 85% 78%, rgba(122,154,111,0.10) 0%, rgba(122,154,111,0) 65%), linear-gradient(165deg, #1a2e1f 0%, #122318 45%, #0d1a14 80%, #0a1410 100%)"
+    },
+    {
+      "SUN": "top:-40px;left:-40px;",
+      "BG": "radial-gradient(ellipse 60% 48% at 70% 12%, rgba(232,184,109,0.14) 0%, rgba(232,184,109,0) 60%), radial-gradient(ellipse 80% 60% at 10% 80%, rgba(122,154,111,0.12) 0%, rgba(122,154,111,0) 66%), linear-gradient(165deg, #1a2e1f 0%, #122318 45%, #0d1a14 80%, #0a1410 100%)"
+    },
+    {
+      "SUN": "top:-56px;right:440px;",
+      "BG": "radial-gradient(ellipse 72% 52% at 50% 8%, rgba(255,140,66,0.13) 0%, rgba(255,140,66,0) 62%), radial-gradient(ellipse 70% 55% at 80% 85%, rgba(122,154,111,0.11) 0%, rgba(122,154,111,0) 65%), linear-gradient(165deg, #1a2e1f 0%, #122318 45%, #0d1a14 80%, #0a1410 100%)"
+    }
+  ]
+}

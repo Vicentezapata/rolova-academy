@@ -1,0 +1,39 @@
+{
+  "id": "kindergarten_pop",
+  "name": "Kindergarten Pop",
+  "source": "Recreado desde style-gallery/kindergarten_pop.html sobre el contrato de tokens",
+  "best_for": ["Educación infantil", "Talleres", "Divulgación", "Onboarding amable"],
+  "preset": "soft_pop",
+  "decoration": "blobs_star",
+  "notes": "Radio 28px y anillo blanco interior en cada carta: eso es lo que hace al tema. Los pastel solo como relleno; para texto se usan versiones profundizadas de los mismos tonos.",
+  "palette": {
+    "bg": "#fff8e7",
+    "text": "#2a2a3a",
+    "a1": "#ff7a92",
+    "a2": "#0aa87f",
+    "a3": "#c98a00"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. BLOB es el blob grande difuso; STAR coloca la estrella.",
+  "background_rhythm": [
+    {
+      "BLOB": "top:-40px;right:-30px;width:220px;height:220px;background:radial-gradient(circle at 35% 35%, #ffd0d8 0%, #ffb6c1 70%);opacity:.55;",
+      "STAR": "top:96px;right:320px;font-size:18px;transform:rotate(12deg);",
+      "BG": "linear-gradient(160deg, #fff8e7 0%, #ffeed4 100%)"
+    },
+    {
+      "BLOB": "bottom:-50px;left:-40px;width:200px;height:200px;background:radial-gradient(circle at 35% 35%, #b8e5f5 0%, #87ceeb 75%);opacity:.5;",
+      "STAR": "bottom:110px;right:90px;font-size:26px;transform:rotate(-14deg);",
+      "BG": "linear-gradient(160deg, #fff8e7 0%, #ffeed4 100%)"
+    },
+    {
+      "BLOB": "top:-60px;left:-50px;width:210px;height:210px;background:radial-gradient(circle at 35% 35%, #a6f0d8 0%, #06d6a0 75%);opacity:.42;",
+      "STAR": "top:120px;right:120px;font-size:20px;transform:rotate(-6deg);",
+      "BG": "linear-gradient(160deg, #fff8e7 0%, #ffeed4 100%)"
+    },
+    {
+      "BLOB": "bottom:-56px;right:-44px;width:230px;height:230px;background:radial-gradient(circle at 35% 35%, #ffe6a0 0%, #ffd166 78%);opacity:.5;",
+      "STAR": "bottom:140px;left:80px;font-size:22px;transform:rotate(16deg);",
+      "BG": "linear-gradient(160deg, #fff8e7 0%, #ffeed4 100%)"
+    }
+  ]
+}

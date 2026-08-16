@@ -1,0 +1,1127 @@
+{
+  "pack": "xiaomi_orange",
+  "title": "Unidad 2 — Algoritmos de Machine Learning: Regresión, Clasificación y Evaluación",
+  "slides": [
+    {
+      "archetype": "cover",
+      "title": "Algoritmos de Machine Learning",
+      "notes": "Bienvenida a la Unidad 2. En la Unidad 1 vimos qué es la IA, cómo aprende una máquina y qué problemas éticos trae. Aquí bajamos al terreno: vamos a elegir algoritmos concretos, escribirlos en Python y medir con rigor si funcionan. Tres bloques: regresión para predecir números, clasificación para predecir categorías y evaluación para saber si el modelo aprendió o solo memorizó. Advierte desde el principio que esta unidad es práctica y que todo el código se ejecuta en Google Colab, sin instalar nada en el computador. Vale el 20% de la nota, el doble que la unidad anterior.",
+      "slots": {
+        "EYEBROW": "UNIDAD 02 · INTELIGENCIA ARTIFICIAL · IPSS 2026",
+        "TITLE": "Regresión, clasificación y evaluación",
+        "SUBTITLE": "Elegir el algoritmo correcto para cada problema, escribirlo en Python y medir si de verdad funciona.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          { "label": "Evaluación 20%", "accent": "a1" },
+          { "label": "Todo en Google Colab", "accent": "a2" },
+          { "label": "scikit-learn", "accent": "a3" }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "title": "Qué aprenderemos",
+      "notes": "El mapa de la unidad. Los dos primeros bloques son fundamento y herramienta: la distinción entre regresión y clasificación, la metodología CRISP-DM y el entorno de trabajo. El tercero y el cuarto son los algoritmos propiamente dichos. El quinto, evaluación, es el que más pesa en la nota y el que más se subestima: un modelo mal evaluado es peor que no tener modelo, porque genera confianza injustificada. Y el sexto es el proyecto. Recalca que la competencia de la unidad es «seleccionar y aplicar algoritmos según el tipo de problema y de datos»: seleccionar viene primero.",
+      "slots": {
+        "TAG_LEFT": "MAPA DE LA UNIDAD",
+        "TITLE": "Qué aprenderemos",
+        "TAG_RIGHT": "02",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          { "num": "01", "icon": "◆", "title": "Fundamentos", "desc": "Regresión o clasificación, y la metodología CRISP-DM.", "chips": "Sesión 1" },
+          { "num": "02", "icon": "◆", "title": "Colab y datos", "desc": "El entorno de trabajo y cómo se preparan imágenes y texto.", "chips": "Sesión 1" },
+          { "num": "03", "icon": "◆", "title": "Regresión", "desc": "Lineal, árboles, SVR y KNN: predecir un número.", "chips": "Sesión 2" },
+          { "num": "04", "icon": "◆", "title": "Clasificación", "desc": "Logística, Naive Bayes, SVC y KNN: predecir una categoría.", "chips": "Sesión 3" },
+          { "num": "05", "icon": "◆", "title": "Evaluación", "desc": "Métricas, matriz de confusión y validación cruzada.", "chips": "Sesión 4" },
+          { "num": "06", "icon": "◆", "title": "Proyecto", "desc": "Caso de negocio real: elegir modelo y justificar métrica.", "chips": "20%" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Sesión 1 · Fundamentos y entorno de trabajo",
+      "notes": "Separador del primer bloque. El objetivo de esta sesión es doble: fijar la distinción que ordena toda la unidad —regresión frente a clasificación— y dejar a todo el mundo con un entorno funcionando. Insiste en algo que el material dice bien: no empezamos programando. Un proyecto profesional de IA sigue un ciclo ordenado, y programar es la cuarta fase de seis. Quien abre el editor antes de entender el problema acaba entrenando un modelo perfecto para la pregunta equivocada.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 01",
+        "TITLE": "Fundamentos y entorno de trabajo",
+        "SUBTITLE": "No empezamos programando: programar es la fase 4 de 6",
+        "AGENDA": [
+          { "label": "01", "text": "Regresión o clasificación: ¿cuánto? o ¿cuál?" },
+          { "label": "02", "text": "CRISP-DM y las librerías de Python" },
+          { "label": "03", "text": "Google Colab y la preparación de datos" }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Activación · ¿cómo predice una máquina?",
+      "notes": "Actividad de apertura, ocho minutos. Recoge respuestas por el chat sin corregir todavía. La segunda pregunta es la importante y es la que abre la unidad entera: predecir el precio de una casa y predecir si una transacción es fraude son dos problemas de naturaleza distinta, y esa distinción determina qué algoritmo se usa y con qué métrica se mide. Si alguien la responde bien, apóyate en su respuesta para la siguiente diapositiva. La tercera pregunta prepara el terreno de la sesión 4: casi todo el mundo dice «porcentaje de aciertos», y ahí es donde después demostraremos que esa métrica engaña.",
+      "slots": {
+        "TAG_LEFT": "ACTIVACIÓN",
+        "TITLE": "¿Cómo predice una máquina?",
+        "TAG_RIGHT": "04",
+        "ICON": "kjkiqtxg",
+        "ACTIVITY_NAME": "Tres preguntas en el chat · 8 minutos",
+        "INSTRUCTIONS": "Piensa en aplicaciones de tu vida diaria que hacen predicciones automáticas. No busques en internet: interesa tu intuición antes de la teoría.",
+        "COLS": "3",
+        "META": [
+          { "label": "8 min" },
+          { "label": "Por el chat" },
+          { "label": "Sin buscar" }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "El feed",
+            "desc": "¿Cómo decidió Spotify, YouTube o TikTok qué mostrarte a continuación? ¿Qué datos crees que usa?",
+            "challenge_label": "Pista",
+            "challenge": "¿Qué le dice tu scroll que tú no le dijiste?"
+          },
+          {
+            "num": "02",
+            "title": "Precio o fraude",
+            "desc": "¿Cuál es la diferencia entre predecir el PRECIO de una casa y predecir si una transacción es FRAUDE?",
+            "challenge_label": "Clave",
+            "challenge": "Esta pregunta ordena toda la unidad."
+          },
+          {
+            "num": "03",
+            "title": "¿Funciona?",
+            "desc": "Si tuvieras que decir si un modelo es bueno o malo, ¿qué número mirarías?",
+            "challenge_label": "Spoiler",
+            "challenge": "El más obvio es el que más engaña. Sesión 4."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "title": "Regresión frente a clasificación",
+      "notes": "La distinción que ordena la unidad completa. Regresión: la respuesta es un número dentro de una escala continua, y tiene sentido decir que un valor es mayor que otro o que el error fue de tanto. Clasificación: la respuesta es una etiqueta de un conjunto cerrado, y ahí no tiene sentido restar. La regla de oro para decidir, que conviene que apunten: si la variable objetivo tiene una escala numérica con significado —precio, temperatura, tiempo, cantidad— es regresión; si es una etiqueta, un tipo, una clase o un grupo, es clasificación. Advierte de la trampa habitual: un número no siempre significa regresión. Si predices el número de estrellas de una reseña, del uno al cinco, eso puede tratarse como clasificación ordinal, porque no existe la reseña de 3,7 estrellas.",
+      "slots": {
+        "TAG_LEFT": "LA DISTINCIÓN CLAVE",
+        "TITLE": "¿Cuánto? o ¿cuál?",
+        "TAG_RIGHT": "05",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "REGRESIÓN",
+        "LEFT_TITLE": "La respuesta es un número",
+        "LEFT_BODY": "Una escala continua donde tiene sentido decir «me equivoqué por 12.000 pesos» o «este valor es mayor que aquel».",
+        "LEFT_EXAMPLE": "¿Cuánto costará este departamento? → $185.000.000",
+        "RIGHT_LABEL": "CLASIFICACIÓN",
+        "RIGHT_TITLE": "La respuesta es una categoría",
+        "RIGHT_BODY": "Un conjunto cerrado de etiquetas. No tiene sentido restar «spam» menos «no spam».",
+        "RIGHT_EXAMPLE": "¿Este correo es spam? → Spam / No spam",
+        "LEFT_POINTS": [
+          { "text": "¿Cuántas unidades venderemos? → 342" },
+          { "text": "¿Cuál será la temperatura? → 23,5 °C" },
+          { "text": "Se mide con MAE, RMSE y R²" },
+          { "text": "El error tiene magnitud: 5 es peor que 1" }
+        ],
+        "RIGHT_POINTS": [
+          { "text": "¿Qué animal sale en la foto? → gato / perro" },
+          { "text": "¿El cliente se irá? → sí / no" },
+          { "text": "Se mide con matriz de confusión y F1" },
+          { "text": "El error tiene tipo: no es lo mismo fallar hacia un lado que hacia el otro" }
+        ],
+        "RIGHT_TAGS": [
+          { "text": "Binaria" },
+          { "text": "Multiclase" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Micro-actividad · ¿regresión o clasificación?",
+      "notes": "Comprobación rápida. La respuesta correcta es la C. Repasa las otras: la A es regresión porque el precio es un valor continuo; la B es clasificación porque promoción o principal son etiquetas; la D es regresión porque los milímetros son una cantidad medible. El caso C es la trampa deliberada y merece explicación: aunque el resultado sea un número del uno al cinco, no existe la calificación de 3,7 estrellas, así que se trata como clasificación ordinal. Sirve para romper la idea simplista de «si hay número, es regresión».",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "¿Regresión o clasificación?",
+        "TAG_RIGHT": "06",
+        "BADGE": "PREGUNTA 1",
+        "QUESTION": "¿Cuál de estos casos NO es un problema de regresión?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Aunque el resultado sea un número del 1 al 5, no existe la calificación de 3,7 estrellas: es un conjunto cerrado de etiquetas ordenadas. Se trata como clasificación ordinal. Que haya un número no basta para que sea regresión.",
+        "OPTIONS": [
+          { "key": "A", "text": "Predecir el precio de venta de un departamento en Providencia", "correct": "" },
+          { "key": "B", "text": "Predecir cuántos milímetros de lluvia caerán mañana en Santiago", "correct": "" },
+          { "key": "C", "text": "Predecir cuántas estrellas (1 a 5) pondrá un usuario en su reseña", "correct": "true" },
+          { "key": "D", "text": "Predecir el tiempo de entrega de un pedido en minutos", "correct": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "roadmap",
+      "title": "CRISP-DM · las seis fases",
+      "notes": "La metodología estándar de todo proyecto profesional de minería de datos e IA, publicada en 1999 y todavía vigente. Seis fases agrupadas en tres momentos. Lo que hay que subrayar: la evaluación de esta unidad se concentra en las fases 1 a 3, que son las que ocurren antes de escribir una línea de modelo. La preparación de datos se lleva el 80% del tiempo real de un proyecto, y ese dato sorprende siempre. Y la característica que más se olvida de CRISP-DM: no es una línea recta, es un ciclo. Desde la evaluación se vuelve a la comprensión del negocio, porque casi siempre los primeros resultados revelan que la pregunta estaba mal planteada.",
+      "slots": {
+        "TAG_LEFT": "METODOLOGÍA",
+        "TITLE": "CRISP-DM · las seis fases",
+        "TAG_RIGHT": "07",
+        "LEAD": "No es una línea recta: es un ciclo. Desde la evaluación se vuelve al negocio, porque los primeros resultados revelan que la pregunta estaba mal planteada.",
+        "COLS": "3",
+        "LANES": [
+          {
+            "phase": "Comprender",
+            "when": "Fases 1 y 2",
+            "color": "var(--a1)",
+            "items": "1 · Negocio: ¿qué problema resolvemos?|2 · Datos: análisis exploratorio (EDA)|¿Qué datos tenemos y qué sesgos traen?|Aquí se decide si el proyecto es viable"
+          },
+          {
+            "phase": "Construir",
+            "when": "Fases 3 y 4",
+            "color": "var(--a2)",
+            "items": "3 · Preparación: limpieza y transformación|El 80% del tiempo real del proyecto|4 · Modelado: elegir y entrenar|Aquí recién aparece scikit-learn"
+          },
+          {
+            "phase": "Cerrar el ciclo",
+            "when": "Fases 5 y 6",
+            "color": "var(--a3)",
+            "items": "5 · Evaluación: métricas y matriz de confusión|¿Responde a la pregunta del negocio?|6 · Despliegue: ponerlo en producción|Y volver a la fase 1"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Las librerías que usaremos",
+      "notes": "Las cuatro piezas del ecosistema de Python para datos. NumPy es el motor matemático que procesa arreglos y matrices a velocidad de C; casi nunca se usa directamente pero está debajo de todo lo demás. Pandas es el Excel programable: cargar, limpiar y manipular tablas, y su estructura central es el DataFrame. Matplotlib y Seaborn son la visualización, y conviene decir que Seaborn está construido encima de Matplotlib, así que se usan juntas. Y scikit-learn es el corazón: contiene todos los algoritmos ya implementados, con una interfaz que se repite siempre, cargar, entrenar con punto fit y predecir con punto predict. Esa uniformidad es su gran virtud: cuando aprendes un modelo, sabes usar los cuarenta.",
+      "slots": {
+        "TAG_LEFT": "HERRAMIENTAS",
+        "TITLE": "Las librerías que usaremos",
+        "TAG_RIGHT": "08",
+        "COLS": "4",
+        "CARDS": [
+          {
+            "badge": "np",
+            "title": "NumPy",
+            "body": "El motor matemático. Procesa arreglos y matrices a gran velocidad. Casi no lo usarás directamente, pero está debajo de todo.",
+            "note_label": "Se importa",
+            "note": "import numpy as np"
+          },
+          {
+            "badge": "pd",
+            "title": "Pandas",
+            "body": "Un Excel programable. Cargar, limpiar y manipular tablas de datos reales. Su estructura central es el DataFrame.",
+            "note_label": "Se importa",
+            "note": "import pandas as pd"
+          },
+          {
+            "badge": "plt",
+            "title": "Matplotlib y Seaborn",
+            "body": "La visualización. Seaborn está construido sobre Matplotlib y hace gráficos estadísticos con una sola línea.",
+            "note_label": "Se importa",
+            "note": "import seaborn as sns"
+          },
+          {
+            "badge": "sk",
+            "title": "Scikit-learn",
+            "body": "El corazón. Todos los algoritmos ya implementados, con la misma interfaz: fit para entrenar, predict para predecir.",
+            "note_label": "Se importa",
+            "note": "from sklearn... import ..."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Google Colab · el entorno de la unidad",
+      "notes": "Aquí se resuelve el problema que más frena a un curso de IA: la instalación. Colab es un cuaderno de Jupyter que corre en los servidores de Google, gratis, con cuenta de Gmail y sin instalar absolutamente nada. Ya viene con pandas, numpy, scikit-learn y matplotlib preinstalados, así que la primera celda funciona al primer intento. Recorre los campos señalando los tres que más dudas generan. Primero, la diferencia entre celda de código y celda de texto, porque el trabajo se entrega documentado y las celdas de texto admiten Markdown. Segundo, el signo de exclamación delante de un comando: le dice a Colab que eso es una orden del sistema, no Python. Tercero, y el más importante, la advertencia final: el entorno se borra. Si cierran la pestaña y vuelven al día siguiente, las variables ya no están y hay que ejecutar todo otra vez. El código sobrevive porque se guarda en su Drive; el estado de ejecución, no.",
+      "slots": {
+        "TAG_LEFT": "ENTORNO",
+        "TITLE": "Google Colab, de cero",
+        "TAG_RIGHT": "09",
+        "SPEC_TITLE": "colab.research.google.com · gratis, con tu cuenta de Gmail, sin instalar nada",
+        "FIELDS": [
+          { "key": "Crear un cuaderno", "value": "colab.research.google.com → Archivo → Nuevo cuaderno. Se guarda solo en tu Drive.", "highlight": "true" },
+          { "key": "Celda de código", "value": "Escribes Python y lo ejecutas con Ctrl+Enter (o Shift+Enter para pasar a la siguiente)", "highlight": "" },
+          { "key": "Celda de texto", "value": "Admite Markdown: títulos, listas, negritas. Aquí va la explicación de tu entrega.", "highlight": "true" },
+          { "key": "Ya viene instalado", "value": "pandas, numpy, scikit-learn, matplotlib y seaborn. No hay que instalar nada.", "highlight": "" },
+          { "key": "Instalar algo extra", "value": "!pip install libreria — el signo ! indica orden del sistema, no Python", "highlight": "" },
+          { "key": "Subir un archivo", "value": "from google.colab import files · files.upload() abre el selector de tu computador", "highlight": "" },
+          { "key": "Usar tu Drive", "value": "from google.colab import drive · drive.mount('/content/drive')", "highlight": "" },
+          { "key": "Cuidado", "value": "El entorno se borra tras ~90 min de inactividad. El código se guarda; las variables NO.", "highlight": "true" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "El orden de ejecución importa", "text": "Colab ejecuta la celda que tú elijas, en el orden que quieras. Si algo falla «sin motivo», casi siempre es que ejecutaste una celda antes que la que define su variable." },
+          { "n": "2", "title": "Reinicia cuando te pierdas", "text": "Entorno de ejecución → Reiniciar y ejecutar todo. Deja el cuaderno en un estado limpio y reproducible, que es como debe entregarse." },
+          { "n": "3", "title": "GPU gratis si la necesitas", "text": "Entorno de ejecución → Cambiar tipo → T4 GPU. Para esta unidad no hace falta, pero en redes neuronales cambia mucho." }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Tu primer cuaderno en Colab",
+      "notes": "El código mínimo que todos deben ejecutar antes de la próxima sesión. Recórrelo celda a celda. La primera comprueba que las librerías están y muestra sus versiones; si esa celda falla, hay un problema de entorno y no de código. La segunda carga un conjunto de datos de ejemplo que viene con scikit-learn, el de viviendas de California, así que nadie necesita descargar archivos. Detente en la línea del DataFrame: pandas convierte los arreglos de NumPy en una tabla con nombres de columna, y a partir de ahí todo es más legible. Y las tres últimas instrucciones son las que hay que memorizar como rutina de exploración: shape para saber cuántas filas y columnas hay, head para ver las primeras filas, describe para los estadísticos y isnull suma para contar los valores faltantes. Esas cuatro líneas son la fase 2 de CRISP-DM en su versión más básica.",
+      "slots": {
+        "TAG_LEFT": "DEMO · COLAB",
+        "TITLE": "Tu primer cuaderno",
+        "TAG_RIGHT": "10",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Ejecuta esto antes de la próxima sesión. Si la primera celda falla, es problema de entorno; si funciona, ya tienes todo lo necesario.",
+        "CALLOUT_LABEL": "Rutina de exploración",
+        "CALLOUT": "shape, head, describe e isnull().sum(). Esas cuatro líneas son la fase 2 de CRISP-DM en su versión mínima. Hazlas siempre, antes de cualquier modelo.",
+        "FILENAME": "celda 1 y celda 2 · Colab",
+        "CODE": "<span class='c-cm'># ── Celda 1 · comprobar el entorno ──</span>\n<span class='c-kw'>import</span> pandas <span class='c-kw'>as</span> pd\n<span class='c-kw'>import</span> numpy <span class='c-kw'>as</span> np\n<span class='c-kw'>import</span> sklearn\n<span class='c-fn'>print</span>(<span class='c-str'>\"pandas\"</span>, pd.__version__, <span class='c-str'>\"| sklearn\"</span>, sklearn.__version__)\n\n<span class='c-cm'># ── Celda 2 · cargar datos y explorarlos ──</span>\n<span class='c-kw'>from</span> sklearn.datasets <span class='c-kw'>import</span> fetch_california_housing\n\ndatos = fetch_california_housing()\ndf = pd.DataFrame(datos.data, columns=datos.feature_names)\ndf[<span class='c-str'>\"precio\"</span>] = datos.target\n\n<span class='c-fn'>print</span>(df.shape)          <span class='c-cm'># (20640, 9) filas y columnas</span>\ndf.head()                <span class='c-cm'># primeras 5 filas</span>\ndf.describe()            <span class='c-cm'># media, min, max, cuartiles</span>\ndf.isnull().sum()        <span class='c-cm'># ¿hay valores faltantes?</span>",
+        "STEPS": [
+          { "n": "1", "text": "Si la celda 1 falla, el problema es el entorno. Reinicia y vuelve a ejecutar." },
+          { "n": "2", "text": "scikit-learn trae conjuntos de datos de ejemplo: nadie necesita descargar archivos." },
+          { "n": "3", "text": "pandas convierte los arreglos en una tabla con nombres de columna. Todo se vuelve legible." },
+          { "n": "4", "text": "shape te dice el tamaño; head, cómo se ven los datos; describe, si hay valores absurdos." },
+          { "n": "5", "text": "isnull().sum() cuenta los faltantes por columna. Si hay muchos, ya sabes en qué se irá tu tiempo." }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Cómo lee la máquina imágenes y texto",
+      "notes": "La fase 3 de CRISP-DM aplicada a datos que no vienen en tabla. La idea que hay que dejar clara: los algoritmos son ecuaciones, no tienen ojos ni entienden español, así que absolutamente todo debe convertirse en números. Para imágenes, el camino es píxeles, redimensionado uniforme, normalización al rango cero-uno y aplanado a un vector; el material usa el ejemplo de Los Simpson. Para texto, el camino es limpieza, tokenización, eliminación de palabras vacías y vectorización con bolsa de palabras o TF-IDF; el material usa el Quijote, que está en la carpeta de la unidad. Y añade la tercera tarjeta, que es la que más se olvida y la que más aparece en datos reales: las variables categóricas de una tabla, como una comuna o un tipo de cliente, también hay que convertirlas a número, y hacerlo mal introduce un orden que no existe.",
+      "slots": {
+        "TAG_LEFT": "FASE 3 · PREPARACIÓN",
+        "TITLE": "Todo tiene que ser número",
+        "TAG_RIGHT": "11",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "01",
+            "title": "Imágenes",
+            "body": "Píxeles de 0 a 255 → redimensionar a un tamaño fijo → normalizar a [0,1] → aplanar a un vector de números.",
+            "note_label": "Ejemplo",
+            "note": "Una foto de 64×64 se convierte en 4.096 números."
+          },
+          {
+            "badge": "02",
+            "title": "Texto",
+            "body": "Limpiar → tokenizar → quitar palabras vacías («el», «la») → vectorizar con bolsa de palabras o TF-IDF.",
+            "note_label": "Ejemplo",
+            "note": "El Quijote, en la carpeta de esta unidad."
+          },
+          {
+            "badge": "03",
+            "title": "Categorías",
+            "body": "Una columna con «Providencia», «Maipú», «Ñuñoa» también hay que convertirla. Y hacerlo mal inventa un orden falso.",
+            "note_label": "Cuidado",
+            "note": "Ñuñoa=3 no es «mayor» que Maipú=2."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Preparar datos en la práctica",
+      "notes": "El código de la fase 3, y aquí hay dos conceptos que se evalúan. El primero es la diferencia entre las dos formas de codificar categorías. Con get_dummies, o codificación uno-en-caliente, cada valor se convierte en su propia columna de ceros y unos, y esa es la correcta cuando no hay orden natural entre las categorías. Si en cambio asignas Providencia igual a uno, Maipú igual a dos y Ñuñoa igual a tres, el modelo interpretará que Ñuñoa es el triple de Providencia, lo cual no significa nada, y ese es el error de principiante más caro de esta fase. El segundo concepto es el escalado: modelos que miden distancias, como KNN y SVM, se rompen si una columna va de cero a uno y otra de cero a un millón, porque la segunda domina el cálculo. Los árboles no lo necesitan. Es una de las poquísimas reglas de esta unidad que conviene memorizar tal cual.",
+      "slots": {
+        "TAG_LEFT": "FASE 3 · PREPARACIÓN",
+        "TITLE": "Preparar datos en la práctica",
+        "TAG_RIGHT": "12",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Dos operaciones que se evalúan y que casi todo el mundo hace mal la primera vez: codificar categorías y escalar variables.",
+        "CALLOUT_LABEL": "Regla para memorizar",
+        "CALLOUT": "KNN y SVM miden distancias: SIEMPRE escala antes. Los árboles de decisión no lo necesitan nunca. Es la regla que más se pregunta.",
+        "FILENAME": "preparacion.py · Colab",
+        "CODE": "<span class='c-cm'># 1 · Valores faltantes: rellenar con la mediana</span>\ndf[<span class='c-str'>\"ingreso\"</span>] = df[<span class='c-str'>\"ingreso\"</span>].fillna(df[<span class='c-str'>\"ingreso\"</span>].median())\n\n<span class='c-cm'># 2 · Categorías → una columna por valor (correcto)</span>\ndf = pd.get_dummies(df, columns=[<span class='c-str'>\"comuna\"</span>], drop_first=<span class='c-kw'>True</span>)\n\n<span class='c-cm'># ✗ MAL: inventa un orden que no existe</span>\n<span class='c-cm'># df[\"comuna\"] = df[\"comuna\"].map({\"Providencia\":1, \"Maipú\":2})</span>\n\n<span class='c-cm'># 3 · Separar variables de entrada (X) y objetivo (y)</span>\nX = df.drop(columns=[<span class='c-str'>\"precio\"</span>])\ny = df[<span class='c-str'>\"precio\"</span>]\n\n<span class='c-cm'># 4 · Escalar: obligatorio para KNN y SVM</span>\n<span class='c-kw'>from</span> sklearn.preprocessing <span class='c-kw'>import</span> StandardScaler\n\nescalador = StandardScaler()\nX_esc = escalador.fit_transform(X)   <span class='c-cm'># media 0, desviación 1</span>",
+        "STEPS": [
+          { "n": "1", "text": "Los faltantes se rellenan con la mediana, más robusta que la media ante valores extremos." },
+          { "n": "2", "text": "get_dummies crea una columna de 0 y 1 por cada categoría. Correcto cuando no hay orden natural." },
+          { "n": "3", "text": "Asignar 1, 2, 3 a comunas le dice al modelo que Ñuñoa vale el triple que Providencia. No significa nada." },
+          { "n": "4", "text": "Por convención, X mayúscula son las variables de entrada e y minúscula la variable objetivo." },
+          { "n": "5", "text": "StandardScaler deja cada columna con media 0 y desviación 1, para que ninguna domine por su escala." }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Sesión 1",
+      "notes": "Cierre de la primera sesión. La respuesta correcta es la B. Es el error más frecuente al preparar datos y tiene consecuencias silenciosas: el modelo no da error, simplemente aprende una relación inventada. Si asignas números correlativos a categorías sin orden, estás afirmando que la distancia entre la categoría 1 y la 3 es el doble que entre la 1 y la 2, y eso es falso para comunas, colores o tipos de producto. La solución es la codificación uno-en-caliente, que es lo que hace get_dummies. Matiza para quien pregunte: si la categoría sí tiene orden natural, como bajo, medio y alto, entonces sí es correcto codificarla con números ordenados.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de la sesión 1",
+        "TAG_RIGHT": "13",
+        "BADGE": "PREGUNTA 2",
+        "QUESTION": "Tienes una columna «comuna» con texto. La conviertes en 1, 2, 3… ¿Qué problema causas?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "El modelo no dará error: simplemente aprenderá una relación inventada. Con 1, 2, 3 estás afirmando que la distancia entre la comuna 1 y la 3 es el doble que entre la 1 y la 2. Para comunas eso es falso. La solución es get_dummies. Si la categoría SÍ tiene orden (bajo, medio, alto), entonces sí es correcto.",
+        "OPTIONS": [
+          { "key": "A", "text": "Ninguno: los modelos entienden que son etiquetas", "correct": "" },
+          { "key": "B", "text": "Le enseñas un orden y una distancia entre comunas que no existen", "correct": "true" },
+          { "key": "C", "text": "El modelo fallará con un error al entrenar", "correct": "" },
+          { "key": "D", "text": "Solo afecta si usas árboles de decisión", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Sesión 2 · Modelos de regresión",
+      "notes": "Separador del bloque de regresión: cuando la respuesta es un número. Cuatro modelos que resuelven el mismo problema con filosofías distintas. La lineal traza una recta y te da coeficientes interpretables. El árbol divide el espacio en regiones con preguntas de sí o no. El SVR busca un tubo de tolerancia dentro del cual el error no cuenta. Y el KNN ni siquiera aprende una fórmula: mira a los vecinos más parecidos y promedia. Anticipa la conclusión del bloque: no hay un modelo mejor, hay un modelo adecuado para cada combinación de datos, de necesidad de interpretación y de tiempo disponible.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 02",
+        "TITLE": "Modelos de regresión",
+        "SUBTITLE": "Cuando la respuesta es un número: ¿cuánto?",
+        "AGENDA": [
+          { "label": "01", "text": "Regresión lineal: la recta y sus coeficientes" },
+          { "label": "02", "text": "Árboles, SVR y KNN: tres filosofías distintas" },
+          { "label": "03", "text": "Subajuste, sobreajuste y regularización" }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "Regresión lineal · el taxímetro",
+      "notes": "La analogía que hace entender la regresión lineal en treinta segundos. Tomas un taxi en una ciudad extranjera con el taxímetro escondido. Un viaje de un kilómetro cuesta tres mil pesos, uno de dos kilómetros cuatro mil, uno de tres kilómetros cinco mil. Cualquiera deduce el patrón: cobra dos mil por subir y mil por cada kilómetro. Eso es exactamente lo que hace una regresión lineal, y la ecuación descubierta es costo igual a dos mil más mil por los kilómetros. Ahora traduce a la notación formal: los dos mil son el intercepto, lo que vale la predicción cuando todas las variables son cero; los mil son el coeficiente, cuánto cambia el resultado por cada unidad de esa variable. Y aquí está la gran ventaja de este modelo frente a todos los demás: los coeficientes se leen. Puedes ir a una reunión y decir «cada metro cuadrado adicional suma un millón doscientos al precio». Ningún otro modelo de esta unidad te da eso.",
+      "slots": {
+        "TAG_LEFT": "MODELO 1",
+        "TITLE": "Regresión lineal · el taxímetro",
+        "TAG_RIGHT": "15",
+        "GHOST": "y=B₀+B₁x",
+        "KICKER": "El misterio de la tarifa",
+        "PRINCIPLE": "Tres viajes bastan para deducir la fórmula: $2.000 por subir y $1.000 por kilómetro.",
+        "PRINCIPLE_BODY": "Un viaje de 1 km cuesta $3.000, uno de 2 km $4.000 y uno de 3 km $5.000. Cualquiera deduce el patrón sin ver el taxímetro. Eso es exactamente lo que hace una regresión lineal: encuentra la recta que mejor explica los puntos, minimizando la suma de los errores. Y su gran ventaja frente a todos los demás modelos es que sus coeficientes se leen en voz alta.",
+        "LIST_TITLE": "Las piezas de la ecuación",
+        "FACTORS": [
+          { "name": "y · la predicción", "text": "El valor que estima el modelo: el costo total del viaje.", "color": "var(--a1)" },
+          { "name": "B₀ · el intercepto", "text": "Los $2.000 de bajada de bandera: lo que vale y cuando todo lo demás es cero.", "color": "var(--a2)" },
+          { "name": "B₁ · el coeficiente", "text": "Los $1.000 por kilómetro: cuánto cambia y por cada unidad de x.", "color": "var(--a3)" },
+          { "name": "x · la variable", "text": "Los kilómetros. Con varias variables, cada una tiene su propio coeficiente.", "color": "var(--ok)" }
+        ],
+        "EXAMPLES": [
+          { "tag": "Lo que puedes decir", "value": "1.2", "label": "millones por m²", "desc": "Coeficiente legible: sirve para una reunión de negocio.", "color": "var(--ok)" },
+          { "tag": "Lo que NO explica", "value": "0", "label": "relaciones curvas", "desc": "Si la relación no es una recta, este modelo no la ve.", "color": "var(--warn)" }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Regresión lineal en scikit-learn",
+      "notes": "El primer modelo completo, y la estructura que se repetirá en los diez siguientes. Cinco pasos siempre iguales: importar, dividir en entrenamiento y prueba, instanciar el modelo, entrenar con fit y predecir con predict. Detente en train_test_split, porque es la línea más importante de toda la unidad: separa un veinte por ciento de los datos que el modelo no verá jamás durante el entrenamiento, y ese veinte por ciento es el único juez honesto. El parámetro random_state fija la aleatoriedad para que el resultado sea reproducible; sin él, cada ejecución da números distintos y no puedes comparar. Y la última parte es la que hace única a la lineal: imprimir los coeficientes junto al nombre de cada variable te dice qué está mirando el modelo y con qué peso. Si un coeficiente sale con signo contrario al sentido común, ahí tienes un hallazgo que investigar.",
+      "slots": {
+        "TAG_LEFT": "DEMO · REGRESIÓN",
+        "TITLE": "Regresión lineal en scikit-learn",
+        "TAG_RIGHT": "16",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Cinco pasos que se repetirán en todos los modelos: importar, dividir, instanciar, entrenar y predecir.",
+        "CALLOUT_LABEL": "La línea más importante",
+        "CALLOUT": "train_test_split aparta un 20% que el modelo no verá jamás. Ese 20% es el único juez honesto de si aprendió o memorizó.",
+        "FILENAME": "regresion_lineal.py · Colab",
+        "CODE": "<span class='c-kw'>from</span> sklearn.model_selection <span class='c-kw'>import</span> train_test_split\n<span class='c-kw'>from</span> sklearn.linear_model <span class='c-kw'>import</span> LinearRegression\n<span class='c-kw'>from</span> sklearn.metrics <span class='c-kw'>import</span> mean_absolute_error, r2_score\n\n<span class='c-cm'># 1 · Dividir: el 20% queda oculto al entrenar</span>\nX_ent, X_prb, y_ent, y_prb = train_test_split(\n    X, y, test_size=<span class='c-num'>0.2</span>, random_state=<span class='c-num'>42</span>)\n\n<span class='c-cm'># 2 · Instanciar y entrenar</span>\nmodelo = LinearRegression()\nmodelo.fit(X_ent, y_ent)\n\n<span class='c-cm'># 3 · Predecir sobre datos NUNCA vistos</span>\ny_pred = modelo.predict(X_prb)\n\n<span class='c-cm'># 4 · Medir</span>\n<span class='c-fn'>print</span>(<span class='c-str'>\"MAE:\"</span>, mean_absolute_error(y_prb, y_pred))\n<span class='c-fn'>print</span>(<span class='c-str'>\"R² :\"</span>, r2_score(y_prb, y_pred))\n\n<span class='c-cm'># 5 · Lo que solo la lineal te da: leer el modelo</span>\n<span class='c-kw'>for</span> nombre, coef <span class='c-kw'>in</span> <span class='c-fn'>zip</span>(X.columns, modelo.coef_):\n    <span class='c-fn'>print</span>(<span class='c-str'>f\"{nombre}: {coef:.3f}\"</span>)",
+        "STEPS": [
+          { "n": "1", "text": "test_size=0.2 aparta el 20%. random_state=42 fija la aleatoriedad para poder comparar entre ejecuciones." },
+          { "n": "2", "text": "fit es entrenar: el modelo ajusta sus coeficientes buscando la recta de menor error." },
+          { "n": "3", "text": "predict siempre sobre X_prb, nunca sobre X_ent. Medir con lo que entrenaste es hacer trampa." },
+          { "n": "4", "text": "MAE dice cuánto te equivocas en promedio; R² dice cuánto mejoras respecto a adivinar la media." },
+          { "n": "5", "text": "coef_ junto al nombre de la columna: si un signo contradice el sentido común, ahí hay un hallazgo." }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Los otros tres modelos de regresión",
+      "notes": "Los tres modelos restantes del temario, cada uno con su analogía. El árbol de decisión es el juego de adivina quién: hace preguntas de sí o no, divide los datos en regiones y predice el promedio de cada región; su gran virtud es que puedes dibujarlo y explicárselo a cualquiera, y su gran defecto es que se sobreajusta con facilidad. El SVR busca un tubo de tolerancia alrededor de la predicción: mientras el punto caiga dentro del tubo, el error no cuenta, y solo penaliza lo que se sale; funciona muy bien en pocos datos con muchas variables pero es lento y no explica nada. Y el KNN es el más simple de entender y el más raro conceptualmente: no aprende ninguna fórmula, guarda todos los datos y cuando le preguntas por un caso nuevo busca los k vecinos más parecidos y promedia sus valores. Recuerda la regla: los dos últimos exigen escalado, el árbol no.",
+      "slots": {
+        "TAG_LEFT": "MODELOS 2, 3 Y 4",
+        "TITLE": "Tres filosofías distintas",
+        "TAG_RIGHT": "17",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "🌳",
+            "title": "Árbol de decisión",
+            "body": "El juego «Adivina quién»: preguntas de sí o no que dividen los datos en regiones, y predice el promedio de cada región.",
+            "note_label": "Fuerte y débil",
+            "note": "Se dibuja y se explica · se sobreajusta fácil."
+          },
+          {
+            "badge": "📏",
+            "title": "SVR",
+            "body": "Traza un tubo de tolerancia alrededor de la predicción. Lo que cae dentro no cuenta como error; solo penaliza lo que se sale.",
+            "note_label": "Fuerte y débil",
+            "note": "Bueno con pocos datos · lento y opaco."
+          },
+          {
+            "badge": "👥",
+            "title": "KNN",
+            "body": "No aprende ninguna fórmula. Guarda los datos y, ante un caso nuevo, busca los k vecinos más parecidos y promedia.",
+            "note_label": "Fuerte y débil",
+            "note": "Sin entrenamiento · lento al predecir."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Comparar los cuatro modelos de una vez",
+      "notes": "Este es el patrón profesional y el que deberían usar en el proyecto. En lugar de probar un modelo, mirar el número y quedarse con él, se define un diccionario con los candidatos y se entrenan todos en un bucle sobre exactamente la misma división de datos. Solo así la comparación es justa. Dos detalles importantes. Primero, el Pipeline: encadena el escalado y el modelo en un solo objeto, y esto no es comodidad sino corrección, porque garantiza que el escalador se ajusta únicamente con los datos de entrenamiento y no filtra información del conjunto de prueba; ese filtrado se llama fuga de datos y es uno de los errores más graves y más silenciosos. Segundo, el árbol y la lineal no llevan Pipeline porque no necesitan escalado. Al final, ordenar el resultado por métrica y elegir con criterio, no por corazonada.",
+      "slots": {
+        "TAG_LEFT": "DEMO · REGRESIÓN",
+        "TITLE": "Comparar los cuatro a la vez",
+        "TAG_RIGHT": "18",
+        "KICKER": "El patrón que se espera en tu proyecto",
+        "CODE_TITLE": "comparar_modelos.py · Colab",
+        "CODE": "<span class='c-kw'>from</span> sklearn.tree <span class='c-kw'>import</span> DecisionTreeRegressor\n<span class='c-kw'>from</span> sklearn.svm <span class='c-kw'>import</span> SVR\n<span class='c-kw'>from</span> sklearn.neighbors <span class='c-kw'>import</span> KNeighborsRegressor\n<span class='c-kw'>from</span> sklearn.pipeline <span class='c-kw'>import</span> make_pipeline\n\ncandidatos = {\n  <span class='c-str'>\"Lineal\"</span>: LinearRegression(),\n  <span class='c-str'>\"Árbol\"</span> : DecisionTreeRegressor(max_depth=<span class='c-num'>5</span>, random_state=<span class='c-num'>42</span>),\n  <span class='c-cm'># Pipeline: escala y modela sin filtrar datos de prueba</span>\n  <span class='c-str'>\"SVR\"</span>   : make_pipeline(StandardScaler(), SVR()),\n  <span class='c-str'>\"KNN\"</span>   : make_pipeline(StandardScaler(), KNeighborsRegressor(<span class='c-num'>5</span>)),\n}\n\n<span class='c-kw'>for</span> nombre, m <span class='c-kw'>in</span> candidatos.items():\n    m.fit(X_ent, y_ent)\n    p = m.predict(X_prb)\n    <span class='c-fn'>print</span>(<span class='c-str'>f\"{nombre:8} MAE={mean_absolute_error(y_prb,p):.3f}\"</span>\n          <span class='c-str'>f\"  R²={r2_score(y_prb,p):.3f}\"</span>)",
+        "PANEL_TITLE": "Qué se evalúa aquí",
+        "WHY_TITLE": "Por qué el Pipeline no es opcional",
+        "WHY": "Si escalas todos los datos antes de dividir, el escalador aprende la media del conjunto de prueba y esa información se filtra al entrenamiento. Se llama fuga de datos: tu modelo parecerá mejor de lo que es y fallará en producción. El Pipeline lo impide por construcción.",
+        "CRITERIA": [
+          { "letter": "A", "name": "Misma división de datos para todos", "meta": "Comparación justa", "highlight": "true" },
+          { "letter": "B", "name": "Pipeline en KNN y SVR (necesitan escalado)", "meta": "Obligatorio", "highlight": "true" },
+          { "letter": "C", "name": "Sin Pipeline en lineal y árbol", "meta": "No lo necesitan", "highlight": "" },
+          { "letter": "D", "name": "random_state fijo en todo", "meta": "Reproducible", "highlight": "" },
+          { "letter": "E", "name": "max_depth limita el árbol y evita sobreajuste", "meta": "Control", "highlight": "" },
+          { "letter": "F", "name": "Se elige por métrica, no por corazonada", "meta": "Criterio", "highlight": "true" }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "title": "Subajuste frente a sobreajuste",
+      "notes": "Los dos fracasos posibles de un modelo, con las analogías del material que funcionan muy bien en clase. El subajuste es el que no estudió nada: el modelo es tan simple que ni siquiera acierta en los datos con los que entrenó, como intentar describir un círculo con una recta; se detecta porque el error es alto en entrenamiento y también en prueba. El sobreajuste es el machetero, el que se aprendió de memoria hasta las erratas del apunte: saca cien por ciento en entrenamiento y fracasa estrepitosamente con datos nuevos, porque memorizó el ruido en lugar del patrón; se detecta porque el error es bajísimo en entrenamiento y alto en prueba. Y entre los dos está el buen ajuste: el que entendió la lógica. La señal diagnóstica que hay que memorizar es la comparación entre el error de entrenamiento y el de prueba, y por eso siempre hay que imprimir los dos, no solo uno.",
+      "slots": {
+        "TAG_LEFT": "LOS DOS FRACASOS",
+        "TITLE": "¿Aprender o memorizar?",
+        "TAG_RIGHT": "19",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "SUBAJUSTE",
+        "LEFT_TITLE": "El que no estudió nada",
+        "LEFT_BODY": "El modelo es tan simple que ni siquiera acierta con los datos que ya vio. Como describir un círculo con una recta.",
+        "LEFT_EXAMPLE": "Error alto en entrenamiento Y alto en prueba.",
+        "RIGHT_LABEL": "SOBREAJUSTE",
+        "RIGHT_TITLE": "El machetero",
+        "RIGHT_BODY": "Se aprendió de memoria hasta las erratas del apunte. Perfecto en el ensayo, desastroso en la prueba real.",
+        "RIGHT_EXAMPLE": "Error casi cero en entrenamiento y alto en prueba.",
+        "LEFT_POINTS": [
+          { "text": "Modelo demasiado simple para el problema" },
+          { "text": "Se arregla añadiendo variables o complejidad" },
+          { "text": "Una recta donde hacía falta una curva" },
+          { "text": "Es el fracaso más fácil de detectar" }
+        ],
+        "RIGHT_POINTS": [
+          { "text": "Modelo demasiado complejo para los datos" },
+          { "text": "Se arregla podando, regularizando o con más datos" },
+          { "text": "Un árbol sin límite de profundidad" },
+          { "text": "Es el fracaso más peligroso: parece un éxito" }
+        ],
+        "RIGHT_TAGS": [
+          { "text": "El más común" },
+          { "text": "El más caro" }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Cómo se controla el sobreajuste",
+      "notes": "Las herramientas concretas contra el sobreajuste, que es el fracaso más frecuente. La regularización añade una penalización por complejidad a la función que el modelo minimiza: Ridge encoge los coeficientes hacia cero sin eliminarlos, Lasso sí puede dejarlos exactamente en cero y por eso sirve además para seleccionar variables, y ElasticNet combina las dos. En árboles la herramienta es la poda mediante max_depth y min_samples_leaf. Y la solución que casi siempre funciona mejor que cualquier ajuste fino: conseguir más datos, aunque no siempre sea posible. Cierra con el aviso más práctico: el sobreajuste no se detecta mirando el error de entrenamiento, así que hay que imprimir siempre los dos errores y compararlos.",
+      "slots": {
+        "TAG_LEFT": "REGULARIZACIÓN",
+        "TITLE": "Cómo se controla el sobreajuste",
+        "TAG_RIGHT": "20",
+        "LEAD": "Cinco herramientas contra el fracaso más frecuente y más difícil de ver.",
+        "CALLOUTS": [
+          { "kind": "tip", "icon": "xtzvywzp", "title": "Ridge (L2) · encoge los coeficientes", "text": "Añade una penalización por coeficientes grandes. Los acerca a cero sin eliminarlos. Úsala cuando todas las variables aportan algo." },
+          { "kind": "info", "icon": "qhgmphtg", "title": "Lasso (L1) · elimina variables", "text": "Puede dejar coeficientes exactamente en cero, así que además de regularizar selecciona variables. Útil cuando sospechas que sobran columnas." },
+          { "kind": "note", "icon": "msoeawqm", "title": "Poda en árboles", "text": "max_depth limita la profundidad y min_samples_leaf exige un mínimo de casos por hoja. Un árbol sin límite memoriza el conjunto entero." },
+          { "kind": "warn", "icon": "usownftb", "title": "Más datos ganan a más ajuste", "text": "Duplicar los datos suele mejorar más que semanas afinando parámetros. No siempre es posible, pero es lo primero que hay que preguntarse." },
+          { "kind": "danger", "icon": "inrunzby", "title": "Imprime SIEMPRE los dos errores", "text": "El sobreajuste no se ve mirando solo el entrenamiento. Compara el error de entrenamiento con el de prueba: si hay abismo, memorizó." }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "¿Cuándo usar cada modelo de regresión?",
+      "notes": "La tabla de decisión del bloque, y la que necesitan para justificar la elección en el proyecto. Recórrela en horizontal. La lineal es la primera opción siempre: si funciona, ya tienes un modelo interpretable y rápido, y además sirve de línea base contra la que comparar. El árbol entra cuando la relación no es lineal o cuando necesitas explicar la decisión a alguien sin formación técnica. El SVR es para pocos datos con muchas variables. Y el KNN es la línea base rápida cuando no tienes ni idea de la forma de los datos. Insiste en la última columna, la de interpretabilidad, porque en el proyecto se evalúa la comunicación hacia un gerente no técnico: si tu caso exige explicar por qué se rechazó un crédito, un SVR no te sirve por muy bueno que sea su error.",
+      "slots": {
+        "TAG_LEFT": "DECISIÓN",
+        "TITLE": "¿Cuándo usar cada modelo?",
+        "TAG_RIGHT": "21",
+        "LEAD": "La tabla que necesitas para justificar tu elección en el proyecto. Empieza siempre por la lineal: si funciona, ya ganaste.",
+        "HEADERS": "<th>Modelo</th><th>Úsalo cuando…</th><th>Evítalo si…</th><th>¿Escalar?</th><th>¿Se explica?</th>",
+        "NOTE_LABEL": "Para el proyecto",
+        "NOTE": "Se evalúa la comunicación hacia un gerente no técnico. Si tu caso exige explicar por qué se tomó una decisión, un SVR no sirve por muy bajo que sea su error.",
+        "ROWS": [
+          { "cells": "<td>Lineal</td><td>La relación es aproximadamente recta</td><td>Los datos dibujan una curva clara</td><td>No</td><td>Sí, coeficientes</td>" },
+          { "cells": "<td>Ridge / Lasso</td><td>Muchas variables correlacionadas</td><td>Tienes pocas variables</td><td>Sí</td><td>Sí, coeficientes</td>" },
+          { "cells": "<td>Árbol de decisión</td><td>Relaciones no lineales y necesitas explicar</td><td>Necesitas máxima precisión</td><td>No</td><td>Sí, se dibuja</td>" },
+          { "cells": "<td>SVR</td><td>Pocos datos y muchas variables</td><td>Tienes cientos de miles de filas</td><td>Sí, obligatorio</td><td>No</td>" },
+          { "cells": "<td>KNN</td><td>Línea base rápida, sin supuestos</td><td>Muchos datos o muchas dimensiones</td><td>Sí, obligatorio</td><td>Parcial</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Sesión 2",
+      "notes": "Cierre del bloque de regresión. La respuesta correcta es la C. Es el diagnóstico más importante de toda la unidad y hay que saber leerlo de memoria: error casi nulo en entrenamiento y error alto en prueba es la firma exacta del sobreajuste. El modelo memorizó el conjunto de entrenamiento, incluido su ruido, y no generalizó nada. Si alguien elige la A, recuérdale que un R² de 0,99 en entrenamiento no es una buena noticia: es una señal de alarma. Aprovecha para reforzar que por eso se imprimen siempre los dos errores.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de la sesión 2",
+        "TAG_RIGHT": "22",
+        "BADGE": "PREGUNTA 3",
+        "QUESTION": "Tu árbol da R² = 0,99 en entrenamiento y R² = 0,41 en prueba. ¿Qué ocurre?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Esa es la firma exacta del sobreajuste: memorizó el conjunto de entrenamiento, ruido incluido, y no generalizó. Un R² de 0,99 en entrenamiento no es una buena noticia: es una señal de alarma. Se corrige limitando max_depth o consiguiendo más datos.",
+        "OPTIONS": [
+          { "key": "A", "text": "El modelo es excelente: 0,99 es casi perfecto", "correct": "" },
+          { "key": "B", "text": "Hay subajuste: el árbol es demasiado simple", "correct": "" },
+          { "key": "C", "text": "Hay sobreajuste: memorizó en lugar de aprender el patrón", "correct": "true" },
+          { "key": "D", "text": "Falta escalar las variables antes de entrenar", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Sesión 3 · Modelos de clasificación",
+      "notes": "Separador del bloque de clasificación: cuando la respuesta es una categoría. Aviso de vocabulario que hay que dar de entrada, porque genera confusión todos los años: la regresión logística, a pesar de su nombre, es un modelo de clasificación. Se llama así por la función matemática que usa, la logística o sigmoide, no por lo que predice. Lo que devuelve es una probabilidad entre cero y uno, y esa probabilidad se convierte en etiqueta aplicando un umbral, normalmente el 0,5. Ese detalle del umbral parece menor y es enorme: moverlo cambia por completo el equilibrio entre falsos positivos y falsos negativos, que es justo lo que veremos en la sesión 4.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 03",
+        "TITLE": "Modelos de clasificación",
+        "SUBTITLE": "Cuando la respuesta es una categoría: ¿cuál?",
+        "AGENDA": [
+          { "label": "01", "text": "Regresión logística: sí, es clasificación" },
+          { "label": "02", "text": "Naive Bayes, SVC y KNN clasificador" },
+          { "label": "03", "text": "El umbral de decisión y sus consecuencias" }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Regresión logística · el comité del banco",
+      "notes": "El primer clasificador, con la analogía del comité del banco. Cada variable —ingreso, antigüedad, deudas previas— es un miembro del comité que emite un voto con un peso distinto; la función logística suma esos votos ponderados y los aplasta al rango cero-uno, produciendo una probabilidad. Después, un umbral convierte esa probabilidad en decisión. Recorre el código señalando lo que lo hace especial: predict_proba, que devuelve la probabilidad y no solo la etiqueta. Esa es la razón principal para elegir este modelo, porque te permite ordenar los casos por riesgo y ajustar el umbral según el coste de cada tipo de error. Y menciona que aquí sí conviene escalar, porque el algoritmo converge mucho mejor, aunque no sea estrictamente obligatorio como en KNN o SVM.",
+      "slots": {
+        "TAG_LEFT": "MODELO 1",
+        "TITLE": "Regresión logística",
+        "TAG_RIGHT": "24",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "El comité del banco: cada variable emite un voto con su peso, y la función logística convierte la suma en una probabilidad.",
+        "CALLOUT_LABEL": "A pesar del nombre",
+        "CALLOUT": "Es CLASIFICACIÓN. Se llama logística por la función matemática que usa, no por lo que predice. Devuelve una probabilidad, no un número libre.",
+        "FILENAME": "clasificacion_logistica.py · Colab",
+        "CODE": "<span class='c-kw'>from</span> sklearn.linear_model <span class='c-kw'>import</span> LogisticRegression\n<span class='c-kw'>from</span> sklearn.metrics <span class='c-kw'>import</span> classification_report\n\nmodelo = make_pipeline(StandardScaler(),\n                       LogisticRegression(max_iter=<span class='c-num'>1000</span>))\nmodelo.fit(X_ent, y_ent)\n\n<span class='c-cm'># La etiqueta final</span>\ny_pred = modelo.predict(X_prb)\n\n<span class='c-cm'># Lo que hace especial a este modelo: la PROBABILIDAD</span>\nproba = modelo.predict_proba(X_prb)[:, <span class='c-num'>1</span>]\n<span class='c-fn'>print</span>(proba[:<span class='c-num'>5</span>])   <span class='c-cm'># [0.03 0.87 0.51 0.12 0.94]</span>\n\n<span class='c-cm'># Mover el umbral cambia el equilibrio de errores</span>\ny_estricto = (proba &gt; <span class='c-num'>0.3</span>).astype(<span class='c-kw'>int</span>)   <span class='c-cm'># más alertas</span>\n\n<span class='c-fn'>print</span>(classification_report(y_prb, y_pred))",
+        "STEPS": [
+          { "n": "1", "text": "Cada variable es un miembro del comité con su propio peso: ingreso, antigüedad, deudas." },
+          { "n": "2", "text": "La función logística aplasta la suma de votos al rango 0-1: eso es la probabilidad." },
+          { "n": "3", "text": "predict devuelve la etiqueta aplicando el umbral por defecto de 0,5." },
+          { "n": "4", "text": "predict_proba devuelve la probabilidad cruda. Es la razón principal para elegir este modelo." },
+          { "n": "5", "text": "Bajar el umbral a 0,3 genera más alertas: cazas más positivos reales y también más falsas alarmas." }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Los otros tres clasificadores",
+      "notes": "Los tres restantes del temario. Naive Bayes se basa en el teorema de Bayes y se llama ingenuo porque asume que todas las variables son independientes entre sí, algo casi siempre falso; lo curioso es que funciona muy bien igualmente, sobre todo en texto, y es el clasificador clásico del filtro de spam: rapidísimo y con pocos datos. El SVC busca la frontera que separa las clases dejando el mayor margen posible a ambos lados, y su gran fortaleza es el truco del núcleo, que le permite encontrar fronteras curvas proyectando los datos a más dimensiones. Y el KNN clasificador es votación por mayoría en el vecindario: mira a los k vecinos más cercanos y asigna la clase más frecuente entre ellos; con k igual a uno se sobreajusta y con k muy grande se subajusta, así que k es el parámetro que hay que buscar.",
+      "slots": {
+        "TAG_LEFT": "MODELOS 2, 3 Y 4",
+        "TITLE": "Los otros tres clasificadores",
+        "TAG_RIGHT": "25",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "📊",
+            "title": "Naive Bayes",
+            "body": "Calcula probabilidades con el teorema de Bayes. Se llama «ingenuo» porque asume que las variables son independientes, algo casi siempre falso.",
+            "note_label": "Su terreno",
+            "note": "Texto y spam. Rapidísimo con pocos datos."
+          },
+          {
+            "badge": "⚔️",
+            "title": "SVC",
+            "body": "Busca la frontera que separa las clases dejando el mayor margen posible. Con el truco del núcleo encuentra fronteras curvas.",
+            "note_label": "Su terreno",
+            "note": "Pocos datos, muchas variables. Lento y opaco."
+          },
+          {
+            "badge": "👥",
+            "title": "KNN clasificador",
+            "body": "Votación por mayoría en el vecindario: mira los k vecinos más cercanos y asigna la clase más frecuente entre ellos.",
+            "note_label": "Su terreno",
+            "note": "k=1 sobreajusta · k grande subajusta."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "feature-matrix",
+      "title": "Comparativa de clasificadores",
+      "notes": "La tabla de decisión del bloque. La columna marcada es la regresión logística porque es la que hay que probar primero casi siempre: es rápida, da probabilidades y se interpreta. Recorre las filas fijándote en la última, la de coste de predicción, porque es contraintuitiva: KNN no tarda nada en entrenar, ya que solo guarda los datos, pero es el más lento al predecir, porque tiene que calcular la distancia a todos los puntos guardados cada vez. En un sistema que responde en tiempo real eso puede ser inaceptable. Recuérdales para el proyecto que se piden dos algoritmos candidatos con justificación: esta tabla es exactamente el material para escribir esa justificación.",
+      "slots": {
+        "TAG_LEFT": "COMPARATIVA",
+        "TITLE": "Cuál elegir y por qué",
+        "TAG_RIGHT": "26",
+        "LEAD": "Empieza por la logística casi siempre: rápida, interpretable y da probabilidades. Las demás tienen que ganarse el puesto.",
+        "HEADERS": "<th>Criterio</th><th class=\"best\">Logística</th><th>Naive Bayes</th><th>SVC</th><th>KNN</th>",
+        "NOTE_LABEL": "Para el proyecto",
+        "NOTE": "Se piden dos algoritmos candidatos con justificación escrita. Esta tabla es el material para redactarla: elige dos columnas y argumenta con estas filas.",
+        "ROWS": [
+          { "cells": "<td>Da probabilidades</td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk part\">~</span></td><td><span class=\"mk part\">~</span></td>" },
+          { "cells": "<td>Se puede interpretar</td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk part\">~</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Fronteras no lineales</td><td class=\"best\"><span class=\"mk no\">✗</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td>" },
+          { "cells": "<td>Funciona bien con texto</td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Necesita escalado</td><td class=\"best\">Recomendable</td><td>No</td><td>Obligatorio</td><td>Obligatorio</td>" },
+          { "cells": "<td>Coste al predecir</td><td class=\"best\">Muy bajo</td><td>Muy bajo</td><td>Medio</td><td>Alto</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Clasificación completa de principio a fin",
+      "notes": "El flujo completo que se espera en el proyecto, con dos elementos nuevos que conviene explicar bien. El primero es stratify igual a y en la división: garantiza que la proporción de clases sea la misma en entrenamiento y en prueba. Sin eso, con un conjunto desbalanceado —por ejemplo un uno por ciento de fraudes— puede tocarte una división en la que el conjunto de prueba casi no tenga positivos, y entonces la métrica no significa nada. Es una línea de tres caracteres que evita un desastre silencioso. El segundo es class_weight igual a balanced: le dice al modelo que penalice más los errores en la clase minoritaria, compensando el desbalance. Y al final, classification_report da precisión, recall y F1 por clase de una sola vez, que es exactamente lo que hay que reportar en el proyecto en lugar del porcentaje de aciertos.",
+      "slots": {
+        "TAG_LEFT": "DEMO · CLASIFICACIÓN",
+        "TITLE": "El flujo completo",
+        "TAG_RIGHT": "27",
+        "KICKER": "Con las dos líneas que evitan un desastre silencioso",
+        "CODE_TITLE": "clasificacion_completa.py · Colab",
+        "CODE": "<span class='c-kw'>from</span> sklearn.naive_bayes <span class='c-kw'>import</span> GaussianNB\n<span class='c-kw'>from</span> sklearn.svm <span class='c-kw'>import</span> SVC\n<span class='c-kw'>from</span> sklearn.neighbors <span class='c-kw'>import</span> KNeighborsClassifier\n\n<span class='c-cm'># stratify: misma proporción de clases en ambos lados</span>\nX_ent, X_prb, y_ent, y_prb = train_test_split(\n    X, y, test_size=<span class='c-num'>0.2</span>, random_state=<span class='c-num'>42</span>, stratify=y)\n\ncandidatos = {\n  <span class='c-cm'># class_weight compensa clases desbalanceadas</span>\n  <span class='c-str'>\"Logística\"</span>: make_pipeline(StandardScaler(),\n        LogisticRegression(max_iter=<span class='c-num'>1000</span>, class_weight=<span class='c-str'>\"balanced\"</span>)),\n  <span class='c-str'>\"NaiveBayes\"</span>: GaussianNB(),\n  <span class='c-str'>\"SVC\"</span>: make_pipeline(StandardScaler(), SVC(class_weight=<span class='c-str'>\"balanced\"</span>)),\n  <span class='c-str'>\"KNN\"</span>: make_pipeline(StandardScaler(), KNeighborsClassifier(<span class='c-num'>5</span>)),\n}\n\n<span class='c-kw'>for</span> nombre, m <span class='c-kw'>in</span> candidatos.items():\n    m.fit(X_ent, y_ent)\n    <span class='c-fn'>print</span>(<span class='c-str'>f\"═══ {nombre} ═══\"</span>)\n    <span class='c-fn'>print</span>(classification_report(y_prb, m.predict(X_prb)))",
+        "PANEL_TITLE": "Las claves de este código",
+        "WHY_TITLE": "Por qué stratify no es opcional",
+        "WHY": "Con un 1% de fraudes, una división al azar puede dejar el conjunto de prueba casi sin positivos. Entonces tu métrica no mide nada y no te enteras. stratify=y garantiza la misma proporción a ambos lados. Tres caracteres que evitan un desastre invisible.",
+        "CRITERIA": [
+          { "letter": "A", "name": "stratify=y mantiene la proporción de clases", "meta": "Obligatorio", "highlight": "true" },
+          { "letter": "B", "name": "class_weight='balanced' compensa el desbalance", "meta": "Casi siempre", "highlight": "true" },
+          { "letter": "C", "name": "classification_report da precisión, recall y F1", "meta": "Lo que se reporta", "highlight": "" },
+          { "letter": "D", "name": "Naive Bayes no lleva Pipeline: no escala", "meta": "Detalle", "highlight": "" },
+          { "letter": "E", "name": "Mismo split para todos los candidatos", "meta": "Comparación justa", "highlight": "" },
+          { "letter": "F", "name": "Nunca reportes solo accuracy", "meta": "Sesión 4", "highlight": "true" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Sesión 3",
+      "notes": "Cierre del bloque de clasificación. La respuesta correcta es la B. Es la confusión de nombre más persistente de la asignatura. La regresión logística se llama así por la función logística o sigmoide que utiliza para transformar la salida, pero lo que predice es la probabilidad de pertenecer a una clase, y al aplicar el umbral produce una etiqueta. Es, por tanto, un clasificador. Aprovecha para recordar que devuelve probabilidades, y que esa es su principal ventaja frente al SVC.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de la sesión 3",
+        "TAG_RIGHT": "28",
+        "BADGE": "PREGUNTA 4",
+        "QUESTION": "¿Por qué la regresión logística se considera un modelo de clasificación?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Se llama «logística» por la función matemática que usa para transformar su salida, no por lo que predice. Lo que devuelve es la probabilidad de pertenecer a una clase, y al aplicar un umbral produce una etiqueta. Por eso es un clasificador.",
+        "OPTIONS": [
+          { "key": "A", "text": "Es un error histórico: en realidad hace regresión", "correct": "" },
+          { "key": "B", "text": "Devuelve una probabilidad que, con un umbral, se convierte en etiqueta", "correct": "true" },
+          { "key": "C", "text": "Porque solo funciona con dos clases", "correct": "" },
+          { "key": "D", "text": "Porque no admite variables numéricas continuas", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Sesión 4 · Evaluación de modelos",
+      "notes": "Separador del bloque de evaluación, el que más pesa en el proyecto y el que más se subestima. La pregunta que lo abre: ¿cómo sabemos si la máquina realmente aprendió? Y la respuesta incómoda es que el número que casi todo el mundo mira, el porcentaje de aciertos, puede ser altísimo en un modelo completamente inútil. Este bloque enseña a desconfiar de ese número y a elegir la métrica según el coste real de cada tipo de error, que es una decisión de negocio y no técnica. Es la parte de la unidad con más transferencia directa al mundo laboral.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 04",
+        "TITLE": "Evaluación de modelos",
+        "SUBTITLE": "¿Cómo sabemos si la máquina realmente aprendió?",
+        "AGENDA": [
+          { "label": "01", "text": "Train/test split y validación cruzada" },
+          { "label": "02", "text": "Métricas de regresión: MAE, RMSE y R²" },
+          { "label": "03", "text": "Matriz de confusión, precisión y recall" }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Validación cruzada · más allá de un solo corte",
+      "notes": "La mejora sobre el train/test split simple. El problema del corte único es que puede tocarte una división afortunada o desafortunada, y entonces tu métrica depende del azar. La validación cruzada de k pliegues divide los datos en cinco bloques y repite el experimento cinco veces, rotando cuál bloque hace de prueba; al final tienes cinco resultados, y lo que importa no es solo la media sino también la desviación. Insiste en ese punto porque casi nadie lo mira: si los cinco resultados son 0,81, 0,83, 0,80, 0,82 y 0,81, tienes un modelo estable; si son 0,95, 0,62, 0,88, 0,55 y 0,90, la media dirá 0,78 pero ese modelo es una lotería y no puedes confiar en él. Para clasificación desbalanceada se usa StratifiedKFold, que mantiene la proporción de clases en cada pliegue.",
+      "slots": {
+        "TAG_LEFT": "VALIDACIÓN",
+        "TITLE": "Validación cruzada",
+        "TAG_RIGHT": "30",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Un solo corte puede salir afortunado. La validación cruzada repite el experimento cinco veces rotando el bloque de prueba.",
+        "CALLOUT_LABEL": "Mira la desviación, no solo la media",
+        "CALLOUT": "0,81 / 0,83 / 0,80 / 0,82 → modelo estable. 0,95 / 0,62 / 0,88 / 0,55 → misma media, pero es una lotería. No confíes en él.",
+        "FILENAME": "validacion_cruzada.py · Colab",
+        "CODE": "<span class='c-kw'>from</span> sklearn.model_selection <span class='c-kw'>import</span> cross_val_score, StratifiedKFold\n\n<span class='c-cm'># 5 bloques: cada uno hace de prueba una vez</span>\npuntajes = cross_val_score(modelo, X, y, cv=<span class='c-num'>5</span>, scoring=<span class='c-str'>\"r2\"</span>)\n\n<span class='c-fn'>print</span>(puntajes)                      <span class='c-cm'># los 5 resultados</span>\n<span class='c-fn'>print</span>(<span class='c-str'>f\"media {puntajes.mean():.3f} ± {puntajes.std():.3f}\"</span>)\n\n<span class='c-cm'># Clasificación desbalanceada: mantiene la proporción</span>\npliegues = StratifiedKFold(n_splits=<span class='c-num'>5</span>, shuffle=<span class='c-kw'>True</span>,\n                           random_state=<span class='c-num'>42</span>)\n\npuntajes_f1 = cross_val_score(modelo_clf, X, y,\n                              cv=pliegues, scoring=<span class='c-str'>\"f1\"</span>)\n\n<span class='c-cm'># scoring útiles: 'r2' 'neg_mean_absolute_error'</span>\n<span class='c-cm'>#                 'accuracy' 'f1' 'recall' 'precision'</span>",
+        "STEPS": [
+          { "n": "1", "text": "cv=5 divide en cinco bloques y entrena cinco veces, rotando cuál hace de prueba." },
+          { "n": "2", "text": "El resultado son cinco números, no uno. La media dice el nivel; la desviación, la confianza." },
+          { "n": "3", "text": "Una desviación grande significa que el modelo depende de qué datos le tocaron." },
+          { "n": "4", "text": "StratifiedKFold mantiene la proporción de clases en cada pliegue. Obligatorio si hay desbalance." },
+          { "n": "5", "text": "scoring elige la métrica. Cámbiala según el problema: f1 y recall para desbalanceado." }
+        ]
+      }
+    },
+    {
+      "archetype": "metrics",
+      "title": "Métricas de regresión",
+      "notes": "Las tres métricas para evaluar cuando la respuesta es un número, y cada una responde a una pregunta distinta. El MAE es el error absoluto medio: el promedio de lo que te equivocas, en las mismas unidades del problema, así que es el que se lleva a una reunión porque se entiende sin explicación —«nos equivocamos por diez mil pesos en promedio»—. El RMSE eleva los errores al cuadrado antes de promediar, así que penaliza mucho más los errores grandes; úsalo cuando un error grande sea catastrófico, por ejemplo al estimar la carga de un puente. Y el R² es el coeficiente de determinación: va de cero a uno y responde a cuánto mejor eres que simplemente predecir siempre la media. Un detalle que sorprende y conviene mencionar: el R² puede ser negativo, y eso significa que tu modelo es peor que decir siempre el promedio.",
+      "slots": {
+        "TAG_LEFT": "REGRESIÓN",
+        "TITLE": "Las tres métricas de regresión",
+        "TAG_RIGHT": "31",
+        "LEAD": "Cada una responde a una pregunta distinta. Reporta al menos dos: una interpretable y una que castigue los errores grandes.",
+        "COLS": "3",
+        "SOURCE": "Todas disponibles en sklearn.metrics · el R² puede ser negativo, y eso significa peor que predecir la media",
+        "METRICS": [
+          { "label": "MAE · error absoluto medio", "value": "10", "unit": "mil $", "desc": "El promedio de lo que te equivocas, en las unidades del problema. El que entiende gerencia.", "pct": "70%" },
+          { "label": "RMSE · raíz del error cuadrático", "value": "18", "unit": "mil $", "desc": "Penaliza los errores grandes. Úsalo si un fallo grande es catastrófico.", "pct": "85%" },
+          { "label": "R² · determinación", "value": "0.85", "unit": "", "desc": "De 0 a 1: cuánto mejor eres que predecir siempre la media.", "pct": "85%" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "La matriz de confusión",
+      "notes": "El instrumento central de la evaluación en clasificación, y el que hay que saber leer de memoria. Cruza lo que predijo el modelo con lo que era verdad, y produce cuatro casillas. Verdadero positivo: dijo enfermo y estaba enfermo. Verdadero negativo: dijo sano y estaba sano. Esas dos son aciertos. Las otras dos son los dos tipos de error, y aquí está la clave de todo el bloque: no cuestan lo mismo. El falso negativo es decirle a un enfermo que está sano y mandarlo a casa; el falso positivo es asustar a un sano con exámenes extra. En medicina el falso negativo es fatal. Pero en un filtro de spam se invierte: un falso positivo, que manda el correo de tu jefe a la carpeta de basura, es peor que dejar pasar publicidad. La moraleja: qué error minimizar es una decisión de negocio, no técnica, y por eso hay que preguntarla antes de elegir la métrica.",
+      "slots": {
+        "TAG_LEFT": "CLASIFICACIÓN",
+        "TITLE": "La matriz de confusión",
+        "TAG_RIGHT": "32",
+        "SPEC_TITLE": "Lo que predijo el modelo × lo que era verdad",
+        "FIELDS": [
+          { "key": "VP · verdadero positivo", "value": "Dijo «enfermo» y estaba enfermo. Acierto.", "highlight": "" },
+          { "key": "VN · verdadero negativo", "value": "Dijo «sano» y estaba sano. Acierto.", "highlight": "" },
+          { "key": "FN · falso negativo", "value": "Dijo «sano» pero estaba enfermo. Lo mandaste a casa.", "highlight": "true" },
+          { "key": "FP · falso positivo", "value": "Dijo «enfermo» pero estaba sano. Lo asustaste con exámenes.", "highlight": "true" },
+          { "key": "En medicina", "value": "El FN es fatal: prefieres asustar a un sano que perder a un enfermo", "highlight": "" },
+          { "key": "En filtro de spam", "value": "El FP es peor: el correo de tu jefe en la basura duele más que un anuncio colado", "highlight": "" },
+          { "key": "En el código", "value": "from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay", "highlight": "" },
+          { "key": "La decisión", "value": "Qué error minimizar es una decisión de NEGOCIO, no técnica. Pregúntala antes.", "highlight": "true" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Los dos errores no cuestan lo mismo", "text": "Es la idea central de toda la sesión. Un modelo con 95% de aciertos puede ser inaceptable si sus errores son todos del tipo caro." },
+          { "n": "2", "title": "Se dibuja en una línea", "text": "ConfusionMatrixDisplay.from_estimator(modelo, X_prb, y_prb) genera el mapa de calor listo para pegar en tu informe." },
+          { "n": "3", "title": "Míralo antes que cualquier métrica", "text": "La matriz te dice CÓMO se equivoca el modelo. Las métricas resumen ese cómo en un número, y al resumir se pierde información." }
+        ]
+      }
+    },
+    {
+      "archetype": "matrix",
+      "title": "¿Precisión o recall? · el detector de metales",
+      "notes": "La decisión que más se pregunta en entrevistas de trabajo, explicada con el detector de metales del aeropuerto. Un guardia estricto le pita a todo el mundo ante la mínima duda: no se le escapa ninguna amenaza real, así que su recall es del cien por cien, pero hace perder el vuelo a quinientas personas inocentes, así que su precisión es pésima. Un guardia relajado casi no molesta a nadie —alta precisión— pero deja pasar amenazas —bajo recall—. Recorre los cuadrantes y detente en el de abajo a la derecha, alta precisión y bajo recall, que es donde caen los modelos que parecen buenísimos porque casi nunca se equivocan cuando dicen que sí, pero es que casi nunca dicen que sí. Y cierra con la regla que resume todo: pregúntate cuál de los dos errores le cuesta más caro a tu organización, y maximiza la métrica que lo controla.",
+      "slots": {
+        "TAG_LEFT": "LA GRAN DECISIÓN",
+        "TITLE": "¿Precisión o recall?",
+        "TAG_RIGHT": "33",
+        "AXIS_X": "Precisión: de los que marqué, ¿cuántos acerté? →",
+        "AXIS_Y": "↑ Recall: de los que existían, ¿cuántos cacé?",
+        "SIDE_TITLE": "El detector de metales",
+        "Q1_TAG": "IDEAL",
+        "Q1_TITLE": "Alto recall y alta precisión",
+        "Q1_DESC": "El objetivo. Rara vez alcanzable: casi siempre hay que sacrificar uno por el otro.",
+        "Q2_TAG": "GUARDIA ESTRICTO",
+        "Q2_TITLE": "Alto recall, baja precisión",
+        "Q2_DESC": "Le pita a todo el mundo. No se escapa ninguna amenaza, pero 500 inocentes pierden el vuelo.",
+        "Q3_TAG": "INÚTIL",
+        "Q3_TITLE": "Bajo recall y baja precisión",
+        "Q3_DESC": "Ni caza lo que hay ni acierta cuando avisa. Revisa los datos antes que el modelo.",
+        "Q4_TAG": "GUARDIA RELAJADO",
+        "Q4_TITLE": "Alta precisión, bajo recall",
+        "Q4_DESC": "Casi nunca se equivoca cuando dice que sí. Pero es que casi nunca dice que sí.",
+        "RULES": [
+          { "label": "Medicina", "text": "Prioriza RECALL. Es preferible asustar a un sano con exámenes extra que mandar a casa a un enfermo." },
+          { "label": "Justicia", "text": "Prioriza PRECISIÓN. Rige la presunción de inocencia: meter a un inocente a la cárcel es gravísimo." },
+          { "label": "La regla", "text": "Pregúntate cuál de los dos errores le cuesta más caro a tu organización, y maximiza la métrica que lo controla." }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "El accuracy engaña",
+      "notes": "La demostración más útil de la sesión y conviene hacerla en vivo. Imagina un conjunto de detección de fraude donde el uno por ciento de las transacciones son fraudulentas. Escribes un modelo de una sola línea que devuelve siempre «no es fraude», sin mirar nada. Ese modelo tiene un noventa y nueve por ciento de exactitud y es completamente inútil: no ha detectado ni un solo fraude. Si en tu informe pones «accuracy del 99%», técnicamente no mientes, pero estás ocultando que tu recall es cero. Por eso, con clases desbalanceadas, la exactitud no se reporta jamás sola. Lo que se reporta es la matriz de confusión, el recall de la clase minoritaria y el F1, que es la media armónica entre precisión y recall y penaliza que una de las dos sea baja.",
+      "slots": {
+        "TAG_LEFT": "LA TRAMPA",
+        "TITLE": "El accuracy engaña",
+        "TAG_RIGHT": "34",
+        "BAD_TITLE": "El modelo del 99%",
+        "BAD_SNIPPET": "# 1% de las transacciones son fraude\n\ndef predecir(x):\n    return \"NO ES FRAUDE\"\n\n# Accuracy: 99% ✅\n# Fraudes detectados: 0 ❌",
+        "GOOD_TITLE": "Lo que sí se reporta",
+        "GOOD_SNIPPET": "print(classification_report(y_prb, y_pred))\n\n#            precision  recall   f1\n# no_fraude     0.99     0.97   0.98\n# fraude        0.42     0.78   0.55\n#                        ↑ esto importa",
+        "WHY_LABEL": "Por qué",
+        "WHY": "Con clases desbalanceadas, un modelo que siempre dice «no» acierta el 99% de las veces. Técnicamente no mientes al reportar ese número, pero ocultas que tu recall es cero. Nunca reportes accuracy sola.",
+        "BAD_POINTS": [
+          { "text": "«Accuracy 99%» sin decir la proporción de clases" },
+          { "text": "Un modelo que nunca predice la clase minoritaria" },
+          { "text": "Reportar una sola métrica global" },
+          { "text": "Evaluar sin mirar la matriz de confusión" },
+          { "text": "No decir cuántos casos había de cada clase" }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Matriz de confusión completa en el informe" },
+          { "text": "Precisión, recall y F1 por cada clase" },
+          { "text": "Declarar la proporción de clases del conjunto" },
+          { "text": "Justificar qué métrica priorizas y por qué" },
+          { "text": "F1 como métrica principal si hay desbalance" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Sesión 4",
+      "notes": "Cierre del bloque de evaluación. La respuesta correcta es la A. Es la pregunta que resume la sesión y una de las más frecuentes en entrevistas. En detección de fraude, dejar escapar un fraude real le cuesta al banco miles de dólares; bloquear por error la tarjeta de un cliente honrado le cuesta una llamada y una molestia. Los costes son asimétricos, así que se maximiza el recall aunque se pierda precisión. Contrasta con el caso opuesto que vimos: en un sistema judicial se prioriza la precisión, porque encarcelar a un inocente es incomparablemente peor que dejar libre a un culpable.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de la sesión 4",
+        "TAG_RIGHT": "35",
+        "BADGE": "PREGUNTA 5",
+        "QUESTION": "Detección de fraude bancario: ¿qué métrica maximizas y por qué?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Los costes son asimétricos. Dejar escapar un fraude real cuesta miles de dólares; bloquear por error una tarjeta sana cuesta una llamada. Se maximiza recall aunque baje la precisión. En un sistema judicial sería justo al revés.",
+        "OPTIONS": [
+          { "key": "A", "text": "Recall: es preferible molestar a clientes sanos que dejar escapar un fraude", "correct": "true" },
+          { "key": "B", "text": "Precisión: no se puede bloquear la tarjeta de un cliente honrado", "correct": "" },
+          { "key": "C", "text": "Accuracy: mide el rendimiento global del modelo", "correct": "" },
+          { "key": "D", "text": "R²: indica cuánto mejor es que predecir la media", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Cierre · Evaluación y práctica",
+      "notes": "Último bloque: llevar la teoría al mundo real. Aquí se explica el proyecto de la unidad, que vale el 20% y es el doble de peso que el de la Unidad 1. La diferencia clave con aquel: allí analizaban un caso ajeno, aquí toman decisiones técnicas y las justifican. Recalca desde el principio que no se pide entrenar un modelo perfecto, se pide razonar bien: identificar el tipo de problema, proponer candidatos con argumentos, elegir la métrica correcta y explicárselo a alguien que no es técnico. Ese último punto es el que más nota da y el que más se descuida.",
+      "slots": {
+        "PART_LABEL": "CIERRE DE UNIDAD",
+        "TITLE": "Evaluación y práctica",
+        "SUBTITLE": "No se pide un modelo perfecto: se pide razonar bien y saber explicarlo",
+        "AGENDA": [
+          { "label": "01", "text": "El encargo: un caso de negocio real" },
+          { "label": "02", "text": "Los cuatro pasos del entregable" },
+          { "label": "03", "text": "Cómo se evalúa y errores frecuentes" }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Proyecto de unidad · 20%",
+      "notes": "El encargo completo. Se entrega un caso de negocio real y hay que producir cuatro cosas. Primero, identificar si el problema es de regresión o de clasificación, analizando la variable objetivo. Segundo, proponer dos algoritmos candidatos y explicar por qué esos y no otros; la tabla de decisión de la sesión 2 y la comparativa de la sesión 3 son el material para redactarlo. Tercero, definir la métrica de evaluación adecuada, y aquí está el punto que más distingue un trabajo de otro: hay que argumentar por qué la exactitud no sirve y por qué sí sirve el recall o el F1. Cuarto, presentar el esquema de validación con la división de entrenamiento y prueba. Recuérdales el criterio de éxito que más se olvida: claridad hacia un gerente no técnico. Si el informe solo lo entiende un programador, ha fallado en lo principal.",
+      "slots": {
+        "TAG_LEFT": "EVALUACIÓN 2 · 20%",
+        "TITLE": "Proyecto de unidad",
+        "TAG_RIGHT": "37",
+        "ICON": "kjkiqtxg",
+        "ACTIVITY_NAME": "Un caso de negocio real, cuatro decisiones justificadas",
+        "INSTRUCTIONS": "Se entrega en PDF por el aula virtual. No se pide entrenar el modelo perfecto: se pide tomar decisiones técnicas correctas y saber explicárselas a alguien que no programa.",
+        "COLS": "3",
+        "META": [
+          { "label": "20% de la nota" },
+          { "label": "Entrega en PDF" },
+          { "label": "Fecha en el aula virtual" }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Tipo de problema",
+            "desc": "Analiza la variable objetivo. ¿Predices precios, cantidades o tiempos? Regresión. ¿Etiquetas como spam, fraude o tipo de cliente? Clasificación.",
+            "challenge_label": "Cuidado",
+            "challenge": "Que haya un número no basta: recuerda las estrellas del 1 al 5."
+          },
+          {
+            "num": "02",
+            "title": "Dos candidatos",
+            "desc": "Propón dos algoritmos competidores y argumenta cada uno con las tablas de decisión de las sesiones 2 y 3.",
+            "challenge_label": "Ejemplo",
+            "challenge": "«Logística porque es rápida e interpretable; SVC porque la frontera parece curva.»"
+          },
+          {
+            "num": "03",
+            "title": "Métrica y validación",
+            "desc": "Define la métrica adecuada y el esquema de validación. Argumenta por qué la exactitud no sirve en tu caso.",
+            "challenge_label": "Lo que más nota da",
+            "challenge": "Explícalo como si tu lector fuera un gerente, no un programador."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "Cómo construir tu entregable",
+      "notes": "El guion del informe, paso a paso, para que nadie se quede mirando la hoja en blanco. Paso uno: leer el caso e identificar la variable objetivo; esa sola decisión determina todo lo demás. Paso dos: explorar los datos con las cuatro líneas de la rutina —shape, head, describe e isnull— y, si es clasificación, contar cuántos casos hay de cada clase, porque de ahí sale el argumento del desbalance. Paso tres: elegir los dos candidatos y justificarlos. Paso cuatro: definir la métrica argumentando el coste de cada tipo de error en el contexto del negocio. Y paso cinco: escribir la conclusión para un lector no técnico, sin jerga, diciendo qué recomiendas y con qué riesgo. Recuérdales que ese último paso es el que separa el 50% del 100%, exactamente igual que ocurría en la Unidad 1.",
+      "slots": {
+        "TAG_LEFT": "GUION",
+        "TITLE": "Cómo construir tu entregable",
+        "TAG_RIGHT": "38",
+        "LEAD": "El orden de trabajo para que nadie se quede mirando la hoja en blanco. Cada paso alimenta al siguiente.",
+        "COLS": "5",
+        "STEPS": [
+          { "n": "1", "phase": "Paso 1", "title": "Identifica el objetivo", "desc": "Lee el caso y localiza la variable a predecir. Esa sola decisión determina todo lo demás.", "output": "Tipo de problema" },
+          { "n": "2", "phase": "Paso 2", "title": "Explora los datos", "desc": "shape, head, describe, isnull. Si es clasificación, cuenta cuántos casos hay de cada clase.", "output": "Diagnóstico" },
+          { "n": "3", "phase": "Paso 3", "title": "Elige dos candidatos", "desc": "Con las tablas de decisión. Argumenta con datos, escala y necesidad de interpretación.", "output": "Justificación" },
+          { "n": "4", "phase": "Paso 4", "title": "Define la métrica", "desc": "Argumenta el coste de cada tipo de error en el contexto del negocio, no en abstracto.", "output": "Métrica y validación" },
+          { "n": "5", "phase": "Paso 5", "title": "Escribe para un gerente", "desc": "Sin jerga. Qué recomiendas, con qué confianza y qué riesgo asume la empresa.", "output": "Conclusión" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Plantilla del informe · la pregunta de cada sección",
+      "notes": "Esta es la ayuda estructural, y conviene presentarla así: no es una plantilla para rellenar huecos, es la lista de preguntas que tu informe tiene que responder. Cada sección existe porque responde a una pregunta concreta, y si al terminar de escribir una sección no puedes señalar dónde está esa respuesta, esa sección sobra o está incompleta. Recórrela y hazles notar que en ninguna casilla hay una respuesta: hay preguntas. La decisión sigue siendo suya y depende de su caso. Sugiere un truco práctico: que escriban primero las siete preguntas en un documento vacío y las respondan en una frase cada una; si esas siete frases tienen sentido leídas seguidas, ya tienen el esqueleto del informe y solo falta desarrollarlo.",
+      "slots": {
+        "TAG_LEFT": "AYUDA · ESTRUCTURA",
+        "TITLE": "La pregunta de cada sección",
+        "TAG_RIGHT": "39",
+        "SPEC_TITLE": "No es una plantilla para rellenar: es lo que tu informe tiene que responder",
+        "FIELDS": [
+          { "key": "1 · Contexto", "value": "¿Qué decide hoy una persona a mano, y qué pasaría si esa decisión se automatiza?", "highlight": "" },
+          { "key": "2 · Variable objetivo", "value": "¿Qué columna exacta quieres predecir, y qué valores puede tomar?", "highlight": "true" },
+          { "key": "3 · Tipo de problema", "value": "Con esos valores en la mano, ¿tiene sentido restar dos resultados? Ahí está tu respuesta.", "highlight": "true" },
+          { "key": "4 · Candidatos", "value": "¿Qué dos modelos y qué característica de TUS datos justifica cada uno?", "highlight": "" },
+          { "key": "5 · Métrica", "value": "¿Qué error le cuesta más caro a esta empresa, y qué métrica vigila ese error?", "highlight": "true" },
+          { "key": "6 · Validación", "value": "¿Cómo demuestras que el modelo no memorizó? ¿Qué porcentaje reservas y por qué?", "highlight": "" },
+          { "key": "7 · Recomendación", "value": "Si el gerente solo lee el último párrafo, ¿qué necesita saber para decidir?", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Fíjate en que no hay respuestas", "text": "Solo preguntas. La respuesta depende de tu caso y esa decisión es tuya: es exactamente lo que se evalúa." },
+          { "n": "2", "title": "Truco para empezar", "text": "Copia las siete preguntas en un documento vacío y responde cada una en UNA frase. Si esas siete frases tienen sentido leídas seguidas, ya tienes el esqueleto." },
+          { "n": "3", "title": "Prueba de sección inútil", "text": "Si terminas una sección y no puedes señalar con el dedo dónde responde a su pregunta, esa sección sobra o está a medias." }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "Cómo suena una justificación sólida",
+      "notes": "Aquí no se enseña qué responder sino cómo se argumenta, y es una distinción que conviene explicitar. Los dos ejemplos son deliberadamente de un caso que no es el suyo, para que copien la forma y no el contenido. La diferencia entre las dos columnas es una sola cosa: la de la izquierda describe el modelo, la de la derecha conecta el modelo con una característica concreta de los datos y con una necesidad del negocio. Decir «KNN es bueno para clasificar» no es un argumento, es una frase de manual que sirve para cualquier trabajo del mundo. Decir «elijo KNN porque solo tengo 400 filas y la frontera entre clases parece irregular» sí es un argumento, porque solo vale para este caso. La regla que se llevan: si tu frase se puede copiar tal cual al trabajo de un compañero con otro caso, no es una justificación.",
+      "slots": {
+        "TAG_LEFT": "AYUDA · REDACCIÓN",
+        "TITLE": "Cómo suena una justificación",
+        "TAG_RIGHT": "40",
+        "BAD_TITLE": "Describe el modelo",
+        "BAD_SNIPPET": "«Usaré KNN porque es un\nalgoritmo muy usado y\nbueno para clasificar.\n\nComo métrica usaré\naccuracy porque mide\nel rendimiento.»",
+        "GOOD_TITLE": "Conecta con TUS datos",
+        "GOOD_SNIPPET": "«Elijo KNN porque solo tengo\n400 filas y la frontera entre\nclases parece irregular.\n\nDescarto accuracy: solo el 6%\nde los casos son positivos y\nun modelo trivial daría 94%.»",
+        "WHY_LABEL": "La prueba definitiva",
+        "WHY": "Si tu frase se puede copiar tal cual al trabajo de un compañero que analiza otro caso distinto, no es una justificación: es relleno. Una justificación real solo tiene sentido para TUS datos.",
+        "BAD_POINTS": [
+          { "text": "Repite la definición del algoritmo del apunte" },
+          { "text": "«Es muy usado en la industria» — ¿y qué?" },
+          { "text": "No menciona ni una característica de sus datos" },
+          { "text": "Sirve igual para cualquier caso del mundo" },
+          { "text": "Elige la métrica por costumbre, no por el problema" }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Cita el número de filas, columnas o clases" },
+          { "text": "Menciona qué vio al explorar los datos" },
+          { "text": "Dice qué descarta y por qué, no solo qué elige" },
+          { "text": "Conecta la métrica con el coste real del error" },
+          { "text": "Solo tiene sentido para este caso concreto" }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Dónde se pierden los puntos",
+      "notes": "Los cinco tropiezos más frecuentes, y los presento como avisos y no como prohibiciones porque en varios casos la decisión puede ser correcta si está argumentada. El primero es el más caro y ya lo hemos visto tres veces en la unidad, así que si aun así aparece en el informe es que no se leyó nada. El segundo es sutil: mucha gente escribe una comparación preciosa entre modelos y después no dice cuál elige, como si la decisión fuera opcional; el enunciado pide una recomendación, no un catálogo. El tercero es el error de mecánica más habitual y ya lo tienen en la regla del escalado. El cuarto suele venir de copiar un tutorial sin adaptarlo. Y el quinto es puramente de comunicación pero pesa en la rúbrica: usar siglas sin traducirlas la primera vez deja fuera al lector al que va dirigido el informe.",
+      "slots": {
+        "TAG_LEFT": "AYUDA · AVISOS",
+        "TITLE": "Dónde se pierden los puntos",
+        "TAG_RIGHT": "41",
+        "LEAD": "Cinco tropiezos frecuentes. No son prohibiciones: varios pueden ser correctos si los argumentas bien.",
+        "CALLOUTS": [
+          { "kind": "danger", "icon": "inrunzby", "title": "Elegir accuracy sin mirar el balance de clases", "text": "Antes de decidir la métrica, cuenta cuántos casos hay de cada clase. Si están muy desiguales y aun así eliges accuracy, tendrás que explicar muy bien por qué." },
+          { "kind": "warn", "icon": "usownftb", "title": "Comparar dos modelos y no elegir ninguno", "text": "Una comparación no es una recomendación. El enunciado pide que decidas y te mojes. «Ambos son buenos» no es una conclusión." },
+          { "kind": "info", "icon": "qhgmphtg", "title": "Escalar lo que no lo necesita (o no escalar lo que sí)", "text": "Repasa qué modelos elegiste y aplica la regla. Si escalas un árbol no pasa nada grave, pero delata que la aplicaste sin pensar." },
+          { "kind": "note", "icon": "msoeawqm", "title": "Copiar un tutorial sin adaptar los nombres", "text": "Si en tu informe aparece «iris», «titanic» o «X_train» sin relación con tu caso, se nota. Renombra todo a las variables reales de tu problema." },
+          { "kind": "tip", "icon": "xtzvywzp", "title": "Siglas sin traducir la primera vez", "text": "La rúbrica evalúa que un gerente lo entienda. Escribe «recall (cuántos casos reales logramos detectar)» la primera vez, y ya luego usa la sigla sola." }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Autorrevisión antes de entregar",
+      "notes": "La última ayuda: una lista para que se revisen a sí mismos. Preséntala como un ejercicio de diez minutos que hay que hacer con el informe ya terminado, no mientras se escribe. La instrucción es responder cada punto en voz alta y señalar con el dedo dónde está esa respuesta en el documento; si hay que pensarlo o buscarlo, ese punto no está resuelto. El bloque de código de arriba es un recordatorio de las comprobaciones mínimas que deberían haber ejecutado en Colab: contar las clases, ver el tamaño real de la división y confirmar que el error de entrenamiento y el de prueba no están a años luz. Cierra insistiendo en el último criterio de la lista, el de la persona ajena: es el más incómodo y el más útil, porque uno siempre entiende su propio texto.",
+      "slots": {
+        "TAG_LEFT": "AYUDA · AUTORREVISIÓN",
+        "TITLE": "Antes de darle a enviar",
+        "TAG_RIGHT": "42",
+        "KICKER": "Diez minutos con el informe ya terminado",
+        "CODE_TITLE": "Las tres comprobaciones que deberías haber ejecutado",
+        "CODE": "<span class='c-cm'># 1 · ¿Están balanceadas mis clases?</span>\n<span class='c-fn'>print</span>(y.value_counts(normalize=<span class='c-kw'>True</span>))\n<span class='c-cm'># → si una clase es &lt;10%, tu métrica NO puede ser accuracy</span>\n\n<span class='c-cm'># 2 · ¿De qué tamaño es cada lado de la división?</span>\n<span class='c-fn'>print</span>(X_ent.shape, X_prb.shape)\n<span class='c-cm'># → ¿el conjunto de prueba tiene casos suficientes?</span>\n\n<span class='c-cm'># 3 · ¿Memorizó o aprendió?</span>\n<span class='c-fn'>print</span>(<span class='c-str'>\"entrenamiento:\"</span>, modelo.score(X_ent, y_ent))\n<span class='c-fn'>print</span>(<span class='c-str'>\"prueba       :\"</span>, modelo.score(X_prb, y_prb))\n<span class='c-cm'># → si hay un abismo entre ambos, dilo en el informe</span>",
+        "PANEL_TITLE": "Señala con el dedo dónde está cada respuesta",
+        "WHY_TITLE": "El criterio más incómodo y más útil",
+        "WHY": "Dáselo a leer a alguien que no cursa esta asignatura y pídele que te diga qué recomiendas y por qué. Si no puede, el problema no es que esa persona no sepa: es que tu informe no comunica. Y eso es una fila entera de la rúbrica.",
+        "CRITERIA": [
+          { "letter": "1", "name": "¿Digo qué columna exacta predigo?", "meta": "Sección 2", "highlight": "" },
+          { "letter": "2", "name": "¿Justifico el tipo de problema, no solo lo afirmo?", "meta": "Sección 3", "highlight": "true" },
+          { "letter": "3", "name": "¿Cada modelo tiene una razón ligada a mis datos?", "meta": "Sección 4", "highlight": "true" },
+          { "letter": "4", "name": "¿Digo qué error es más caro ANTES de elegir métrica?", "meta": "Sección 5", "highlight": "true" },
+          { "letter": "5", "name": "¿Explico cómo demuestro que no memorizó?", "meta": "Sección 6", "highlight": "" },
+          { "letter": "6", "name": "¿Alguien ajeno entiende mi recomendación?", "meta": "Sección 7", "highlight": "true" }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "Criterios de evaluación",
+      "notes": "La rúbrica del proyecto. Léela comparando la primera columna con la última, porque el contraste enseña más que cada descripción aislada. Detente en la fila de la métrica: elegir exactitud en un problema desbalanceado sin justificarlo es el error más caro del trabajo, porque demuestra que no se entendió la sesión 4 completa. Y detente también en la última fila, la de comunicación, que es la que más se descuida: el enunciado dice explícitamente «claridad en la comunicación hacia un gerente no técnico», así que un informe lleno de jerga sin traducir pierde puntos aunque toda la parte técnica sea impecable.",
+      "slots": {
+        "TAG_LEFT": "RÚBRICA",
+        "TITLE": "Cómo se evalúa tu proyecto",
+        "TAG_RIGHT": "43",
+        "LEAD": "Compara la primera columna con la última: el contraste enseña más que cada descripción por separado.",
+        "HEADERS": "<th>Criterio</th><th>Logrado</th><th>Medianamente</th><th>Por lograr</th>",
+        "NOTE_LABEL": "El error más caro",
+        "NOTE": "Elegir accuracy en un problema desbalanceado sin justificarlo. Demuestra que no se entendió la sesión 4 completa, y esa fila arrastra a las demás.",
+        "ROWS": [
+          { "cells": "<td>Tipo de problema</td><td>Identificado y argumentado</td><td>Identificado sin argumentar</td><td>Confunde regresión y clasificación</td>" },
+          { "cells": "<td>Elección de modelos</td><td>Dos candidatos con razones técnicas</td><td>Dos modelos sin justificar</td><td>Uno solo o al azar</td>" },
+          { "cells": "<td>Métrica</td><td>Adecuada y justificada por el coste del error</td><td>Adecuada pero sin argumento</td><td>Accuracy en datos desbalanceados</td>" },
+          { "cells": "<td>Validación</td><td>Train/test o validación cruzada bien explicada</td><td>Mencionada de pasada</td><td>Ausente o evalúa con datos de entrenamiento</td>" },
+          { "cells": "<td>Preparación de datos</td><td>Escalado y codificación correctos y justificados</td><td>Aplicados sin explicar</td><td>Escala árboles o no escala KNN</td>" },
+          { "cells": "<td>Comunicación</td><td>Un gerente lo entiende sin ayuda</td><td>Requiere conocimiento técnico</td><td>Jerga sin traducir</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "title": "Material para el proyecto",
+      "notes": "Los recursos para trabajar. La documentación de scikit-learn es sorprendentemente buena y su sección de guía de usuario explica cada algoritmo con la teoría y el código juntos; además tiene un mapa interactivo, el machine learning map, que te lleva al algoritmo adecuado respondiendo preguntas sobre tus datos, y es literalmente la versión oficial de la tabla de decisión que vimos. Kaggle sirve para conseguir conjuntos de datos reales si el caso lo permite. El libro de Müller y Guido es la referencia bibliográfica obligatoria de la asignatura para esta unidad concreta. Y recuérdales que el cuaderno de Colab con todos los ejemplos de la sesión queda publicado en el aula virtual, para que partan de código que ya funciona en lugar de escribirlo desde cero.",
+      "slots": {
+        "TAG_LEFT": "MATERIAL",
+        "TITLE": "Para trabajar el proyecto",
+        "TAG_RIGHT": "44",
+        "LIST_TITLE": "Documentación y datos",
+        "QR_LABEL": "AULA VIRTUAL",
+        "QR_DATA": "https%3A%2F%2Feva.ipss.cl",
+        "QR_ALT": "Código QR del aula virtual EVA IPSS",
+        "QR_CAPTION": "Cuaderno de Colab con todos los ejemplos",
+        "NEXT_LABEL": "Entrega",
+        "NEXT": "Informe en PDF con tipo de problema, dos candidatos justificados, métrica argumentada y esquema de validación.",
+        "RESOURCES": [
+          { "icon": "▤", "title": "scikit-learn · machine learning map", "desc": "Diagrama oficial que te lleva al algoritmo adecuado respondiendo preguntas sobre tus datos.", "url": "scikit-learn.org/stable/machine_learning_map.html" },
+          { "icon": "▤", "title": "scikit-learn · User Guide", "desc": "Cada algoritmo con su teoría y su código juntos. Mejor que casi cualquier tutorial.", "url": "scikit-learn.org/stable/user_guide.html" },
+          { "icon": "▤", "title": "Müller & Guido (2023)", "desc": "Introducción al machine learning con Python. Bibliografía obligatoria de esta unidad.", "url": "O'Reilly · Odilo IPSS" },
+          { "icon": "▤", "title": "Kaggle Datasets", "desc": "Conjuntos de datos reales y gratuitos si tu caso permite buscar los tuyos.", "url": "kaggle.com/datasets" },
+          { "icon": "▤", "title": "Cuaderno de la unidad", "desc": "Todos los ejemplos de estas sesiones, listos para ejecutar y modificar.", "url": "Aula virtual EVA" }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "title": "Cierre de la Unidad 2",
+      "notes": "Cierre de la unidad. Retoma la pregunta de la activación —la diferencia entre predecir el precio de una casa y detectar un fraude— y comprueba que ahora todo el mundo la responde sin dudar: la primera es regresión y se mide con MAE o R², la segunda es clasificación y se mide con recall, no con exactitud. Insiste en la idea del panel central, que es la que hay que llevarse: el trabajo del especialista no es conocer cuarenta algoritmos, es saber cuál corresponde a cada problema y demostrar honestamente si funciona. Anuncia la Unidad 3: limpieza y transformación de datos en profundidad, TensorFlow y Keras, y procesamiento de lenguaje natural con NLTK, donde por fin usaremos el Quijote que está esperando en la carpeta.",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "Lo que te llevas",
+        "TAG_RIGHT": "45",
+        "ICON": "wzwygmng",
+        "HERO_TITLE": "Elegir bien vale más que programar mucho",
+        "HERO_TEXT": "scikit-learn tiene los cuarenta algoritmos escritos y probados: no vas a competir con eso. Lo que se te va a pedir es decidir cuál corresponde a cada problema, con qué datos, medido con qué métrica, y demostrar honestamente si funciona o no.",
+        "LEFT_PANEL_TITLE": "Ideas clave",
+        "RIGHT_PANEL_TITLE": "Qué hacer esta semana",
+        "NEXT_LABEL": "Próxima unidad",
+        "NEXT": "Unidad 3 — Limpieza y transformación de datos, TensorFlow y Keras, y PLN con NLTK sobre el Quijote.",
+        "TAKEAWAYS": [
+          { "n": "1", "text": "¿La respuesta es un número con escala? Regresión. ¿Una etiqueta? Clasificación." },
+          { "n": "2", "text": "KNN y SVM exigen escalado; los árboles nunca lo necesitan." },
+          { "n": "3", "text": "Error bajo en entrenamiento y alto en prueba: memorizó, no aprendió." },
+          { "n": "4", "text": "El accuracy engaña con clases desbalanceadas. Mira la matriz de confusión." },
+          { "n": "5", "text": "Qué error minimizar es una decisión de negocio, no técnica." }
+        ],
+        "NEXT_STEPS": [
+          { "n": "1", "text": "Abre Colab y ejecuta el cuaderno de la unidad de principio a fin." },
+          { "n": "2", "text": "Compara los cuatro modelos de regresión sobre el mismo conjunto de datos." },
+          { "n": "3", "text": "Identifica el tipo de problema de tu caso y anota por qué." },
+          { "n": "4", "text": "Escribe en dos líneas qué error es más caro en tu caso: FP o FN." }
+        ]
+      }
+    }
+  ]
+}

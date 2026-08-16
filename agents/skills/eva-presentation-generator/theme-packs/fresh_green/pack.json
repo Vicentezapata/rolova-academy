@@ -1,0 +1,39 @@
+{
+  "id": "fresh_green",
+  "name": "Fresh Green",
+  "source": "Recreado desde style-gallery/fresh_green.html sobre el contrato de tokens",
+  "best_for": ["Sostenibilidad", "Salud y bienestar", "Agroindustria", "Marca artesanal"],
+  "preset": "herbal_paper",
+  "decoration": "grain_rules_leaves",
+  "notes": "Papel crema con display serif de peso ligero: los títulos respiran, no gritan. La salvia manda en la cursiva del display; el ocre queda para los kickers. La salvia clara (#859e5a) solo se usa como filete o relleno — sobre crema no tiene contraste suficiente para texto, por eso el token de texto verde es el olivo #5a6840.",
+  "palette": {
+    "bg": "#f4ede0",
+    "text": "#2d3a1f",
+    "a1": "#6b8344",
+    "a2": "#a85b3a",
+    "a3": "#5a6840"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. Las hojas se anclan por debajo de la banda del encabezado (0-80px) para no restar legibilidad a la etiqueta.",
+  "background_rhythm": [
+    {
+      "LEAF_A": "right:-118px;top:110px;transform:rotate(-22deg);",
+      "LEAF_B": "left:-92px;bottom:-64px;transform:rotate(28deg);",
+      "BG": "radial-gradient(ellipse 90% 70% at 18% 8%, #fbf6ea 0%, transparent 60%), radial-gradient(ellipse 70% 60% at 90% 95%, #e3d7b8 0%, transparent 55%), linear-gradient(155deg, #f4ede0 0%, #e8dec5 100%)"
+    },
+    {
+      "LEAF_A": "left:-124px;top:170px;transform:rotate(26deg);",
+      "LEAF_B": "right:-88px;bottom:-72px;transform:rotate(-34deg);",
+      "BG": "radial-gradient(ellipse 85% 68% at 82% 10%, #fbf6ea 0%, transparent 60%), radial-gradient(ellipse 68% 58% at 10% 92%, #e3d7b8 0%, transparent 55%), linear-gradient(200deg, #f4ede0 0%, #e8dec5 100%)"
+    },
+    {
+      "LEAF_A": "right:-110px;bottom:-88px;transform:rotate(14deg);",
+      "LEAF_B": "left:-96px;top:200px;transform:rotate(-20deg);",
+      "BG": "radial-gradient(ellipse 95% 65% at 50% 4%, #fbf6ea 0%, transparent 62%), radial-gradient(ellipse 60% 55% at 88% 96%, #e0d3b0 0%, transparent 55%), linear-gradient(170deg, #f2eadb 0%, #e8dec5 100%)"
+    },
+    {
+      "LEAF_A": "left:-120px;bottom:-80px;transform:rotate(-18deg);",
+      "LEAF_B": "right:-84px;top:140px;transform:rotate(32deg);",
+      "BG": "radial-gradient(ellipse 80% 72% at 12% 88%, #fbf6ea 0%, transparent 60%), radial-gradient(ellipse 72% 60% at 92% 8%, #e3d7b8 0%, transparent 55%), linear-gradient(140deg, #f4ede0 0%, #e5dabe 100%)"
+    }
+  ]
+}

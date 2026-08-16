@@ -1,0 +1,39 @@
+{
+  "id": "ink_jade",
+  "name": "Ink Jade",
+  "source": "Recreado desde style-gallery/ink_jade.html sobre el contrato de tokens",
+  "best_for": ["Humanidades", "Filosofía y ética", "Cultura y patrimonio", "Marca artesanal"],
+  "preset": "rice_paper",
+  "decoration": "ink_wash_seals_brush",
+  "notes": "El cuerpo también es serif, como el original: es lo que da el aire de papel de arroz y lo que más se pierde si se cambia. El bermellón es de sello, no de alarma — un acento por slide. El oro #c9b896 no llega a 2:1 sobre el papel, así que solo se usa como filete (--a3-b) y el token de texto es el pardo tinta #5a4f44.",
+  "palette": {
+    "bg": "#f5f1e8",
+    "text": "#1a1a1a",
+    "a1": "#c0392b",
+    "a2": "#9c2a1f",
+    "a3": "#5a4f44"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. BLEED mueve las dos aguadas de tinta; BRUSH ancla el trazo por la derecha para que su cola y su salpicadura no toquen la numeración.",
+  "background_rhythm": [
+    {
+      "BLEED": "radial-gradient(ellipse 20% 26% at 50% 64%, rgba(90,79,68,0.10) 0%, rgba(90,79,68,0.05) 35%, transparent 75%), radial-gradient(ellipse 14% 18% at 78% 30%, rgba(26,26,26,0.06) 0%, transparent 70%)",
+      "BRUSH": "right:210px;bottom:22px;transform:rotate(-15deg);",
+      "BG": "radial-gradient(ellipse 70% 55% at 52% 48%, #ece4cf 0%, #f5f1e8 55%, #e6dec7 100%)"
+    },
+    {
+      "BLEED": "radial-gradient(ellipse 22% 24% at 74% 60%, rgba(90,79,68,0.09) 0%, rgba(90,79,68,0.045) 35%, transparent 75%), radial-gradient(ellipse 15% 19% at 20% 26%, rgba(26,26,26,0.06) 0%, transparent 70%)",
+      "BRUSH": "right:255px;bottom:26px;transform:rotate(-11deg);",
+      "BG": "radial-gradient(ellipse 72% 58% at 40% 44%, #ece4cf 0%, #f5f1e8 55%, #e6dec7 100%)"
+    },
+    {
+      "BLEED": "radial-gradient(ellipse 18% 28% at 30% 40%, rgba(90,79,68,0.10) 0%, rgba(90,79,68,0.05) 35%, transparent 75%), radial-gradient(ellipse 16% 17% at 82% 76%, rgba(26,26,26,0.055) 0%, transparent 70%)",
+      "BRUSH": "right:230px;bottom:20px;transform:rotate(-19deg);",
+      "BG": "radial-gradient(ellipse 68% 52% at 62% 54%, #ece4cf 0%, #f5f1e8 55%, #e6dec7 100%)"
+    },
+    {
+      "BLEED": "radial-gradient(ellipse 24% 22% at 56% 22%, rgba(90,79,68,0.08) 0%, rgba(90,79,68,0.04) 35%, transparent 75%), radial-gradient(ellipse 14% 20% at 16% 72%, rgba(26,26,26,0.06) 0%, transparent 70%)",
+      "BRUSH": "right:275px;bottom:24px;transform:rotate(-13deg);",
+      "BG": "radial-gradient(ellipse 74% 60% at 48% 62%, #ece4cf 0%, #f5f1e8 50%, #e6dec7 100%)"
+    }
+  ]
+}

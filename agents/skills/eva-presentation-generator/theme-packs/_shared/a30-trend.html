@@ -1,0 +1,66 @@
+<!--CSS-->
+.tr-wrap{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:grid;grid-template-columns:{{SPLIT}};gap:26px;align-items:stretch;}
+.tr-left{display:flex;flex-direction:column;gap:12px;min-width:0;}
+.tr-lead{font-size:13.5px;color:var(--text-sec);line-height:1.7;}
+.tr-plot{flex:1;position:relative;min-height:0;display:flex;flex-direction:column;}
+.tr-canvas{flex:1;position:relative;min-height:0;}
+.tr-svg{position:absolute;inset:0;width:100%;height:100%;}
+.tr-svg .tr-area{fill:var(--a1-t);stroke:none;}
+.tr-svg .tr-line{fill:none;stroke:var(--a1);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke;}
+.tr-svg .tr-dots circle{fill:var(--bg);stroke:var(--a1);stroke-width:2;vector-effect:non-scaling-stroke;}
+.tr-axis{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--inset-border);}
+.tr-ticks{display:flex;justify-content:space-between;padding-top:9px;}
+.tr-tick{font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-ter);flex:0 0 auto;}
+.tr-hidden{display:none;}
+.tr-right{display:flex;flex-direction:column;gap:11px;min-width:0;justify-content:center;}
+.tr-side-title{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase;color:var(--a1);}
+.tr-point{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:start;background:var(--inset-bg);border:var(--bw) solid var(--inset-border);border-radius:var(--radius);padding:11px 13px;}
+.tr-when{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--a2);white-space:nowrap;padding-top:2px;}
+.tr-point strong{display:block;font-size:12.5px;color:var(--text);line-height:1.3;margin-bottom:3px;}
+.tr-point span{font-size:11.5px;color:var(--text-sec);line-height:1.55;}
+.tr-delta{background:var(--a1-t);border:var(--bw) solid var(--a1-b);border-radius:var(--radius);padding:13px 15px;display:flex;flex-direction:column;gap:3px;}
+.tr-delta b{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--a1);}
+.tr-delta strong{font-family:var(--display);font-size:26px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.04em;line-height:1.1;font-variant-numeric:tabular-nums;}
+.tr-delta span{font-size:11.5px;color:var(--text-sec);line-height:1.55;}
+.tr-source{font-family:var(--mono);font-size:10px;color:var(--text-ter);letter-spacing:0.06em;}
+<!--BODY-->
+  <div class="header">
+    <span class="tag">{{TAG_LEFT}}</span>
+    <span class="h2">{{TITLE}}</span>
+    <span class="tag">{{TAG_RIGHT}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="tr-wrap">
+    <div class="tr-left">
+      <p class="tr-lead">{{LEAD}}</p>
+      <div class="tr-plot" data-chart="max">
+        <div class="tr-canvas">
+          <svg class="tr-svg" viewBox="0 0 100 44" preserveAspectRatio="none">
+            <polygon class="tr-area" data-area points=""></polygon>
+            <polyline class="tr-line" data-line points=""></polyline>
+          </svg>
+          <div class="tr-axis"></div>
+        </div>
+        <div class="tr-ticks">
+<!--REPEAT:SERIES-->
+          <span class="tr-tick" data-value="{{value}}">{{when}}</span>
+<!--END:SERIES-->
+        </div>
+      </div>
+      <span class="tr-source">{{SOURCE}}</span>
+    </div>
+    <div class="tr-right">
+      <span class="tr-side-title">{{SIDE_TITLE}}</span>
+<!--REPEAT:MILESTONES-->
+      <div class="tr-point">
+        <span class="tr-when">{{when}}</span>
+        <span><strong>{{title}}</strong>{{text}}</span>
+      </div>
+<!--END:MILESTONES-->
+      <div class="tr-delta">
+        <b>{{DELTA_LABEL}}</b>
+        <strong>{{DELTA}}</strong>
+        <span>{{DELTA_NOTE}}</span>
+      </div>
+    </div>
+  </div>

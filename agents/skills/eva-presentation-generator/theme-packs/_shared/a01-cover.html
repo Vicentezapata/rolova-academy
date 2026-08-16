@@ -1,0 +1,22 @@
+<!--CSS-->
+.cover-content{position:relative;z-index:10;padding:60px 80px;display:flex;flex-direction:column;justify-content:center;height:100%;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--a1-t);border:var(--bw) solid var(--a1-b);color:var(--a1);padding:8px 18px;border-radius:var(--radius-pill, 999px);font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:28px;width:fit-content;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--a1);animation:pulse 2s ease-in-out infinite;}
+.cover-title{font-family:var(--display-xl);font-size:56px;font-weight:var(--heavy);line-height:1.1;letter-spacing:var(--display-track, -0.045em);word-spacing:calc(var(--display-track, -0.045em) * -1.4);color:var(--text);margin-bottom:20px;}
+.cover-sub{font-size:17px;color:var(--text-sec);line-height:1.7;max-width:580px;margin-bottom:44px;}
+.meta-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.meta-chip{background:var(--hairline);border:var(--bw) solid var(--inset-border);padding:7px 16px;border-radius:var(--radius-sm, 6px);font-size:12px;color:var(--text-sec);letter-spacing:0.05em;font-family:var(--mono);}
+.meta-chip.accent{background:var(--a2-b);border-color:var(--a2-b);color:var(--a2);}
+<!--BODY-->
+  <div class="bg-img" style="background-image:url('{{BG_IMAGE}}')"></div>
+  <div class="bg-overlay"></div>
+  <div class="cover-content">
+    <div class="eyebrow"><div class="dot"></div>{{EYEBROW}}</div>
+    <h1 class="cover-title">{{TITLE}}</h1>
+    <p class="cover-sub">{{SUBTITLE}}</p>
+    <div class="meta-row">
+<!--REPEAT:CHIPS-->
+      <div class="meta-chip {{accent}}">{{label}}</div>
+<!--END:CHIPS-->
+    </div>
+  </div>

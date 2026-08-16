@@ -1,0 +1,39 @@
+{
+  "id": "candy_pastel",
+  "name": "Candy Pastel",
+  "source": "Recreado desde style-gallery/candy_pastel.html sobre el contrato de tokens",
+  "best_for": ["Repostería", "Lifestyle", "Infantil", "Marca de consumo"],
+  "preset": "sugar_glass",
+  "decoration": "specks_orb",
+  "notes": "Todo el display va en cursiva Playfair; es lo que hace al tema. Radio 24px y cartas de vidrio blanco. Los pasteles del original solo se usan como relleno: para texto se usan versiones profundizadas de los mismos tonos, si no no hay contraste sobre la crema.",
+  "palette": {
+    "bg": "#fff5f0",
+    "text": "#4a2c2a",
+    "a1": "#e89bb4",
+    "a2": "#7bb0d4",
+    "a3": "#c9a227"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. ORB coloca el orbe brillante mayormente fuera de lienzo; BUBBLE es la burbuja de azúcar que lo acompaña.",
+  "background_rhythm": [
+    {
+      "ORB": "bottom:-90px;right:-70px;background:radial-gradient(circle at 32% 28%, rgba(255,255,255,0.65) 0%, transparent 45%), radial-gradient(circle at 70% 80%, rgba(232,155,180,0.5) 0%, transparent 60%), #f8bbd0;",
+      "BUBBLE": "bottom:150px;right:190px;background:#fff59d;",
+      "BG": "radial-gradient(ellipse 90% 70% at 18% 12%, rgba(248,187,208,0.28) 0%, transparent 55%), radial-gradient(ellipse 80% 60% at 88% 88%, rgba(255,245,157,0.22) 0%, transparent 55%), linear-gradient(160deg, #fff5f0 0%, #fff0e8 100%)"
+    },
+    {
+      "ORB": "top:-100px;right:-80px;background:radial-gradient(circle at 32% 28%, rgba(255,255,255,0.65) 0%, transparent 45%), radial-gradient(circle at 70% 80%, rgba(179,229,252,0.5) 0%, transparent 60%), #b3e5fc;",
+      "BUBBLE": "top:150px;right:200px;background:#e1bee7;",
+      "BG": "radial-gradient(ellipse 85% 65% at 82% 14%, rgba(179,229,252,0.26) 0%, transparent 55%), radial-gradient(ellipse 80% 60% at 12% 86%, rgba(248,187,208,0.22) 0%, transparent 55%), linear-gradient(160deg, #fff5f0 0%, #fff0e8 100%)"
+    },
+    {
+      "ORB": "bottom:-95px;left:-80px;background:radial-gradient(circle at 32% 28%, rgba(255,255,255,0.65) 0%, transparent 45%), radial-gradient(circle at 70% 80%, rgba(200,230,201,0.5) 0%, transparent 60%), #c8e6c9;",
+      "BUBBLE": "bottom:160px;left:190px;background:#f8bbd0;",
+      "BG": "radial-gradient(ellipse 88% 68% at 14% 84%, rgba(200,230,201,0.26) 0%, transparent 55%), radial-gradient(ellipse 78% 58% at 86% 16%, rgba(255,245,157,0.24) 0%, transparent 55%), linear-gradient(160deg, #fff5f0 0%, #fff0e8 100%)"
+    },
+    {
+      "ORB": "top:-110px;left:-70px;background:radial-gradient(circle at 32% 28%, rgba(255,255,255,0.65) 0%, transparent 45%), radial-gradient(circle at 70% 80%, rgba(225,190,231,0.5) 0%, transparent 60%), #e1bee7;",
+      "BUBBLE": "top:140px;left:200px;background:#b3e5fc;",
+      "BG": "radial-gradient(ellipse 86% 66% at 22% 10%, rgba(225,190,231,0.26) 0%, transparent 55%), radial-gradient(ellipse 80% 60% at 84% 90%, rgba(248,187,208,0.22) 0%, transparent 55%), linear-gradient(160deg, #fff5f0 0%, #fff0e8 100%)"
+    }
+  ]
+}

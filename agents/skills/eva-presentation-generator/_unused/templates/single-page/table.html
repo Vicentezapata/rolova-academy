@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"/><title>Table</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/minimal-white.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+<style>
+.t{width:100%;border-collapse:collapse;font-size:16px}
+.t th,.t td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--border)}
+.t th{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);font-weight:600}
+.t tr:hover td{background:var(--surface-2)}
+.t td.num{font-variant-numeric:tabular-nums;text-align:right}
+.up{color:var(--good)}.dn{color:var(--bad)}
+</style>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Table">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="card mt-l" style="padding:4px 12px">
+<table class="t">
+<thead><tr><th>{{ label }}</th><th>{{ label }}</th><th>{{ label }}</th><th class="num">100</th><th class="num">100</th><th>{{ label }}</th></tr></thead>
+<tbody>
+<tr><td><b>{{ text }}</b></td><td>{{ item }}</td><td>{{ item }}</td><td class="num">100</td><td class="num">100</td><td>{{ item }}</td></tr>
+<tr><td>{{ item }}</td><td>{{ item }}</td><td>{{ item }}</td><td class="num">100</td><td class="num">100</td><td>{{ item }}</td></tr>
+<tr><td>{{ item }}</td><td>{{ item }}</td><td>{{ item }}</td><td class="num">100</td><td class="num">100</td><td>{{ item }}</td></tr>
+<tr><td>{{ item }}</td><td>{{ item }}</td><td>{{ item }}</td><td class="num">100</td><td class="num">100</td><td>{{ item }}</td></tr>
+<tr><td>{{ item }}</td><td>{{ item }}</td><td>{{ item }}</td><td class="num">100</td><td class="num">100</td><td>{{ item }}</td></tr>
+</tbody>
+</table>
+</div>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

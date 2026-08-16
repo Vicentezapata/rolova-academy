@@ -1,0 +1,19 @@
+<!--CSS-->
+.qt-wrap{position:relative;z-index:10;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 120px;}
+.qt-mark{font-family:var(--serif);font-size:110px;line-height:0.6;color:var(--a1);opacity:0.35;margin-bottom:14px;font-style:italic;}
+.qt-text{font-family:var(--display-xl);font-style:italic;font-size:40px;line-height:1.3;color:var(--text);letter-spacing:-0.02em;max-width:900px;margin-bottom:28px;}
+.qt-text b{font-family:var(--display);font-style:normal;color:var(--a1);font-weight:var(--heavy);}
+.qt-rule{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--a1),transparent);margin-bottom:20px;}
+.qt-author{font-family:var(--mono);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--a1);margin-bottom:6px;}
+.qt-role{font-size:12.5px;color:var(--text-sec);letter-spacing:0.02em;}
+.qt-context{margin-top:34px;background:var(--inset-bg);border:var(--bw) solid var(--inset-border);border-radius:var(--radius);padding:14px 22px;font-size:12.5px;color:var(--text-sec);line-height:1.65;max-width:720px;}
+.qt-context strong{color:var(--a1);font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:4px;}
+<!--BODY-->
+  <div class="qt-wrap">
+    <div class="qt-mark">&ldquo;</div>
+    <p class="qt-text">{{QUOTE}}</p>
+    <div class="qt-rule"></div>
+    <div class="qt-author">{{AUTHOR}}</div>
+    <div class="qt-role">{{ROLE}}</div>
+    <div class="qt-context"><strong>{{CONTEXT_LABEL}}</strong>{{CONTEXT}}</div>
+  </div>

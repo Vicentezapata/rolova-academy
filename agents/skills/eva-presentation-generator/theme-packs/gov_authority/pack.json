@@ -1,0 +1,39 @@
+{
+  "id": "gov_authority",
+  "name": "Gov Authority",
+  "source": "Recreado desde style-gallery/gov_authority.html sobre el contrato de tokens",
+  "best_for": ["Sector público", "Normativa y cumplimiento", "Informes institucionales", "Comités y actas"],
+  "preset": "official_paper",
+  "decoration": "bicolor_bands_brackets",
+  "notes": "Papel oficial: cero radio, cero sombra, filete doble bajo el encabezado y escuadras de expediente en las cuatro esquinas. El tracking muy abierto del original nace de glifos CJK cuadrados; en español solo funciona en cadenas cortas, así que los títulos van a 0.10em y el 0.38em queda para etiquetas y chips. Rojo y azul son institucionales: se alternan, nunca compiten en la misma frase.",
+  "palette": {
+    "bg": "#fffaf3",
+    "text": "#1a1a1a",
+    "a1": "#c41e3a",
+    "a2": "#1a3a6e",
+    "a3": "#8b1721"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. WARMTH debe traer siempre exactamente dos capas radiales; SPLIT mueve el punto donde el rojo cede al azul en las franjas.",
+  "background_rhythm": [
+    {
+      "SPLIT": "50%",
+      "WARMTH": "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(196,30,58,0.05) 0%, transparent 60%), radial-gradient(ellipse 70% 50% at 50% 100%, rgba(26,58,110,0.06) 0%, transparent 60%)",
+      "BG": "linear-gradient(180deg, #fffaf3 0%, #fdf3e3 100%)"
+    },
+    {
+      "SPLIT": "38%",
+      "WARMTH": "radial-gradient(ellipse 65% 55% at 12% 6%, rgba(196,30,58,0.05) 0%, transparent 60%), radial-gradient(ellipse 65% 55% at 88% 96%, rgba(26,58,110,0.06) 0%, transparent 60%)",
+      "BG": "linear-gradient(160deg, #fffaf3 0%, #fdf3e3 100%)"
+    },
+    {
+      "SPLIT": "62%",
+      "WARMTH": "radial-gradient(ellipse 60% 50% at 88% 4%, rgba(26,58,110,0.06) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 10% 96%, rgba(196,30,58,0.05) 0%, transparent 60%)",
+      "BG": "linear-gradient(200deg, #fdf3e3 0%, #fffaf3 100%)"
+    },
+    {
+      "SPLIT": "44%",
+      "WARMTH": "radial-gradient(ellipse 80% 45% at 50% 50%, rgba(196,30,58,0.04) 0%, transparent 65%), radial-gradient(ellipse 55% 45% at 92% 8%, rgba(26,58,110,0.06) 0%, transparent 60%)",
+      "BG": "linear-gradient(180deg, #fdf3e3 0%, #fffaf3 55%, #fdf3e3 100%)"
+    }
+  ]
+}

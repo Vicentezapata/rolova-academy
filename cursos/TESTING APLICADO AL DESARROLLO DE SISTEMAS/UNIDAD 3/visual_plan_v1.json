@@ -1,0 +1,715 @@
+{
+  "pack": "dark_tech",
+  "title": "Unidad 3 — Automatización de Pruebas y Ciclo de Vida del Defecto",
+  "slides": [
+    {
+      "archetype": "cover",
+      "title": "Automatización y Ciclo de Vida del Defecto",
+      "notes": "Bienvenida a la Unidad 3 de Testing Aplicado al Desarrollo de Sistemas. La unidad tiene dos mitades que se necesitan mutuamente: automatizar la ejecución de pruebas y gestionar con disciplina el defecto que esas pruebas encuentran. Automatizar sin un ciclo de vida del defecto produce mucha ejecución y ninguna mejora; gestionar defectos sin automatización produce equipos que se agotan repitiendo la misma regresión a mano. Anticipa que al final habrá un taller práctico sobre una aplicación de gestión de tareas y que las preguntas del apunte activador y del foro se retomarán en la sesión sincrónica S9.",
+      "slots": {
+        "EYEBROW": "UNIDAD 03 · TESTING APLICADO AL DESARROLLO",
+        "TITLE": "Automatización y ciclo de vida del defecto",
+        "SUBTITLE": "De ejecutar pruebas a mano a un pipeline que valida solo, y de encontrar un fallo a cerrarlo con evidencia.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          { "label": "2 sesiones", "accent": "a1" },
+          { "label": "Taller evaluado", "accent": "a2" },
+          { "label": "30 diapositivas", "accent": "a3" }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "title": "Qué veremos en esta unidad",
+      "notes": "Presenta el mapa completo antes de entrar en detalle. Los cinco primeros bloques son teoría aplicada; el sexto es el taller que se evalúa. Recalca que los bloques 1 y 2 responden a «cómo probamos más rápido» y los bloques 4 y 5 a «qué hacemos con lo que encontramos». Si el grupo va justo de tiempo, los bloques comprimibles son el 2 y el 5; el 4 y el 6 no se pueden saltar porque son la base del taller.",
+      "slots": {
+        "TAG_LEFT": "MAPA DE LA UNIDAD",
+        "TITLE": "Qué veremos",
+        "TAG_RIGHT": "02",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          { "num": "01", "icon": "◆", "title": "Automatización", "desc": "Qué es, de dónde viene y qué resuelve de verdad.", "chips": "Fundamentos" },
+          { "num": "02", "icon": "◆", "title": "Herramientas", "desc": "Selenium, Appium, Cucumber y Robot Framework.", "chips": "Stack" },
+          { "num": "03", "icon": "◆", "title": "Implementación", "desc": "Scripts mantenibles y adopción por fases.", "chips": "Práctica" },
+          { "num": "04", "icon": "◆", "title": "Ciclo del defecto", "desc": "De la identificación al cierre documentado.", "chips": "Proceso" },
+          { "num": "05", "icon": "◆", "title": "Evidencia", "desc": "Reportes, priorización y casos históricos.", "chips": "Oficio" },
+          { "num": "06", "icon": "◆", "title": "Taller", "desc": "Pruebas manuales sobre una app de tareas.", "chips": "Evaluado" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Parte 1 · Automatización de pruebas",
+      "notes": "Separador del primer bloque. Aquí se establece el vocabulario común. Advierte desde el principio que automatizar no es «probar mejor», es «volver a probar barato». La automatización no descubre defectos nuevos: protege los que ya se arreglaron. Esa distinción evita la expectativa equivocada más común del alumnado.",
+      "slots": {
+        "PART_LABEL": "PARTE 01",
+        "TITLE": "Automatización de pruebas",
+        "SUBTITLE": "Antes de elegir herramienta, entender qué problema resuelve y cuál no",
+        "AGENDA": [
+          { "label": "01", "text": "Definición, propósito y alcance" },
+          { "label": "02", "text": "De WinRunner a los pipelines de CI/CD" },
+          { "label": "03", "text": "Beneficios medibles y límites reales" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Qué es, para qué sirve y qué abarca",
+      "notes": "Tres tarjetas que fijan el vocabulario. Definición: ejecutar pruebas mediante herramientas y scripts predefinidos que simulan la interacción humana y verifican resultados. Propósito: liberar al tester de la tarea repetitiva para que dedique su criterio a lo exploratorio, que es donde aparece lo que nadie previó. Alcance: funcionales, regresión, carga y rendimiento, con informes detallados. Insiste en que el alcance no es «todo»: la usabilidad, la accesibilidad percibida y la exploración siguen siendo humanas.",
+      "slots": {
+        "TAG_LEFT": "CONCEPTOS",
+        "TITLE": "Qué es y qué no es automatizar",
+        "TAG_RIGHT": "04",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "01",
+            "title": "Definición",
+            "body": "Ejecutar pruebas de software mediante herramientas y scripts predefinidos que simulan la interacción del usuario y verifican el resultado obtenido contra el esperado.",
+            "note_label": "Clave",
+            "note": "El script no juzga: compara contra un valor que alguien decidió antes."
+          },
+          {
+            "badge": "02",
+            "title": "Propósito",
+            "body": "Ejecutar muchos casos de forma rápida y repetible, liberando al tester de la tarea mecánica para que dedique su criterio a lo exploratorio.",
+            "note_label": "Clave",
+            "note": "Gana consistencia y cobertura; no gana intuición."
+          },
+          {
+            "badge": "03",
+            "title": "Alcance",
+            "body": "Funcionales, de regresión, de carga y de rendimiento, con informes que identifican dónde y cuándo se rompió cada comportamiento.",
+            "note_label": "Clave",
+            "note": "Usabilidad y exploración siguen siendo trabajo humano."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "Cuarenta años de automatización",
+      "notes": "Recorrido histórico. En los 80 aparecen herramientas rudimentarias atadas a un lenguaje concreto, con el único objetivo de reducir el tiempo de la prueba manual. En los 90 llegan las herramientas comerciales, WinRunner marca el estándar, y aparece JUnit (Kent Beck y Erich Gamma) que estandariza la prueba unitaria automatizada. En los 2000 se abre el campo: Selenium en 2004 permite manejar navegadores reales desde varios lenguajes y aparece el patrón Page Object, que separa el «qué se prueba» del «dónde está el botón». Desde 2010 la automatización deja de ser una actividad y pasa a ser una puerta del pipeline: si la suite no está verde, no se despliega. Señala que cada salto no sustituyó al anterior, se apiló encima.",
+      "slots": {
+        "TAG_LEFT": "HISTORIA",
+        "TITLE": "Cuarenta años de automatización",
+        "TAG_RIGHT": "05",
+        "LEAD": "Cada etapa no sustituyó a la anterior: se apiló encima. Por eso hoy conviven pruebas unitarias, de navegador y de pipeline.",
+        "COLS": "4",
+        "STEPS": [
+          { "n": "1", "phase": "Años 1980", "title": "Primeras herramientas", "desc": "Utilidades rudimentarias y atadas a un lenguaje concreto, nacidas para recortar el tiempo de la prueba manual.", "output": "Menos repetición" },
+          { "n": "2", "phase": "Años 1990", "title": "Estándar comercial", "desc": "WinRunner populariza la automatización funcional y JUnit estandariza la prueba unitaria repetible.", "output": "Prueba unitaria" },
+          { "n": "3", "phase": "Años 2000", "title": "Apertura y web", "desc": "Selenium (2004) y QTP abren la automatización a varios lenguajes y navegadores; llega el patrón Page Object.", "output": "Regresión web" },
+          { "n": "4", "phase": "2010 → hoy", "title": "Puerta del pipeline", "desc": "La suite deja de ser una tarea y se convierte en un requisito: sin verde, no hay despliegue.", "output": "CI/CD" }
+        ]
+      }
+    },
+    {
+      "archetype": "metrics",
+      "title": "Qué gana el equipo al automatizar",
+      "notes": "Cuatro cifras para justificar la inversión ante quien decide el presupuesto. No las presentes como promesas universales: son órdenes de magnitud típicos del sector y dependen por completo de que la suite se mantenga. Si el equipo abandona los scripts, todos estos números se invierten. Aprovecha para introducir el coste de mantenimiento, que es la desventaja principal de la automatización y que se trata en la diapositiva de buenas y malas prácticas.",
+      "slots": {
+        "TAG_LEFT": "CIFRAS",
+        "TITLE": "Qué gana el equipo al automatizar",
+        "TAG_RIGHT": "06",
+        "LEAD": "Órdenes de magnitud habituales en el sector. Todos dependen de una condición: que alguien mantenga la suite.",
+        "COLS": "4",
+        "SOURCE": "Rangos de referencia del sector; contrástalos siempre con los datos de tu propio proyecto.",
+        "METRICS": [
+          { "label": "Ciclo de regresión", "value": "10", "unit": "×", "desc": "Más rápido que ejecutar la misma batería a mano.", "pct": "90%" },
+          { "label": "Cobertura de ejecución", "value": "3", "unit": "×", "desc": "Más casos por ciclo con el mismo equipo.", "pct": "70%" },
+          { "label": "Detección temprana", "value": "80", "unit": "%", "desc": "Defectos que se cazan antes de salir del pipeline.", "pct": "80%" },
+          { "label": "Coste de corregir tarde", "value": "100", "unit": "×", "desc": "Lo que cuesta el mismo fallo ya en producción.", "pct": "100%" }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "title": "Prueba manual frente a prueba automatizada",
+      "notes": "El error más común es plantear esto como una competencia. No lo es: son dos herramientas para dos problemas distintos. La prueba manual gana en todo lo que requiere criterio, sorpresa y percepción; la automatizada gana en todo lo que hay que repetir de forma idéntica. Aterriza con el ejemplo del material: un botón desplazado tres píxeles o un texto que suena raro lo detecta una persona en dos segundos y un script no lo ve nunca, porque el script solo comprueba lo que alguien le dijo que comprobara. Conecta con la pregunta del apunte activador sobre errores más fáciles de detectar manualmente.",
+      "slots": {
+        "TAG_LEFT": "CONTRASTE",
+        "TITLE": "Manual frente a automatizada",
+        "TAG_RIGHT": "07",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "MANUAL",
+        "LEFT_TITLE": "Aporta criterio",
+        "LEFT_BODY": "Una persona observa, se extraña y sigue la pista de algo que nadie había previsto en el caso de prueba.",
+        "LEFT_EXAMPLE": "«Este mensaje de error no se entiende» no lo detecta ningún script.",
+        "RIGHT_LABEL": "AUTOMATIZADA",
+        "RIGHT_TITLE": "Aporta repetición",
+        "RIGHT_BODY": "Un script ejecuta cien veces la misma comprobación exactamente igual, de madrugada y sin cansarse.",
+        "RIGHT_EXAMPLE": "La regresión completa corre en cada commit sin que nadie la lance.",
+        "LEFT_POINTS": [
+          { "text": "Detecta lo inesperado y lo estético" },
+          { "text": "Imprescindible en exploratorio y usabilidad" },
+          { "text": "Cara, lenta y sensible al cansancio" }
+        ],
+        "RIGHT_POINTS": [
+          { "text": "Consistente: cero variación entre ejecuciones" },
+          { "text": "Escala a cientos de casos por noche" },
+          { "text": "Solo encuentra lo que se le pidió mirar" }
+        ],
+        "RIGHT_TAGS": [
+          { "text": "Regresión" },
+          { "text": "Carga" },
+          { "text": "CI/CD" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 1",
+      "notes": "Cierre del primer bloque. Deja treinta segundos de discusión en parejas antes de revelar con la tecla R. La respuesta correcta es la B. El punto que hay que dejar clavado: la automatización no descubre defectos nuevos, protege los que ya se corrigieron. Si alguien elige la A, aprovecha para volver a la diapositiva de contraste manual/automatizado.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 1",
+        "TAG_RIGHT": "08",
+        "BADGE": "PREGUNTA 1",
+        "QUESTION": "¿Cuál es la aportación principal de una suite automatizada?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Un script solo comprueba lo que alguien le indicó. No se extraña ni improvisa: repite. Su valor está en detectar que algo que funcionaba ha dejado de funcionar, no en descubrir lo que nadie había imaginado.",
+        "OPTIONS": [
+          { "key": "A", "text": "Descubrir defectos que nadie había anticipado", "correct": "" },
+          { "key": "B", "text": "Detectar de forma barata que algo que funcionaba se rompió", "correct": "true" },
+          { "key": "C", "text": "Sustituir por completo al equipo de pruebas manuales", "correct": "" },
+          { "key": "D", "text": "Garantizar que el software no tiene defectos", "correct": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Parte 2 · Herramientas y frameworks",
+      "notes": "Separador del segundo bloque. Aviso para el aula: la herramienta es la decisión menos importante y la que más discusiones genera. Lo que determina el éxito es quién va a mantener la suite dentro de un año y si el equipo domina el lenguaje del framework. Una herramienta excelente que nadie del equipo sabe usar rinde peor que una mediocre que todos entienden.",
+      "slots": {
+        "PART_LABEL": "PARTE 02",
+        "TITLE": "Herramientas y frameworks",
+        "SUBTITLE": "La decisión menos importante y la que más discusiones provoca",
+        "AGENDA": [
+          { "label": "01", "text": "Selenium, Appium, Cucumber y Robot Framework" },
+          { "label": "02", "text": "Qué funciones se esperan de una herramienta" },
+          { "label": "03", "text": "Cómo se lee un script automatizado" }
+        ]
+      }
+    },
+    {
+      "archetype": "feature-matrix",
+      "title": "Comparativa de herramientas",
+      "notes": "Comparativa de las cuatro herramientas del material. Selenium es el estándar de facto para web y el que más empleo tiene detrás, por eso está marcado como columna de referencia. Appium se apoya en el mismo protocolo pero para móvil, iOS y Android. Cucumber no es un ejecutor: es una capa de lenguaje natural (Gherkin) que se monta encima de otro, y su valor es que un analista funcional puede leer el escenario. Robot Framework es el más accesible para quien no programa, con sintaxis tabular basada en palabras clave. Insiste en la última fila: el coste de mantenimiento es lo que mata las suites, no la curva inicial.",
+      "slots": {
+        "TAG_LEFT": "COMPARATIVA",
+        "TITLE": "Cuatro herramientas, cuatro problemas",
+        "TAG_RIGHT": "10",
+        "LEAD": "Los criterios que importan al mantener la suite dentro de un año, no los del folleto comercial.",
+        "HEADERS": "<th>Criterio</th><th class=\"best\">Selenium</th><th>Appium</th><th>Cucumber</th><th>Robot Framework</th>",
+        "NOTE_LABEL": "Criterio de decisión",
+        "NOTE": "Elige por la plataforma que debes cubrir y por el lenguaje que ya domina tu equipo. Una herramienta que nadie sabe mantener rinde menos que una peor que todos entienden.",
+        "ROWS": [
+          { "cells": "<td>Aplicaciones web</td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk part\">~</span></td><td><span class=\"mk yes\">✓</span></td>" },
+          { "cells": "<td>Aplicaciones móviles</td><td class=\"best\"><span class=\"mk no\">✗</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk part\">~</span></td><td><span class=\"mk part\">~</span></td>" },
+          { "cells": "<td>Escenarios en lenguaje natural</td><td class=\"best\"><span class=\"mk no\">✗</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td>" },
+          { "cells": "<td>Accesible sin programar</td><td class=\"best\"><span class=\"mk no\">✗</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk part\">~</span></td><td><span class=\"mk yes\">✓</span></td>" },
+          { "cells": "<td>Integración directa con CI/CD</td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td>" },
+          { "cells": "<td>Coste de mantenimiento</td><td class=\"best\">Medio</td><td>Alto</td><td>Medio</td><td>Bajo</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Qué debe ofrecer una herramienta",
+      "notes": "Cuatro funciones que el material identifica como imprescindibles. La cuarta, la integración con CI/CD, es la que separa una herramienta útil de un juguete: si los resultados no llegan solos al pipeline, alguien tendrá que acordarse de lanzarlos, y ese alguien dejará de hacerlo la primera semana con prisa. Pide al grupo que ordene las cuatro por importancia y contrasta las respuestas: casi siempre subestiman el registro y el análisis de resultados, que es lo que permite detectar pruebas inestables.",
+      "slots": {
+        "TAG_LEFT": "FUNCIONES",
+        "TITLE": "Qué debe ofrecer la herramienta",
+        "TAG_RIGHT": "11",
+        "COLS": "4",
+        "CARDS": [
+          {
+            "badge": "01",
+            "title": "Gestión de casos",
+            "body": "Crear, editar y organizar los casos de prueba con una estructura que sobreviva a cien casos, no solo a diez.",
+            "note_label": "Señal",
+            "note": "Si no puedes buscar un caso, ya está perdido."
+          },
+          {
+            "badge": "02",
+            "title": "Ejecución",
+            "body": "Correr los casos en distintos entornos y navegadores sin reescribir el script para cada combinación.",
+            "note_label": "Señal",
+            "note": "Un script por navegador es una suite muerta."
+          },
+          {
+            "badge": "03",
+            "title": "Registro y análisis",
+            "body": "Guardar el resultado de cada ejecución con evidencia suficiente para saber por qué falló, no solo que falló.",
+            "note_label": "Señal",
+            "note": "Sin histórico no se detectan las pruebas inestables."
+          },
+          {
+            "badge": "04",
+            "title": "Integración CI/CD",
+            "body": "Dispararse sola con cada cambio de código y bloquear el despliegue cuando el resultado no es verde.",
+            "note_label": "Señal",
+            "note": "Si hay que acordarse de lanzarla, nadie lo hará."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Cómo se lee un script automatizado",
+      "notes": "Recorre el script en voz alta con el grupo. Es un caso real del taller: crear una tarea y verificar que aparece en la lista. Señala la estructura de tres tiempos —preparar, actuar, comprobar— que se repite en cualquier framework y en cualquier lenguaje. Detente en la espera explícita: el error de principiante universal es poner un sleep de tres segundos, que hace la suite lenta cuando la red va bien e inestable cuando va mal. Se espera por condición, nunca por tiempo. Menciona también que el localizador está en una constante: ese es el germen del patrón Page Object.",
+      "slots": {
+        "TAG_LEFT": "CÓDIGO",
+        "TITLE": "Cómo se lee un script",
+        "TAG_RIGHT": "12",
+        "SPLIT": "1fr 1.2fr",
+        "LEAD": "El mismo caso del taller, automatizado. Tres tiempos que se repiten en cualquier framework: preparar, actuar y comprobar.",
+        "CALLOUT_LABEL": "Regla",
+        "CALLOUT": "Espera por condición, nunca por tiempo. Un sleep fijo es lento cuando la red va bien e inestable cuando va mal.",
+        "FILENAME": "test_crear_tarea.py",
+        "CODE": "<span class='c-kw'>def</span> <span class='c-fn'>test_crear_tarea_aparece_en_la_lista</span>(driver):\n    <span class='c-cm'># 1 · Preparar</span>\n    driver.get(<span class='c-str'>\"https://app.local/tareas\"</span>)\n    campo = driver.find_element(By.ID, <span class='c-str'>\"titulo\"</span>)\n\n    <span class='c-cm'># 2 · Actuar</span>\n    campo.send_keys(<span class='c-str'>\"Comprar leche\"</span>)\n    driver.find_element(By.ID, <span class='c-str'>\"guardar\"</span>).click()\n\n    <span class='c-cm'># 3 · Comprobar (espera por condición)</span>\n    lista = WebDriverWait(driver, <span class='c-num'>10</span>).until(\n        EC.visibility_of_element_located((By.ID, <span class='c-str'>\"pendientes\"</span>))\n    )\n    <span class='c-kw'>assert</span> <span class='c-str'>\"Comprar leche\"</span> <span class='c-kw'>in</span> lista.text",
+        "STEPS": [
+          { "n": "1", "text": "El nombre del test describe el comportamiento esperado. Es lo único que verás cuando falle en el pipeline." },
+          { "n": "2", "text": "Preparar: deja el sistema en el estado mínimo que el caso necesita, sin depender de ejecuciones anteriores." },
+          { "n": "3", "text": "Actuar: una sola acción de usuario. Si hay dos, el test comprueba dos cosas y no sabrás cuál falló." },
+          { "n": "4", "text": "Comprobar: espera a que la condición se cumpla y verifica un único resultado observable." }
+        ]
+      }
+    },
+    {
+      "archetype": "quote",
+      "title": "Automatizar no arregla el proceso",
+      "notes": "Diapositiva de respiro tras dos densas. La cita es de Bill Gates y resume la trampa más cara de la automatización: si el proceso de pruebas está mal diseñado, automatizarlo solo hace que el desorden avance más rápido. Traducido al aula: automatizar casos de prueba mal escritos produce cientos de fallos que nadie sabe interpretar, y en dos sprints el equipo empieza a ignorar el rojo del pipeline. Ese día la suite ha muerto aunque siga ejecutándose. Primero se ordena el proceso, después se automatiza.",
+      "slots": {
+        "QUOTE": "La automatización aplicada a una operación ineficiente amplificará la ineficiencia.",
+        "AUTHOR": "Bill Gates",
+        "ROLE": "Cofundador de Microsoft",
+        "CONTEXT_LABEL": "Por qué importa aquí",
+        "CONTEXT": "Automatizar casos mal escritos produce cientos de fallos que nadie interpreta. En dos sprints el equipo empieza a ignorar el rojo del pipeline, y ese día la suite ha muerto aunque siga ejecutándose."
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "Scripts que se mantienen frente a scripts que se abandonan",
+      "notes": "Esta es la diapositiva más rentable del bloque. La causa número uno de que una suite se abandone no es la herramienta, es el acoplamiento entre el script y la interfaz. A la izquierda, el antipatrón: selector frágil basado en la posición del DOM, espera por tiempo fijo, datos escritos a mano dentro del test. Cualquier rediseño lo rompe. A la derecha, el patrón: selector semántico y estable, espera por condición y datos generados. Refuerza las tres buenas prácticas del material: selección adecuada de casos, modularidad y reutilización, y mantenimiento regular.",
+      "slots": {
+        "TAG_LEFT": "PRÁCTICA",
+        "TITLE": "Scripts que sobreviven al rediseño",
+        "TAG_RIGHT": "14",
+        "BAD_TITLE": "Así no",
+        "BAD_SNIPPET": "driver.find_element(\n  By.XPATH, \"/html/body/div[3]/div/form/input[2]\"\n).send_keys(\"Comprar leche\")\n\ntime.sleep(3)\nassert \"Comprar leche\" in driver.page_source",
+        "GOOD_TITLE": "Así sí",
+        "GOOD_SNIPPET": "pagina = PaginaTareas(driver)\npagina.crear(titulo=datos.titulo_unico())\n\nassert pagina.esta_en_pendientes(\n  datos.titulo_unico()\n)",
+        "WHY_LABEL": "Por qué",
+        "WHY": "El script frágil no falla cuando hay un defecto: falla cuando alguien mueve un div. Después de tres falsos rojos, el equipo deja de mirar el resultado y la suite se convierte en decoración cara.",
+        "BAD_POINTS": [
+          { "text": "Selector atado a la posición del DOM: cualquier rediseño lo rompe" },
+          { "text": "Espera fija: lento si la red va bien, inestable si va mal" },
+          { "text": "Datos escritos a mano que chocan al ejecutar dos veces" },
+          { "text": "Copiado y pegado en veinte tests: se arregla veinte veces" }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Selector semántico y estable frente al rediseño" },
+          { "text": "Espera por condición: rápido y fiable a la vez" },
+          { "text": "Datos generados: cada ejecución es independiente" },
+          { "text": "Lógica encapsulada: se arregla en un solo sitio" }
+        ]
+      }
+    },
+    {
+      "archetype": "roadmap",
+      "title": "Adopción por fases, no de golpe",
+      "notes": "Nadie automatiza una aplicación entera de una vez, y quien lo intenta fracasa. El plan realista tiene tres tiempos. Primero se automatiza el camino crítico —lo que si se rompe deja el producto inservible— y se conecta al pipeline, aunque solo sean diez casos. Después se extiende a los flujos secundarios y se establece el gobierno: quién revisa los fallos y qué se hace con las pruebas inestables. Solo entonces se añade profundidad. Recalca los criterios del material para elegir qué automatizar: casos repetitivos, críticos y con alta frecuencia de error humano.",
+      "slots": {
+        "TAG_LEFT": "PLAN",
+        "TITLE": "Adopción por fases",
+        "TAG_RIGHT": "15",
+        "LEAD": "Nadie automatiza una aplicación entera de una vez. Empieza por lo que, si se rompe, deja el producto inservible.",
+        "COLS": "3",
+        "LANES": [
+          {
+            "phase": "Fase 1 · Base",
+            "when": "Primeras semanas",
+            "color": "var(--a1)",
+            "items": "Automatizar el camino crítico|Conectar la suite al pipeline|Definir convención de nombres|Elegir herramienta con prueba piloto"
+          },
+          {
+            "phase": "Fase 2 · Extensión",
+            "when": "Siguiente trimestre",
+            "color": "var(--a2)",
+            "items": "Cubrir los flujos secundarios|Encapsular la lógica repetida|Poner en cuarentena lo inestable|Asignar quién revisa cada fallo"
+          },
+          {
+            "phase": "Fase 3 · Profundidad",
+            "when": "Cuando la base es fiable",
+            "color": "var(--a3)",
+            "items": "Pruebas de carga y rendimiento|Datos de prueba sembrados|Informe periódico de calidad|Poda de casos obsoletos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 2",
+      "notes": "Cierre del segundo bloque. La respuesta correcta es la C. Es la pregunta con más respuestas equivocadas del deck porque el instinto lleva a elegir la herramienta o la cobertura. Si el grupo se divide, vuelve a la diapositiva de buenas y malas prácticas y muestra el selector XPath frágil: ese es el motivo real por el que las suites se abandonan.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 2",
+        "TAG_RIGHT": "16",
+        "BADGE": "PREGUNTA 2",
+        "QUESTION": "¿Cuál es la causa más frecuente de que una suite automatizada se abandone?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Cuando un script falla porque alguien movió un elemento, el equipo aprende que el rojo no significa defecto. Después de tres falsos positivos deja de mirarlo, y la suite muere aunque siga ejecutándose todas las noches.",
+        "OPTIONS": [
+          { "key": "A", "text": "Se eligió la herramienta equivocada al empezar", "correct": "" },
+          { "key": "B", "text": "La cobertura conseguida nunca llegó al objetivo", "correct": "" },
+          { "key": "C", "text": "Los scripts fallan por cambios de interfaz y nadie confía ya en el resultado", "correct": "true" },
+          { "key": "D", "text": "La ejecución completa tarda demasiados minutos", "correct": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Parte 3 · Ciclo de vida del defecto",
+      "notes": "Separador del tercer bloque, la segunda mitad de la unidad. Cambia el foco: hasta aquí hablábamos de encontrar; a partir de aquí, de qué se hace con lo encontrado. La idea que sostiene el bloque: un defecto sin ciclo de vida es un rumor. Si no está registrado, priorizado, asignado, corregido y verificado, no ha ocurrido nada aunque alguien lo haya visto.",
+      "slots": {
+        "PART_LABEL": "PARTE 03",
+        "TITLE": "Ciclo de vida del defecto",
+        "SUBTITLE": "Un defecto que no está registrado, asignado y verificado es solo un rumor",
+        "AGENDA": [
+          { "label": "01", "text": "El flujo completo, de la detección al cierre" },
+          { "label": "02", "text": "Anatomía de un reporte que se puede arreglar" },
+          { "label": "03", "text": "Cómo se prioriza sin discutir cada vez" }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "title": "El flujo completo del defecto",
+      "notes": "Recorre el diagrama de izquierda a derecha. Lo importante no son las cajas sino la flecha de retorno. Si la verificación falla, el defecto no se cierra: vuelve al análisis, y esa reapertura es una métrica de calidad del proceso, no un fracaso personal. Insiste en que el cierre solo lo firma quien reportó, nunca quien corrigió: el desarrollador no puede ser juez y parte de su propia solución. Y la retrospectiva final no es opcional: sin análisis de causa raíz el equipo repite el mismo tipo de defecto sin ver el patrón.",
+      "slots": {
+        "TAG_LEFT": "FLUJO",
+        "TITLE": "El flujo completo del defecto",
+        "TAG_RIGHT": "18",
+        "SPLIT": "1.3fr 1fr",
+        "DIAGRAM": "flowchart TD\n  A[Identificación y registro] --> B[Análisis y priorización]\n  B --> C[Asignación y corrección]\n  C --> D{Verificación}\n  D -->|Persiste| B\n  D -->|Resuelto| E[Cierre y retrospectiva]",
+        "SIDE_TITLE": "Las cuatro puertas",
+        "LEAD": "Lo importante no son las cajas sino la flecha de retorno: si la verificación falla, el defecto no se cierra, vuelve al análisis.",
+        "NOTE_LABEL": "Regla",
+        "NOTE": "El cierre lo firma quien reportó el defecto, nunca quien lo corrigió. El desarrollador no puede ser juez y parte de su propia solución.",
+        "STEPS": [
+          { "n": "1", "name": "Detectar y registrar", "text": "El tester documenta el comportamiento anómalo en el bug tracker con pasos, entorno y evidencia." },
+          { "n": "2", "name": "Analizar y priorizar", "text": "Se busca la causa raíz y se clasifica por severidad, frecuencia y usuarios afectados." },
+          { "n": "3", "name": "Asignar y corregir", "text": "Se asigna según experiencia y carga; el desarrollador modifica el código y prueba en local." },
+          { "n": "4", "name": "Verificar y cerrar", "text": "El tester reproduce el escenario original, pasa regresión y documenta antes de cerrar." }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "Qué ocurre en cada fase",
+      "notes": "Detalle de las cinco fases centrales, con el entregable que cada una debe producir. Insiste en el entregable: una fase sin producto observable es una fase que se salta sin que nadie se entere. En análisis, menciona las dos técnicas del material para la causa raíz: el diagrama de Ishikawa y los cinco porqués. En asignación, los criterios son experiencia del desarrollador, carga de trabajo, urgencia y disponibilidad. En verificación, no basta con que el escenario original pase: hay que ejecutar regresión sobre las zonas que comparten código.",
+      "slots": {
+        "TAG_LEFT": "PROCESO",
+        "TITLE": "Qué ocurre en cada fase",
+        "TAG_RIGHT": "19",
+        "LEAD": "Cada fase debe producir algo observable. Una fase sin entregable es una fase que se salta sin que nadie se entere.",
+        "COLS": "5",
+        "STEPS": [
+          { "n": "1", "phase": "Identificar", "title": "Detectar el fallo", "desc": "Durante las pruebas o desde el uso real, alguien observa un comportamiento distinto del esperado.", "output": "Evidencia" },
+          { "n": "2", "phase": "Registrar", "title": "Documentar", "desc": "Descripción, pasos, entorno y comportamiento esperado frente al obtenido, en JIRA o Bugzilla.", "output": "Ticket" },
+          { "n": "3", "phase": "Analizar", "title": "Buscar la causa raíz", "desc": "Ishikawa o los cinco porqués para llegar a la causa, no al síntoma, y estimar el impacto.", "output": "Prioridad" },
+          { "n": "4", "phase": "Corregir", "title": "Modificar y probar", "desc": "Se ajusta el código manteniendo la arquitectura y se añade la prueba unitaria que lo protege.", "output": "Parche" },
+          { "n": "5", "phase": "Cerrar", "title": "Verificar y documentar", "desc": "Se reproduce el escenario original, se pasa regresión y se registra el resultado del cierre.", "output": "Cierre" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Anatomía de un reporte de defecto",
+      "notes": "Este es el contenido con más transferencia directa al taller. Un reporte útil se distingue por dos campos: los pasos para reproducir y la separación explícita entre esperado y obtenido. Sin pasos, el desarrollador devuelve el ticket con «no reproduzco» y se pierde una semana. Sin la pareja esperado/obtenido, cada persona interpreta lo que quiere. Compara con el registro del taller del material: «Error al editar la tarea. Al cambiar el título de Comprar leche a Comprar leche y pan, la aplicación genera NullReferenceException y no guarda los cambios». Ese registro es bueno porque cualquiera puede repetirlo.",
+      "slots": {
+        "TAG_LEFT": "ANATOMÍA",
+        "TITLE": "Anatomía de un reporte útil",
+        "TAG_RIGHT": "20",
+        "SPEC_TITLE": "DEF-1042 · La edición de una tarea no guarda los cambios",
+        "FIELDS": [
+          { "key": "Severidad", "value": "Alta · funcionalidad principal bloqueada", "highlight": "true" },
+          { "key": "Entorno", "value": "Staging · Chrome 121 · Windows 11 · build 1.0.3", "highlight": "" },
+          { "key": "Pasos", "value": "1. Abrir la lista 2. Seleccionar «Comprar leche» 3. Cambiar el título 4. Pulsar Guardar", "highlight": "" },
+          { "key": "Esperado", "value": "La tarea aparece en la lista con el título actualizado", "highlight": "" },
+          { "key": "Obtenido", "value": "Error «NullReferenceException» y el título anterior se mantiene", "highlight": "true" },
+          { "key": "Frecuencia", "value": "3 de 3 intentos · reproducible siempre", "highlight": "" },
+          { "key": "Evidencia", "value": "Captura de pantalla y traza del log adjuntas", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Reproducible", "text": "Si el desarrollador no puede repetirlo con tus pasos, el ticket vuelve con un «no reproduzco» y se pierde una semana." },
+          { "n": "2", "title": "Esperado y obtenido", "text": "Sin esa pareja explícita cada persona interpreta lo que quiere, y se discute el defecto en vez de arreglarlo." },
+          { "n": "3", "title": "Un ticket, un problema", "text": "Dos defectos en el mismo ticket no se cierran nunca: siempre queda medio arreglado y medio abierto." }
+        ]
+      }
+    },
+    {
+      "archetype": "matrix",
+      "title": "Cómo se prioriza un defecto",
+      "notes": "La priorización es la fase donde más se discute y donde más tiempo se pierde. Con esta matriz la discusión se acaba: dos ejes objetivos, impacto en el usuario y frecuencia de aparición. El cuadrante crítico se corrige antes de cualquier funcionalidad nueva. El caso interesante es el de alto impacto y baja frecuencia: parece menor porque casi no ocurre, pero cuando ocurre es grave. Therac-25 y Ariane 5, que veremos después, están exactamente ahí. Recuerda que el material insiste en que la priorización debe ser colaborativa: desarrollo, calidad y, cuando toca, el cliente.",
+      "slots": {
+        "TAG_LEFT": "DECISIÓN",
+        "TITLE": "Cómo se prioriza sin discutir",
+        "TAG_RIGHT": "21",
+        "AXIS_X": "Frecuencia de aparición →",
+        "AXIS_Y": "↑ Impacto en el usuario",
+        "SIDE_TITLE": "Cómo leer el cuadrante",
+        "Q1_TAG": "CRÍTICO",
+        "Q1_TITLE": "Alto impacto y frecuente",
+        "Q1_DESC": "Se corrige antes que cualquier funcionalidad nueva. Bloquea la entrega.",
+        "Q2_TAG": "ALTO",
+        "Q2_TITLE": "Alto impacto y esporádico",
+        "Q2_DESC": "Parece menor porque casi no ocurre, pero cuando ocurre es grave. No lo entierres.",
+        "Q3_TAG": "BAJO",
+        "Q3_TITLE": "Bajo impacto y esporádico",
+        "Q3_DESC": "Al backlog documentado. Se revisa en la poda trimestral, no antes.",
+        "Q4_TAG": "MEDIO",
+        "Q4_TITLE": "Bajo impacto y frecuente",
+        "Q4_DESC": "Molesta a todo el mundo cada día y erosiona la confianza en el producto.",
+        "RULES": [
+          { "label": "Regla 1", "text": "La severidad la fija quien prueba; la prioridad la fija el negocio. No son lo mismo y se confunden siempre." },
+          { "label": "Regla 2", "text": "Si un defecto afecta a datos o a seguridad, sube automáticamente al cuadrante crítico sin discusión." },
+          { "label": "Regla 3", "text": "Priorizar es un acto colaborativo: desarrollo, calidad y, cuando corresponde, el cliente." }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Avisos sobre la gestión de defectos",
+      "notes": "Cinco advertencias que se repiten en todas las auditorías de proceso. La del riesgo de regresión es la más costosa: corregir un defecto en un módulo puede romper otro que nadie tocó, y por eso la regresión no es opcional después de cada corrección. La de la retrospectiva es la que más se salta: sin análisis de causa raíz posterior, el equipo corrige el mismo tipo de defecto una y otra vez sin darse cuenta del patrón. Aprovecha para conectar con la pregunta del apunte activador sobre CI/CD y detección temprana.",
+      "slots": {
+        "TAG_LEFT": "AVISOS",
+        "TITLE": "Lo que conviene recordar",
+        "TAG_RIGHT": "22",
+        "LEAD": "Cinco advertencias que aparecen en casi todas las auditorías de proceso de calidad.",
+        "CALLOUTS": [
+          { "kind": "info", "icon": "qhgmphtg", "title": "Severidad no es prioridad", "text": "La severidad describe el daño técnico; la prioridad, la urgencia de negocio. Un fallo grave en una función que nadie usa puede esperar." },
+          { "kind": "tip", "icon": "xtzvywzp", "title": "Cada corrección, una prueba", "text": "Todo defecto corregido debería dejar tras de sí una prueba automatizada que impida su regreso. Así crece una suite con sentido." },
+          { "kind": "warn", "icon": "usownftb", "title": "La corrección puede romper otra cosa", "text": "Modificar un módulo afecta a lo que depende de él. La regresión después de cada corrección no es opcional." },
+          { "kind": "danger", "icon": "inrunzby", "title": "Nunca cierres sin verificar", "text": "«El desarrollador dice que está arreglado» no es una verificación. Reproduce el escenario original tú mismo." },
+          { "kind": "note", "icon": "msoeawqm", "title": "Sin retrospectiva no hay aprendizaje", "text": "Sin análisis de causa raíz posterior, el equipo corrige el mismo tipo de defecto una y otra vez sin ver el patrón." }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 3",
+      "notes": "Cierre del tercer bloque. La respuesta correcta es la D. La confusión entre severidad y prioridad es la más extendida en equipos reales y genera semanas de discusión. Da un ejemplo si hace falta: una caída total en la pantalla de configuración de idioma es severidad crítica y prioridad baja; un texto mal escrito en el botón de pago es severidad mínima y prioridad alta.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 3",
+        "TAG_RIGHT": "23",
+        "BADGE": "PREGUNTA 3",
+        "QUESTION": "¿Qué diferencia hay entre la severidad y la prioridad de un defecto?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Una caída total en la pantalla de idioma es severidad crítica y prioridad baja. Un texto mal escrito en el botón de pago es severidad mínima y prioridad alta. Son ejes independientes y por eso los fija gente distinta.",
+        "OPTIONS": [
+          { "key": "A", "text": "Son sinónimos: describen la gravedad del mismo modo", "correct": "" },
+          { "key": "B", "text": "La severidad la fija el cliente y la prioridad el tester", "correct": "" },
+          { "key": "C", "text": "La prioridad solo se usa en metodologías ágiles", "correct": "" },
+          { "key": "D", "text": "La severidad mide el daño técnico; la prioridad, la urgencia de negocio", "correct": "true" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Parte 4 · Evidencia, casos y taller",
+      "notes": "Último bloque. Se cierra el círculo: primero por qué encontrar tarde es tan caro, después qué ocurrió cuando el proceso falló de verdad, y por último el taller que se evalúa. Este bloque es el que conecta la teoría con la sesión sincrónica S9 y con el entregable.",
+      "slots": {
+        "PART_LABEL": "PARTE 04",
+        "TITLE": "Evidencia, casos y taller",
+        "SUBTITLE": "Por qué encontrar tarde es tan caro y qué ocurrió cuando el proceso falló",
+        "AGENDA": [
+          { "label": "01", "text": "La regla 1 · 10 · 100 del coste del defecto" },
+          { "label": "02", "text": "Tres casos históricos que cambiaron el oficio" },
+          { "label": "03", "text": "Taller evaluado sobre una app de tareas" }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "La regla 1 · 10 · 100",
+      "notes": "El argumento económico que sostiene toda la unidad. Un defecto detectado en diseño cuesta una unidad de esfuerzo: se corrige un documento. El mismo defecto en desarrollo cuesta diez: ya hay código escrito y hay que rehacerlo y volver a probarlo. En producción cuesta cien: hay incidente, parche urgente, comunicación al cliente y pérdida de confianza, que es la parte que no aparece en ninguna factura. Esta es la respuesta completa a la pregunta del apunte activador sobre cómo ayudan CI y CD: no aceleran la corrección, mueven la detección hacia la izquierda del gráfico, donde todavía es barata.",
+      "slots": {
+        "TAG_LEFT": "PRINCIPIO",
+        "TITLE": "La regla 1 · 10 · 100",
+        "TAG_RIGHT": "25",
+        "GHOST": "100×",
+        "KICKER": "El coste de encontrar tarde",
+        "PRINCIPLE": "Corregir un defecto cuesta diez veces más en cada fase que avanza sin detectarlo.",
+        "PRINCIPLE_BODY": "En diseño se corrige un documento. En desarrollo hay que rehacer código y volver a probar. En producción hay incidente, parche urgente y una pérdida de confianza que no aparece en ninguna factura. La automatización y la integración continua no aceleran la corrección: mueven la detección hacia la izquierda, donde todavía es barata.",
+        "LIST_TITLE": "Qué mueve la detección a la izquierda",
+        "FACTORS": [
+          { "name": "Revisión de código", "text": "Dos pares de ojos antes de integrar detectan lo que ninguna herramienta ve.", "color": "var(--a1)" },
+          { "name": "Pruebas unitarias", "text": "Segundos por caso y avisan en la misma máquina donde se escribió el fallo.", "color": "var(--a2)" },
+          { "name": "Integración continua", "text": "Cada cambio dispara la suite; el defecto no llega a la rama principal.", "color": "var(--a3)" },
+          { "name": "Entrega continua", "text": "Ninguna versión se despliega sin haber pasado todas las puertas de calidad.", "color": "var(--ok)" }
+        ],
+        "EXAMPLES": [
+          { "tag": "En desarrollo", "value": "1", "label": "unidad de coste", "desc": "Se corrige antes de integrar. Nadie fuera del equipo se entera.", "color": "var(--ok)" },
+          { "tag": "En producción", "value": "100", "label": "unidades de coste", "desc": "Incidente, parche urgente, comunicación y confianza perdida.", "color": "var(--err)" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Tres casos que cambiaron el oficio",
+      "notes": "Los tres casos del material. El bug de 1947: Grace Hopper documentó una polilla atrapada en un relé del Mark II en Harvard, y aunque el término ya se usaba en ingeniería, ese registro lo popularizó en informática. Ariane 5, 1996: la conversión de un valor de coma flotante de 64 bits a entero de 16 desbordó, se lanzó una excepción no gestionada y el cohete se autodestruyó cuarenta segundos después del despegue; el código venía heredado de Ariane 4, donde ese valor nunca alcanzaba ese rango, y no se volvió a probar en el contexto nuevo. Therac-25, entre 1985 y 1987: una condición de carrera permitía administrar dosis letales de radiación y murieron seis pacientes. La lección común: ninguno fue un fallo de programación exótico, los tres fueron fallos de proceso de pruebas.",
+      "slots": {
+        "TAG_LEFT": "CASOS",
+        "TITLE": "Tres casos que cambiaron el oficio",
+        "TAG_RIGHT": "26",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "1947",
+            "title": "El primer «bug»",
+            "body": "Grace Hopper documenta una polilla atrapada en un relé del Mark II en Harvard. El término ya existía en ingeniería, pero ese registro lo popularizó en informática.",
+            "note_label": "Lección",
+            "note": "Documentar el fallo es parte del trabajo."
+          },
+          {
+            "badge": "1996",
+            "title": "Ariane 5",
+            "body": "Una conversión numérica desbordó su rango y lanzó una excepción no gestionada. El cohete se autodestruyó a los 40 segundos, con cientos de millones perdidos.",
+            "note_label": "Lección",
+            "note": "El código heredado hay que reprobarlo en su contexto nuevo."
+          },
+          {
+            "badge": "1985-87",
+            "title": "Therac-25",
+            "body": "Una condición de carrera en el software de radioterapia permitió administrar dosis letales. Seis pacientes murieron como consecuencia directa.",
+            "note_label": "Lección",
+            "note": "En sistemas críticos, el proceso de pruebas salva vidas."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Taller · Pruebas manuales sobre una app de tareas",
+      "notes": "Taller evaluado, coincide con el mini problema de la sesión sincrónica S9. Un equipo ha lanzado la primera versión de una aplicación de gestión de tareas que permite crear, editar, eliminar y organizar. Antes de la implementación final se requiere una fase de pruebas manuales. Los tres casos corresponden a los tres indicadores de logro: ejecutar casos verificando que el resultado coincide con lo esperado, identificar y registrar errores de forma clara, y aplicar exploración para descubrir fallos no cubiertos por los casos predefinidos. Recuerda al grupo que la exploración es la que encontró el fallo crítico de ordenamiento en el caso del material, y que ese fallo no estaba en ningún caso de prueba escrito.",
+      "slots": {
+        "TAG_LEFT": "TALLER",
+        "TITLE": "Prueba la app de tareas",
+        "TAG_RIGHT": "27",
+        "ICON": "kjkiqtxg",
+        "ACTIVITY_NAME": "Ejecutar, registrar y explorar en 40 minutos",
+        "INSTRUCTIONS": "En parejas, sobre la primera versión de una aplicación de gestión de tareas que permite crear, editar, eliminar y organizar. Cada caso corresponde a un indicador de logro. Entregad la ficha de resultados con el registro de todo lo encontrado.",
+        "COLS": "3",
+        "META": [
+          { "label": "40 min" },
+          { "label": "En parejas" },
+          { "label": "Entregable en el aula" }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Ejecutar el caso",
+            "desc": "Crear la tarea «Comprar leche» y verificar que aparece en la lista de pendientes según la especificación.",
+            "challenge_label": "Reto",
+            "challenge": "¿El resultado obtenido coincide exactamente con el esperado, o solo se le parece?"
+          },
+          {
+            "num": "02",
+            "title": "Registrar el error",
+            "desc": "Editar esa tarea a «Comprar leche y pan» y documentar con precisión lo que ocurre al guardar.",
+            "challenge_label": "Reto",
+            "challenge": "Escribe el registro para que otra persona lo reproduzca sin preguntarte nada."
+          },
+          {
+            "num": "03",
+            "title": "Explorar sin guion",
+            "desc": "Salir de los casos predefinidos: ordenar por fecha, borrar mientras se edita, títulos vacíos o larguísimos.",
+            "challenge_label": "Reto",
+            "challenge": "Encuentra un fallo que ningún caso escrito habría detectado."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "Ficha de resultados del taller",
+      "notes": "La ficha que se entrega. Repasa las columnas: cada fila es un caso, con lo esperado, lo obtenido, el estado y la severidad propuesta. Las tres primeras filas están rellenas como ejemplo con los resultados del material; las tres últimas las completa cada pareja. Advierte de dos cosas: el estado «Fallo» sin registro asociado no puntúa, y la severidad hay que justificarla, no basta con escribir «alta». Recuerda que un caso que pasa también se documenta: la evidencia de que algo funciona vale tanto como la de que algo falla.",
+      "slots": {
+        "TAG_LEFT": "ENTREGABLE",
+        "TITLE": "Ficha de resultados",
+        "TAG_RIGHT": "28",
+        "LEAD": "Las tres primeras filas son el ejemplo resuelto. Las tres últimas las completa cada pareja durante el taller.",
+        "HEADERS": "<th>Caso</th><th>Escenario</th><th>Esperado</th><th>Obtenido</th><th>Estado</th><th>Severidad</th>",
+        "NOTE_LABEL": "Criterio de evaluación",
+        "NOTE": "Un estado «Fallo» sin registro reproducible asociado no puntúa. La severidad hay que justificarla: «alta» a secas no es una justificación.",
+        "ROWS": [
+          { "cells": "<td>CP-01</td><td>Crear tarea «Comprar leche»</td><td>Aparece en pendientes</td><td>Aparece correctamente</td><td>Correcto</td><td>—</td>" },
+          { "cells": "<td>CP-02</td><td>Editar el título de una tarea</td><td>Se guarda el nuevo título</td><td>NullReferenceException</td><td>Fallo</td><td>Alta</td>" },
+          { "cells": "<td>CP-03</td><td>Ordenar tareas por fecha</td><td>Lista reordenada</td><td>La aplicación se cierra</td><td>Fallo</td><td>Crítica</td>" },
+          { "cells": "<td>CP-04</td><td>Eliminar una tarea</td><td>—</td><td>—</td><td>—</td><td>—</td>" },
+          { "cells": "<td>CP-05</td><td>Guardar con el título vacío</td><td>—</td><td>—</td><td>—</td><td>—</td>" },
+          { "cells": "<td>CP-06</td><td>Exploración libre</td><td>—</td><td>—</td><td>—</td><td>—</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "title": "Material para seguir",
+      "notes": "Recursos para profundizar. El glosario del ISTQB fija el vocabulario que se usará en toda la asignatura y resuelve la mayoría de las dudas de terminología. La documentación de Selenium es la referencia obligada del bloque de herramientas. El informe del fallo de Ariane 5 es lectura corta y el mejor ejemplo documentado de fallo de proceso de pruebas. Recuerda que todo el material de la unidad, incluidas las presentaciones originales, está en el aula virtual.",
+      "slots": {
+        "TAG_LEFT": "MATERIAL",
+        "TITLE": "Para seguir por tu cuenta",
+        "TAG_RIGHT": "29",
+        "LIST_TITLE": "Lecturas y referencias",
+        "QR_LABEL": "AULA VIRTUAL",
+        "QR_DATA": "https%3A%2F%2Feva.ipss.cl",
+        "QR_ALT": "Código QR del aula virtual EVA IPSS",
+        "QR_CAPTION": "Material completo de la Unidad 3",
+        "NEXT_LABEL": "Entrega",
+        "NEXT": "Ficha de resultados del taller completada, con el registro de cada defecto encontrado, antes de la próxima sesión.",
+        "RESOURCES": [
+          { "icon": "▤", "title": "Glosario ISTQB", "desc": "El vocabulario común del oficio: defecto, fallo, error y verificación.", "url": "glossary.istqb.org" },
+          { "icon": "▤", "title": "Documentación de Selenium", "desc": "Esperas explícitas, localizadores estables y patrón Page Object.", "url": "selenium.dev/documentation" },
+          { "icon": "▤", "title": "Informe del fallo de Ariane 5", "desc": "Lectura corta y el mejor caso documentado de fallo de proceso.", "url": "Comisión de investigación, 1996" },
+          { "icon": "▤", "title": "Robot Framework · guía de inicio", "desc": "La vía más accesible para automatizar sin escribir código.", "url": "robotframework.org" }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "title": "Lo que te llevas de la Unidad 3",
+      "notes": "Cierre. Insiste en la idea que une las dos mitades de la unidad: automatizar sin gestionar defectos produce mucha ejecución y ninguna mejora, y gestionar defectos sin automatizar agota al equipo repitiendo la misma regresión a mano. Las dos piezas se necesitan. Cierra recordando el entregable y anunciando que en la sesión sincrónica se revisarán las preguntas del apunte activador y del foro crítico reflexivo, en particular la comparación entre el ciclo de vida del defecto en Agile y en Waterfall.",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "Lo que te llevas",
+        "TAG_RIGHT": "30",
+        "ICON": "wzwygmng",
+        "HERO_TITLE": "Automatizar y gestionar son la misma pieza",
+        "HERO_TEXT": "Una suite sin ciclo de vida del defecto produce mucha ejecución y ninguna mejora. Un proceso de defectos sin automatización agota al equipo repitiendo la misma regresión a mano. Ninguna de las dos funciona sola.",
+        "LEFT_PANEL_TITLE": "Ideas clave",
+        "RIGHT_PANEL_TITLE": "Siguientes pasos",
+        "NEXT_LABEL": "Próxima sesión",
+        "NEXT": "Sesión sincrónica S9: mapa conceptual, retroalimentación del apunte activador y del foro, y puesta en común del taller.",
+        "TAKEAWAYS": [
+          { "n": "1", "text": "La automatización no descubre defectos nuevos: protege los que ya se corrigieron." },
+          { "n": "2", "text": "Las suites no mueren por la herramienta, mueren por scripts frágiles que nadie mantiene." },
+          { "n": "3", "text": "Un defecto sin registro reproducible no existe para el equipo de desarrollo." },
+          { "n": "4", "text": "Severidad y prioridad son ejes distintos y los fija gente distinta." }
+        ],
+        "NEXT_STEPS": [
+          { "n": "1", "text": "Completa la ficha de resultados del taller con los defectos que encontraste." },
+          { "n": "2", "text": "Reescribe un registro de defecto real para que sea reproducible sin preguntas." },
+          { "n": "3", "text": "Prepara la comparación del ciclo del defecto en Agile frente a Waterfall para el foro." }
+        ]
+      }
+    }
+  ]
+}

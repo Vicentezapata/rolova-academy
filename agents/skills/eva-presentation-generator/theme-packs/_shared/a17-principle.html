@@ -1,0 +1,52 @@
+<!--CSS-->
+.pr-area{position:absolute;left:48px;top:88px;right:48px;bottom:44px;display:grid;grid-template:1fr / 1.9fr 1fr;gap:20px;z-index:10;}
+.pr-main{position:relative;background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 30px;display:flex;flex-direction:column;gap:15px;overflow:hidden;}
+.pr-ghost{position:absolute;top:6px;right:24px;font-family:var(--display);font-size:96px;font-weight:var(--heavy);color:var(--a1);opacity:0.13;line-height:1;pointer-events:none;}
+.pr-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--a1);}
+.pr-quote{border-left:3px solid var(--a1);padding:4px 0 4px 18px;background:var(--a1-t);border-radius:0 6px 6px 0;}
+.pr-quote-title{font-size:15.5px;font-weight:700;color:var(--a1);margin-bottom:6px;}
+.pr-quote p{font-size:13.5px;color:var(--text-sec);line-height:1.7;}
+.pr-sub{font-family:var(--display);font-size:19px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.02em;margin-top:2px;}
+.pr-list{display:flex;flex-direction:column;gap:9px;}
+.pr-item{background:var(--inset-bg);border:var(--bw) solid var(--inset-border);border-radius:var(--radius-sm, 7px);padding:11px 15px;display:flex;gap:11px;align-items:flex-start;font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.pr-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px;background:var(--a1);}
+.pr-item b{color:var(--text);}
+.pr-side{display:flex;flex-direction:column;gap:18px;}
+.pr-ex{flex:1;background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 22px;display:flex;flex-direction:column;gap:6px;}
+.pr-ex-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--a1);}
+.pr-ex-val{font-family:var(--display);font-size:38px;font-weight:var(--heavy);letter-spacing:-0.04em;color:var(--a1);line-height:1;font-variant-numeric:tabular-nums;}
+.pr-ex-label{font-size:14px;font-weight:700;color:var(--text);}
+.pr-ex p{font-size:12px;color:var(--text-sec);line-height:1.65;}
+<!--BODY-->
+  <div class="header">
+    <span class="tag">{{TAG_LEFT}}</span>
+    <span class="h2">{{TITLE}}</span>
+    <span class="tag">{{TAG_RIGHT}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="pr-area">
+    <div class="pr-main">
+      <div class="pr-ghost" aria-hidden="true">{{GHOST}}</div>
+      <div class="pr-kicker">{{KICKER}}</div>
+      <div class="pr-quote">
+        <div class="pr-quote-title">{{PRINCIPLE}}</div>
+        <p>{{PRINCIPLE_BODY}}</p>
+      </div>
+      <div class="pr-sub">{{LIST_TITLE}}</div>
+      <div class="pr-list">
+<!--REPEAT:FACTORS-->
+        <div class="pr-item"><div class="pr-dot" style="background:{{color}}"></div><div><b>{{name}}:</b> {{text}}</div></div>
+<!--END:FACTORS-->
+      </div>
+    </div>
+    <div class="pr-side">
+<!--REPEAT:EXAMPLES-->
+      <div class="pr-ex">
+        <div class="pr-ex-tag" style="color:{{color}}">{{tag}}</div>
+        <div class="pr-ex-val" style="color:{{color}}">{{value}}</div>
+        <div class="pr-ex-label">{{label}}</div>
+        <p>{{desc}}</p>
+      </div>
+<!--END:EXAMPLES-->
+    </div>
+  </div>

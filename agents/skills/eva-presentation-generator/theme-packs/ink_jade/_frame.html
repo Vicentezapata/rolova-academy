@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<title>{{SLIDE_TITLE}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DEL PACK — ver theme-packs/TOKENS.md
+   Ink Jade: papel de arroz, serif tanto en título como en cuerpo,
+   aguadas de tinta, filetes de oro y un bermellón de sello.
+   ============================================================ */
+:root{
+  --bg:#f5f1e8; --bg2:#e6dec7;
+  --text:#1a1a1a; --text-sec:#5a4f44; --text-ter:rgba(26,26,26,0.42);
+  --strong:#2a2622;
+
+  /* El oro #c9b896 no llega a 2:1 sobre el papel: vive en los filetes
+     (--a3-b) y el token de texto es el pardo tinta. */
+  --a1:#c0392b; --a2:#9c2a1f; --a3:#5a4f44;
+  --ok:#4a6b4a; --warn:#9c7a2a; --err:#9c2a1f;
+  --a1-t:rgba(192,57,43,0.07); --a1-b:#c0392b;
+  --a2-t:rgba(156,42,31,0.07); --a2-b:#9c2a1f;
+  --a3-t:rgba(201,184,150,0.20); --a3-b:#c9b896;
+  --ok-t:rgba(74,107,74,0.09); --ok-b:#4a6b4a;
+  --warn-t:rgba(156,122,42,0.09); --warn-b:#9c7a2a;
+  --err-t:rgba(156,42,31,0.07); --err-b:#9c2a1f;
+
+  --card-bg:rgba(239,232,214,0.62); --border:rgba(201,184,150,0.55);
+  --bw:1px; --rule-h:1px;
+  --radius:4px; --radius-lg:4px;
+  --shadow:none; --shadow-sm:none;
+  --inset-bg:#efe8d6; --inset-border:rgba(90,79,68,0.18);
+  --hi-bg:rgba(192,57,43,0.08);
+  --hairline:rgba(90,79,68,0.18);
+  --zebra:rgba(90,79,68,0.04);
+  --thead-bg:rgba(192,57,43,0.10);
+
+  --code-bg:#efe8d6; --code-fg:#1a1a1a;
+  --c-kw:#c0392b; --c-fn:#5a4f44; --c-str:#4a6b4a; --c-cm:rgba(26,26,26,0.42); --c-num:#9c7a2a;
+
+  --display:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+  --display-xl:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+  --body:'Noto Serif SC','Source Han Serif SC',Georgia,serif;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Noto Serif SC',Georgia,serif;
+  --title-shadow:none;
+  --em-family:var(--serif); --em-style:normal; --em-weight:500;
+  --heavy:500;
+
+  --mermaid-primary:#efe8d6; --mermaid-text:#1a1a1a; --mermaid-border:#c0392b;
+  --mermaid-line:#5a4f44; --mermaid-secondary:#f5f1e8; --mermaid-tertiary:#efe8d6;
+}
+{{SHARED_CSS}}
+
+/* Serif ligero de pincel: el cuerpo también es serif, como el original.
+   Las etiquetas son Inter con tracking abierto — ahí no hay monoespaciada. */
+.h1,.h2,.h3,h1,h2,h3{letter-spacing:0.06em;font-weight:500;}
+.tag,.kicker{font-family:'Inter',sans-serif;font-weight:500;letter-spacing:0.40em;}
+.slide-num{font-family:'Inter',sans-serif;font-weight:500;letter-spacing:0.28em;}
+.chip,.meta-chip{font-family:'Inter',sans-serif;font-weight:500;letter-spacing:0.24em;text-transform:uppercase;}
+.divider{background:rgba(90,79,68,0.30);opacity:1;}
+
+/* ============================================================
+   DECORACIONES DE FIRMA DEL PACK
+   Grano y fibra de papel, filetes interrumpidos con cruz de registro,
+   aguadas de tinta, sellos bermellón y un trazo de pincel.
+   ============================================================ */
+.deco-a{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+  background-image:
+    linear-gradient(90deg, transparent, rgba(90,79,68,0.18), transparent),
+    linear-gradient(90deg, transparent, rgba(90,79,68,0.18), transparent),
+    linear-gradient(90deg, #1a1a1a 0 60px, transparent 60px calc(100% - 60px), #1a1a1a calc(100% - 60px) 100%),
+    linear-gradient(90deg, #1a1a1a 0 60px, transparent 60px calc(100% - 60px), #1a1a1a calc(100% - 60px) 100%),
+    radial-gradient(circle, rgba(26,26,26,0.025) 1px, transparent 1px);
+  background-size:100% 1px, 100% 1px, calc(100% - 160px) 1px, calc(100% - 160px) 1px, 5px 5px;
+  background-position:0 24%, 0 67%, 80px 20px, 80px calc(100% - 21px), 0 0;}
+/* Cruces de registro de impresor, arriba a la izquierda y abajo a la derecha. */
+.deco-a::before,.deco-a::after{content:'';position:absolute;width:15px;height:15px;opacity:0.7;
+  background-repeat:no-repeat;
+  background-image:linear-gradient(#1a1a1a,#1a1a1a), linear-gradient(#1a1a1a,#1a1a1a);
+  background-size:15px 1px, 1px 15px;
+  background-position:0 7px, 7px 0;}
+.deco-a::before{top:13px;left:20px;}
+.deco-a::after{bottom:13px;right:20px;}
+
+/* Aguadas de tinta diluida — la firma del pack. */
+.deco-b{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:{{BLEED}};}
+/* Sello y contrasello al pie, donde firma un rollo. */
+.deco-b::before{content:'';position:absolute;left:26px;bottom:13px;width:30px;height:30px;
+  background:#c0392b;border-radius:3px;box-shadow:inset 0 0 0 2px rgba(255,248,231,0.20);}
+.deco-b::after{content:'';position:absolute;left:64px;bottom:13px;width:14px;height:14px;
+  background:#9c2a1f;border-radius:2px;}
+
+/* Trazo de pincel con su cola y su salpicadura. */
+.deco-c{position:absolute;width:168px;height:6px;z-index:0;pointer-events:none;border-radius:3px;
+  background:linear-gradient(90deg, transparent 0%, rgba(192,57,43,0.25) 6%, #c0392b 22%, #9c2a1f 55%, #c0392b 78%, transparent 100%);
+  {{BRUSH}}}
+.deco-c::before{content:'';position:absolute;right:-44px;top:-1px;width:36px;height:4px;opacity:0.85;
+  border-radius:2px;background:linear-gradient(90deg, #c0392b 0%, rgba(192,57,43,0.4) 50%, transparent 100%);}
+.deco-c::after{content:'';position:absolute;right:-72px;top:1px;width:14px;height:8px;opacity:0.75;
+  border-radius:50%;background:radial-gradient(ellipse at 50% 50%, #c0392b 0%, rgba(192,57,43,0.4) 60%, transparent 100%);}
+
+.slide{background:{{BG}};}
+
+{{EXTRA_CSS}}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="{{SLIDE_TITLE}}">
+  <div class="deco-a" aria-hidden="true"></div>
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+{{BODY}}
+  <div class="slide-num">{{SLIDE_NUM}} / {{TOTAL}}</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

@@ -106,7 +106,7 @@ export default function GeneradorPresentaciones() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="unit">Unidad (Opcional - Busca la subcarpeta con el material)</label>
+            <label htmlFor="unit">Unidad (carpeta que contiene el material)</label>
             <select 
               id="unit" 
               className={styles.input}
@@ -170,14 +170,13 @@ export default function GeneradorPresentaciones() {
           <h2>2. Magia Agentic</h2>
           
           <div className={styles.previewContainer}>
-             <img src="/dark_tech.png" alt="Preview no disponible en esta maqueta" style={{display: 'none'}}/>
-             <p style={{color: '#94a3b8'}}>Tema Seleccionado: {theme}</p>
+             <p style={{ color: 'var(--text-secondary)' }}>Tema Seleccionado: {theme}</p>
           </div>
           
           <button 
             className={styles.button}
             onClick={handleGenerate}
-            disabled={isGenerating}
+            disabled={isGenerating || !selectedCourse || !selectedUnit}
           >
             {isGenerating ? (
               <><Loader2 className="animate-spin" /> Generando...</>
@@ -186,17 +185,23 @@ export default function GeneradorPresentaciones() {
             )}
           </button>
 
+          {!selectedUnit && (
+            <p style={{ fontSize: '0.8rem', marginTop: '0.5rem', color: 'var(--text-secondary)' }}>
+              Selecciona una unidad para habilitar la generación.
+            </p>
+          )}
+
           {isGenerating && (
-            <div className={styles.statusBox}>
+            <div className={styles.statusBox} role="status" aria-live="polite">
               <div className={styles.statusTitle}>Estado del Agente</div>
               <div className={styles.statusText}>{status}</div>
             </div>
           )}
 
           {error && (
-            <div className={styles.statusBox} style={{borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)'}}>
-              <div className={styles.statusTitle} style={{color: '#ef4444'}}>Error</div>
-              <div className={styles.statusText} style={{color: '#ef4444'}}>{error}</div>
+            <div className={styles.statusBox} role="alert" style={{borderColor: 'var(--danger)', backgroundColor: 'rgba(239, 68, 68, 0.1)'}}>
+              <div className={styles.statusTitle} style={{color: 'var(--danger)'}}>Error</div>
+              <div className={styles.statusText} style={{color: 'var(--danger)'}}>{error}</div>
             </div>
           )}
 
@@ -209,7 +214,7 @@ export default function GeneradorPresentaciones() {
               <div style={{marginTop: '1rem'}}>
                 <p>Ubicación: <code>{result.presentationPath}</code></p>
                 <a 
-                   href={result.localUrl} 
+                   href={result.previewUrl} 
                    target="_blank" 
                    rel="noopener noreferrer"
                    style={{
@@ -225,11 +230,8 @@ export default function GeneradorPresentaciones() {
                      fontWeight: 'bold'
                    }}
                 >
-                  <ExternalLink size={16} /> Abrir Localmente
+                  <ExternalLink size={16} /> Abrir presentación
                 </a>
-                <p style={{fontSize: '0.8rem', marginTop: '0.5rem', color: '#059669'}}>
-                  Nota: Al abrir el archivo file:// localmente podría haber restricciones CORS si usas la vista de doble pantalla. Ejecuta `python serve.py` en la carpeta destino si eso sucede.
-                </p>
               </div>
             </div>
           )}

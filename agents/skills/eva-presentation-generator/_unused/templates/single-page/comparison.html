@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><title>Comparison</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/minimal-white.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+<style>
+.vs{display:grid;grid-template-columns:1fr 90px 1fr;gap:28px;align-items:stretch;margin-top:30px}
+.vs .side{padding:30px}
+.vs .mid{font-size:56px;font-weight:800;color:var(--text-3);display:flex;align-items:center;justify-content:center}
+.vs .bad-side{border-top:3px solid var(--bad)}
+.vs .good-side{border-top:3px solid var(--good)}
+.vs h3{font-size:24px}
+.vs ul{padding-left:20px;font-size:15px;line-height:1.8;color:var(--text-2)}
+.vs li::marker{color:var(--bad)}
+.vs .good-side li::marker{color:var(--good)}
+</style>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Comparison">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="vs">
+<div class="card bad-side side anim-fade-left" data-anim="fade-left">
+<h3>{{ title }}</h3>
+<ul>
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+</ul>
+</div>
+<div class="mid">→</div>
+<div class="card good-side side anim-fade-right" data-anim="fade-right">
+<h3>{{ title }}</h3>
+<ul>
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+</ul>
+</div>
+</div>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

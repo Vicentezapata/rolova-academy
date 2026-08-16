@@ -1,0 +1,43 @@
+{
+  "id": "vibrant_rainbow",
+  "name": "Vibrant Rainbow",
+  "source": "Recreado desde style-gallery/vibrant_rainbow.html sobre el contrato de tokens",
+  "best_for": ["Keynote de producto", "Fintech y plataformas", "Lanzamiento", "Evento y conferencia"],
+  "preset": "spectral_glass",
+  "decoration": "orbs_wash_grid",
+  "notes": "Sobre un fondo espectral el único texto seguro es el blanco: los colores de marca viven en los rellenos (--a1-b, --ok-b, --err-b) y en las esferas, nunca en el cuerpo. Las esferas de vidrio con especular son la firma — dos por slide, nunca más. Las tarjetas llevan backdrop-filter, así que no pongas texto tenue encima.",
+  "palette": {
+    "bg": "#b266ff",
+    "text": "#ffffff",
+    "a1": "#ffe8b0",
+    "a2": "#ffffff",
+    "a3": "rgba(255,255,255,0.85)"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. ORB_A y ORB_B mueven las esferas fuera del canvas; WASH debe traer siempre exactamente tres lavados radiales.",
+  "background_rhythm": [
+    {
+      "WASH": "radial-gradient(ellipse 62% 70% at 85% 15%, rgba(255,209,107,0.35) 0%, transparent 60%), radial-gradient(ellipse 55% 55% at 10% 90%, rgba(0,216,212,0.30) 0%, transparent 60%), radial-gradient(ellipse 40% 55% at 50% 50%, rgba(178,102,255,0.18) 0%, transparent 70%)",
+      "ORB_A": "top:-140px;right:-110px;width:360px;height:360px;",
+      "ORB_B": "bottom:-90px;left:-80px;width:220px;height:220px;",
+      "BG": "linear-gradient(135deg, #ff5b9d 0%, #b266ff 35%, #4a8cff 70%, #00d8d4 100%)"
+    },
+    {
+      "WASH": "radial-gradient(ellipse 58% 66% at 12% 18%, rgba(255,209,107,0.32) 0%, transparent 60%), radial-gradient(ellipse 56% 56% at 88% 86%, rgba(0,216,212,0.28) 0%, transparent 60%), radial-gradient(ellipse 44% 52% at 46% 56%, rgba(178,102,255,0.18) 0%, transparent 70%)",
+      "ORB_A": "top:-150px;left:-120px;width:340px;height:340px;",
+      "ORB_B": "bottom:-100px;right:-70px;width:240px;height:240px;",
+      "BG": "linear-gradient(115deg, #b266ff 0%, #ff5b9d 30%, #4a8cff 72%, #00d8d4 100%)"
+    },
+    {
+      "WASH": "radial-gradient(ellipse 60% 60% at 50% 6%, rgba(255,209,107,0.30) 0%, transparent 62%), radial-gradient(ellipse 52% 58% at 14% 84%, rgba(0,216,212,0.30) 0%, transparent 60%), radial-gradient(ellipse 42% 50% at 82% 58%, rgba(178,102,255,0.20) 0%, transparent 70%)",
+      "ORB_A": "bottom:-160px;right:-100px;width:380px;height:380px;",
+      "ORB_B": "top:-80px;left:-70px;width:200px;height:200px;",
+      "BG": "linear-gradient(155deg, #4a8cff 0%, #b266ff 34%, #ff5b9d 68%, #ffd16b 100%)"
+    },
+    {
+      "WASH": "radial-gradient(ellipse 56% 64% at 90% 80%, rgba(255,209,107,0.32) 0%, transparent 60%), radial-gradient(ellipse 54% 54% at 8% 20%, rgba(0,216,212,0.28) 0%, transparent 60%), radial-gradient(ellipse 46% 54% at 54% 44%, rgba(178,102,255,0.16) 0%, transparent 70%)",
+      "ORB_A": "top:-120px;left:38%;width:300px;height:300px;",
+      "ORB_B": "bottom:-110px;right:-90px;width:260px;height:260px;",
+      "BG": "linear-gradient(135deg, #00d8d4 0%, #4a8cff 32%, #b266ff 66%, #ff5b9d 100%)"
+    }
+  ]
+}

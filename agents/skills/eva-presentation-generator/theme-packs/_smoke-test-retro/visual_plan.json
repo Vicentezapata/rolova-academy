@@ -1,0 +1,65 @@
+{
+  "pack": "retro_warm",
+  "title": "Unidad 5 — Prueba Retro Warm",
+  "slides": [
+    {
+      "archetype": "cover",
+      "title": "Portada",
+      "notes": "Presentar objetivos de la unidad.",
+      "slots": {
+        "EYEBROW": "Desarrollo de Software Web I · Unidad 5",
+        "TITLE": "APIs REST<br>con <span class=\"gradient-text\">Laravel</span>",
+        "SUBTITLE": "Diseño de recursos, autenticación con Sanctum y versionado de endpoints.",
+        "CHIPS": [
+          { "label": "4 Sesiones", "accent": "accent" },
+          { "label": "26 Slides", "accent": "" },
+          { "label": "Sanctum · JSON:API", "accent": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "Controladores: junior vs senior",
+      "notes": "Enfatizar el principio de responsabilidad única.",
+      "slots": {
+        "TAG_LEFT": "Sesión 02 · Buenas prácticas",
+        "TITLE": "Controladores: junior vs senior",
+        "TAG_RIGHT": "S2",
+        "BAD_TITLE": "Fat Controller",
+        "BAD_SNIPPET": "<span class=\"c-k\">public function</span> <span class=\"c-f\">store</span>(Request $r) {\n  $u = <span class=\"c-k\">new</span> User();\n  $u->name = $r->name;\n  $u->save();\n  Mail::send(...);\n  Log::info(<span class=\"c-s\">'creado'</span>);\n}",
+        "BAD_POINTS": [
+          { "text": "Mezcla validación, persistencia, correo y logging en un solo método." },
+          { "text": "Imposible de testear sin levantar toda la aplicación." },
+          { "text": "La lógica no se puede reutilizar desde un comando de consola." }
+        ],
+        "GOOD_TITLE": "Controlador delgado + Service",
+        "GOOD_SNIPPET": "<span class=\"c-k\">public function</span> <span class=\"c-f\">store</span>(StoreUserRequest $r,\n                      UserService $svc) {\n  <span class=\"c-k\">return</span> $svc-><span class=\"c-f\">create</span>($r->validated());\n}",
+        "GOOD_POINTS": [
+          { "text": "La validación vive en un Form Request dedicado." },
+          { "text": "El servicio es inyectable y se puede mockear en tests." },
+          { "text": "El mismo servicio sirve al controlador, a un Job y a un comando Artisan." }
+        ],
+        "WHY_LABEL": "Por qué importa",
+        "WHY": "Un controlador solo debe traducir HTTP a una llamada de dominio y devolver una respuesta. Todo lo demás pertenece a otra capa."
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "Ciclo de una petición",
+      "notes": "Recorrer el flujo de una request de principio a fin.",
+      "slots": {
+        "TAG_LEFT": "Sesión 02 · Arquitectura",
+        "TITLE": "El ciclo de vida de una petición",
+        "TAG_RIGHT": "S2",
+        "LEAD": "Qué ocurre entre que el cliente envía la petición y recibe el JSON de respuesta.",
+        "COLS": "4",
+        "STEPS": [
+          { "n": "1", "phase": "Entrada", "title": "Routing", "desc": "El router resuelve la URI y el verbo HTTP hacia una acción de controlador.", "output": "→ Ruta resuelta" },
+          { "n": "2", "phase": "Filtro", "title": "Middleware", "desc": "Autenticación, throttling y CORS se aplican antes de tocar el dominio.", "output": "→ Request validada" },
+          { "n": "3", "phase": "Dominio", "title": "Service", "desc": "La lógica de negocio se ejecuta y persiste mediante el modelo Eloquent.", "output": "→ Entidad creada" },
+          { "n": "4", "phase": "Salida", "title": "Resource", "desc": "El API Resource transforma la entidad en la estructura JSON pública.", "output": "→ 201 Created" }
+        ]
+      }
+    }
+  ]
+}

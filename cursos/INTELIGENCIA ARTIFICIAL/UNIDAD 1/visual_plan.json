@@ -1,0 +1,979 @@
+{
+  "pack": "xiaomi_orange",
+  "title": "Unidad 1 — Fundamentos y Ética de la Inteligencia Artificial",
+  "slides": [
+    {
+      "archetype": "cover",
+      "title": "Fundamentos y Ética de la IA",
+      "notes": "Bienvenida a la Unidad 1 de Inteligencia Artificial. Esta unidad cubre las cuatro primeras semanas del trimestre y vale el 10% de la nota final. El objetivo no es que salgan programando redes neuronales, sino que salgan entendiendo qué es realmente la IA, cómo aprende una máquina, en qué se diferencia del software de toda la vida y qué problemas éticos trae consigo. Insiste desde el principio en que esta unidad es la base conceptual: las unidades 2 y 3 son puro Python y modelos, y quien no entienda aquí la diferencia entre supervisado y no supervisado se perderá allí. Anuncia también la evaluación: un análisis de caso de estudio con cinco fases obligatorias, y que conviene ir pensando el caso desde la primera semana.",
+      "slots": {
+        "EYEBROW": "UNIDAD 01 · INTELIGENCIA ARTIFICIAL · IPSS 2026",
+        "TITLE": "Fundamentos y ética de la IA",
+        "SUBTITLE": "Cómo aprende una máquina, qué ramas mueven la tecnología actual y qué dilemas éticos abren.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          { "label": "4 semanas", "accent": "a1" },
+          { "label": "Evaluación 10%", "accent": "a2" },
+          { "label": "Sin código previo", "accent": "a3" }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "title": "Qué veremos en esta unidad",
+      "notes": "El mapa de las cuatro semanas. La semana 1 es sincrónica y fija el vocabulario: qué es IA, en qué se diferencia de un programa normal y los tres tipos de aprendizaje. La semana 2 es asincrónica y recorre las ramas: visión por computadora, procesamiento de lenguaje natural y sistemas expertos, más una introducción a redes neuronales. La semana 3 es sincrónica y es la de ética, la que más debate genera. Y la semana 4 es la evaluación. Deja claro que el vocabulario de la semana 1 es acumulativo: todo lo demás se apoya en él.",
+      "slots": {
+        "TAG_LEFT": "MAPA DE LA UNIDAD",
+        "TITLE": "Qué veremos",
+        "TAG_RIGHT": "02",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          { "num": "01", "icon": "◆", "title": "Qué es la IA", "desc": "Definición, historia y en qué se diferencia de un programa.", "chips": "Semana 1" },
+          { "num": "02", "icon": "◆", "title": "Cómo aprende", "desc": "Supervisado, no supervisado y por refuerzo.", "chips": "Semana 1" },
+          { "num": "03", "icon": "◆", "title": "Ramas de la IA", "desc": "Visión, lenguaje natural y sistemas expertos.", "chips": "Semana 2" },
+          { "num": "04", "icon": "◆", "title": "Redes neuronales", "desc": "Cómo funciona por dentro y qué es un transformer.", "chips": "Semana 2" },
+          { "num": "05", "icon": "◆", "title": "Ética e impacto", "desc": "Sesgos, privacidad, empleo y responsabilidad.", "chips": "Semana 3" },
+          { "num": "06", "icon": "◆", "title": "Evaluación", "desc": "Análisis de caso con cinco fases obligatorias.", "chips": "Semana 4" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Semana 1 · Conceptos y tipos de aprendizaje",
+      "notes": "Separador de la primera semana, sincrónica. El objetivo de estas dos horas es desmontar la idea mágica de la IA. La mayoría llega pensando que la inteligencia artificial es algo así como un cerebro digital que piensa. No lo es: es estadística aplicada sobre muchísimos datos. Cuando lo entiendan, dejarán de sorprenderse por lo que la IA hace y empezarán a preguntarse con qué datos lo hace, que es la pregunta correcta y la que sostiene toda la unidad.",
+      "slots": {
+        "PART_LABEL": "SEMANA 01 · SINCRÓNICA",
+        "TITLE": "Conceptos y tipos de aprendizaje",
+        "SUBTITLE": "Qué es realmente la IA y cómo aprende una máquina, con ejemplos del día a día",
+        "AGENDA": [
+          { "label": "01", "text": "Qué es la IA y en qué se diferencia de un programa" },
+          { "label": "02", "text": "IA, machine learning, deep learning y ciencia de datos" },
+          { "label": "03", "text": "Los tres tipos de aprendizaje automático" }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Rompamos el hielo",
+      "notes": "Actividad de activación, cinco minutos como máximo. Pide respuestas por el chat y no corrijas ninguna todavía: el valor está en que se comprometan con una respuesta antes de saber la correcta, porque así recuerdan mejor cuando descubren que estaban equivocados. Guarda dos o tres definiciones del chat y retómalas al final de la sesión para contrastarlas con lo aprendido. Sobre la tercera pregunta, la del empleo: la respuesta honesta es «depende», y se retoma en la semana 3 con el caso de Amazon. No te adelantes aquí.",
+      "slots": {
+        "TAG_LEFT": "ACTIVACIÓN",
+        "TITLE": "Rompamos el hielo",
+        "TAG_RIGHT": "04",
+        "ICON": "kjkiqtxg",
+        "ACTIVITY_NAME": "Tres preguntas en el chat, 60 segundos",
+        "INSTRUCTIONS": "Responde sin buscar en internet. No hay respuestas incorrectas todavía: lo importante es que te comprometas con una idea antes de que veamos la teoría. Guardaremos algunas respuestas para revisarlas al final.",
+        "COLS": "3",
+        "META": [
+          { "label": "5 min" },
+          { "label": "Por el chat" },
+          { "label": "Sin buscar" }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Defínela",
+            "desc": "¿Qué es para ti la inteligencia artificial? En una sola frase, con tus palabras.",
+            "challenge_label": "Pista",
+            "challenge": "Si usas la palabra «cerebro», ya tenemos algo de qué hablar."
+          },
+          {
+            "num": "02",
+            "title": "Nómbrala",
+            "desc": "Una app que uses a diario y que creas que lleva IA por dentro.",
+            "challenge_label": "Pista",
+            "challenge": "Casi todas las que tienes en la pantalla de inicio."
+          },
+          {
+            "num": "03",
+            "title": "Mójate",
+            "desc": "¿La IA nos va a quitar el trabajo? Responde: sí, no o depende.",
+            "challenge_label": "Pista",
+            "challenge": "Volveremos a esta pregunta en la semana 3."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Qué es la Inteligencia Artificial",
+      "notes": "La definición y tres ejemplos que ya llevan en el bolsillo. La definición formal: lograr que una computadora realice tareas que normalmente requerirían inteligencia humana, como reconocer caras, entender idiomas, tomar decisiones o crear contenido. La analogía que mejor funciona en clase es la de la cocina: un programa tradicional es una receta que sigues paso a paso siempre igual; la IA es un chef que prueba cada plato, escucha a los comensales y va mejorando sus recetas. Los tres ejemplos son deliberadamente cotidianos, porque el objetivo es que dejen de ver la IA como algo de laboratorio. Face ID te reconoce aunque cambies de peinado, y eso es exactamente lo que un programa de reglas no puede hacer.",
+      "slots": {
+        "TAG_LEFT": "DEFINICIÓN",
+        "TITLE": "Ya la llevas en el bolsillo",
+        "TAG_RIGHT": "05",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "01",
+            "title": "Face ID",
+            "body": "Tu teléfono te reconoce aunque cambies de peinado, uses lentes o te dejes barba. Nadie programó una regla para cada caso.",
+            "note_label": "Por qué es IA",
+            "note": "Aprendió tu cara, no una lista de rasgos."
+          },
+          {
+            "badge": "02",
+            "title": "Waze y Google Maps",
+            "body": "Cruza datos de millones de conductores en tiempo real para predecir dónde habrá atasco dentro de veinte minutos.",
+            "note_label": "Por qué es IA",
+            "note": "Predice el futuro a partir del pasado."
+          },
+          {
+            "badge": "03",
+            "title": "Spotify y YouTube",
+            "body": "Estudian qué escuchas y cuándo lo saltas para recomendarte algo que todavía no conoces y probablemente te guste.",
+            "note_label": "Por qué es IA",
+            "note": "Nadie le dijo qué música te gusta."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "title": "Programa clásico frente a Inteligencia Artificial",
+      "notes": "El contraste que hay que dejar clavado, y el ejemplo del filtro de spam es el mejor que existe para explicarlo. Un programa clásico es una lista de reglas escritas por una persona: si el asunto contiene la palabra GRATIS, márcalo como spam. Funciona hasta que el spammer escribe G-R-A-T-I-S con guiones, y entonces hay que añadir otra regla, y otra, y otra. Es una carrera que el programador siempre pierde. La IA le da la vuelta al problema: en lugar de reglas, le das diez mil correos ya etiquetados como spam o no spam y el modelo descubre solo los patrones, incluidos patrones que ninguna persona habría formulado. Y cuando el spammer cambia de táctica, se reentrena. Esa es la diferencia: reglas fijas contra patrones aprendidos.",
+      "slots": {
+        "TAG_LEFT": "CONTRASTE",
+        "TITLE": "Reglas escritas o patrones aprendidos",
+        "TAG_RIGHT": "06",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "PROGRAMA CLÁSICO",
+        "LEFT_TITLE": "Reglas escritas a mano",
+        "LEFT_BODY": "Una persona escribe cada condición. El programa hace exactamente eso y nada más, siempre igual.",
+        "LEFT_EXAMPLE": "Si el asunto contiene «GRATIS» → márcalo como spam.",
+        "RIGHT_LABEL": "MACHINE LEARNING",
+        "RIGHT_TITLE": "Patrones descubiertos",
+        "RIGHT_BODY": "Le das ejemplos ya resueltos y el modelo deduce solo las reglas, incluidas las que nadie habría escrito.",
+        "RIGHT_EXAMPLE": "10.000 correos etiquetados: spam / no spam. Descubre el patrón solo.",
+        "LEFT_POINTS": [
+          { "text": "El resultado es fijo y predecible" },
+          { "text": "El spammer escribe G-R-A-T-I-S y el filtro falla" },
+          { "text": "Hay que añadir una regla nueva cada vez" },
+          { "text": "Estático y frágil ante lo que no se previó" }
+        ],
+        "RIGHT_POINTS": [
+          { "text": "Aprende de ejemplos, no de condiciones" },
+          { "text": "Detecta combinaciones que nadie formuló" },
+          { "text": "Se reentrena cuando el problema cambia" },
+          { "text": "Dinámico, pero solo tan bueno como sus datos" }
+        ],
+        "RIGHT_TAGS": [
+          { "text": "Se adapta" },
+          { "text": "Necesita datos" }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "De las reglas al aprendizaje",
+      "notes": "Cuatro etapas que explican por qué la IA parece haber explotado de repente cuando en realidad lleva setenta años. En los años cincuenta a ochenta reinaron los sistemas expertos: lógica de si-entonces dictada por humanos, como pedirle a un médico que escriba todas sus reglas de diagnóstico; funcionaba en dominios cerrados y se rompía en cuanto aparecía algo no previsto. En los noventa y dos mil llega el machine learning: en vez de reglas, cincuenta mil fichas clínicas para que la máquina descubra los patrones. En los dos mil diez las redes neuronales profundas despegan, y aquí está la clave que casi nadie menciona: la teoría existía desde los ochenta, lo que faltaba eran dos cosas, datos masivos gracias a internet y potencia de cálculo gracias a las tarjetas gráficas. Y en los veinte llega la IA generativa con los transformers. Subraya que cada etapa no borró a la anterior: los sistemas expertos siguen funcionando hoy en banca y en medicina.",
+      "slots": {
+        "TAG_LEFT": "HISTORIA",
+        "TITLE": "De las reglas al aprendizaje",
+        "TAG_RIGHT": "07",
+        "LEAD": "La IA no explotó en 2022. Lleva setenta años; lo que llegó tarde fueron los datos y las tarjetas gráficas.",
+        "COLS": "4",
+        "STEPS": [
+          { "n": "1", "phase": "1950 – 1980", "title": "Sistemas expertos", "desc": "Lógica «si-entonces» dictada por personas. Como pedirle a un médico que escriba todas sus reglas.", "output": "Reglas fijas" },
+          { "n": "2", "phase": "1990 – 2000", "title": "Machine learning", "desc": "La máquina aprende de datos históricos. Cincuenta mil fichas clínicas y que encuentre el patrón sola.", "output": "Patrones" },
+          { "n": "3", "phase": "2010 – 2020", "title": "Deep learning", "desc": "Redes con millones de conexiones. Despegan gracias a internet y a las tarjetas gráficas.", "output": "Percepción" },
+          { "n": "4", "phase": "2020 → hoy", "title": "IA generativa", "desc": "Transformers. ChatGPT, DALL-E, Midjourney: crean texto, imágenes, código y música desde cero.", "output": "Creación" }
+        ]
+      }
+    },
+    {
+      "archetype": "bento",
+      "title": "IA, machine learning, deep learning y datos",
+      "notes": "Los cuatro términos que todo el mundo mezcla, y hay que ordenarlos bien porque los van a usar durante todo el trimestre. La imagen mental que mejor funciona es la de las muñecas rusas: la inteligencia artificial es la muñeca grande, el machine learning va dentro, y el deep learning va dentro del machine learning. La diferencia esencial entre machine learning clásico y deep learning: en el clásico, una persona decide qué características mirar —el tamaño, el color, el número de píxeles oscuros—; en el profundo, la red descubre por sí misma qué mirar a partir de datos crudos. Y la ciencia de datos no está dentro de ninguna: la atraviesa toda, porque sin datos limpios ninguna de las tres funciona. Recuerda la regla de oro: basura entra, basura sale.",
+      "slots": {
+        "TAG_LEFT": "VOCABULARIO",
+        "TITLE": "Las muñecas rusas de la IA",
+        "TAG_RIGHT": "08",
+        "TILES": [
+          {
+            "variant": "stat", "col": "span 3", "row": "span 4", "icon": "◆", "tag": "LA MUÑECA GRANDE", "stat": "IA", "unit": "",
+            "title": "Inteligencia Artificial",
+            "body": "Cualquier sistema que hace tareas que pedirían inteligencia humana. Contiene a las otras dos, y también cosas que no aprenden nada: un enemigo de videojuego que te persigue con lógica programada también es IA.",
+            "foot": "La muñeca más grande: todo lo demás va dentro."
+          },
+          {
+            "variant": "", "col": "span 3", "row": "span 2", "icon": "▲", "tag": "DENTRO DE LA IA", "stat": "ML", "unit": "",
+            "title": "Machine Learning",
+            "body": "Aprende de datos; un humano elige qué mirar. Netflix: «porque viste X…»",
+            "foot": ""
+          },
+          {
+            "variant": "accent", "col": "span 3", "row": "span 2", "icon": "●", "tag": "DENTRO DEL ML", "stat": "DL", "unit": "",
+            "title": "Deep Learning",
+            "body": "La red descubre sola qué mirar en datos crudos. Face ID: tu cara en 3D.",
+            "foot": ""
+          },
+          {
+            "variant": "", "col": "span 3", "row": "span 2", "icon": "■", "tag": "LA ATRAVIESA TODA", "stat": "80", "unit": "%",
+            "title": "Ciencia de datos",
+            "body": "Recolectar, limpiar y transformar. Sin esto, las otras tres no existen.",
+            "foot": ""
+          },
+          {
+            "variant": "", "col": "span 3", "row": "span 2", "icon": "▮", "tag": "LA REGLA DE ORO", "stat": "GIGO", "unit": "",
+            "title": "Garbage in, garbage out",
+            "body": "Mejor receta y mejor chef con ingredientes podridos: plato horrible.",
+            "foot": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "Sin datos no hay inteligencia",
+      "notes": "El principio que sostiene toda la asignatura y que conecta esta unidad con las dos siguientes. Las pirámides de datos se dibujan siempre igual: en la base la recolección y la limpieza, encima la analítica y los indicadores, después el entrenamiento y la prueba de modelos, y en la punta la predicción. Lo importante es la proporción: en un proyecto real, alrededor del ochenta por ciento del tiempo se va en los dos escalones de abajo, y solo el veinte restante en lo que todo el mundo llama «hacer IA». Ese dato suele decepcionar y por eso conviene decirlo pronto. Los dos ejemplos de abajo son el caso de Amazon, que veremos con detalle en la semana 3, y su contraparte: el mismo modelo con datos equilibrados se comporta de otra manera. La moraleja: el modelo no tiene opiniones, repite lo que había en los datos.",
+      "slots": {
+        "TAG_LEFT": "PRINCIPIO",
+        "TITLE": "Sin datos no hay inteligencia",
+        "TAG_RIGHT": "09",
+        "GHOST": "80%",
+        "KICKER": "Garbage in, garbage out",
+        "PRINCIPLE": "Un modelo no tiene opiniones: repite lo que estaba en los datos con los que lo entrenaste.",
+        "PRINCIPLE_BODY": "En un proyecto real, cerca del 80% del esfuerzo se va en recolectar y limpiar datos, y solo el 20% restante en lo que todo el mundo llama «hacer IA». Suena decepcionante, pero es exactamente por eso que la ciencia de datos es la base de la pirámide: la mejor receta con el mejor chef y con ingredientes podridos sigue dando un plato horrible.",
+        "LIST_TITLE": "La pirámide, de abajo arriba",
+        "FACTORS": [
+          { "name": "Recolección y limpieza", "text": "Bases de datos, formularios, sensores, procesos ETL. Nada funciona sin esto.", "color": "var(--a1)" },
+          { "name": "Analítica y BI", "text": "Métricas, tableros, descripción de lo que ya ocurrió.", "color": "var(--a2)" },
+          { "name": "Entrenamiento y prueba", "text": "Aquí empieza el machine learning propiamente dicho.", "color": "var(--a3)" },
+          { "name": "Predicción", "text": "La punta de la pirámide y la parte más pequeña del trabajo.", "color": "var(--ok)" }
+        ],
+        "EXAMPLES": [
+          { "tag": "Datos sesgados", "value": "0", "label": "mujeres seleccionadas", "desc": "Amazon, 2018: aprendió de diez años de contrataciones masculinas.", "color": "var(--err)" },
+          { "tag": "Datos equilibrados", "value": "50", "label": "% de cada perfil", "desc": "El mismo algoritmo, otro resultado. El sesgo estaba en los datos.", "color": "var(--ok)" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Los tres tipos de aprendizaje",
+      "notes": "El contenido más importante de la semana y el que más se pregunta en la evaluación. Supervisado: le muestras a un niño mil frutas diciéndole el nombre de cada una, y después reconoce frutas que nunca vio; la clave es que hay etiquetas, alguien puso la respuesta correcta. No supervisado: te dan quinientas piezas de Lego y te dicen «ordénalas», sin decirte cómo; tú descubres agrupaciones naturales por color, tamaño o forma; no hay etiquetas ni respuesta correcta. Por refuerzo: un bebé aprende a caminar sin manual, se cae y eso duele, da un paso y eso funciona, y tras miles de intentos domina el equilibrio; hay premios y castigos, no respuestas. Pide que asocien cada analogía con un ejemplo real antes de pasar a la siguiente diapositiva.",
+      "slots": {
+        "TAG_LEFT": "CÓMO APRENDE",
+        "TITLE": "Los tres tipos de aprendizaje",
+        "TAG_RIGHT": "10",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "01",
+            "title": "Supervisado",
+            "body": "Le muestras mil frutas diciendo el nombre de cada una. Después reconoce frutas que nunca vio. Hay etiquetas: alguien puso la respuesta.",
+            "note_label": "Se usa en",
+            "note": "Filtro de spam, detección de fraude, predicción del clima."
+          },
+          {
+            "badge": "02",
+            "title": "No supervisado",
+            "body": "Te dan 500 piezas de Lego y te dicen «ordénalas». Nadie dice cómo. Descubres agrupaciones naturales por tu cuenta.",
+            "note_label": "Se usa en",
+            "note": "Segmentar clientes, agrupar canciones, detectar anomalías."
+          },
+          {
+            "badge": "03",
+            "title": "Por refuerzo",
+            "body": "Un bebé aprende a caminar sin manual: se cae y duele, da un paso y funciona. Miles de intentos hasta dominar el equilibrio.",
+            "note_label": "Se usa en",
+            "note": "Robot aspirador, AlphaGo, conducción autónoma."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Anatomía del aprendizaje supervisado",
+      "notes": "Aquí se abre la caja negra del tipo más usado en la industria. Recorre los campos en orden porque describen exactamente el ciclo de entrenamiento. La entrada X son los datos que observa el modelo; la etiqueta Y es la respuesta correcta que alguien tuvo que poner a mano, y ese trabajo de etiquetado es caro y lento, algo que casi nadie menciona. El modelo empieza con pesos aleatorios, hace una predicción, la función de pérdida mide cuánto se equivocó y el optimizador ajusta los pesos para equivocarse un poco menos. Eso se repite miles o millones de veces. Detente en la división de datos: se entrena con una parte y se evalúa con otra que el modelo nunca vio, y si evalúas con los mismos datos con los que entrenaste, el resultado es una mentira. Ese es el concepto de sobreajuste y lo verán en profundidad en la unidad 2.",
+      "slots": {
+        "TAG_LEFT": "ANATOMÍA",
+        "TITLE": "Cómo aprende un modelo supervisado",
+        "TAG_RIGHT": "11",
+        "SPEC_TITLE": "Ciclo de entrenamiento · clasificador de correo spam",
+        "FIELDS": [
+          { "key": "Entrada (X)", "value": "Los datos que observa: asunto, remitente, palabras del cuerpo, hora de envío", "highlight": "" },
+          { "key": "Etiqueta (Y)", "value": "La respuesta correcta que una persona puso a mano: spam / no spam", "highlight": "true" },
+          { "key": "Modelo", "value": "Empieza con pesos aleatorios. No sabe nada todavía.", "highlight": "" },
+          { "key": "Predicción", "value": "Su respuesta actual, casi siempre equivocada al principio", "highlight": "" },
+          { "key": "Función de pérdida", "value": "Mide cuánto se equivocó comparando la predicción con la etiqueta", "highlight": "true" },
+          { "key": "Ajuste", "value": "El optimizador mueve los pesos para equivocarse un poco menos la próxima vez", "highlight": "" },
+          { "key": "Repetición", "value": "Miles o millones de vueltas. Cada una se llama época (epoch).", "highlight": "" },
+          { "key": "División de datos", "value": "80% para entrenar · 20% para evaluar con datos que el modelo nunca vio", "highlight": "true" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Etiquetar es el cuello de botella", "text": "Alguien tuvo que marcar a mano esos diez mil correos. Es lento y caro, y por eso los datos etiquetados valen tanto." },
+          { "n": "2", "title": "Nunca evalúes con lo que entrenaste", "text": "Si preguntas el examen que ya diste como tarea, el resultado no dice nada. Por eso se separa una parte de los datos." },
+          { "n": "3", "title": "El modelo no entiende, ajusta", "text": "No sabe qué es un correo. Solo mueve números hasta que su salida se parece a la etiqueta. Toda la magia es esa." }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "Comparativa de los tres tipos",
+      "notes": "Tabla de síntesis, la que conviene fotografiar. Recorre las filas comparando en horizontal, no en vertical. La pregunta que siempre aparece es cuál es mejor, y la respuesta hay que darla con la analogía: un martillo no es mejor que un destornillador, son herramientas distintas para problemas distintos. Lo que determina cuál usar no es la moda, es qué datos tienes: si tienes etiquetas, supervisado; si no las tienes y buscas estructura, no supervisado; si hay un entorno con el que interactuar y una noción de premio, refuerzo. Menciona de paso que existe el aprendizaje semisupervisado y el autosupervisado, que es como se entrenan los grandes modelos de lenguaje, pero que eso va más allá de esta unidad.",
+      "slots": {
+        "TAG_LEFT": "SÍNTESIS",
+        "TITLE": "Los tres tipos, lado a lado",
+        "TAG_RIGHT": "12",
+        "LEAD": "Compara en horizontal. La pregunta no es cuál es mejor, sino qué datos tienes disponibles.",
+        "HEADERS": "<th>Característica</th><th>Supervisado</th><th>No supervisado</th><th>Por refuerzo</th>",
+        "NOTE_LABEL": "La pregunta que decide",
+        "NOTE": "¿Tienes etiquetas? Supervisado. ¿No las tienes y buscas estructura? No supervisado. ¿Hay un entorno con premios y castigos? Refuerzo. La moda no decide: los datos deciden.",
+        "ROWS": [
+          { "cells": "<td>¿Tiene etiquetas?</td><td>Sí, obligatorias</td><td>No, ninguna</td><td>No: premios y castigos</td>" },
+          { "cells": "<td>Analogía</td><td>Estudiar con solucionario</td><td>Ordenar sin instrucciones</td><td>Entrenar una mascota</td>" },
+          { "cells": "<td>Objetivo</td><td>Predecir una respuesta</td><td>Descubrir patrones ocultos</td><td>Maximizar la recompensa</td>" },
+          { "cells": "<td>Ejemplo cotidiano</td><td>Gmail filtrando spam</td><td>Banco detectando fraude</td><td>Robot aspirador Roomba</td>" },
+          { "cells": "<td>Coste de los datos</td><td>Alto: etiquetar es caro</td><td>Bajo: solo recolectar</td><td>Alto: hace falta un entorno</td>" },
+          { "cells": "<td>¿Cómo sabes si acertó?</td><td>Comparas con la etiqueta</td><td>Criterio humano: ¿tiene sentido?</td><td>Suma de recompensas</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Adivina cómo aprende la máquina",
+      "notes": "Comprobación de la semana 1. La respuesta correcta es la C. Repasa las otras tres en voz alta porque cada una ilustra un tipo distinto: la A es no supervisado porque agrupa sin conocer el género previamente, la B es supervisado porque las radiografías vienen marcadas por médicos, y la D también es supervisado porque hay histórico de precios reales. El caso C es de refuerzo porque el robot interactúa con un entorno y recibe una señal negativa cada vez que choca. Si sobra tiempo, pide que inventen ellos un ejemplo de cada tipo con aplicaciones que usen.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Adivina cómo aprende",
+        "TAG_RIGHT": "13",
+        "BADGE": "PREGUNTA 1",
+        "QUESTION": "¿Cuál de estos casos es aprendizaje por refuerzo?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "El refuerzo se reconoce por dos señales: hay un entorno con el que se interactúa y hay una consecuencia, premio o castigo, tras cada acción. El robot choca, eso es un castigo, y ajusta su comportamiento. No hay etiquetas: hay experiencia.",
+        "OPTIONS": [
+          { "key": "A", "text": "Spotify agrupa canciones por similitud acústica sin saber el género", "correct": "" },
+          { "key": "B", "text": "Una app detecta tumores con 10.000 radiografías marcadas por médicos", "correct": "" },
+          { "key": "C", "text": "Un robot aspirador aprende a navegar chocando con las paredes", "correct": "true" },
+          { "key": "D", "text": "Uber estima el precio del viaje con el histórico de trayectos", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Semana 2 · Ramas, aplicaciones y redes neuronales",
+      "notes": "Separador de la segunda semana, asincrónica. Antes de avanzar, plantea el ejercicio de reflexión del material: que piensen en sus últimas veinticuatro horas y cuenten cuántas veces interactuaron con IA sin darse cuenta. La pista es que probablemente fueron más de veinte. Pídeles que escriban al menos cinco momentos en un papel antes de seguir, y que después comparen su lista con la que veremos. El objetivo de esta semana es doble: conocer las tres grandes ramas que pide el temario y entender, sin matemáticas, qué hay dentro de una red neuronal.",
+      "slots": {
+        "PART_LABEL": "SEMANA 02 · ASINCRÓNICA",
+        "TITLE": "Ramas, aplicaciones y redes neuronales",
+        "SUBTITLE": "Piensa en tus últimas 24 horas: ¿cuántas veces usaste IA sin darte cuenta?",
+        "AGENDA": [
+          { "label": "01", "text": "Visión por computadora, lenguaje natural y sistemas expertos" },
+          { "label": "02", "text": "Qué hay dentro de una red neuronal" },
+          { "label": "03", "text": "Transformers y la IA que ya usas a diario" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Las tres grandes ramas de la IA",
+      "notes": "Las tres ramas que pide el temario de la asignatura. Visión por computadora: hacer que la máquina vea, y la técnica dominante son las redes convolucionales, que detectan primero bordes, luego texturas y después formas completas, capa por capa. Procesamiento de lenguaje natural: hacer que la máquina entienda, y el salto gigante fueron los transformers en 2017. Sistemas expertos: la rama más antigua y la que nadie menciona en las noticias, pero que sigue funcionando en banca, seguros y diagnóstico médico; no aprende, aplica reglas escritas por especialistas, y su ventaja es enorme en un aspecto: puede explicar por qué decidió lo que decidió, algo que una red neuronal no sabe hacer. Esa capacidad de explicación conecta directamente con la ética de la semana 3.",
+      "slots": {
+        "TAG_LEFT": "RAMAS",
+        "TITLE": "Ver, entender y razonar",
+        "TAG_RIGHT": "15",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "01",
+            "title": "Visión por computadora",
+            "body": "Que la máquina vea. Las redes convolucionales detectan bordes, luego texturas y después formas completas, capa por capa.",
+            "note_label": "Dónde la usas",
+            "note": "Face ID, Google Fotos, cajas de autoservicio, radiografías."
+          },
+          {
+            "badge": "02",
+            "title": "Lenguaje natural",
+            "body": "Que la máquina entienda. Los transformers (2017) leen la frase entera a la vez y captan el contexto, no palabra por palabra.",
+            "note_label": "Dónde la usas",
+            "note": "Traductor, predicción de texto, ChatGPT, subtítulos."
+          },
+          {
+            "badge": "03",
+            "title": "Sistemas expertos",
+            "body": "La rama más antigua. No aprende: aplica reglas escritas por especialistas. Y sabe explicar por qué decidió lo que decidió.",
+            "note_label": "Dónde la usas",
+            "note": "Aprobación de créditos, seguros, triaje médico."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "title": "Qué hay dentro de una red neuronal",
+      "notes": "La caja negra, explicada sin una sola fórmula. Tres capas: la de entrada recibe datos crudos, píxeles o números; las capas ocultas son donde ocurre el aprendizaje; y la de salida da la predicción final. La analogía que mejor funciona es la de la votación: cada conexión entre neuronas es un voto con un peso distinto, y si la suma de los votos que recibe una neurona supera un umbral, esa neurona se enciende y pasa la señal a la siguiente capa. Aprender es, literalmente, ajustar esos pesos. Y el mecanismo de ajuste se llama retropropagación: el modelo predice, compara con la respuesta correcta, calcula el error y lo propaga hacia atrás ajustando cada peso un poquito. Eso se repite millones de veces. La comparación que lo cierra: es como corregir tus errores examen tras examen, solo que a una velocidad absurda.",
+      "slots": {
+        "TAG_LEFT": "DEEP LEARNING",
+        "TITLE": "Dentro de una red neuronal",
+        "TAG_RIGHT": "16",
+        "SPLIT": "1.2fr 1fr",
+        "DIAGRAM": "flowchart TD\n  A[Entrada: píxeles o números] --> B[Capas ocultas: pesos]\n  B --> C[Salida: predicción]\n  C --> D{¿Acertó?}\n  D -->|No: retropropagación| B\n  D -->|Sí| E[Modelo entrenado]",
+        "SIDE_TITLE": "La analogía de la votación",
+        "LEAD": "Cada conexión es un voto con un peso distinto. Si la suma supera un umbral, la neurona se enciende y pasa la señal.",
+        "NOTE_LABEL": "Retropropagación",
+        "NOTE": "Predice, compara, calcula el error y lo propaga hacia atrás ajustando cada peso un poco. Millones de veces. Como corregir tus errores examen tras examen, pero a una velocidad absurda.",
+        "STEPS": [
+          { "n": "1", "name": "Capa de entrada", "text": "Recibe los datos crudos. Una foto de 100×100 entra como 10.000 números." },
+          { "n": "2", "name": "Capas ocultas", "text": "Aquí ocurre el aprendizaje. Cuantas más capas, más «profunda» es la red." },
+          { "n": "3", "name": "Pesos", "text": "Aprender es ajustar estos números. No hay nada más. Ninguna comprensión." },
+          { "n": "4", "name": "Capa de salida", "text": "La predicción final: «es un gato», «con un 94% de confianza»." },
+          { "n": "5", "name": "El bucle", "text": "Se repite hasta que el error deja de bajar. Eso es entrenar." }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Tu primera red neuronal en Python",
+      "notes": "El temario pide Python en esta unidad, así que aquí se toca por primera vez. No hace falta que lo ejecuten todavía: el objetivo es que vean que lo que acabamos de explicar cabe en quince líneas. Recorre el código señalando la correspondencia con el diagrama anterior: la primera capa densa son las capas ocultas, la última es la capa de salida con diez neuronas porque hay diez dígitos posibles, y la función de activación softmax convierte la salida en probabilidades que suman uno. Detente en dos cosas. La primera: la división de datos ya viene hecha en este conjunto, con sesenta mil imágenes de entrenamiento y diez mil de prueba, y esa separación es la que da un resultado honesto. La segunda: la normalización dividiendo entre 255 pasa los píxeles del rango 0-255 al rango 0-1, y sin ella el entrenamiento va mucho peor; es el primer ejemplo concreto de por qué preparar los datos importa tanto.",
+      "slots": {
+        "TAG_LEFT": "PYTHON",
+        "TITLE": "Tu primera red neuronal",
+        "TAG_RIGHT": "17",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "Todo lo que acabamos de explicar cabe en quince líneas. No hace falta que lo ejecutes hoy: hoy solo hay que leerlo.",
+        "CALLOUT_LABEL": "Por qué se divide entre 255",
+        "CALLOUT": "Los píxeles van de 0 a 255 y la red trabaja mucho mejor con números entre 0 y 1. Es el primer ejemplo concreto de por qué preparar los datos importa tanto.",
+        "FILENAME": "primera_red.py",
+        "CODE": "<span class='c-kw'>import</span> tensorflow <span class='c-kw'>as</span> tf\n\n<span class='c-cm'># 1 · Datos: dígitos escritos a mano, ya divididos</span>\n(x_ent, y_ent), (x_prb, y_prb) = tf.keras.datasets.mnist.load_data()\nx_ent, x_prb = x_ent / <span class='c-num'>255.0</span>, x_prb / <span class='c-num'>255.0</span>\n\n<span class='c-cm'># 2 · Arquitectura: entrada, oculta y salida</span>\nmodelo = tf.keras.Sequential([\n    tf.keras.layers.Flatten(input_shape=(<span class='c-num'>28</span>, <span class='c-num'>28</span>)),\n    tf.keras.layers.Dense(<span class='c-num'>128</span>, activation=<span class='c-str'>'relu'</span>),\n    tf.keras.layers.Dense(<span class='c-num'>10</span>,  activation=<span class='c-str'>'softmax'</span>)\n])\n\n<span class='c-cm'># 3 · Cómo mide el error y cómo se corrige</span>\nmodelo.compile(optimizer=<span class='c-str'>'adam'</span>,\n               loss=<span class='c-str'>'sparse_categorical_crossentropy'</span>,\n               metrics=[<span class='c-str'>'accuracy'</span>])\n\n<span class='c-cm'># 4 · Entrenar y evaluar con datos nunca vistos</span>\nmodelo.fit(x_ent, y_ent, epochs=<span class='c-num'>5</span>)\nmodelo.evaluate(x_prb, y_prb)   <span class='c-cm'># ≈ 97,8% de acierto</span>",
+        "STEPS": [
+          { "n": "1", "text": "60.000 imágenes para entrenar y 10.000 para evaluar. La separación ya viene hecha." },
+          { "n": "2", "text": "Flatten convierte la imagen de 28×28 en una fila de 784 números: la capa de entrada." },
+          { "n": "3", "text": "Dense(128) son las capas ocultas del diagrama anterior. Ahí viven los pesos." },
+          { "n": "4", "text": "Dense(10) es la salida: una neurona por dígito, del 0 al 9. Softmax da probabilidades." },
+          { "n": "5", "text": "Cada epoch es una vuelta completa a los 60.000 ejemplos. Aquí damos cinco." },
+          { "n": "6", "text": "evaluate usa los 10.000 que el modelo nunca vio. Ese número sí es honesto." }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Transformers · el problema del banco",
+      "notes": "La tecnología que hay detrás de todo lo que llaman IA generativa hoy. El ejemplo del banco es perfecto porque funciona igual en español: «el banco está cerca del río» y «voy al banco a sacar dinero» usan la misma palabra con dos significados, y solo el contexto los distingue. Los modelos anteriores leían de izquierda a derecha y, cuando llegaban al final de un párrafo largo, ya habían olvidado el principio. Los transformers, presentados en 2017 en el artículo «Attention is All You Need», miran toda la frase a la vez con un mecanismo llamado atención, que asigna a cada palabra un peso según cuánto importa para entender las demás. Cierra con el dato que siempre gusta: ChatGPT significa Generative Pre-trained Transformer, y ahora ya saben qué quiere decir cada una de esas tres palabras.",
+      "slots": {
+        "TAG_LEFT": "LENGUAJE NATURAL",
+        "TITLE": "Transformers · el problema del banco",
+        "TAG_RIGHT": "18",
+        "SPEC_TITLE": "«El banco está cerca del río»  vs  «Voy al banco a sacar dinero»",
+        "FIELDS": [
+          { "key": "El problema", "value": "La misma palabra con dos significados. Solo el contexto los distingue.", "highlight": "true" },
+          { "key": "Antes de 2017", "value": "Los modelos leían de izquierda a derecha y olvidaban el principio del párrafo", "highlight": "" },
+          { "key": "La idea nueva", "value": "Mirar toda la frase a la vez y pesar cuánto importa cada palabra para las demás", "highlight": "true" },
+          { "key": "Se llama", "value": "Atención (attention). Del artículo «Attention is All You Need», Google, 2017.", "highlight": "" },
+          { "key": "G de GPT", "value": "Generative: genera texto nuevo, no lo recupera de una base de datos", "highlight": "" },
+          { "key": "P de GPT", "value": "Pre-trained: se entrenó antes, con enormes cantidades de texto público", "highlight": "" },
+          { "key": "T de GPT", "value": "Transformer: la arquitectura que acabamos de describir", "highlight": "true" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "No entiende: predice", "text": "Un modelo de lenguaje calcula qué palabra es más probable a continuación. Lo hace tan bien que parece comprensión, pero el mecanismo es ese." },
+          { "n": "2", "title": "Por eso alucina", "text": "Si lo más probable estadísticamente es una fecha inventada, la escribirá con total seguridad. No sabe que no lo sabe." },
+          { "n": "3", "title": "Y por eso hay que verificar", "text": "Úsalo para redactar, resumir o explorar. Nunca como fuente de un dato que vayas a entregar sin comprobar." }
+        ]
+      }
+    },
+    {
+      "archetype": "metrics",
+      "title": "Un día completo con inteligencia artificial",
+      "notes": "La diapositiva que cierra el argumento de la semana. La IA no está llegando: llegó hace años y está en cada aplicación que usan. Recorre las cifras y después haz el recorrido horario del material: a las siete de la mañana la alarma por voz, que es procesamiento de lenguaje natural; a las ocho Gmail separa el spam, machine learning supervisado; a las nueve desbloqueas con Face ID, deep learning; Uber estima el precio, un modelo de regresión; a mediodía Instagram te muestra justo lo que te gusta; por la tarde traduces con DeepL, transformers; el banco bloquea una compra rara, detección de anomalías no supervisada; y por la noche Netflix recomienda. Contrasta esa lista con la que ellos escribieron al principio de la semana.",
+      "slots": {
+        "TAG_LEFT": "CIFRAS",
+        "TITLE": "La IA ya llegó, hace años",
+        "TAG_RIGHT": "19",
+        "LEAD": "Contrasta estos números con la lista de cinco momentos que escribiste al empezar la semana.",
+        "COLS": "4",
+        "SOURCE": "Estimación a partir del uso medio de un smartphone; varía según hábitos.",
+        "METRICS": [
+          { "label": "Interacciones al día", "value": "20", "unit": "+", "desc": "Veces que usas IA sin darte cuenta en 24 horas.", "pct": "85%" },
+          { "label": "Puntos de tu cara", "value": "30", "unit": "mil", "desc": "Los que proyecta Face ID para reconocerte en 3D.", "pct": "70%" },
+          { "label": "Apps del móvil", "value": "8", "unit": "de 10", "desc": "Llevan algún modelo de aprendizaje dentro.", "pct": "80%" },
+          { "label": "Año del transformer", "value": "2017", "unit": "", "desc": "El artículo que hizo posible todo lo generativo.", "pct": "60%" }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Casos polémicos de cada rama",
+      "notes": "Puente hacia la semana de ética. Cada rama tiene su caso incómodo y conviene presentarlos ahora, sin resolverlos, para que lleguen a la semana 3 con las preguntas ya hechas. Clearview AI raspó miles de millones de fotos públicas de redes sociales para que la policía pudiera identificar sospechosos; la pregunta para el foro es si les parece aceptable que su foto de Instagram sirva para buscarles sin su consentimiento. Los deepfakes ya son indistinguibles a simple vista. Los modelos de lenguaje inventan datos con total seguridad. Los sistemas de crédito rechazan sin explicar. Y el reconocimiento facial ha demostrado tasas de error muy superiores en personas de piel oscura, precisamente por cómo se compusieron los datos de entrenamiento. Deja las preguntas abiertas: se responden en la semana 3.",
+      "slots": {
+        "TAG_LEFT": "PUENTE A LA ÉTICA",
+        "TITLE": "El lado incómodo de cada rama",
+        "TAG_RIGHT": "20",
+        "LEAD": "Cada rama tiene su caso polémico. No los resolvemos hoy: llega con estas preguntas a la clase de la semana 3.",
+        "CALLOUTS": [
+          { "kind": "danger", "icon": "inrunzby", "title": "Clearview AI · visión por computadora", "text": "Raspó miles de millones de fotos públicas de redes sociales para que la policía identifique sospechosos. ¿Es aceptable que tu foto de Instagram sirva para buscarte sin tu consentimiento?" },
+          { "kind": "warn", "icon": "usownftb", "title": "Deepfakes · IA generativa", "text": "Un video falso convincente ya se produce en minutos y con herramientas gratuitas. ¿Qué pasa con el valor probatorio de un video en un juicio?" },
+          { "kind": "info", "icon": "qhgmphtg", "title": "Alucinaciones · lenguaje natural", "text": "Un modelo puede inventar una cita, una ley o una fecha con total seguridad. No miente: calcula lo más probable y a veces lo probable no es verdad." },
+          { "kind": "note", "icon": "msoeawqm", "title": "Reconocimiento facial · sesgo medido", "text": "Estudios han demostrado tasas de error muy superiores en personas de piel oscura, por cómo se compusieron los datos de entrenamiento." }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Reto asincrónico · cazadores de deepfakes",
+      "notes": "Actividad de la semana 2, se entrega en el foro de EVA. El objetivo real no es que encuentren una imagen falsa, que es fácil, sino que entrenen el ojo: cuando uno sabe qué mirar, empieza a detectar lo que antes le pasaba desapercibido. Las pistas clásicas siguen funcionando bastante bien: manos con un número raro de dedos o dedos fundidos, cualquier texto dentro de la imagen sale como garabato sin sentido, reflejos que no coinciden con la escena, joyas o gafas que cambian de forma entre un lado y otro de la cara, y fondos donde los objetos se funden. Pide que respondan al menos a un compañero, porque la discusión en el foro es donde de verdad se aprende a mirar.",
+      "slots": {
+        "TAG_LEFT": "ACTIVIDAD · SEMANA 2",
+        "TITLE": "Cazadores de deepfakes",
+        "TAG_RIGHT": "21",
+        "ICON": "msoeawqm",
+        "ACTIVITY_NAME": "En el foro de la plataforma EVA",
+        "INSTRUCTIONS": "El objetivo no es encontrar una imagen falsa, que es fácil. Es entrenar el ojo: cuando sabes qué mirar, empiezas a detectar lo que antes te pasaba desapercibido.",
+        "COLS": "3",
+        "META": [
+          { "label": "Foro EVA" },
+          { "label": "Individual" },
+          { "label": "Responde a 1 compañero" }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Encuentra",
+            "desc": "Una imagen o video generado por IA que te parezca extremadamente realista.",
+            "challenge_label": "Sube",
+            "challenge": "La URL o la imagen al foro de la unidad."
+          },
+          {
+            "num": "02",
+            "title": "Analiza",
+            "desc": "Dos o tres líneas explicando qué pistas visuales delatan que no es real.",
+            "challenge_label": "Busca",
+            "challenge": "Manos, texto dentro de la imagen, reflejos, joyas asimétricas."
+          },
+          {
+            "num": "03",
+            "title": "Debate",
+            "desc": "Responde al hallazgo de al menos un compañero señalando algo que no vio.",
+            "challenge_label": "Reto",
+            "challenge": "¿Y si no encuentras ninguna pista? Eso también es una conclusión."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Semana 2",
+      "notes": "Comprobación de la semana 2. La respuesta correcta es la B. Es el concepto que más cuesta y el más importante para usar bien estas herramientas: un modelo de lenguaje no consulta una base de datos ni recuerda hechos, calcula qué palabra es más probable a continuación según los patrones que vio durante el entrenamiento. Cuando lo más probable estadísticamente no coincide con la verdad, produce una respuesta falsa con la misma seguridad con la que produce una verdadera. Por eso no puede detectar su propio error: no hay ningún mecanismo interno que compare con la realidad.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de la semana 2",
+        "TAG_RIGHT": "22",
+        "BADGE": "PREGUNTA 2",
+        "QUESTION": "¿Por qué un modelo de lenguaje puede inventarse un dato con total seguridad?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "No consulta una base de datos ni recuerda hechos: calcula qué palabra es más probable a continuación. Cuando lo más probable no coincide con la verdad, produce algo falso con la misma seguridad que algo cierto. No tiene forma de notarlo.",
+        "OPTIONS": [
+          { "key": "A", "text": "Porque su base de datos está desactualizada", "correct": "" },
+          { "key": "B", "text": "Porque predice la palabra más probable, no consulta hechos", "correct": "true" },
+          { "key": "C", "text": "Porque fue entrenado con textos falsos a propósito", "correct": "" },
+          { "key": "D", "text": "Porque no tiene suficientes capas ocultas", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Semana 3 · Ética, impacto y responsabilidad",
+      "notes": "Separador de la tercera semana, sincrónica, y la que más debate genera. Abre con el escenario del material y déjalo respirar antes de continuar: van a pedir un crédito hipotecario para su primera casa, el banco usa un sistema de IA que analiza su perfil y les dice «rechazado», sin ninguna explicación. Solo la palabra rechazado. Pregunta cómo se sentirían y si les parece justo, y recoge respuestas del chat. Ese escenario contiene los cuatro problemas éticos de golpe: puede haber sesgo en los datos, se usaron datos personales, hay un impacto real en su vida, y no hay nadie a quien reclamar. Es el mejor punto de entrada al bloque.",
+      "slots": {
+        "PART_LABEL": "SEMANA 03 · SINCRÓNICA",
+        "TITLE": "Ética, impacto y responsabilidad",
+        "SUBTITLE": "Pides un crédito, el sistema dice «rechazado» y nadie te explica por qué",
+        "AGENDA": [
+          { "label": "01", "text": "Los cuatro pilares: sesgo, privacidad, empleo y responsabilidad" },
+          { "label": "02", "text": "El caso Amazon: cuando el algoritmo aprende el prejuicio" },
+          { "label": "03", "text": "Cómo se mitiga: de la queja a la propuesta concreta" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Los cuatro pilares éticos",
+      "notes": "Los cuatro riesgos que pide el temario. Sesgos: la IA no inventa prejuicios, los hereda de los datos y después los aplica a escala industrial, miles de decisiones por segundo, y esa escala es lo que convierte un prejuicio humano en un problema estructural. Privacidad: los modelos necesitan datos personales masivos, y el ejemplo extremo es el sistema de crédito social chino, que puntúa el comportamiento ciudadano. Impacto laboral: no elimina todos los empleos, elimina tareas rutinarias; el matiz importante es que las profesiones no desaparecen de golpe, se transforman, y lo que exige es reskilling. Responsabilidad: si un auto autónomo atropella a alguien, ¿de quién es la culpa, del fabricante, del programador, del dueño, del propio algoritmo? El marco legal no se diseñó pensando en decisiones tomadas por software.",
+      "slots": {
+        "TAG_LEFT": "LOS 4 PILARES",
+        "TITLE": "Los grandes riesgos de la IA",
+        "TAG_RIGHT": "24",
+        "COLS": "4",
+        "CARDS": [
+          {
+            "badge": "01",
+            "title": "Sesgos algorítmicos",
+            "body": "La IA no inventa prejuicios: los hereda de los datos y los aplica miles de veces por segundo. La escala convierte un prejuicio en un problema estructural.",
+            "note_label": "Caso",
+            "note": "Amazon rechazaba CVs de mujeres."
+          },
+          {
+            "badge": "02",
+            "title": "Privacidad",
+            "body": "Los modelos necesitan datos personales masivos. Cuanto mejor quieres que funcione, más sabe de ti.",
+            "note_label": "Caso",
+            "note": "Crédito social: puntuar al ciudadano."
+          },
+          {
+            "badge": "03",
+            "title": "Impacto laboral",
+            "body": "No elimina todos los empleos: elimina tareas rutinarias. Las profesiones no desaparecen de golpe, se transforman.",
+            "note_label": "Caso",
+            "note": "Exige reskilling, no resignación."
+          },
+          {
+            "badge": "04",
+            "title": "Responsabilidad",
+            "body": "Si un auto autónomo atropella a alguien, ¿quién responde? ¿El fabricante, el programador, el dueño?",
+            "note_label": "Caso",
+            "note": "El marco legal no previó esto."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "El caso Amazon · el algoritmo que aprendió a discriminar",
+      "notes": "El caso que hay que contar entero porque desmonta el mito de la neutralidad tecnológica. En 2018 se supo que Amazon había desarrollado una herramienta interna para puntuar currículums, entrenada con diez años de contrataciones de la propia empresa. Como en ese periodo el sector tecnológico había contratado mayoritariamente hombres, el modelo aprendió que ser hombre correlacionaba con ser contratado. Y lo hizo de forma sutil: penalizaba currículums que contenían la palabra «mujeres», por ejemplo en «capitana del club de ajedrez de mujeres», y también penalizaba los nombres de dos universidades femeninas. Amazon lo intentó corregir, no lo consiguió y acabó abandonando el proyecto. La lección tiene dos partes. Primera: nadie programó una regla discriminatoria; el sesgo estaba en los datos históricos. Segunda, y más importante: eliminar el campo «sexo» no sirve de nada, porque el modelo encuentra variables que actúan como sustitutas. Eso se llama proxy y es el concepto clave para la evaluación.",
+      "slots": {
+        "TAG_LEFT": "CASO REAL · 2018",
+        "TITLE": "El algoritmo que aprendió a discriminar",
+        "TAG_RIGHT": "25",
+        "GHOST": "10",
+        "KICKER": "Amazon · herramienta interna de reclutamiento",
+        "PRINCIPLE": "Nadie escribió una regla discriminatoria. El sesgo ya estaba en los datos históricos.",
+        "PRINCIPLE_BODY": "Amazon entrenó un sistema para puntuar currículums con diez años de sus propias contrataciones. Como el sector había contratado sobre todo hombres, el modelo aprendió que ser hombre correlacionaba con ser contratado. Penalizaba la palabra «mujeres» —como en «capitana del club de ajedrez de mujeres»— y también dos universidades femeninas. Lo intentaron corregir, no pudieron, y abandonaron el proyecto.",
+        "LIST_TITLE": "Por qué es tan difícil de arreglar",
+        "FACTORS": [
+          { "name": "El sesgo es histórico", "text": "Los datos describen el pasado con fidelidad. Si el pasado fue desigual, el modelo lo aprende.", "color": "var(--a1)" },
+          { "name": "Las variables proxy", "text": "Borrar el campo «sexo» no basta: el modelo encuentra sustitutas como el deporte o la universidad.", "color": "var(--a2)" },
+          { "name": "La escala", "text": "Un reclutador con prejuicios revisa 50 CVs al día. Un algoritmo, 50.000 por hora.", "color": "var(--a3)" },
+          { "name": "La caja negra", "text": "Una red neuronal no explica por qué decidió. Sin explicación no hay forma de reclamar.", "color": "var(--err)" }
+        ],
+        "EXAMPLES": [
+          { "tag": "Lo que se creía", "value": "0", "label": "% de sesgo", "desc": "«Las matemáticas son neutrales, el algoritmo no discrimina.»", "color": "var(--warn)" },
+          { "tag": "Lo que ocurrió", "value": "10", "label": "años de sesgo aprendido", "desc": "El modelo replicó exactamente el patrón que encontró.", "color": "var(--err)" }
+        ]
+      }
+    },
+    {
+      "archetype": "matrix",
+      "title": "Cómo evaluar el riesgo ético de un sistema",
+      "notes": "La herramienta práctica del bloque, y la que necesitan para la evaluación. Dos ejes: cuánto afecta la decisión a la vida de la persona, y si existe o no una revisión humana antes de aplicarla. El cuadrante crítico es el de alto impacto sin revisión humana, y ahí es donde están los casos que aparecen en las noticias: crédito, contratación, libertad condicional, admisión universitaria. La regla que hay que subrayar es la primera: a mayor impacto en la vida de una persona, mayor exigencia de explicación. Un sistema que recomienda canciones puede ser una caja negra sin problema; un sistema que decide sobre una hipoteca, no. Y la segunda regla es la más útil para el trabajo: pregúntate siempre a quién puede reclamar la persona afectada, porque si la respuesta es «a nadie», el diseño es defectuoso aunque el modelo funcione perfectamente.",
+      "slots": {
+        "TAG_LEFT": "HERRAMIENTA",
+        "TITLE": "Evaluar el riesgo ético",
+        "TAG_RIGHT": "26",
+        "AXIS_X": "¿Hay revisión humana? →",
+        "AXIS_Y": "↑ Impacto en la vida de la persona",
+        "SIDE_TITLE": "Cómo leer el cuadrante",
+        "Q1_TAG": "VIGILADO",
+        "Q1_TITLE": "Alto impacto, con revisión",
+        "Q1_DESC": "Diagnóstico médico asistido: la IA sugiere, el especialista decide y firma.",
+        "Q2_TAG": "CRÍTICO",
+        "Q2_TITLE": "Alto impacto, sin revisión",
+        "Q2_DESC": "Crédito, contratación o libertad condicional decididos por el sistema. Aquí están los escándalos.",
+        "Q3_TAG": "ACEPTABLE",
+        "Q3_TITLE": "Bajo impacto, sin revisión",
+        "Q3_DESC": "Recomendar canciones o series. Que sea una caja negra no supone un problema.",
+        "Q4_TAG": "COSTOSO",
+        "Q4_TITLE": "Bajo impacto, con revisión",
+        "Q4_DESC": "Moderar comentarios con revisión humana: correcto, pero caro de sostener a escala.",
+        "RULES": [
+          { "label": "Regla 1", "text": "A mayor impacto en la vida de una persona, mayor exigencia de explicación. Una hipoteca no puede decidirse en una caja negra." },
+          { "label": "Regla 2", "text": "Pregúntate siempre a quién puede reclamar la persona afectada. Si la respuesta es «a nadie», el diseño está mal aunque el modelo acierte." },
+          { "label": "Regla 3", "text": "«El algoritmo lo decidió» no es una respuesta válida ante un tribunal ni ante un cliente." }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "Cómo hablar de ética en tu trabajo",
+      "notes": "Esta diapositiva vale medio punto de la nota y conviene decirlo así de claro. La diferencia entre un análisis del cincuenta por ciento y uno del cien por cien no es la extensión: es la concreción. A la izquierda, lo que escribe la mayoría: frases genéricas que podrían aplicarse a cualquier sistema del mundo y que por tanto no dicen nada sobre el caso concreto. A la derecha, lo que se espera: qué sesgo específico, por qué se genera —es decir, qué hay en los datos que lo produce— y cómo se mitigaría con una medida concreta y realizable. Insiste en la palabra «específico»: no basta con decir que la IA tiene sesgos, hay que decir qué sesgo, en qué variable, contra qué grupo y con qué consecuencia medible. Léeles las dos columnas en voz alta y pregúntales cuál de las dos se parece más a lo que iban a escribir.",
+      "slots": {
+        "TAG_LEFT": "PARA TU EVALUACIÓN",
+        "TITLE": "Cómo hablar de ética",
+        "TAG_RIGHT": "27",
+        "BAD_TITLE": "Análisis del 50%",
+        "BAD_SNIPPET": "«El algoritmo de TikTok\ntiene sesgos y problemas\nde privacidad.\n\nHabría que regularlo\ny ser más éticos.»",
+        "GOOD_TITLE": "Análisis del 100%",
+        "GOOD_SNIPPET": "«Al optimizar tiempo de visualización,\namplifica contenido extremo: retiene\nmás. Riesgo alto en menores.\n\nMitigación: límite horario para\ncuentas de menores + auditoría\nexterna anual del sesgo.»",
+        "WHY_LABEL": "La diferencia clave",
+        "WHY": "No digas solo «la IA tiene sesgos». Di QUÉ sesgo específico, POR QUÉ se genera —qué hay en los datos que lo produce— y CÓMO se mitiga con una medida concreta. Esa profundidad es lo que separa un 50% de un 100%.",
+        "BAD_POINTS": [
+          { "text": "Frases que sirven para cualquier sistema del mundo" },
+          { "text": "«Tiene sesgos» sin decir cuál, ni contra quién" },
+          { "text": "«Habría que regularlo»: ¿quién, cómo, con qué límite?" },
+          { "text": "Ética mencionada en un párrafo al final, de relleno" },
+          { "text": "Conclusión sin postura: «tiene cosas buenas y malas»" }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Nombra la variable concreta que produce el sesgo" },
+          { "text": "Explica el mecanismo: qué había en los datos" },
+          { "text": "Propone una medida que alguien podría implementar mañana" },
+          { "text": "Cuantifica el impacto cuando hay datos disponibles" },
+          { "text": "Toma postura y la argumenta, aunque sea matizada" }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Cómo se mitiga en la práctica",
+      "notes": "Las medidas concretas que pueden citar en su trabajo, porque el enunciado pide propuestas de mitigación realistas. La auditoría de datos es la primera y la más eficaz: antes de entrenar, revisar la composición del conjunto y comprobar si algún grupo está infrarrepresentado. La explicabilidad: existen técnicas para saber qué variables pesaron en una decisión concreta, y en decisiones de alto impacto debería ser obligatorio. El humano en el bucle: que la IA recomiende y una persona decida, especialmente en el cuadrante crítico. La transparencia hacia el usuario: decirle que hay un sistema automático detrás y darle una vía de reclamación real. Y las auditorías externas periódicas, porque nadie audita bien su propio trabajo. Estas cinco medidas cubren la mayoría de los casos que pueden elegir.",
+      "slots": {
+        "TAG_LEFT": "MITIGACIÓN",
+        "TITLE": "Qué se puede hacer de verdad",
+        "TAG_RIGHT": "28",
+        "LEAD": "Cinco medidas concretas que puedes citar en tu trabajo. La evaluación pide propuestas realizables, no buenas intenciones.",
+        "CALLOUTS": [
+          { "kind": "tip", "icon": "xtzvywzp", "title": "Auditar los datos antes de entrenar", "text": "Revisar la composición del conjunto: ¿qué grupos están infrarrepresentados? Es la medida más eficaz y la más barata, porque actúa antes del problema." },
+          { "kind": "info", "icon": "qhgmphtg", "title": "Exigir explicabilidad", "text": "Existen técnicas para saber qué variables pesaron en una decisión concreta. En decisiones de alto impacto debería ser obligatorio, no opcional." },
+          { "kind": "note", "icon": "dxjqoygy", "title": "Humano en el bucle", "text": "La IA recomienda, una persona decide y firma. Encarece el proceso, pero es lo que separa un diagnóstico asistido de un diagnóstico automático." },
+          { "kind": "warn", "icon": "usownftb", "title": "Transparencia y vía de reclamación", "text": "Decirle a la persona que hay un sistema automático detrás, y darle un camino real para pedir revisión. Sin eso, no hay responsabilidad posible." },
+          { "kind": "danger", "icon": "inrunzby", "title": "Auditoría externa periódica", "text": "Nadie audita bien su propio trabajo. Un tercero independiente, con acceso real y con capacidad de publicar lo que encuentre." }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Debate express · el tribunal de la IA",
+      "notes": "Actividad de cierre de la semana 3, diez minutos. Divide la clase en dos mitades y asígnales el papel, sin que puedan elegir: eso obliga a argumentar una postura que quizá no comparten, que es precisamente el ejercicio valioso. Un argumento por persona en el chat. Después de recoger los dos lados, cierra tú con la síntesis: ambas partes tienen razón en algo. La defensa acierta en que el algoritmo no tiene intención, solo optimiza una función matemática. La fiscalía acierta en que la ausencia de intención no elimina la responsabilidad: si sabes que tu sistema toma decisiones sobre personas y no lo auditas, esa omisión sí es tuya. Y ese es el concepto de responsabilidad que cierra el bloque.",
+      "slots": {
+        "TAG_LEFT": "DEBATE · 10 MIN",
+        "TITLE": "El tribunal de la IA",
+        "TAG_RIGHT": "29",
+        "ICON": "wxnxiano",
+        "ACTIVITY_NAME": "Caso Amazon, 2018 · un argumento por persona en el chat",
+        "INSTRUCTIONS": "No eliges bando: te toca. Argumentar una postura que quizá no compartes es justo el ejercicio valioso. Un argumento por persona, en el chat, y después cerramos con la síntesis.",
+        "COLS": "3",
+        "META": [
+          { "label": "10 min" },
+          { "label": "Dos bandos" },
+          { "label": "1 argumento por persona" }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Fiscalía",
+            "desc": "La empresa es culpable: sabía que su sistema decidía sobre personas y no auditó los sesgos.",
+            "challenge_label": "Argumenta",
+            "challenge": "¿Basta con no tener intención de discriminar?"
+          },
+          {
+            "num": "02",
+            "title": "Defensa",
+            "desc": "El algoritmo es matemático, no machista. Solo reflejó una realidad que ya existía en los datos.",
+            "challenge_label": "Argumenta",
+            "challenge": "¿Se puede culpar a un sistema de describir el pasado?"
+          },
+          {
+            "num": "03",
+            "title": "Síntesis",
+            "desc": "Las dos partes tienen razón en algo. La clave está en distinguir intención de responsabilidad.",
+            "challenge_label": "Cierre",
+            "challenge": "No auditar, sabiendo que decide sobre personas, sí es una omisión tuya."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Semana 3",
+      "notes": "Comprobación de la semana de ética. La respuesta correcta es la D. Es el concepto más importante del bloque y el que más se falla: eliminar la variable sensible no elimina el sesgo, porque el modelo encuentra variables correlacionadas que hacen el mismo trabajo. En el caso de Amazon fueron el deporte practicado y la universidad de procedencia. Eso se llama variable proxy. Si alguien elige la A, explícalo con un ejemplo cercano: en Chile, el código postal correlaciona fuertemente con el nivel socioeconómico, así que eliminar el ingreso declarado y dejar la dirección no cambia gran cosa.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de la semana 3",
+        "TAG_RIGHT": "30",
+        "BADGE": "PREGUNTA 3",
+        "QUESTION": "Para evitar el sesgo de género, borras la variable «sexo» del conjunto de datos. ¿Basta?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "El modelo encuentra variables correlacionadas que hacen el mismo trabajo: se llaman proxy. En Amazon fueron el deporte y la universidad. En Chile, el código postal correlaciona fuertemente con el nivel socioeconómico. Borrar la etiqueta no borra la información.",
+        "OPTIONS": [
+          { "key": "A", "text": "Sí: sin esa variable el modelo no puede distinguir el género", "correct": "" },
+          { "key": "B", "text": "Sí, siempre que además se equilibre el número de ejemplos", "correct": "" },
+          { "key": "C", "text": "No, porque el sesgo está en el algoritmo, no en los datos", "correct": "" },
+          { "key": "D", "text": "No: el modelo usa variables proxy que llevan la misma información", "correct": "true" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Semana 4 · Evaluación de la unidad",
+      "notes": "Separador de la semana de evaluación, asincrónica. Aquí conviene bajar el ritmo y ser muy concreto, porque las dudas sobre la entrega consumen después mucho tiempo de consulta. Recuerda los datos duros: vale el 10% de la nota final, se puede hacer individual o en equipos de máximo tres personas, se entrega en la semana 4 por la plataforma EVA y se evalúa con rúbrica. Lo más importante que hay que repetir dos veces: el caso tiene que ser específico. «La IA en redes sociales» no es un caso, es un tema. «El algoritmo de recomendación de YouTube» sí es un caso.",
+      "slots": {
+        "PART_LABEL": "SEMANA 04 · EVALUACIÓN",
+        "TITLE": "Análisis de caso de estudio",
+        "SUBTITLE": "Un caso específico, cinco fases obligatorias y una postura argumentada",
+        "AGENDA": [
+          { "label": "01", "text": "Qué se entrega y con qué condiciones" },
+          { "label": "02", "text": "Las cinco fases obligatorias" },
+          { "label": "03", "text": "La rúbrica y un ejemplo resuelto" }
+        ]
+      }
+    },
+    {
+      "archetype": "metrics",
+      "title": "Los datos de la entrega",
+      "notes": "Las cuatro cifras que necesitan tener claras. Diez por ciento de la nota final, que no es mucho pero marca el arranque del trimestre. Equipos de hasta tres personas, o individual si lo prefieren; recuerda que el trabajo individual se evalúa con la misma rúbrica, así que en equipo se reparte el esfuerzo pero no baja la exigencia. Cinco fases obligatorias, y la palabra clave es obligatorias: si falta una, la rúbrica lo penaliza aunque las otras cuatro estén excelentes. Y la semana 4 como fecha de entrega por EVA. Añade una condición práctica: que confirmen el caso con el docente antes de empezar, para que no se repitan entre equipos.",
+      "slots": {
+        "TAG_LEFT": "LA ENTREGA",
+        "TITLE": "Los datos que necesitas",
+        "TAG_RIGHT": "32",
+        "LEAD": "Confirma tu caso con el docente antes de empezar a investigar: dos equipos no pueden analizar el mismo.",
+        "COLS": "4",
+        "SOURCE": "Instrumento: rúbrica de evaluación · Entrega por la plataforma EVA",
+        "METRICS": [
+          { "label": "De la nota final", "value": "10", "unit": "%", "desc": "Evidencia de producto, entrega de encargo.", "pct": "100%" },
+          { "label": "Personas por equipo", "value": "3", "unit": "máx", "desc": "También se admite entrega individual.", "pct": "60%" },
+          { "label": "Fases obligatorias", "value": "5", "unit": "", "desc": "Si falta una, la rúbrica lo penaliza.", "pct": "100%" },
+          { "label": "Semana de entrega", "value": "4", "unit": "", "desc": "Por la plataforma EVA, formato libre.", "pct": "80%" }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "Las cinco fases obligatorias",
+      "notes": "La estructura que debe seguir el trabajo, y conviene recorrerla despacio porque es literalmente el índice del entregable. Fase uno, descripción: qué problema resuelve el sistema, quiénes son sus usuarios y cuál es su objetivo principal. Fase dos, tecnología: aquí es donde se conecta con lo aprendido, y es la fase que más distingue un buen trabajo, porque hay que decir si es aprendizaje supervisado o no supervisado, si usa deep learning, qué rama de la IA es y con qué datos se entrenó. Fase tres, beneficios: qué mejora concretamente, en eficiencia, en bienestar o en acceso. Fase cuatro, implicancias éticas: los cuatro pilares aplicados a ese caso concreto. Y fase cinco, conclusión y mitigación: un balance crítico con postura y propuestas realizables. Subraya que la fase dos y la cinco son las que más pesan.",
+      "slots": {
+        "TAG_LEFT": "ESTRUCTURA",
+        "TITLE": "Las cinco fases obligatorias",
+        "TAG_RIGHT": "33",
+        "LEAD": "Esto es literalmente el índice de tu entregable. Las fases 2 y 5 son las que más distinguen un trabajo del otro.",
+        "COLS": "5",
+        "STEPS": [
+          { "n": "1", "phase": "Fase 1", "title": "Descripción del caso", "desc": "¿Qué problema resuelve? ¿Quiénes son los usuarios? ¿Cuál es su objetivo principal?", "output": "Contexto" },
+          { "n": "2", "phase": "Fase 2", "title": "Tecnología utilizada", "desc": "¿Supervisado o no supervisado? ¿Deep learning? ¿Qué rama? ¿Con qué datos se entrenó?", "output": "Conexión teórica" },
+          { "n": "3", "phase": "Fase 3", "title": "Beneficios", "desc": "Qué mejora concretamente: eficiencia, acceso, bienestar. Con datos si los encuentras.", "output": "Valor" },
+          { "n": "4", "phase": "Fase 4", "title": "Implicancias éticas", "desc": "Los cuatro pilares aplicados a este caso: sesgo, privacidad, empleo, responsabilidad.", "output": "Riesgos" },
+          { "n": "5", "phase": "Fase 5", "title": "Conclusión y mitigación", "desc": "¿Superan los beneficios a los riesgos? Toma postura y propón medidas realizables.", "output": "Postura" }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "La rúbrica de evaluación",
+      "notes": "La rúbrica completa, fila por fila. Léela en voz alta comparando la columna de logrado con la de por lograr, porque el contraste es más informativo que cada descripción por separado. Detente en la primera fila: un tema genérico o copiado va directamente a la columna de la izquierda por muy bien redactado que esté el resto. Y en la fila de conexión teórica, que es la que más se olvida: si el trabajo no menciona explícitamente si el caso usa aprendizaje supervisado o deep learning, esa fila no puntúa, aunque el análisis ético sea brillante. La rúbrica evalúa que conecten el caso con los conceptos del curso; sin esa conexión es un ensayo de opinión, no un trabajo de la asignatura.",
+      "slots": {
+        "TAG_LEFT": "RÚBRICA",
+        "TITLE": "Cómo se evalúa tu trabajo",
+        "TAG_RIGHT": "34",
+        "LEAD": "Compara en horizontal la columna de la izquierda con la de la derecha: el contraste dice más que cada descripción por separado.",
+        "HEADERS": "<th>Criterio</th><th>Logrado · 100%</th><th>Medianamente · 50-75%</th><th>Por lograr · 0-50%</th>",
+        "NOTE_LABEL": "La fila que más se falla",
+        "NOTE": "La conexión teórica. Si el trabajo no dice explícitamente si el caso usa aprendizaje supervisado o deep learning, esa fila no puntúa aunque el análisis ético sea brillante.",
+        "ROWS": [
+          { "cells": "<td>Elección del caso</td><td>Específico y bien investigado</td><td>Identificado, análisis superficial</td><td>Tema genérico o copiado</td>" },
+          { "cells": "<td>Conexión teórica</td><td>Explícita: ML vs DL, tipo de aprendizaje</td><td>Conexiones vagas o implícitas</td><td>Sin conexión con el curso</td>" },
+          { "cells": "<td>Análisis ético</td><td>Escenarios específicos y argumentados</td><td>Mencionado sin profundidad</td><td>Ignorado o solo nombrado</td>" },
+          { "cells": "<td>Mitigación</td><td>Realistas, concretas y aplicables</td><td>Genéricas: «habría que regular»</td><td>Sin propuestas</td>" },
+          { "cells": "<td>Conclusión</td><td>Argumentada, con postura y equilibrio</td><td>Sin argumentación fuerte</td><td>Ausente o vacía</td>" },
+          { "cells": "<td>Las 5 fases</td><td>Las cinco desarrolladas</td><td>Falta una o está incompleta</td><td>Faltan dos o más</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Ejemplo resuelto · el algoritmo de TikTok",
+      "notes": "El ejemplo modelo. Recórrelo fase por fase mostrando que cada campo responde a una fase de la rúbrica, y señala por qué este análisis puntuaría alto. En tecnología no dice «usa IA», dice deep learning combinando señales de video, texto y audio, con un componente supervisado que predice si darás like y uno de refuerzo que maximiza el tiempo de permanencia; eso es conexión teórica explícita. En ética no dice «tiene sesgos», nombra cuatro riesgos concretos con su mecanismo: burbujas de filtro por refuerzo de creencias, adicción por diseño en menores, recopilación de ubicación y comportamiento, y posible favorecimiento de ciertos perfiles físicos. Y en mitigación propone tres medidas que alguien podría implementar: límites de tiempo obligatorios para menores, control del criterio del algoritmo por parte del usuario y auditorías independientes de sesgo. Diles que si su trabajo se parece a esto en concreción, están en la columna del cien por cien.",
+      "slots": {
+        "TAG_LEFT": "EJEMPLO MODELO",
+        "TITLE": "El algoritmo de TikTok",
+        "TAG_RIGHT": "35",
+        "SPEC_TITLE": "Caso resuelto · así se ve un análisis de la columna «Logrado»",
+        "FIELDS": [
+          { "key": "1 · Descripción", "value": "Decide qué videos aparecen en el «For You Page» según likes, tiempo de visualización, compartidos y velocidad de scroll", "highlight": "" },
+          { "key": "2 · Tecnología", "value": "Deep learning con señales de video, texto y audio. Supervisado (predice el like) + refuerzo (maximiza permanencia)", "highlight": "true" },
+          { "key": "3 · Beneficios", "value": "Democratiza la creación: cualquiera puede viralizar sin ser famoso; negocios pequeños alcanzan audiencias masivas", "highlight": "" },
+          { "key": "4a · Burbujas", "value": "Al optimizar permanencia, refuerza lo que ya crees y estrecha lo que ves", "highlight": "" },
+          { "key": "4b · Adicción", "value": "El diseño de recompensa variable es especialmente riesgoso en menores", "highlight": "true" },
+          { "key": "4c · Privacidad", "value": "Recopila ubicación, patrón de uso y comportamiento fino de scroll", "highlight": "" },
+          { "key": "5 · Conclusión", "value": "Los beneficios superan los riesgos SI se regula. Postura clara, no equidistante.", "highlight": "true" },
+          { "key": "5 · Mitigación", "value": "Límite horario para menores + control del criterio por el usuario + auditoría externa de sesgo", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Fíjate en la fase 2", "text": "No dice «usa IA». Nombra la técnica, el tipo de aprendizaje y qué señales usa. Eso es conexión teórica explícita, y es lo que la rúbrica premia." },
+          { "n": "2", "title": "Fíjate en la fase 4", "text": "No dice «tiene sesgos». Nombra cuatro riesgos con su mecanismo: por qué se produce cada uno." },
+          { "n": "3", "title": "Fíjate en la conclusión", "text": "Toma postura con una condición: «superan los riesgos si se regula». Eso es equilibrio argumentado, no equidistancia vacía." }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "Ideas de casos para elegir",
+      "notes": "Seis casos ya verificados que funcionan bien, con la tecnología que les corresponde para que puedan orientar la fase dos. Recuerda que hay que confirmar el caso con el docente para que no se repita entre equipos. Dos advertencias. La primera: los casos más fáciles de analizar son los que tienen controversia pública documentada, porque hay material que citar; COMPAS y Clearview son excelentes en ese sentido. La segunda: pueden proponer un caso propio, y de hecho se valora, siempre que sea un sistema concreto y no una categoría. Si dudan si su idea es un caso o un tema, la prueba es simple: si pueden nombrar la empresa y el producto, es un caso.",
+      "slots": {
+        "TAG_LEFT": "PARA ELEGIR",
+        "TITLE": "Seis casos que funcionan bien",
+        "TAG_RIGHT": "36",
+        "LEAD": "Confirma tu elección con el docente. Los que tienen controversia pública documentada son los más fáciles de analizar: hay material que citar.",
+        "HEADERS": "<th>Caso</th><th>Tecnología</th><th>Por dónde empezar el análisis ético</th>",
+        "NOTE_LABEL": "¿Es un caso o un tema?",
+        "NOTE": "La prueba es simple: si puedes nombrar la empresa y el producto concreto, es un caso. «La IA en la medicina» es un tema; «la detección de cáncer de mama con IA en el sistema X» es un caso.",
+        "ROWS": [
+          { "cells": "<td>Spotify Discover Weekly</td><td>ML + filtrado colaborativo</td><td>Burbuja musical y visibilidad de artistas pequeños</td>" },
+          { "cells": "<td>Google Translate</td><td>Transformers + PLN</td><td>Sesgo de género al traducir profesiones</td>" },
+          { "cells": "<td>Tesla Autopilot</td><td>Visión por computadora + refuerzo</td><td>Responsabilidad en caso de accidente</td>" },
+          { "cells": "<td>Detección de cáncer con IA</td><td>Deep learning + redes convolucionales</td><td>Falsos negativos y responsabilidad médica</td>" },
+          { "cells": "<td>ChatGPT o Claude</td><td>LLM + transformers</td><td>Alucinaciones, datos de entrenamiento y empleo</td>" },
+          { "cells": "<td>COMPAS · justicia predictiva</td><td>ML supervisado sobre histórico judicial</td><td>Sesgo racial documentado y falta de explicabilidad</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "title": "Material para profundizar",
+      "notes": "Los recursos bibliográficos obligatorios de la asignatura, disponibles en la plataforma Odilo de la institución. Para esta unidad en concreto, el más accesible es el de Bobadilla Sancho porque está en español y arranca desde cero; el de Müller y Guido es la referencia práctica para las unidades 2 y 3, así que conviene ir abriéndolo ya. Recuérdales que todo el material de la unidad, el apunte activador, el foro, el cuaderno de ejercitación, la infografía resumen y el cuestionario, están en el aula virtual, y que el cuaderno de ejercitación no se evalúa pero es donde de verdad se fija lo aprendido.",
+      "slots": {
+        "TAG_LEFT": "MATERIAL",
+        "TITLE": "Para profundizar",
+        "TAG_RIGHT": "37",
+        "LIST_TITLE": "Bibliografía obligatoria · disponible en Odilo IPSS",
+        "QR_LABEL": "AULA VIRTUAL",
+        "QR_DATA": "https%3A%2F%2Feva.ipss.cl",
+        "QR_ALT": "Código QR del aula virtual EVA IPSS",
+        "QR_CAPTION": "Apunte, foro, cuaderno y cuestionario",
+        "NEXT_LABEL": "Entrega",
+        "NEXT": "Análisis de caso con las cinco fases, semana 4, por la plataforma EVA. Vale el 10% de la nota final.",
+        "RESOURCES": [
+          { "icon": "▤", "title": "Bobadilla Sancho, J. (2020)", "desc": "Machine learning y deep learning. En español y desde cero: el más accesible para esta unidad.", "url": "RA-MA Editorial · Odilo IPSS" },
+          { "icon": "▤", "title": "Müller & Guido (2023)", "desc": "Introducción al machine learning con Python. La referencia práctica de las unidades 2 y 3.", "url": "O'Reilly · Odilo IPSS" },
+          { "icon": "▤", "title": "Saxena, P. (2024)", "desc": "Ultimate machine learning with Scikit-Learn. Para quien quiera adelantarse al código.", "url": "Orange Education · Odilo IPSS" },
+          { "icon": "▤", "title": "Curso · Machine learning: How machines learn", "desc": "Formato audiovisual, buen complemento si prefieres ver antes que leer.", "url": "Odilo IPSS" },
+          { "icon": "▤", "title": "Aula virtual EVA", "desc": "Apunte activador, foro, cuaderno de ejercitación, infografía y cuestionario.", "url": "eva.ipss.cl" }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "title": "Cierre de la Unidad 1",
+      "notes": "Cierre de la unidad. Retoma las definiciones que guardaste del chat en la primera actividad y contrástalas con lo que ahora saben: casi siempre alguien había dicho «un cerebro artificial» o «una máquina que piensa», y ahora tienen argumentos para matizarlo. La idea que hay que dejar clavada es la del panel central: la IA no piensa, encuentra patrones, y toda la responsabilidad de qué patrones aprende es humana, porque humanas son las decisiones sobre qué datos recoger, cómo etiquetarlos y para qué usar el resultado. Anuncia lo que viene: la unidad 2 entra en algoritmos de machine learning concretos, regresión y clasificación, y ahí empieza el trabajo con Python de verdad. Recuérdales por última vez que confirmen su caso de estudio esta misma semana.",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "Lo que te llevas",
+        "TAG_RIGHT": "38",
+        "ICON": "wzwygmng",
+        "HERO_TITLE": "La IA no piensa: encuentra patrones",
+        "HERO_TEXT": "No hay comprensión dentro de un modelo, hay números que se ajustan hasta que la salida se parece a lo esperado. Y por eso toda la responsabilidad es humana: humanas son las decisiones sobre qué datos recoger, cómo etiquetarlos y para qué usar el resultado.",
+        "LEFT_PANEL_TITLE": "Ideas clave",
+        "RIGHT_PANEL_TITLE": "Qué hacer esta semana",
+        "NEXT_LABEL": "Próxima unidad",
+        "NEXT": "Unidad 2 — Preparación y procesamiento de datos: algoritmos de regresión y clasificación con Python.",
+        "TAKEAWAYS": [
+          { "n": "1", "text": "Un programa sigue reglas; un modelo descubre patrones a partir de ejemplos." },
+          { "n": "2", "text": "IA contiene a ML, y ML contiene a DL. La ciencia de datos las atraviesa todas." },
+          { "n": "3", "text": "¿Tienes etiquetas? Supervisado. ¿No? No supervisado. ¿Premios y castigos? Refuerzo." },
+          { "n": "4", "text": "Basura entra, basura sale: el 80% del trabajo real está en los datos." },
+          { "n": "5", "text": "Borrar la variable sensible no borra el sesgo: quedan las variables proxy." }
+        ],
+        "NEXT_STEPS": [
+          { "n": "1", "text": "Confirma tu caso de estudio con el docente antes de empezar a investigar." },
+          { "n": "2", "text": "Sube tu deepfake al foro y responde al hallazgo de un compañero." },
+          { "n": "3", "text": "Abre el cuaderno de ejercitación: no se evalúa, pero es donde se fija lo aprendido." },
+          { "n": "4", "text": "Instala Python y prueba a ejecutar la red neuronal de la semana 2." }
+        ]
+      }
+    }
+  ]
+}

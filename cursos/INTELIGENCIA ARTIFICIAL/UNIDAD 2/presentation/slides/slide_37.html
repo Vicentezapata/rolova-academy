@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<title>Cómo construir tu entregable</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DEL PACK — ver theme-packs/TOKENS.md
+   Xiaomi Orange: brasa que sube desde el pie, retícula de 80px,
+   tarjetas de 8px teñidas de naranja y tick vertical en las cifras.
+   ============================================================ */
+:root{
+  --bg:#0a0a0a; --bg2:#1a1a1a;
+  --text:#ffffff; --text-sec:rgba(255,255,255,0.70); --text-ter:rgba(255,255,255,0.45);
+  --strong:#ffffff;
+
+  --a1:#FF6900; --a2:#ff9d4a; --a3:#ffb979;
+  --ok:#7fd18a; --warn:#ffb979; --err:#ff6b6b;
+  --a1-t:rgba(255,105,0,0.10); --a1-b:rgba(255,105,0,0.45);
+  --a2-t:rgba(255,157,74,0.10); --a2-b:rgba(255,157,74,0.42);
+  --a3-t:rgba(255,185,121,0.10); --a3-b:rgba(255,185,121,0.40);
+  --ok-t:rgba(127,209,138,0.10); --ok-b:rgba(127,209,138,0.40);
+  --warn-t:rgba(255,185,121,0.10); --warn-b:rgba(255,185,121,0.40);
+  --err-t:rgba(255,107,107,0.10); --err-b:rgba(255,107,107,0.40);
+
+  --card-bg:rgba(255,105,0,0.05); --border:rgba(255,105,0,0.18);
+  --bw:1px; --rule-h:1px;
+  --radius:8px; --radius-lg:10px;
+  --shadow:none; --shadow-sm:none;
+  --inset-bg:rgba(255,255,255,0.03); --inset-border:rgba(255,105,0,0.16);
+  --hi-bg:rgba(255,105,0,0.14);
+  --hairline:rgba(255,255,255,0.10);
+  --zebra:rgba(255,255,255,0.022);
+  --thead-bg:rgba(255,105,0,0.14);
+
+  --code-bg:#141414; --code-fg:#ffffff;
+  --c-kw:#ff9d4a; --c-fn:#FF6900; --c-str:#7fd18a; --c-cm:rgba(255,255,255,0.45); --c-num:#ffb979;
+
+  --display:'Inter Tight','Inter',-apple-system,sans-serif;
+  --display-xl:'Inter Tight','Inter',-apple-system,sans-serif;
+  --body:'Inter',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Instrument Serif','Editorial New',Georgia,serif;
+  --title-shadow:none;
+  --em-family:var(--serif); --em-style:italic; --em-weight:400;
+  --heavy:700;
+
+  --mermaid-primary:#1a1a1a; --mermaid-text:#ffffff; --mermaid-border:#FF6900;
+  --mermaid-line:#ff9d4a; --mermaid-secondary:#0a0a0a; --mermaid-tertiary:#141414;
+}
+/* ============================================================
+   PRIMITIVAS COMPARTIDAS — idénticas en todos los theme packs.
+   El renderer las inyecta en el marcador SHARED_CSS de cada _frame.html.
+   Todo aquí se expresa con los tokens del contrato (TOKENS.md).
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1280px;height:720px;overflow:hidden;font-family:var(--body);background:var(--bg);color:var(--text);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;}
+
+/* Chrome de slide de contenido */
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:10;}
+.tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.17em;color:var(--a2);text-transform:uppercase;white-space:nowrap;}
+.h2{font-family:var(--display);font-size:22px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.02em;text-align:center;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:var(--rule-h);background:linear-gradient(90deg,var(--a2),transparent);opacity:0.45;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text-ter);letter-spacing:0.1em;z-index:10;}
+
+/* Primitivas de contenido */
+.card{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 26px;display:flex;flex-direction:column;gap:10px;}
+.card h3{font-family:var(--display);font-size:17px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.015em;line-height:1.25;}
+.card p{font-size:13px;color:var(--text-sec);line-height:1.65;}
+.kicker{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase;color:var(--a1);}
+.chip{background:var(--inset-bg);border:var(--bw) solid var(--inset-border);border-radius:var(--radius-sm, 4px);padding:3px 9px;font-size:10px;color:var(--text-sec);letter-spacing:0.04em;}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+
+/* Iconos. El slot acepta un emoji, un carácter o un ID de Lordicon de 8
+   caracteres; _runtime.js convierte solo los IDs en <lord-icon>. */
+.icon{display:inline-flex;align-items:center;justify-content:center;line-height:1;color:var(--a1);}
+.icon lord-icon{display:block;}
+
+/* Primitivas de gráfico. El valor crudo lo normaliza _runtime.js en --n (0..1). */
+.axis{position:relative;border-bottom:var(--bw) solid var(--inset-border);}
+.gridline{position:absolute;left:0;right:0;height:1px;background:var(--inset-border);opacity:0.55;}
+.legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-sec);}
+.legend-key{width:10px;height:10px;border-radius:var(--radius-sm, 2px);flex-shrink:0;}
+.chart-note{font-family:var(--mono);font-size:10.5px;color:var(--text-ter);letter-spacing:0.06em;}
+
+/* Mini-series construidas por _runtime.js a partir de data-series + data-kind. */
+.ms-bars{display:flex;align-items:stretch;gap:6px;height:100%;width:100%;}
+.ms-col{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0;}
+.ms-track{flex:1;display:flex;align-items:flex-end;min-height:0;}
+.ms-track i{display:block;width:100%;background:var(--a1);border-radius:var(--radius-sm, 3px) var(--radius-sm, 3px) 0 0;min-height:2px;}
+.ms-col u{font-family:var(--mono);font-size:8px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-ter);text-decoration:none;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ms-donut{position:relative;width:112px;height:112px;flex-shrink:0;margin:0 auto;}
+.ms-donut::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--ms-ring, none);-webkit-mask:radial-gradient(circle,transparent 0 54%,var(--strong) 55%);mask:radial-gradient(circle,transparent 0 54%,var(--strong) 55%);}
+.ms-hole{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:19px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.03em;}
+.ms-stack{display:flex;width:100%;height:26px;border-radius:var(--radius-sm, 3px);overflow:hidden;}
+.ms-seg{display:block;height:100%;min-width:3px;}
+.ms-spark{width:100%;height:100%;}
+.ms-spark polyline{fill:none;stroke:var(--a1);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;}
+
+em{font-family:var(--em-family);font-style:var(--em-style);font-weight:var(--em-weight);color:var(--a1);}
+b,strong{color:var(--strong);font-weight:700;}
+code{font-family:var(--mono);font-size:0.92em;background:var(--a1-t);border:1px solid var(--a1-b);border-radius:var(--radius-sm, 4px);padding:1px 6px;color:var(--a1);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+
+/* Accesibilidad y exportación */
+:focus-visible{outline:2px solid var(--a1);outline-offset:3px;border-radius:var(--radius-sm, 3px);}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
+@media print{@page{size:1280px 720px;margin:0;}html,body{width:1280px;height:720px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.no-print{display:none!important;}}
+
+
+.h1,.h2,.h3,h1,h2,h3{letter-spacing:-0.045em;}
+.tag,.kicker{font-family:var(--body);font-weight:600;letter-spacing:0.22em;}
+/* Tick vertical de brasa a la izquierda de cada tarjeta, como en las cifras del original. */
+.card{position:relative;}
+.card::before{content:'';position:absolute;left:0;top:14px;width:2px;height:38px;
+  background:linear-gradient(180deg, #FF6900, rgba(255,105,0,0));}
+
+/* ============================================================
+   DECORACIONES DE FIRMA DEL PACK
+   Brasa desde el pie, retícula de 80px, viñeta, filete inferior
+   de naranja y tres escuadras (la cuarta se deja abierta).
+   ============================================================ */
+.deco-a{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0.9;
+  background:radial-gradient(ellipse 58% 34% at 22% 96%, rgba(255,105,0,0.52) 0%, transparent 60%), radial-gradient(ellipse 78% 38% at 70% 106%, rgba(255,105,0,0.20) 0%, transparent 55%), radial-gradient(circle at 18% 80%, rgba(255,157,74,0.16) 0%, transparent 35%);}
+
+.deco-b{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(ellipse 70% 60% at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size:auto, 80px 80px, 80px 80px;}
+.deco-b::before,.deco-b::after{content:'';position:absolute;width:22px;height:22px;top:14px;}
+.deco-b::before{left:14px;border-top:1px solid rgba(255,105,0,0.45);border-left:1px solid rgba(255,105,0,0.45);}
+.deco-b::after{right:14px;border-top:1px solid rgba(255,105,0,0.45);border-right:1px solid rgba(255,105,0,0.45);}
+
+/* Filete de brasa al pie y una sola escuadra abajo: la esquina
+   inferior derecha se deja abierta, como en el original. */
+.deco-c{position:absolute;inset:0;z-index:6;pointer-events:none;
+  background-repeat:no-repeat, no-repeat;
+  background-image:
+    linear-gradient(90deg, transparent, #FF6900, transparent),
+    linear-gradient(90deg, transparent 20%, rgba(255,255,255,0.08) 50%, transparent 80%);
+  background-size:100% 1px, 100% 1px;
+  background-position:left bottom, left top;}
+.deco-c::before{content:'';position:absolute;left:14px;bottom:14px;width:22px;height:22px;
+  border-bottom:1px solid rgba(255,105,0,0.45);border-left:1px solid rgba(255,105,0,0.45);}
+
+.slide{background:radial-gradient(ellipse 105% 72% at 24% 112%, #2a1408 0%, #1a1a1a 36%, #0a0a0a 70%, #050505 100%);}
+
+.tl-wrap{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:flex;flex-direction:column;gap:18px;justify-content:center;}
+.tl-lead{font-size:13.5px;color:var(--text-sec);line-height:1.7;max-width:840px;}
+.tl-track{position:relative;display:grid;grid-template:1fr / repeat(5,1fr);gap:14px;}
+.tl-track::before{content:'';position:absolute;top:22px;left:6%;right:6%;height:1px;background:linear-gradient(90deg,transparent,var(--a2),var(--a1),transparent);z-index:0;}
+.tl-step{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
+.tl-node{width:44px;height:44px;border-radius:50%;background:var(--bg);border:var(--bw) solid var(--a1);color:var(--a1);font-family:var(--mono);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 0 0 6px var(--bg),0 0 20px var(--a1-b);}
+.tl-card{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;display:flex;flex-direction:column;gap:7px;width:100%;flex:1;}
+.tl-phase{font-family:var(--mono);font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--a2);}
+.tl-card h3{font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);letter-spacing:-0.015em;line-height:1.25;}
+.tl-card p{font-size:11.5px;color:var(--text-sec);line-height:1.6;}
+.tl-out{margin-top:auto;font-size:10.5px;color:var(--a1);font-family:var(--mono);letter-spacing:0.04em;border-top:1px solid var(--inset-border);padding-top:8px;}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="Cómo construir tu entregable">
+  <div class="deco-a" aria-hidden="true"></div>
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+  <div class="header">
+    <span class="tag">GUION</span>
+    <span class="h2">Cómo construir tu entregable</span>
+    <span class="tag">38</span>
+  </div>
+  <div class="divider"></div>
+  <div class="tl-wrap">
+    <p class="tl-lead">El orden de trabajo para que nadie se quede mirando la hoja en blanco. Cada paso alimenta al siguiente.</p>
+    <div class="tl-track">
+      <div class="tl-step">
+        <div class="tl-node">1</div>
+        <div class="tl-card">
+          <div class="tl-phase">Paso 1</div>
+          <h3>Identifica el objetivo</h3>
+          <p>Lee el caso y localiza la variable a predecir. Esa sola decisión determina todo lo demás.</p>
+          <div class="tl-out">Tipo de problema</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">2</div>
+        <div class="tl-card">
+          <div class="tl-phase">Paso 2</div>
+          <h3>Explora los datos</h3>
+          <p>shape, head, describe, isnull. Si es clasificación, cuenta cuántos casos hay de cada clase.</p>
+          <div class="tl-out">Diagnóstico</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">3</div>
+        <div class="tl-card">
+          <div class="tl-phase">Paso 3</div>
+          <h3>Elige dos candidatos</h3>
+          <p>Con las tablas de decisión. Argumenta con datos, escala y necesidad de interpretación.</p>
+          <div class="tl-out">Justificación</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">4</div>
+        <div class="tl-card">
+          <div class="tl-phase">Paso 4</div>
+          <h3>Define la métrica</h3>
+          <p>Argumenta el coste de cada tipo de error en el contexto del negocio, no en abstracto.</p>
+          <div class="tl-out">Métrica y validación</div>
+        </div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-node">5</div>
+        <div class="tl-card">
+          <div class="tl-phase">Paso 5</div>
+          <h3>Escribe para un gerente</h3>
+          <p>Sin jerga. Qué recomiendas, con qué confianza y qué riesgo asume la empresa.</p>
+          <div class="tl-out">Conclusión</div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+/* ============================================================
+   RUNTIME COMPARTIDO — idéntico en todas las slides.
+   El renderer lo inyecta al final del BODY, igual que _base.css
+   se inyecta en SHARED_CSS.
+
+   REGLA: aquí no puede haber literales de color. Los colores se
+   leen en tiempo de ejecución desde los tokens del frame.
+   ============================================================ */
+(function () {
+  var LORDICON_ID = /^[a-z0-9]{8}$/;
+
+  function token(el, name) {
+    return getComputedStyle(el).getPropertyValue(name).trim();
+  }
+
+  /* 1 · ICONOS
+     El agente escribe en el slot un emoji, un carácter o un ID de Lordicon.
+     Si es un ID de 8 caracteres se sustituye por <lord-icon> coloreado con
+     los tokens del pack. Cualquier otra cosa se deja como texto. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-icon]'), function (el) {
+    var id = (el.dataset.icon || '').trim();
+    if (!LORDICON_ID.test(id)) return;
+    var size = el.dataset.iconSize || '34';
+    var ico = document.createElement('lord-icon');
+    ico.setAttribute('src', 'https://cdn.lordicon.com/' + id + '.json');
+    ico.setAttribute('trigger', el.dataset.iconTrigger || 'loop');
+    ico.setAttribute('delay', '1600');
+    ico.setAttribute('colors', 'primary:' + token(el, '--a1') + ',secondary:' + token(el, '--a2'));
+    ico.style.width = size + 'px';
+    ico.style.height = size + 'px';
+    el.textContent = '';
+    el.classList.add('is-lottie');
+    el.appendChild(ico);
+  });
+
+  /* 2 · GRÁFICOS
+     El agente entrega valores crudos, nunca porcentajes. Aquí se normalizan
+     a la variable --n (0..1) que cada arquetipo usa como altura, anchura o
+     ángulo. data-chart="pct" normaliza contra 100; el resto, contra el máximo
+     de la propia serie. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-chart]'), function (chart) {
+    var items = Array.prototype.slice.call(chart.querySelectorAll('[data-value]'));
+    if (!items.length) return;
+
+    var vals = items.map(function (el) { return parseFloat(el.dataset.value) || 0; });
+    var max = chart.dataset.chart === 'pct'
+      ? 100
+      : Math.max.apply(null, vals.concat([0]));
+    if (!(max > 0)) max = 1;
+
+    items.forEach(function (el, i) {
+      el.style.setProperty('--n', (vals[i] / max).toFixed(4));
+    });
+
+    /* Serie de línea: el trazado se calcula con los mismos valores, así el
+       agente nunca escribe coordenadas SVG. */
+    var line = chart.querySelector('[data-line]');
+    if (!line || vals.length < 2) return;
+
+    var svg = line.ownerSVGElement;
+    var box = (svg.getAttribute('viewBox') || '0 0 100 100').split(/\s+/);
+    var W = parseFloat(box[2]);
+    var H = parseFloat(box[3]);
+    var pad = H * 0.1;
+    var step = W / (vals.length - 1);
+
+    var pts = vals.map(function (v, i) {
+      var y = H - pad - (v / max) * (H - pad * 2);
+      return (i * step).toFixed(2) + ',' + y.toFixed(2);
+    });
+
+    line.setAttribute('points', pts.join(' '));
+
+    var area = chart.querySelector('[data-area]');
+    if (area) area.setAttribute('points', '0,' + H + ' ' + pts.join(' ') + ' ' + W + ',' + H);
+
+    var dots = chart.querySelector('[data-dots]');
+    if (dots) {
+      pts.forEach(function (p) {
+        var xy = p.split(',');
+        var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', xy[0]);
+        c.setAttribute('cy', xy[1]);
+        c.setAttribute('r', (H * 0.035).toFixed(2));
+        dots.appendChild(c);
+      });
+    }
+  });
+
+  /* 3 · MINI-SERIES
+     Para paneles pequeños el agente escribe una sola cadena de texto:
+       data-series="Unitarias:120|Integración:45|E2E:12"
+     y el tipo de gráfico en data-kind (bars | donut | stack | spark).
+     Aquí se parsea y se construye el DOM; el agente nunca escribe HTML. */
+  var RAMP = ['--a1', '--a2', '--a3', '--ok', '--warn'];
+
+  function parseSeries(raw) {
+    return (raw || '').split('|').filter(Boolean).map(function (part) {
+      var cut = part.lastIndexOf(':');
+      return {
+        label: part.slice(0, cut).trim(),
+        value: parseFloat(part.slice(cut + 1)) || 0
+      };
+    });
+  }
+
+  function el(tag, cls, parent) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (parent) parent.appendChild(node);
+    return node;
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-series]'), function (host) {
+    var data = parseSeries(host.dataset.series);
+    if (!data.length) return;
+
+    var kind = host.dataset.kind || 'bars';
+    var total = data.reduce(function (a, d) { return a + d.value; }, 0) || 1;
+    var max = Math.max.apply(null, data.map(function (d) { return d.value; }).concat([0])) || 1;
+    host.textContent = '';
+
+    if (kind === 'donut') {
+      var stops = [];
+      var acc = 0;
+      data.forEach(function (d, i) {
+        var from = (acc / total) * 100;
+        acc += d.value;
+        var to = (acc / total) * 100;
+        stops.push('var(' + RAMP[i % RAMP.length] + ') ' + from.toFixed(2) + '% ' + to.toFixed(2) + '%');
+      });
+      var ring = el('div', 'ms-donut', host);
+      ring.style.setProperty('--ms-ring', 'conic-gradient(' + stops.join(',') + ')');
+      var hole = el('div', 'ms-hole', ring);
+      hole.textContent = host.dataset.center || data.length;
+
+    } else if (kind === 'stack') {
+      var bar = el('div', 'ms-stack', host);
+      data.forEach(function (d, i) {
+        var seg = el('span', 'ms-seg', bar);
+        seg.style.flexGrow = String(d.value);
+        seg.style.background = 'var(' + RAMP[i % RAMP.length] + ')';
+        seg.title = d.label + ': ' + d.value;
+      });
+
+    } else if (kind === 'spark') {
+      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 100 34');
+      svg.setAttribute('preserveAspectRatio', 'none');
+      svg.setAttribute('class', 'ms-spark');
+      var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      var stp = 100 / (data.length - 1 || 1);
+      poly.setAttribute('points', data.map(function (d, i) {
+        return (i * stp).toFixed(1) + ',' + (32 - (d.value / max) * 28).toFixed(1);
+      }).join(' '));
+      poly.setAttribute('vector-effect', 'non-scaling-stroke');
+      svg.appendChild(poly);
+      host.appendChild(svg);
+
+    } else {
+      var cols = el('div', 'ms-bars', host);
+      data.forEach(function (d) {
+        var col = el('span', 'ms-col', cols);
+        var track = el('span', 'ms-track', col);
+        el('i', null, track).style.height = ((d.value / max) * 100).toFixed(1) + '%';
+        el('u', null, col).textContent = d.label;
+      });
+    }
+
+    /* La leyenda solo tiene sentido cuando cada color es una categoría. */
+    if (kind !== 'donut' && kind !== 'stack') return;
+
+    var scope = host.closest('[data-legend-scope]') || host.parentNode;
+    var legend = scope ? scope.querySelector('[data-legend]') : null;
+    if (legend) {
+      legend.textContent = '';
+      data.forEach(function (d, i) {
+        var item = el('span', 'legend-item', legend);
+        var key = el('i', 'legend-key', item);
+        key.style.background = 'var(' + RAMP[i % RAMP.length] + ')';
+        el('span', null, item).textContent = d.label + ' · ' + d.value;
+      });
+    }
+  });
+})();
+
+</script>
+  <div class="slide-num">37 / 44</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

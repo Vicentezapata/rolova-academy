@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><title>Code</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/tokyo-night.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/tokyo-night-dark.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+<script>addEventListener('DOMContentLoaded',()=>{hljs.highlightAll()})</script>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Code">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="card mt-m" style="padding:0; overflow:hidden">
+  <div style="display:flex; align-items:center; gap:6px; padding:12px 16px; background:color-mix(in srgb, var(--surface) 95%, var(--text-1) 5%); border-bottom:1px solid var(--border)">
+    <div style="width:12px; height:12px; border-radius:50%; background:#FF5F57"></div>
+    <div style="width:12px; height:12px; border-radius:50%; background:#FFBD2E"></div>
+    <div style="width:12px; height:12px; border-radius:50%; background:#28CA41"></div>
+    <div style="margin-left:12px; font-family:var(--font-mono); font-size:12px; color:var(--text-3)">{{ file }}</div>
+  </div>
+  <pre style="margin:0; padding:24px; background:transparent"><code class="language-{{ lang }}">{{ code }}</code></pre>
+</div>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

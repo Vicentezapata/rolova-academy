@@ -1,0 +1,26 @@
+{
+  "_nota": "Catálogo de iconos Lordicon verificados contra el CDN. Para añadir uno nuevo: copia el ID de 8 caracteres de la URL https://cdn.lordicon.com/XXXXXXXX.json y añádelo aquí. Regenera con: python3 scripts/make_gallery.py",
+  "_verificado": "2026-08-15",
+  "icons": [
+    { "id": "egiwmiit", "name": "Check en círculo", "tags": "válido, correcto, aprobado" },
+    { "id": "usownftb", "name": "Alerta triangular", "tags": "riesgo, cuidado, advertencia" },
+    { "id": "inrunzby", "name": "Alerta triangular (llena)", "tags": "peligro, crítico, error" },
+    { "id": "psnhyobz", "name": "Campana", "tags": "aviso, notificación, recordatorio" },
+    { "id": "gqdnbnwt", "name": "Gráfico de barras", "tags": "datos, métricas, informe" },
+    { "id": "kjkiqtxg", "name": "Presentación", "tags": "pizarra, clase, exposición" },
+    { "id": "qhgmphtg", "name": "Monitor", "tags": "pantalla, equipo, entorno" },
+    { "id": "wxnxiano", "name": "Libro abierto", "tags": "lectura, teoría, material" },
+    { "id": "nocovwne", "name": "Documento", "tags": "archivo, informe, entregable" },
+    { "id": "wzwygmng", "name": "Documento (variante)", "tags": "archivo, informe, entregable" },
+    { "id": "msoeawqm", "name": "Lupa", "tags": "buscar, inspeccionar, explorar" },
+    { "id": "fkdzyfle", "name": "Lupa (variante)", "tags": "buscar, investigar, analizar" },
+    { "id": "dxjqoygy", "name": "Persona", "tags": "usuario, rol, actor" },
+    { "id": "ljvjsnvh", "name": "Persona (variante)", "tags": "usuario, perfil, cuenta" },
+    { "id": "lupuorrc", "name": "Confeti", "tags": "logro, cierre, celebración" },
+    { "id": "xtzvywzp", "name": "Punto / carga", "tags": "proceso, estado, en curso" }
+  ],
+  "_rotos": {
+    "_nota": "IDs que aparecen en cursos/ pero devuelven 404 en el CDN. No usar.",
+    "ids": ["bgkflljv", "gqyasiqp", "jvihlqwy", "qhgmpzfs", "qwwxluoc"]
+  }
+}

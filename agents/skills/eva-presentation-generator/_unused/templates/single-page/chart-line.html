@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><title>Chart · Line</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/minimal-white.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Line chart">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="card mt-l" style="height:520px;padding:28px"><canvas id="c"></canvas></div>
+<script>
+    addEventListener('DOMContentLoaded',()=>{
+      const css=getComputedStyle(document.documentElement);
+      const accent=css.getPropertyValue('--accent').trim();
+      const acc2=css.getPropertyValue('--accent-2').trim();
+      const text2=css.getPropertyValue('--text-2').trim();
+      const border=css.getPropertyValue('--border').trim();
+      new Chart(document.getElementById('c'),{type:'line',
+        data:{labels:['ETIQUETA', 'ETIQUETA', 'ETIQUETA', 'ETIQUETA', 'ETIQUETA'],
+          datasets:[
+            {label:'ETIQUETA',data:[12,14,15,19,24,28,33,38,45,51,58,66],
+              borderColor:accent,backgroundColor:accent+'22',fill:true,tension:.4,borderWidth:3,pointRadius:4},
+            {label:'ETIQUETA',data:[38,40,42,45,48,50,53,55,58,60,62,64],
+              borderColor:acc2,backgroundColor:acc2+'22',fill:true,tension:.4,borderWidth:3,pointRadius:4}
+          ]},
+        options:{plugins:{legend:{labels:{color:text2}}},
+          scales:{x:{ticks:{color:text2},grid:{color:border}},
+                  y:{ticks:{color:text2},grid:{color:border}}}}});
+    });
+  </script>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

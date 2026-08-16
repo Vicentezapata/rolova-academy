@@ -1,0 +1,35 @@
+{
+  "id": "royal_red",
+  "name": "Royal Red",
+  "source": "Recreado desde style-gallery/royal_red.html sobre el contrato de tokens",
+  "best_for": ["Ceremonia y protocolo", "Patrimonio cultural", "Gala y premios", "Marca de lujo oriental"],
+  "preset": "lacquer_court",
+  "decoration": "gold_corners_rules",
+  "notes": "Laca oxblood con oro de corte: la paleta es oro y crema, nada más. El bermellón #c0392b del original no llega a 3:1 sobre el fondo, así que vive solo como relleno de sello (--err-b) y nunca como texto. Radio de 2px y cero sombra: todo es lámina, no volumen.",
+  "palette": {
+    "bg": "#4a0606",
+    "text": "#fff8e7",
+    "a1": "#c9a960",
+    "a2": "#e0c88a",
+    "a3": "#d4a08a"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. VIGNETTE mueve el foco de la laca.",
+  "background_rhythm": [
+    {
+      "VIGNETTE": "radial-gradient(ellipse 60% 45% at 50% 50%, transparent 0%, transparent 55%, rgba(0,0,0,0.45) 100%)",
+      "BG": "radial-gradient(ellipse 90% 75% at 50% 45%, #6b0a0a 0%, #4a0606 45%, #2d0303 100%)"
+    },
+    {
+      "VIGNETTE": "radial-gradient(ellipse 58% 48% at 30% 44%, transparent 0%, transparent 52%, rgba(0,0,0,0.48) 100%)",
+      "BG": "radial-gradient(ellipse 88% 78% at 28% 40%, #6b0a0a 0%, #4a0606 46%, #2d0303 100%)"
+    },
+    {
+      "VIGNETTE": "radial-gradient(ellipse 62% 44% at 72% 54%, transparent 0%, transparent 55%, rgba(0,0,0,0.46) 100%)",
+      "BG": "radial-gradient(ellipse 92% 72% at 74% 56%, #6b0a0a 0%, #4a0606 44%, #2d0303 100%)"
+    },
+    {
+      "VIGNETTE": "radial-gradient(ellipse 66% 42% at 50% 22%, transparent 0%, transparent 50%, rgba(0,0,0,0.50) 100%)",
+      "BG": "radial-gradient(ellipse 95% 80% at 50% 12%, #6b0a0a 0%, #4a0606 48%, #2d0303 100%)"
+    }
+  ]
+}

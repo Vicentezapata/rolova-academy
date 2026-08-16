@@ -1,0 +1,34 @@
+<!--CSS-->
+.co-wrap{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:flex;flex-direction:column;gap:13px;justify-content:center;}
+.co-lead{font-size:13.5px;color:var(--text-sec);line-height:1.7;max-width:900px;margin-bottom:2px;}
+.co{border-radius:var(--radius-sm, 10px);padding:15px 19px;display:grid;grid-template:auto / 34px 1fr;gap:14px;align-items:start;border:var(--bw) solid;border-left-width:3px;}
+.co-ico{width:34px;height:34px;border-radius:var(--radius-sm, 9px);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:var(--heavy);}
+.co-body h4{font-family:var(--display);font-size:14.5px;font-weight:var(--heavy);letter-spacing:-0.015em;margin-bottom:4px;}
+.co-body p{font-size:12.5px;color:var(--text-sec);line-height:1.7;}
+.co-body code{font-family:var(--mono);font-size:11.5px;background:var(--inset-border);border:var(--bw) solid var(--inset-border);border-radius:var(--radius-sm, 4px);padding:1px 6px;color:var(--a1);}
+.co.info{background:var(--a1-t);border-color:var(--a1-b);border-left-color:var(--a1);}
+.co.info .co-ico{background:var(--a1-t);color:var(--a1);} .co.info h4{color:var(--a1);}
+.co.tip{background:var(--ok-t);border-color:var(--ok-b);border-left-color:var(--ok);}
+.co.tip .co-ico{background:var(--ok-t);color:var(--ok);} .co.tip h4{color:var(--ok);}
+.co.warn{background:var(--warn-t);border-color:var(--warn-b);border-left-color:var(--warn);}
+.co.warn .co-ico{background:var(--warn-t);color:var(--warn);} .co.warn h4{color:var(--warn);}
+.co.danger{background:var(--err-t);border-color:var(--err-b);border-left-color:var(--err);}
+.co.danger .co-ico{background:var(--err-t);color:var(--err);} .co.danger h4{color:var(--err);}
+.co.note{background:var(--inset-bg);border-color:var(--inset-border);border-left-color:var(--a2);}
+.co.note .co-ico{background:var(--a2-t);color:var(--a2);} .co.note h4{color:var(--a2);}
+<!--BODY-->
+  <div class="header">
+    <span class="tag">{{TAG_LEFT}}</span>
+    <span class="h2">{{TITLE}}</span>
+    <span class="tag">{{TAG_RIGHT}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="co-wrap">
+    <p class="co-lead">{{LEAD}}</p>
+<!--REPEAT:CALLOUTS-->
+    <div class="co {{kind}}">
+      <div class="co-ico icon" aria-hidden="true" data-icon="{{icon}}" data-icon-size="22">{{icon}}</div>
+      <div class="co-body"><h4>{{title}}</h4><p>{{text}}</p></div>
+    </div>
+<!--END:CALLOUTS-->
+  </div>

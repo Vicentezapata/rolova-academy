@@ -1,0 +1,38 @@
+{
+  "id": "chrome_y2k",
+  "name": "Chrome Y2K",
+  "source": "Generado desde style-gallery/chrome_y2k.html sobre el contrato de tokens",
+  "best_for": [
+    "Web3",
+    "Retrofuturismo",
+    "Gaming"
+  ],
+  "preset": "dark_glow",
+  "decoration": "scanline",
+  "palette": {
+    "bg": "#0a0518",
+    "text": "#ffffff",
+    "a1": "#00d4ff",
+    "a2": "#ff6bcd",
+    "a3": "#a0a0e8"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide.",
+  "background_rhythm": [
+    {
+      "BG": "radial-gradient(100% 80% at 70% 120%, rgba(0,212,255,0.1) 0%, var(--bg) 78%)",
+      "GLOW_POS": "top:-80px;right:-60px;"
+    },
+    {
+      "BG": "radial-gradient(100% 80% at 90% 110%, rgba(255,107,205,0.08) 0%, var(--bg) 78%)",
+      "GLOW_POS": "top:-60px;left:-60px;"
+    },
+    {
+      "BG": "radial-gradient(100% 80% at 10% 110%, rgba(160,160,232,0.09) 0%, var(--bg) 78%)",
+      "GLOW_POS": "bottom:-80px;right:-40px;"
+    },
+    {
+      "BG": "radial-gradient(100% 80% at 70% -10%, rgba(0,212,255,0.1) 0%, var(--bg) 78%)",
+      "GLOW_POS": "top:50%;left:50%;transform:translate(-50%,-50%);"
+    }
+  ]
+}

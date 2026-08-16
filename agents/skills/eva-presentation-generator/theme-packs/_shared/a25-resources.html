@@ -1,0 +1,50 @@
+<!--CSS-->
+.rs-area{position:absolute;left:48px;top:88px;right:48px;bottom:44px;display:grid;grid-template:1fr / 1.5fr 1fr;gap:22px;z-index:10;}
+.rs-list{display:flex;flex-direction:column;gap:11px;}
+.rs-group-title{font-family:var(--mono);font-size:10px;letter-spacing:0.17em;text-transform:uppercase;color:var(--a1);margin-bottom:1px;}
+.rs-item{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius-sm, 8px);padding:13px 16px;display:grid;grid-template:auto / 30px 1fr;gap:13px;align-items:start;}
+.rs-kind{width:30px;height:30px;border-radius:var(--radius-sm, 8px);background:var(--a1-t);border:var(--bw) solid var(--a1-b);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.rs-item h4{font-family:var(--display);font-size:13.5px;font-weight:700;color:var(--text);letter-spacing:-0.01em;margin-bottom:3px;}
+.rs-item p{font-size:11.5px;color:var(--text-sec);line-height:1.6;}
+.rs-url{font-family:var(--mono);font-size:10.5px;color:var(--a1);margin-top:4px;word-break:break-all;}
+.rs-side{display:flex;flex-direction:column;gap:16px;}
+.rs-qr{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;align-items:center;gap:13px;}
+.rs-qr img{width:168px;height:168px;border-radius:var(--radius-sm, 10px);background:#fff;padding:9px;}
+.rs-qr-label{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--a1);text-align:center;}
+.rs-qr-cap{font-size:12px;color:var(--text-sec);text-align:center;line-height:1.6;}
+.rs-next{margin-top:auto;background:var(--a3-t);border:var(--bw) solid var(--a3-b);border-radius:var(--radius);padding:15px 18px;}
+.rs-next strong{color:var(--a3);display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:5px;}
+.rs-next p{font-size:12px;color:var(--text-sec);line-height:1.65;}
+<!--BODY-->
+  <div class="header">
+    <span class="tag">{{TAG_LEFT}}</span>
+    <span class="h2">{{TITLE}}</span>
+    <span class="tag">{{TAG_RIGHT}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="rs-area">
+    <div class="rs-list">
+      <div class="rs-group-title">{{LIST_TITLE}}</div>
+<!--REPEAT:RESOURCES-->
+      <div class="rs-item">
+        <div class="rs-kind icon" aria-hidden="true" data-icon="{{icon}}" data-icon-size="22">{{icon}}</div>
+        <div>
+          <h4>{{title}}</h4>
+          <p>{{desc}}</p>
+          <div class="rs-url">{{url}}</div>
+        </div>
+      </div>
+<!--END:RESOURCES-->
+    </div>
+    <div class="rs-side">
+      <div class="rs-qr">
+        <div class="rs-qr-label">{{QR_LABEL}}</div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=0&data={{QR_DATA}}" alt="Código QR hacia {{QR_ALT}}">
+        <div class="rs-qr-cap">{{QR_CAPTION}}</div>
+      </div>
+      <div class="rs-next">
+        <strong>{{NEXT_LABEL}}</strong>
+        <p>{{NEXT}}</p>
+      </div>
+    </div>
+  </div>

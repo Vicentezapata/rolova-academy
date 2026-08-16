@@ -1,74 +1,81 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: #e2e8f0;
+  padding: var(--space-8);
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  height: 100%;
+  overflow-y: auto;
 }
 
 .header {
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-8);
 }
 
 .header h1 {
+  font-family: var(--font-heading);
   font-size: 2rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
 }
 
 .desc {
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .gridLayout {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  gap: var(--space-8);
 }
 
 @media (max-width: 768px) {
   .gridLayout {
     grid-template-columns: 1fr;
   }
+
+  .container { padding: var(--space-4); }
 }
 
 .panel {
-  background-color: #1a1d27;
-  border: 1px solid #334155;
+  background-color: var(--surface-1);
+  border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: var(--space-6);
 }
 
 .panel h2 {
+  font-family: var(--font-heading);
   font-size: 1.25rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #334155;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .formGroup {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-6);
 }
 
 .formGroup label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
   font-weight: 600;
-  color: #94a3b8;
+  color: var(--text-secondary);
 }
 
 .input {
   width: 100%;
-  padding: 0.75rem;
-  background-color: #0f111a;
-  border: 1px solid #334155;
+  padding: var(--space-3);
+  background-color: var(--surface-2);
+  border: 1px solid var(--border-subtle);
   border-radius: 6px;
-  color: #e2e8f0;
-  font-size: 1rem;
+  color: var(--text-primary);
+  font-size: var(--text-md);
 }
 
-.input:focus {
-  outline: none;
-  border-color: #3b82f6;
+.input:focus-visible {
+  outline: 2px solid var(--brand-magenta);
+  outline-offset: 1px;
+  border-color: var(--brand-magenta);
 }
 
 .checkboxGroup {
@@ -89,16 +96,16 @@
 .previewContainer {
   width: 100%;
   height: 250px;
-  background-color: #0f111a;
-  border: 1px solid #334155;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
-  margin-top: 1rem;
+  margin-top: var(--space-4);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-6);
 }
 
 .previewContainer img {
@@ -108,48 +115,49 @@
 }
 
 .button {
-  background-color: #3b82f6;
-  color: white;
+  background: linear-gradient(90deg, var(--brand-magenta), var(--brand-violet));
+  color: #fff;
   border: none;
-  padding: 1rem 1.5rem;
+  padding: var(--space-4) var(--space-6);
   border-radius: 6px;
+  font-family: var(--font-body);
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: filter var(--duration-fast);
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
-.button:hover {
-  background-color: #2563eb;
+.button:hover:not(:disabled) {
+  filter: brightness(1.12);
 }
 
 .button:disabled {
-  background-color: #475569;
+  background: var(--surface-2);
+  color: var(--text-muted);
   cursor: not-allowed;
-  opacity: 0.7;
 }
 
 .statusBox {
-  margin-top: 1.5rem;
-  padding: 1rem;
+  margin-top: var(--space-6);
+  padding: var(--space-4);
   border-radius: 6px;
-  background-color: #0f111a;
-  border: 1px solid #334155;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border-subtle);
 }
 
 .statusTitle {
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
 }
 
 .statusText {
-  color: #94a3b8;
-  font-family: monospace;
+  color: var(--text-secondary);
+  font-family: var(--font-code);
   font-size: 0.9rem;
 }
 

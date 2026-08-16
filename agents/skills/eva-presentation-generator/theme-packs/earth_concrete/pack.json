@@ -1,0 +1,35 @@
+{
+  "id": "earth_concrete",
+  "name": "Earth Concrete",
+  "source": "Recreado desde style-gallery/earth_concrete.html sobre el contrato de tokens",
+  "best_for": ["Arquitectura", "Construcción", "Industria", "Portafolio de estudio"],
+  "preset": "concrete_plan",
+  "decoration": "grain_grid_cropmarks",
+  "notes": "Superficies planas y translúcidas sobre hormigón: cero radio, cero sombra, borde de tinta al 18%. El naranja es de obra, se usa con cuentagotas — un acento por slide, no más.",
+  "palette": {
+    "bg": "#c4bfb3",
+    "text": "#1a1a1a",
+    "a1": "#d8541f",
+    "a2": "#ff6b35",
+    "a3": "#3a3a3a"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. STAIN mueve la mancha de humedad del hormigón.",
+  "background_rhythm": [
+    {
+      "STAIN": "radial-gradient(ellipse 60% 40% at 18% 22%, rgba(255,255,255,0.18), transparent 65%), radial-gradient(ellipse 55% 45% at 88% 78%, rgba(0,0,0,0.07), transparent 60%)",
+      "BG": "linear-gradient(135deg, #d4cfc4 0%, #c4bfb3 55%, #b5b0a5 100%)"
+    },
+    {
+      "STAIN": "radial-gradient(ellipse 58% 42% at 82% 20%, rgba(255,255,255,0.18), transparent 65%), radial-gradient(ellipse 55% 45% at 14% 82%, rgba(0,0,0,0.07), transparent 60%)",
+      "BG": "linear-gradient(135deg, #c4bfb3 0%, #d4cfc4 50%, #b5b0a5 100%)"
+    },
+    {
+      "STAIN": "radial-gradient(ellipse 62% 44% at 50% 12%, rgba(255,255,255,0.16), transparent 65%), radial-gradient(ellipse 50% 40% at 20% 92%, rgba(0,0,0,0.06), transparent 60%)",
+      "BG": "linear-gradient(135deg, #d4cfc4 0%, #b5b0a5 60%, #c4bfb3 100%)"
+    },
+    {
+      "STAIN": "radial-gradient(ellipse 56% 40% at 12% 74%, rgba(255,255,255,0.17), transparent 65%), radial-gradient(ellipse 52% 42% at 86% 24%, rgba(0,0,0,0.07), transparent 60%)",
+      "BG": "linear-gradient(135deg, #b5b0a5 0%, #c4bfb3 50%, #d4cfc4 100%)"
+    }
+  ]
+}

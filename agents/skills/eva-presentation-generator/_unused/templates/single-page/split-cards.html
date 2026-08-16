@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"/><title>Split Cards</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/dark_tech.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Split Cards">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="grid g2 mt-l" style="align-items:center; gap:64px">
+  <div class="anim-fade-left" data-anim="fade-left">
+    <p class="lede">{{ lead }}</p>
+    <p class="mt-m dim">{{ desc }}</p>
+  </div>
+  <div class="anim-fade-right" data-anim="fade-right">
+    <div class="card card-accent" style="border-top-color:var(--bad)">
+      <h3 style="color:var(--bad); display:flex; align-items:center; gap:8px">
+        <i data-lucide="triangle-alert"></i> {{ card_title }}
+      </h3>
+      <p class="mt-s dim">{{ card_desc }}</p>
+    </div>
+  </div>
+</div>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script>if (typeof lucide !== 'undefined') lucide.createIcons();</script>
+<script src="../../assets/runtime.js"></script>
+</body></html>

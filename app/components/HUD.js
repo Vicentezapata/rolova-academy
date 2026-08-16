@@ -1,53 +1,72 @@
 "use client";
 
-export default function HUD({ courses, loading, onCourseClick }) {
+import Link from 'next/link';
+import { courseTheme } from '../lib/theme';
+import ThemeToggle from './ThemeToggle';
+
+export default function HUD({ courses, loading, onCourseClick, selectedCourse }) {
   return (
     <div className="hud-overlay">
       {/* Top bar */}
-      <div className="hud-topbar">
+      <header className="hud-topbar">
         <div className="hud-brand">
-          <div className="hud-brand-icon">🚀</div>
+          <div className="hud-brand-icon" aria-hidden="true">🚀</div>
           <div>
             <div className="hud-title">Rolova Academy</div>
             <div className="hud-subtitle">Tu ecosistema de aprendizaje centralizado</div>
           </div>
         </div>
-        <div className="hud-profile">
-          <div className="hud-avatar">🧑‍🏫</div>
-          <div className="hud-profile-info">
-            <span className="hud-profile-name">Profesor</span>
-            <span className="hud-profile-role">Administrador</span>
+        <div className="hud-actions">
+          <ThemeToggle />
+          <Link href="/presentaciones/nuevo" className="hud-cta" aria-label="Crear una nueva presentación">
+            <span aria-hidden="true">✨</span>
+            <span className="hud-cta-label">Nueva presentación</span>
+          </Link>
+          <div className="hud-profile">
+            <div className="hud-avatar" aria-hidden="true">🧑‍🏫</div>
+            <div className="hud-profile-info">
+              <span className="hud-profile-name">Profesor</span>
+              <span className="hud-profile-role">Administrador</span>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Course sidebar legend */}
-      <div className="hud-sidebar">
-        <div className="hud-sidebar-title">📡 Estaciones Activas</div>
+      <nav className="hud-sidebar" aria-label="Cursos disponibles">
+        <h2 className="hud-sidebar-title">
+          <span aria-hidden="true">📡</span> Estaciones Activas
+        </h2>
         {loading ? (
-          <div className="hud-loader">Cargando...</div>
+          <p className="hud-loader">Cargando...</p>
         ) : (
           courses.map((course, i) => {
-            const colors = ['#d946ef', '#06b6d4', '#a855f7', '#f59e0b', '#10b981'];
-            const icons = ['🎓', '🧠', '🔬', '🌐', '⚡'];
+            const theme = courseTheme(i);
+            const isSelected = selectedCourse?.name === course.name;
             return (
-              <div key={i} className="hud-course-item" onClick={() => onCourseClick && onCourseClick(course)} style={{ cursor: 'pointer' }}>
-                <div
-                  className="hud-course-dot"
-                  style={{ background: colors[i % colors.length] }}
-                />
-                <span className="hud-course-icon">{icons[i % icons.length]}</span>
+              <button
+                key={course.path || course.name}
+                type="button"
+                className="hud-course-item"
+                aria-pressed={isSelected}
+                onClick={() => onCourseClick && onCourseClick(course)}
+              >
+                <span className="hud-course-dot" style={{ background: theme.accent }} aria-hidden="true" />
+                <span className="hud-course-icon" aria-hidden="true">{theme.icon}</span>
                 <span className="hud-course-name">{course.name}</span>
-                <span className="hud-course-count">{course.materials.length}</span>
-              </div>
+                <span className="hud-course-count">
+                  {course.materials.length}
+                  <span className="visually-hidden"> materiales</span>
+                </span>
+              </button>
             );
           })
         )}
-      </div>
+      </nav>
 
 
       {/* Controls hint */}
-      <div className="hud-controls">
+      <div className="hud-controls" aria-hidden="true">
         <span>🖱️ Rotar</span>
         <span>⚙️ Scroll: Zoom</span>
         <span>🖱️ Clic: Abrir material</span>

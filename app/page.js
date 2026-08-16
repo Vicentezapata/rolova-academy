@@ -8,6 +8,7 @@ import SkillStation from './components/SkillStation';
 import Rocket from './components/Rocket';
 import HUD from './components/HUD';
 import CoursePanel from './components/CoursePanel';
+import { usePrefersReducedMotion, useResolvedTheme } from './lib/useTheme';
 import './globals.css';
 
 // Positions for up to 6 courses in a nice arc
@@ -27,24 +28,25 @@ function stationPosition(index, total) {
   return [Math.cos(angle) * spread * 0.5, Math.sin(angle) * 2, 0];
 }
 
-function Scene({ courses, onSelect, selectedCourse }) {
+function Scene({ courses, onSelect, selectedCourse, theme, reducedMotion }) {
   const selectedIndex = courses.findIndex(c => selectedCourse && c.name === selectedCourse.name);
   const targetPos = selectedIndex >= 0 ? stationPosition(selectedIndex, courses.length) : null;
 
   return (
     <>
-      <SpaceBackground />
+      <SpaceBackground theme={theme} />
       {courses.map((course, i) => (
         <SkillStation
-          key={i}
+          key={course.path || course.name}
           course={course}
           position={stationPosition(i, courses.length)}
           courseIndex={i}
           onSelect={onSelect}
           isSelected={selectedCourse?.name === course.name}
+          reducedMotion={reducedMotion}
         />
       ))}
-      <Rocket targetPosition={targetPos} />
+      <Rocket targetPosition={targetPos} reducedMotion={reducedMotion} />
     </>
   );
 }
@@ -52,14 +54,36 @@ function Scene({ courses, onSelect, selectedCourse }) {
 export default function Home() {
   const [courses, setCourses]             = useState([]);
   const [loading, setLoading]             = useState(true);
+  const [error, setError]                 = useState(null);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedIndex, setSelectedIndex]   = useState(0);
+  const [reloadToken, setReloadToken]     = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
     fetch('/api/courses')
-      .then((r) => r.json())
-      .then((d) => { setCourses(d.courses || []); setLoading(false); })
-      .catch(() => setLoading(false));
+      .then((r) => {
+        if (!r.ok) throw new Error(`El servidor respondió ${r.status}`);
+        return r.json();
+      })
+      .then((d) => {
+        if (cancelled) return;
+        setCourses(d.courses || []);
+        setError(null);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err.message || 'No se pudieron cargar los cursos.');
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => { cancelled = true; };
+  }, [reloadToken]);
+
+  const retry = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    setReloadToken((t) => t + 1);
   }, []);
 
   const handleSelect = useCallback((course) => {
@@ -70,14 +94,17 @@ export default function Home() {
 
   const handleClose = useCallback(() => setSelectedCourse(null), []);
 
+  const reducedMotion = usePrefersReducedMotion();
+  const theme = useResolvedTheme();
+
   return (
-    <main style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: '#050510' }}>
+    <main style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: 'var(--bg-base)' }}>
       {/* 3D Canvas */}
       <Canvas
         camera={{ position: [0, 3, 18], fov: 55 }}
-        gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         dpr={[1, 1.2]}
-        frameloop="always"
+        frameloop={reducedMotion ? 'demand' : 'always'}
         style={{ position: 'absolute', top: 0, left: 0 }}
       >
         <Suspense fallback={null}>
@@ -86,6 +113,8 @@ export default function Home() {
               courses={courses}
               onSelect={handleSelect}
               selectedCourse={selectedCourse}
+              theme={theme}
+              reducedMotion={reducedMotion}
             />
           )}
           <OrbitControls
@@ -94,7 +123,7 @@ export default function Home() {
             enableRotate
             maxDistance={30}
             minDistance={5}
-            autoRotate={!selectedCourse && !loading}
+            autoRotate={!selectedCourse && !loading && !reducedMotion}
             autoRotateSpeed={0.25}
             makeDefault
           />
@@ -105,7 +134,12 @@ export default function Home() {
       </Canvas>
 
       {/* HTML HUD overlay */}
-      <HUD courses={courses} loading={loading} onCourseClick={handleSelect} />
+      <HUD
+        courses={courses}
+        loading={loading}
+        onCourseClick={handleSelect}
+        selectedCourse={selectedCourse}
+      />
 
       {/* Course detail panel */}
       {selectedCourse && (
@@ -121,6 +155,15 @@ export default function Home() {
         <div className="splash-loader">
           <div className="splash-ring" />
           <div className="splash-text">Inicializando Academia...</div>
+        </div>
+      )}
+
+      {/* Error state */}
+      {!loading && error && (
+        <div className="splash-loader" role="alert">
+          <div className="splash-text">No se pudieron cargar los cursos.</div>
+          <div className="splash-error-detail">{error}</div>
+          <button className="splash-retry" onClick={retry}>Reintentar</button>
         </div>
       )}
     </main>

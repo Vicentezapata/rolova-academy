@@ -1,0 +1,38 @@
+{
+  "id": "retro_70s",
+  "name": "Retro 70s",
+  "source": "Generado desde style-gallery/retro_70s.html sobre el contrato de tokens",
+  "best_for": [
+    "Retro",
+    "Café",
+    "Música"
+  ],
+  "preset": "bold_block",
+  "decoration": "stripes",
+  "palette": {
+    "bg": "#f4e9d0",
+    "text": "#2a1810",
+    "a1": "#e07a3e",
+    "a2": "#c14d3f",
+    "a3": "#d4a82a"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide.",
+  "background_rhythm": [
+    {
+      "BG": "radial-gradient(100% 80% at 70% 120%, rgba(224,122,62,0.1) 0%, var(--bg) 78%)",
+      "GLOW_POS": "top:-80px;right:-60px;"
+    },
+    {
+      "BG": "radial-gradient(100% 80% at 90% 110%, rgba(193,77,63,0.08) 0%, var(--bg) 78%)",
+      "GLOW_POS": "top:-60px;left:-60px;"
+    },
+    {
+      "BG": "radial-gradient(100% 80% at 10% 110%, rgba(212,168,42,0.09) 0%, var(--bg) 78%)",
+      "GLOW_POS": "bottom:-80px;right:-40px;"
+    },
+    {
+      "BG": "radial-gradient(100% 80% at 70% -10%, rgba(224,122,62,0.1) 0%, var(--bg) 78%)",
+      "GLOW_POS": "top:50%;left:50%;transform:translate(-50%,-50%);"
+    }
+  ]
+}

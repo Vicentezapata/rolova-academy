@@ -1,0 +1,23 @@
+{
+  "id": "bauhaus_block",
+  "name": "Bauhaus Block",
+  "source": "Recreado desde style-gallery/bauhaus_block.html sobre el contrato de tokens",
+  "best_for": ["Diseño", "Educación creativa", "Talleres", "Arquitectura"],
+  "preset": "swiss_rule",
+  "decoration": "rules_geo",
+  "notes": "Sin radio, sin sombra, sin degradados. La jerarquía la dan el peso tipográfico, las reglas de tinta y los tres colores primarios planos.",
+  "palette": {
+    "bg": "#f4f0e8",
+    "text": "#1a1a1a",
+    "a1": "#d62828",
+    "a2": "#003049",
+    "a3": "#ffd60a"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. GEO coloca el bloque geométrico plano.",
+  "background_rhythm": [
+    { "GEO": "top:-32px;right:-32px;background:#d62828;border-radius:50%;" },
+    { "GEO": "bottom:-30px;left:-30px;background:#003049;" },
+    { "GEO": "top:-34px;left:-34px;background:#ffd60a;border-radius:0 0 96px 0;" },
+    { "GEO": "bottom:-32px;right:-32px;background:#003049;border-radius:96px 0 0 0;" }
+  ]
+}

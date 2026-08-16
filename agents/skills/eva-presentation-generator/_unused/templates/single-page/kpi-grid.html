@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><title>KPI Grid</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/minimal-white.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="KPIs">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="grid g4 mt-l anim-stagger-list" data-anim-target="">
+<div class="card"><p class="eyebrow">{{ label }}</p><div style="font-size:56px;font-weight:800"><span class="counter" data-to="1248">0</span>K</div><p class="dim" style="color:var(--good)">{{ text }}</p></div>
+<div class="card"><p class="eyebrow">{{ label }}</p><div style="font-size:56px;font-weight:800"><span class="counter" data-to="82">0</span>K</div><p class="dim" style="color:var(--good)">{{ text }}</p></div>
+<div class="card"><p class="eyebrow">{{ label }}</p><div style="font-size:56px;font-weight:800"><span class="counter" data-to="74">0</span>%</div><p class="dim" style="color:var(--good)">{{ text }}</p></div>
+<div class="card"><p class="eyebrow">{{ label }}</p><div style="font-size:56px;font-weight:800"><span class="counter" data-to="61">0</span></div><p class="dim" style="color:var(--warn)">{{ text }}</p></div>
+</div>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

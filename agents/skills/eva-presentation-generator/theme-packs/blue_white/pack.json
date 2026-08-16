@@ -1,0 +1,38 @@
+{
+  "id": "blue_white",
+  "name": "Blue White",
+  "source": "Generado desde style-gallery/blue_white.html sobre el contrato de tokens",
+  "best_for": [
+    "Corporativo",
+    "Formación",
+    "Empresa"
+  ],
+  "preset": "light_soft",
+  "decoration": "wash",
+  "palette": {
+    "bg": "#ffffff",
+    "text": "#0a1d3a",
+    "a1": "#2563EB",
+    "a2": "#1D4ED8",
+    "a3": "#64748b"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide.",
+  "background_rhythm": [
+    {
+      "BG": "radial-gradient(100% 80% at 70% 120%, rgba(37,99,235,0.1) 0%, var(--bg) 78%)",
+      "GLOW_POS": "top:-80px;right:-60px;"
+    },
+    {
+      "BG": "radial-gradient(100% 80% at 90% 110%, rgba(29,78,216,0.08) 0%, var(--bg) 78%)",
+      "GLOW_POS": "top:-60px;left:-60px;"
+    },
+    {
+      "BG": "radial-gradient(100% 80% at 10% 110%, rgba(100,116,139,0.09) 0%, var(--bg) 78%)",
+      "GLOW_POS": "bottom:-80px;right:-40px;"
+    },
+    {
+      "BG": "radial-gradient(100% 80% at 70% -10%, rgba(37,99,235,0.1) 0%, var(--bg) 78%)",
+      "GLOW_POS": "top:50%;left:50%;transform:translate(-50%,-50%);"
+    }
+  ]
+}

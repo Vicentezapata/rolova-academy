@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"/><title>User Persona</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/dark_tech.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  .persona-img {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+  }
+  .tag {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--surface-3);
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-1);
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+</style>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="User Persona">
+<div class="grid" style="grid-template-columns: 1fr 2fr; gap: 64px; align-items: start; height:100%">
+  <!-- Left Side: Profile -->
+  <div class="anim-fade-left" data-anim="fade-left">
+    <div style="text-align: center; margin-bottom: 24px">
+      <div class="persona-img mb-m" style="background-image: url('https://ui-avatars.com/api/?name=User+Persona&size=512&background=random'); background-size: cover"></div>
+      <h2 class="h2" style="font-size: 32px; margin:0">{{ persona_name }}</h2>
+      <p class="eyebrow mt-s" style="color:var(--accent-1)">{{ persona_role }}</p>
+    </div>
+    
+    <div class="card mb-m" style="padding: 24px">
+      <p class="eyebrow mb-s">Quote</p>
+      <p class="dim" style="font-style: italic; font-family: var(--serif-italic-font); font-size:18px; margin:0">"{{ persona_quote }}"</p>
+    </div>
+    
+    <div class="card" style="padding: 24px">
+      <p class="eyebrow mb-s">Demographics</p>
+      <div style="display:flex; flex-direction:column; gap:12px">
+         <div style="display:flex; justify-content:space-between"><span class="dim2">Age</span> <span class="h4" style="margin:0">{{ persona_age }}</span></div>
+         <div style="display:flex; justify-content:space-between"><span class="dim2">Location</span> <span class="h4" style="margin:0">{{ persona_location }}</span></div>
+         <div style="display:flex; justify-content:space-between"><span class="dim2">Tech Level</span> <span class="h4" style="margin:0">{{ persona_tech }}</span></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Right Side: Details -->
+  <div class="anim-fade-right" data-anim="fade-right">
+    <h3 class="h3 mb-m" style="display:flex; align-items:center; gap:8px"><i data-lucide="target"></i> Goals & Needs</h3>
+    <div class="card mb-l">
+      <ul style="margin:0; padding-left: 20px; line-height: 1.6; font-size:18px" class="dim">
+        <li>{{ goal_1 }}</li>
+        <li>{{ goal_2 }}</li>
+        <li>{{ goal_3 }}</li>
+      </ul>
+    </div>
+    
+    <h3 class="h3 mb-m" style="display:flex; align-items:center; gap:8px; color:var(--bad)"><i data-lucide="frown"></i> Pain Points</h3>
+    <div class="card mb-l" style="border-left: 3px solid var(--bad)">
+      <ul style="margin:0; padding-left: 20px; line-height: 1.6; font-size:18px" class="dim">
+        <li>{{ pain_1 }}</li>
+        <li>{{ pain_2 }}</li>
+        <li>{{ pain_3 }}</li>
+      </ul>
+    </div>
+    
+    <h3 class="h3 mb-m" style="display:flex; align-items:center; gap:8px"><i data-lucide="zap"></i> Behaviors</h3>
+    <div>
+      <span class="tag">{{ behavior_1 }}</span>
+      <span class="tag">{{ behavior_2 }}</span>
+      <span class="tag">{{ behavior_3 }}</span>
+      <span class="tag">{{ behavior_4 }}</span>
+    </div>
+  </div>
+</div>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script>if (typeof lucide !== 'undefined') lucide.createIcons();</script>
+<script src="../../assets/runtime.js"></script>
+</body></html>

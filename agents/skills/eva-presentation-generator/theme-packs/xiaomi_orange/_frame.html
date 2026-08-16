@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<title>{{SLIDE_TITLE}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DEL PACK — ver theme-packs/TOKENS.md
+   Xiaomi Orange: brasa que sube desde el pie, retícula de 80px,
+   tarjetas de 8px teñidas de naranja y tick vertical en las cifras.
+   ============================================================ */
+:root{
+  --bg:#0a0a0a; --bg2:#1a1a1a;
+  --text:#ffffff; --text-sec:rgba(255,255,255,0.70); --text-ter:rgba(255,255,255,0.45);
+  --strong:#ffffff;
+
+  --a1:#FF6900; --a2:#ff9d4a; --a3:#ffb979;
+  --ok:#7fd18a; --warn:#ffb979; --err:#ff6b6b;
+  --a1-t:rgba(255,105,0,0.10); --a1-b:rgba(255,105,0,0.45);
+  --a2-t:rgba(255,157,74,0.10); --a2-b:rgba(255,157,74,0.42);
+  --a3-t:rgba(255,185,121,0.10); --a3-b:rgba(255,185,121,0.40);
+  --ok-t:rgba(127,209,138,0.10); --ok-b:rgba(127,209,138,0.40);
+  --warn-t:rgba(255,185,121,0.10); --warn-b:rgba(255,185,121,0.40);
+  --err-t:rgba(255,107,107,0.10); --err-b:rgba(255,107,107,0.40);
+
+  --card-bg:rgba(255,105,0,0.05); --border:rgba(255,105,0,0.18);
+  --bw:1px; --rule-h:1px;
+  --radius:8px; --radius-lg:10px;
+  --shadow:none; --shadow-sm:none;
+  --inset-bg:rgba(255,255,255,0.03); --inset-border:rgba(255,105,0,0.16);
+  --hi-bg:rgba(255,105,0,0.14);
+  --hairline:rgba(255,255,255,0.10);
+  --zebra:rgba(255,255,255,0.022);
+  --thead-bg:rgba(255,105,0,0.14);
+
+  --code-bg:#141414; --code-fg:#ffffff;
+  --c-kw:#ff9d4a; --c-fn:#FF6900; --c-str:#7fd18a; --c-cm:rgba(255,255,255,0.45); --c-num:#ffb979;
+
+  --display:'Inter Tight','Inter',-apple-system,sans-serif;
+  --display-xl:'Inter Tight','Inter',-apple-system,sans-serif;
+  --body:'Inter',-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Instrument Serif','Editorial New',Georgia,serif;
+  --title-shadow:none;
+  --em-family:var(--serif); --em-style:italic; --em-weight:400;
+  --heavy:700;
+
+  --mermaid-primary:#1a1a1a; --mermaid-text:#ffffff; --mermaid-border:#FF6900;
+  --mermaid-line:#ff9d4a; --mermaid-secondary:#0a0a0a; --mermaid-tertiary:#141414;
+}
+{{SHARED_CSS}}
+
+.h1,.h2,.h3,h1,h2,h3{letter-spacing:-0.045em;}
+.tag,.kicker{font-family:var(--body);font-weight:600;letter-spacing:0.22em;}
+/* Tick vertical de brasa a la izquierda de cada tarjeta, como en las cifras del original. */
+.card{position:relative;}
+.card::before{content:'';position:absolute;left:0;top:14px;width:2px;height:38px;
+  background:linear-gradient(180deg, #FF6900, rgba(255,105,0,0));}
+
+/* ============================================================
+   DECORACIONES DE FIRMA DEL PACK
+   Brasa desde el pie, retícula de 80px, viñeta, filete inferior
+   de naranja y tres escuadras (la cuarta se deja abierta).
+   ============================================================ */
+.deco-a{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:0.9;
+  background:{{EMBER}};}
+
+.deco-b{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    radial-gradient(ellipse 70% 60% at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size:auto, 80px 80px, 80px 80px;}
+.deco-b::before,.deco-b::after{content:'';position:absolute;width:22px;height:22px;top:14px;}
+.deco-b::before{left:14px;border-top:1px solid rgba(255,105,0,0.45);border-left:1px solid rgba(255,105,0,0.45);}
+.deco-b::after{right:14px;border-top:1px solid rgba(255,105,0,0.45);border-right:1px solid rgba(255,105,0,0.45);}
+
+/* Filete de brasa al pie y una sola escuadra abajo: la esquina
+   inferior derecha se deja abierta, como en el original. */
+.deco-c{position:absolute;inset:0;z-index:6;pointer-events:none;
+  background-repeat:no-repeat, no-repeat;
+  background-image:
+    linear-gradient(90deg, transparent, #FF6900, transparent),
+    linear-gradient(90deg, transparent 20%, rgba(255,255,255,0.08) 50%, transparent 80%);
+  background-size:100% 1px, 100% 1px;
+  background-position:left bottom, left top;}
+.deco-c::before{content:'';position:absolute;left:14px;bottom:14px;width:22px;height:22px;
+  border-bottom:1px solid rgba(255,105,0,0.45);border-left:1px solid rgba(255,105,0,0.45);}
+
+.slide{background:{{BG}};}
+
+{{EXTRA_CSS}}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="{{SLIDE_TITLE}}">
+  <div class="deco-a" aria-hidden="true"></div>
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+{{BODY}}
+  <div class="slide-num">{{SLIDE_NUM}} / {{TOTAL}}</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

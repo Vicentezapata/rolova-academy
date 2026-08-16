@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<title>{{SLIDE_TITLE}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS DEL PACK — ver theme-packs/TOKENS.md ===== */
+:root{
+  --bg:#0a0518; --bg2:#1a0d3a;
+  --text:#ffffff; --text-sec:rgba(255,255,255,0.65); --text-ter:rgba(255,255,255,0.35);
+  --strong:#ffffff;
+
+  --a1:#00d4ff; --a2:#ff6bcd; --a3:#a0a0e8;
+  --ok:#6ee7b7; --warn:#fcd34d; --err:#fca5a5;
+  --a1-t:rgba(0,212,255,0.13); --a1-b:rgba(0,212,255,0.34);
+  --a2-t:rgba(255,107,205,0.13); --a2-b:rgba(255,107,205,0.34);
+  --a3-t:rgba(160,160,232,0.13); --a3-b:rgba(160,160,232,0.34);
+  --ok-t:rgba(110,231,183,0.13); --ok-b:rgba(110,231,183,0.34);
+  --warn-t:rgba(252,211,77,0.13); --warn-b:rgba(252,211,77,0.34);
+  --err-t:rgba(252,165,165,0.13); --err-b:rgba(252,165,165,0.34);
+
+  --card-bg:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(255,107,205,0.04)); --border:rgba(0,212,255,0.2); --bw:1px; --rule-h:1px;
+  --radius:8px; --radius-lg:14px;
+  --shadow:none; --shadow-sm:none;
+  --inset-bg:rgba(255,255,255,0.04); --inset-border:rgba(255,255,255,0.08);
+  --hi-bg:rgba(0,212,255,0.07); --hairline:rgba(255,255,255,0.06); --zebra:rgba(255,255,255,0.02); --thead-bg:rgba(255,107,205,0.18);
+
+  --code-bg:rgba(0,0,0,0.45); --code-fg:#e2e8f0;
+  --c-kw:#ff6bcd; --c-fn:#00d4ff; --c-str:#6ee7b7; --c-cm:rgba(255,255,255,0.35); --c-num:#a0a0e8;
+
+  --display:'Inter Tight','Inter',sans-serif;
+  --display-xl:'Inter Tight','Inter',sans-serif;
+  --body:'Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Instrument Serif',Georgia,serif;
+  --title-shadow:none;
+  --em-family:var(--serif); --em-style:italic; --em-weight:400;
+  --heavy:800;
+
+  --mermaid-primary:#1a0d3a; --mermaid-text:#ffffff; --mermaid-border:#00d4ff;
+  --mermaid-line:#ff6bcd; --mermaid-secondary:#0a0518; --mermaid-tertiary:#1a0d3a;
+}
+{{SHARED_CSS}}
+
+/* ===== DECORACIONES DE FIRMA DEL PACK ===== */
+.deco-a{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(0,212,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.05) 1px,transparent 1px);background-size:44px 44px;}
+.deco-b{position:absolute;width:520px;height:360px;border-radius:50%;background:rgba(255,107,205,0.22);filter:blur(90px);z-index:0;{{GLOW_POS}}}
+.deco-c{position:absolute;left:0;right:0;bottom:0;height:2px;z-index:1;background:linear-gradient(90deg,transparent,#00d4ff,#ff6bcd,transparent);opacity:.65;}
+.slide{background:{{BG}};}
+
+{{EXTRA_CSS}}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="{{SLIDE_TITLE}}">
+  <div class="deco-a" aria-hidden="true"></div>
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+{{BODY}}
+  <div class="slide-num">{{SLIDE_NUM}} / {{TOTAL}}</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

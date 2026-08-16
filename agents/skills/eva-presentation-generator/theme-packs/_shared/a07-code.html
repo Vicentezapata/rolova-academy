@@ -1,0 +1,39 @@
+<!--CSS-->
+.code-area{position:absolute;left:48px;top:88px;right:48px;bottom:44px;display:grid;grid-template:1fr / {{SPLIT}};gap:20px;z-index:10;}
+.code-side{display:flex;flex-direction:column;gap:12px;min-height:0;}
+.code-lead{font-size:13.5px;color:var(--text-sec);line-height:1.75;}
+.code-steps{display:flex;flex-direction:column;gap:9px;}
+.code-step{display:flex;align-items:flex-start;gap:10px;font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+.code-step-n{width:20px;height:20px;border-radius:var(--radius-sm, 5px);background:var(--a1-t);border:var(--bw) solid var(--a1-b);color:var(--a1);font-family:var(--mono);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.cw{background:var(--code-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+.cw-bar{background:var(--inset-bg);padding:8px 14px;display:flex;gap:7px;align-items:center;border-bottom:1px solid var(--inset-border);flex-shrink:0;}
+.cw-dot{width:10px;height:10px;border-radius:50%;}
+.cw-dot.r{background:#ff5f57}.cw-dot.y{background:#ffbd2e}.cw-dot.g{background:#28ca41}
+.cw-title{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--text-ter);letter-spacing:0.06em;}
+.cw-body{white-space:pre;font-family:var(--mono);font-size:11.5px;padding:16px 18px;line-height:1.65;color:var(--code-fg);overflow:auto;flex:1;}
+.c-c{color:var(--text-ter);font-style:italic}
+.c-k{color:var(--c-kw)}.c-f{color:var(--a1)}.c-s{color:var(--ok)}.c-n{color:var(--warn)}.c-p{color:var(--text-sec)}
+.code-callout{background:var(--warn-t);border:var(--bw) solid var(--warn-b);border-radius:var(--radius-sm, 6px);padding:11px 14px;font-size:11.5px;color:var(--warn);line-height:1.6;}
+.code-callout strong{color:var(--warn);}
+<!--BODY-->
+  <div class="header">
+    <span class="tag">{{TAG_LEFT}}</span>
+    <span class="h2">{{TITLE}}</span>
+    <span class="tag">{{TAG_RIGHT}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="code-area">
+    <div class="code-side">
+      <p class="code-lead">{{LEAD}}</p>
+      <div class="code-steps">
+<!--REPEAT:STEPS-->
+        <div class="code-step"><div class="code-step-n">{{n}}</div><div>{{text}}</div></div>
+<!--END:STEPS-->
+      </div>
+      <div class="code-callout"><strong>{{CALLOUT_LABEL}}</strong> {{CALLOUT}}</div>
+    </div>
+    <div class="cw">
+      <div class="cw-bar"><div class="cw-dot r"></div><div class="cw-dot y"></div><div class="cw-dot g"></div><span class="cw-title">{{FILENAME}}</span></div>
+      <div class="cw-body">{{CODE}}</div>
+    </div>
+  </div>

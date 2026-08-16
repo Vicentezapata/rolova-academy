@@ -1,0 +1,66 @@
+{
+  "id": "dark_tech",
+  "name": "Dark Tech",
+  "source": "Extraído de TESTING APLICADO AL DESARROLLO DE SISTEMAS / UNIDAD 2",
+  "best_for": [
+    "Tecnología",
+    "Testing / QA",
+    "Sistemas",
+    "IA",
+    "Desarrollo de software"
+  ],
+  "fonts": [
+    "Inter Tight",
+    "Instrument Serif",
+    "Inter",
+    "JetBrains Mono"
+  ],
+  "palette": {
+    "bg": "#050b1f",
+    "text": "#ffffff",
+    "accent1": "#22D3EE",
+    "accent2": "#6366f1",
+    "accent3": "#FDE047",
+    "ok": "#10b981",
+    "warn": "#f59e0b",
+    "err": "#ef4444"
+  },
+  "signature_decorations": [
+    "grid-texture (puntos 40px)",
+    "glow (orbe blur 75px)",
+    "slide-num mono"
+  ],
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. Da variedad visual sin que el agente decida nada.",
+  "background_rhythm": [
+    {
+      "BG_ORIGIN": "70% 120%",
+      "BG_TINT": "#0c1b4a",
+      "GLOW_POS": "top:-80px;right:-60px;"
+    },
+    {
+      "BG_ORIGIN": "90% 110%",
+      "BG_TINT": "#082f49",
+      "GLOW_POS": "top:-60px;left:-60px;"
+    },
+    {
+      "BG_ORIGIN": "10% 110%",
+      "BG_TINT": "#0c1b4a",
+      "GLOW_POS": "bottom:-80px;right:-40px;"
+    },
+    {
+      "BG_ORIGIN": "70% -10%",
+      "BG_TINT": "#082f49",
+      "GLOW_POS": "top:50%;left:50%;transform:translate(-50%,-50%);"
+    },
+    {
+      "BG_ORIGIN": "50% 120%",
+      "BG_TINT": "#1e1b4b",
+      "GLOW_POS": "bottom:-60px;left:20%;"
+    },
+    {
+      "BG_ORIGIN": "90% -10%",
+      "BG_TINT": "#0c1b4a",
+      "GLOW_POS": "top:-70px;right:25%;"
+    }
+  ]
+}

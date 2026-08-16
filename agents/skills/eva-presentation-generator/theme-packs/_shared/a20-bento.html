@@ -1,0 +1,33 @@
+<!--CSS-->
+.bn-grid{position:absolute;left:48px;top:88px;right:48px;bottom:44px;display:grid;grid-template:repeat(6,1fr) / repeat(6,1fr);gap:14px;z-index:10;}
+.bn{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius-sm, 14px);padding:18px 20px;display:flex;flex-direction:column;gap:7px;overflow:hidden;position:relative;}
+.bn-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--a1);}
+.bn h3{font-family:var(--display);font-weight:var(--heavy);color:var(--text);letter-spacing:-0.02em;line-height:1.2;font-size:16px;}
+.bn p{font-size:12px;color:var(--text-sec);line-height:1.6;}
+.bn-stat{font-family:var(--display);font-size:40px;font-weight:var(--heavy);letter-spacing:-0.045em;color:var(--a1);line-height:1;font-variant-numeric:tabular-nums;}
+.bn-stat small{font-size:17px;margin-left:3px;}
+.bn.feature h3{font-size:24px;}
+.bn.feature p{font-size:13.5px;line-height:1.7;}
+.bn.accent{background:var(--a2-t);border-color:var(--a2-b);}
+.bn.outline{background:transparent;border-style:dashed;border-color:var(--inset-border);}
+.bn-icon{font-size:24px;line-height:1;}
+.bn-foot{margin-top:auto;font-family:var(--mono);font-size:10px;letter-spacing:0.08em;color:var(--text-ter);}
+<!--BODY-->
+  <div class="header">
+    <span class="tag">{{TAG_LEFT}}</span>
+    <span class="h2">{{TITLE}}</span>
+    <span class="tag">{{TAG_RIGHT}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="bn-grid">
+<!--REPEAT:TILES-->
+    <div class="bn {{variant}}" style="grid-column:{{col}};grid-row:{{row}}">
+      <div class="bn-icon icon" data-icon="{{icon}}" data-icon-size="28">{{icon}}</div>
+      <div class="bn-tag">{{tag}}</div>
+      <div class="bn-stat">{{stat}}<small>{{unit}}</small></div>
+      <h3>{{title}}</h3>
+      <p>{{body}}</p>
+      <div class="bn-foot">{{foot}}</div>
+    </div>
+<!--END:TILES-->
+  </div>

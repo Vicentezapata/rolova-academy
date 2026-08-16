@@ -1,0 +1,466 @@
+
+
+# ===== presentacion_unidad_2.html =====
+
+- Unidad 2 — Algoritmos de Machine Learning | IPSS 2026
+- Intro U2
+- Regresión
+- Clasificación
+- Evaluación
+- Cierre
+- IPSS 2026 · INTELIGENCIA ARTIFICIAL
+- Unidad 2
+- Algoritmos de Machine Learning:
+- Regresión, Clasificación y Evaluación
+- Aprenderemos a elegir el algoritmo correcto para cada problema, a entender cómo aprenden las máquinas a partir de datos, y a medir con rigor si nuestros modelos realmente funcionan.
+- Modelos de Regresión
+- Modelos de Clasificación
+- Evaluación de Modelos
+- Ponderación: 20%
+- Activación de Conocimiento
+- ¿Cómo predice una máquina?
+- Actividad: 8 minutos
+- Piensa en aplicaciones de tu vida diaria que hacen predicciones automáticas. ¿Qué tipo de predicción hacen?
+- Pregunta 1
+- ¿En qué momento Spotify, YouTube o TikTok decidió qué mostrarte a continuación? ¿Qué datos creerían que usan?
+- Pregunta 2
+- ¿Cuál es la diferencia entre predecir el PRECIO de una casa y predecir si una transacción bancaria es FRAUDE o no?
+- Mapa de la Unidad 2
+- ¿Qué aprenderemos?
+- Fundamentos
+- Ecosistema ML Supervisado
+- Lineal, Árboles, SVM, KNN
+- Logística, Bayes, SVM, KNN
+- Métricas y validación
+- Competencia
+- Seleccionar y aplicar algoritmos de ML según el tipo de problema y datos.
+- Herramientas
+- Conceptos aplicables en Python (scikit-learn, pandas).
+- Ponderación
+- 20% de la nota final. Entrega de encargo evaluado con rúbrica específica.
+- Sesión 1 - Tipos de Algoritmos
+- El ecosistema del Machine Learning Supervisado
+- Aprendizaje Supervisado (nuestro foco)
+- El algoritmo aprende de ejemplos  etiquetados : pares (entrada → salida correcta). Como un alumno que estudia con un solucionario.
+- La salida es un  número continuo . Ej: ¿Cuánto costará este departamento?
+- La salida es una  categoría . Ej: ¿Este email es spam o no spam?
+- No Supervisado
+- Sin etiquetas. El algoritmo encuentra patrones solo. Ej: Segmentación de clientes. (Unidad 3)
+- Por Refuerzo
+- El agente aprende por recompensas y castigos. Ej: Juegos, robótica. (Avanzado)
+- La diferencia clave:  en supervisado, le dices a la máquina qué respuesta es correcta durante el entrenamiento. En no supervisado, la máquina descubre la estructura por sí sola.
+- La distinción fundamental
+- Regresión vs. Clasificación: ¿Cuánto? vs. ¿Cuál?
+- REGRESIÓN
+- La respuesta es un  número
+- ¿Cuánto costará este apartamento? -  $185.000.000
+- ¿Cuántas unidades venderemos? -  342 unidades
+- ¿Cuál será la temperatura? -  23.5 grados
+- CLASIFICACIÓN
+- La respuesta es una  categoría
+- ¿Este email es spam? -  Spam / No spam
+- ¿Qué animal sale en la foto? -  Gato / Perro
+- ¿El cliente se irá (churn)? -  Sí / No
+- Regla de oro para identificar el tipo:
+- ¿La variable tiene una  escala numérica con sentido  (temperatura, precio, tiempo)? Es Regresión. ¿Es una  etiqueta o categoría  (tipo, clase, grupo)? Es Clasificación.
+- Micro-Actividad 1
+- ¿Regresión o Clasificación?
+- Lee los siguientes casos y determina qué tipo de modelo de Machine Learning Supervisado se necesita.
+- Caso A
+- Predecir a qué precio se venderá un departamento de 3 dormitorios en Providencia el próximo año.
+- Ver Respuesta
+- REGRESIÓN.  Porque el precio es un valor numérico continuo (ej. $150.500.000).
+- Caso B
+- Crear un filtro para Gmail que determine si un correo entrante es Promoción o Bandeja Principal.
+- CLASIFICACIÓN.  Porque el resultado es una categoría/etiqueta discreta.
+- Caso C
+- Predecir cuántos milímetros de lluvia caerán mañana en la ciudad de Santiago.
+- REGRESIÓN.  Porque los milímetros son una cantidad numérica medible.
+- Metodología Estándar
+- Las 6 Fases de CRISP-DM
+- Todo proyecto profesional de Inteligencia Artificial sigue un ciclo de vida ordenado. ¡No empezamos programando!
+- Fases 1 a 3 (Foco de Evaluación)
+- Comprensión del Negocio:  ¿Qué problema queremos resolver? (Ej. ¿A quién identificamos?).
+- Comprensión de Datos:  Análisis exploratorio (EDA). ¿Qué datos tenemos? ¿Hay sesgos?
+- Preparación de Datos:  Limpieza, redimensionamiento de imágenes, vectorización de texto. ¡El 80% del trabajo!
+- Fases 4 a 6 (Siguientes Unidades)
+- Modelado:  Elegir y entrenar los algoritmos (Regresión, KNN, SVM).
+- Evaluación:  Revisar métricas (Accuracy, F1-Score) y matriz de confusión.
+- Despliegue:  Poner el modelo en producción.
+- Preparando el Terreno
+- Librerías Esenciales en Python
+- Manejo de Datos
+- NumPy (np):  El motor matemático. Procesa arreglos y matrices de números de forma ultrarrápida.
+- Pandas (pd):  Como un "Excel" para programar. Sirve para cargar, limpiar y manipular tablas de datos reales.
+- Visualización
+- Matplotlib (plt):  La herramienta base para dibujar cualquier tipo de gráfico (líneas, puntos).
+- Seaborn (sns):  Basado en Matplotlib, crea gráficos bellos y estadísticos con una sola línea de código (ej. mapas de calor).
+- Scikit-Learn (sklearn)
+- El corazón del Machine Learning en Python.
+- No tienes que programar los algoritmos desde cero.
+- Contiene todas las matemáticas listas para usarse.
+- Mismo proceso siempre:  Cargar datos → Entrenar (.fit) → Predecir (.predict).
+- Actividad Formativa 1: EDA en CRISP-DM
+- Fase 3: Preparación de Datos
+- ¿Cómo lee la máquina Imágenes y Texto?
+- Los algoritmos de Machine Learning son ecuaciones matemáticas. No tienen ojos para ver imágenes ni lenguaje para leer novelas.  Todo debe convertirse en números.
+- Imágenes (Los Simpson)
+- Píxeles:  Una imagen es una grilla de números (0 al 255).
+- Resize:  Redimensionamiento uniforme exigido por el modelo.
+- Normalización y Filtros:  Normalizar píxeles a [0,1], conversión a escala de grises, o filtrado por color.
+- Extracción de características:  Convertir bordes o histogramas en vectores de números (Flatten).
+- Actividad Formativa 2
+- Texto (Don Quijote)
+- Limpieza:  Caracteres especiales y normalización.
+- Tokenización:  Separación, además de lematización o stemming.
+- Stopwords:  Eliminación de palabras vacías ("el", "la").
+- Vectorización y Sintaxis:  (TF-IDF, BoW) e ingeniería de características sintácticas.
+- Actividad Formativa 3
+- Sesión 2 - Modelos de Regresión
+- Cuando necesitamos predecir un número (¿Cuánto?)
+- Regresión Lineal
+- Árboles de Decisión
+- SVM Regresión
+- KNN Regresión
+- El modelo más simple: una línea recta
+- Imagina graficar  metros cuadrados vs precio  de departamentos. La regresión lineal traza la mejor línea posible a través de esos puntos.
+- y = B0 + B1*x1 + B2*x2 + ... + Bn*xn
+- Componentes clave
+- y:  Valor predicho (lo que el modelo estima)
+- B0:  Intercepto (valor cuando x=0)
+- B1..Bn:  Coeficientes (importancia de cada variable)
+- x1..xn:  Variables de entrada (features)
+- Cuándo usar:  Cuando la relación entre variables es aproximadamente lineal y necesitas interpretar coeficientes fácilmente (economía, ventas).
+- Precio de departamentos
+- m2 del departamento
+- Precio
+- Línea óptima
+- error
+- Las líneas rojas son los  errores . El modelo minimiza su suma.
+- Analogía del Mundo Real
+- Regresión Lineal: El Taxímetro
+- El misterio de la tarifa
+- Imagina que tomas un taxi en una ciudad extranjera, pero el taxímetro está escondido. Al bajar, el chofer solo te dice el total.
+- Viaje de 1 km = $3.000
+- Viaje de 2 km = $4.000
+- Viaje de 3 km = $5.000
+- El modelo de Regresión Lineal hace el cálculo mental rápido:
+- "Ah, cobra $2.000 solo por subirme y $1.000 extra por cada kilómetro."
+- La Ecuación Descubierta
+- Costo = $2000 + ($1000 * km)
+- $2000 (Intercepto B0):  El cobro base.
+- $1000 (Coeficiente B1):  Cuánto afecta la distancia al precio.
+- km (Variable x):  Tu distancia.
+- Árboles de Decisión para Regresión
+- El árbol que divide y conquista
+- Un árbol divide los datos en  regiones  respondiendo preguntas Sí/No, y predice el  valor promedio  de la región. No asume líneas rectas.
+- ¿Cuánto costará el arriendo?
+- ¿m2 > 60?
+- ¿Barrio premium?
+- $ 350.000
+- $ 480.000
+- $ 620.000
+- $ 950.000
+- Ventajas
+- Muy interpretable: puedes explicar cada decisión humana.
+- No requiere normalizar variables.
+- Maneja relaciones no lineales.
+- Ver Ejemplo en Google Colab
+- Desventajas
+- Propenso a  sobreajuste (overfitting) .
+- Sensible a pequeños cambios en datos.
+- Solución al sobreajuste:  usar 'max_depth' para limitar la profundidad, o usar Random Forest (muchos árboles).
+- Árboles de Decisión: El juego "Adivina Quién"
+- Descartar opciones rápido
+- En lugar de usar complejas matemáticas, el modelo hace  preguntas de Sí/No  buscando dividir los datos de la forma más limpia posible.
+- ¿Tiene lentes?  NO  (descarta a todos los con lentes)
+- ¿Es rubio?  SÍ  (se queda solo con los rubios)
+- ¿Lleva sombrero?  SÍ  (encuentra la respuesta)
+- ¿Cómo elige el árbol la pregunta?
+- El algoritmo calcula matemáticamente cuál es la pregunta que le da más  "Ganancia de Información" .
+- Preguntar "¿Tiene cabeza?" es inútil (todos tienen). Preguntar "¿Tiene sombrero?" divide perfectamente al grupo.
+- Support Vector Machine para Regresión (SVR)
+- Máquinas de Vectores de Soporte: el tubo de tolerancia
+- SVR construye un  tubo de tolerancia  (margen epsilon) alrededor de la función. Sólo se penalizan los puntos que quedan  fuera del tubo .
+- Dentro (sin error)
+- Fuera (penalizado)
+- Hiperparámetros clave
+- C:  penalización por errores fuera del tubo.
+- Epsilon:  ancho del tubo de tolerancia.
+- Kernel:  Permite adaptarse a curvas complejas (RBF).
+- Cuándo es útil
+- Datos con muchos valores atípicos (outliers).
+- Relaciones altamente complejas.
+- K-Nearest Neighbors Regresión (KNNR)
+- El vecindario digital: dime con quién te juntas...
+- Para predecir un nuevo dato, KNN busca los  K vecinos más similares  (cercanos) y  promedia sus valores .
+- Ejemplo: K=3 (Buscamos 3 casas similares)
+- ? Nueva Casa
+- $480k
+- $520k
+- $460k
+- Predicción: Promedio(480+520+460) = $487k
+- Eligiendo K
+- K=1
+- Sobreajuste: se aprende de memoria.
+- K=5-15
+- Suele ser un balance óptimo.
+- ¡Siempre normaliza!  KNN es sensible a la escala. Si una variable está en millones y otra en decimales, la mayor dominará la distancia.
+- El Balance Ideal
+- Subajuste vs Sobreajuste
+- El objetivo del Machine Learning es lograr que un modelo  generalice , no que memorice.
+- Underfitting (Subajuste)
+- El problema:  El modelo es demasiado simple.
+- Analogía:  Tratar de ajustar una línea recta en datos que forman un círculo. El estudiante que no estudia.
+- Síntoma:  Alto error en los datos de Entrenamiento Y en los datos de Prueba.
+- Balance Ideal
+- El objetivo:  El modelo capta la tendencia subyacente.
+- Analogía:  El estudiante que entiende los conceptos y aprueba el examen final.
+- Síntoma:  Bajo error en Entrenamiento y Prueba.
+- Overfitting (Sobreajuste)
+- El problema:  El modelo es demasiado complejo y memoriza el ruido.
+- Analogía:  El estudiante que memoriza las preguntas en vez de aprender.
+- Síntoma:  Error casi 0 en Entrenamiento, pero MUY ALTO en Prueba.
+- Prevención del Overfitting
+- Métodos de Regularización
+- Son técnicas que  penalizan la complejidad  del modelo. Le obligan a mantenerse lo más simple posible, mejorando su capacidad para generalizar en datos nuevos.
+- En Regresión Matemática
+- L2 (Ridge):  Reduce el tamaño de los pesos o coeficientes (los acerca a 0, pero no los apaga). "Suaviza" el modelo.
+- L1 (Lasso):  Puede reducir coeficientes exactamente a 0. Esto actúa como un selector automático, "apagando" las variables inútiles.
+- En Otros Algoritmos
+- Pruning (Árboles):  "Podar" el árbol de decisión limitando su profundidad máxima (ej.  max_depth ) para que no crezca infinitamente.
+- Dropout (Redes Neuronales):  Apagar un porcentaje de "neuronas" al azar durante el entrenamiento para evitar que dependan demasiado de un solo rasgo.
+- Demo Práctica
+- Veamos cómo un modelo sobreajustado enloquece con el ruido, y cómo Ridge y Lasso logran "suavizarlo".
+- Resumen
+- ¿Cuándo usar cada modelo de Regresión?
+- Algoritmo
+- Ventaja principal
+- Cuándo usarlo
+- Simplicidad, altamente interpretable.
+- Primer acercamiento, relaciones simples directas.
+- Captura reglas complejas tipo Sí/No.
+- Relaciones no lineales, sin necesidad de escalar.
+- SVR (Vectores Soporte)
+- Ignora errores pequeños y resiste outliers.
+- Datos con ruido, alta dimensionalidad.
+- Intuitivo, se adapta localmente.
+- Datos bien agrupados, explicaciones basadas en similitud.
+- Micro-Actividad 2
+- ¿Qué Algoritmo Elegirías?
+- Selecciona el mejor modelo de regresión para cada escenario empresarial.
+- El Banco Tradicional
+- El banco necesita predecir la línea de crédito de un cliente.  Requisito legal:  Deben poder explicarle al cliente exactamente cómo se calculó su cupo mediante una fórmula matemática simple.
+- REGRESIÓN LINEAL.  Porque es el único modelo completamente transparente (Caja Blanca) donde tienes una ecuación clara (ej. $10.000 + $5 * Sueldo).
+- Datos Caóticos
+- Queremos predecir el tráfico de una web. Sabemos que hay reglas extrañas (ej. "Si es martes Y llueve Y es fin de mes, el tráfico se duplica"). La relación no es una línea recta.
+- ÁRBOLES DE DECISIÓN.  Porque pueden capturar relaciones NO lineales y reglas complejas tipo "Si pasa esto Y esto otro..." (If-Else).
+- Sesión 3 - Modelos de Clasificación
+- Cuando necesitamos predecir una categoría (¿Cuál?)
+- Regresión Logística
+- Naive Bayes
+- SVM Clasificación
+- KNN Clasificación
+- Lo marcamos como Spam.">
+- A pesar del nombre, es CLASIFICACIÓN
+- Calcula la  probabilidad  (de 0 a 100%) de que un dato pertenezca a una categoría usando la curva  Sigmoide  (en forma de S).
+- Regla de decisión típica:
+- Si Probabilidad > 50% 👉  Clase A (Ej: Spam)
+- Si Probabilidad  Clase B (Ej: Normal)
+- Mide la "seguridad" de pertenecer a una clase y establece un umbral (ej. 50%) para tomar la decisión final. Simple, rápido y muy interpretable.
+- Clasificación binaria (Sí/No, 0/1).
+- Necesitas saber la  certeza  (probabilidad), no solo la respuesta final.
+- Baseline rápido y simple.
+- Curva Sigmoide
+- Probabilidad
+- 1.0
+- 0.5
+- 0.0
+- No Spam
+- Spam!
+- Regresión Logística: El Comité del Banco
+- La balanza de puntos
+- Cada variable del cliente empuja la probabilidad hacia el 0% o hacia el 100%.
+- Sueldo alto:  Empuja hacia 0% (Riesgo bajo)
+- Muchas deudas:  Empuja hacia 100% (Riesgo alto)
+- Atrasos previos:  Empuja mucho al 100%
+- El Umbral de Decisión
+- Al sumar todo, el cliente obtuvo un  62% de probabilidad  de impago.
+- Como 62% es mayor al umbral clásico del 50%, el algoritmo toma la decisión final categórica:  RECHAZAR CRÉDITO .
+- El clasificador basado en probabilidades
+- Basado en el  Teorema de Bayes . Calcula la probabilidad de una clase dado un conjunto de características, asumiendo (ingenuamente) que las características son independientes.
+- Ejemplo Clásico: Filtro de Spam
+- Palabra "Gratis": 80% en Spam, 5% en Normal
+- Palabra "Oferta": 70% en Spam, 10% en Normal
+- Correo: "Oferta Gratis" ➔ ¡Probabilidad altísima de Spam!
+- Extremadamente rápido de entrenar.
+- Funciona excelente con texto (NLP básico).
+- Maneja bien muchísimas variables.
+- Asume que las variables no tienen relación (ej: asume que "San" y "Francisco" no tienen relación, lo cual es falso).
+- Support Vector Machine (SVC)
+- Buscando la frontera más segura
+- SVM busca trazar una línea (o hiperplano) que separe las clases maximizando el  margen  (la "calle" entre ambos grupos).
+- Los puntos con círculo amarillo son los  Vectores de Soporte .
+- El Truco del Kernel
+- Si los puntos no se pueden separar con una línea recta (ej: un círculo de puntos rojos rodeado de puntos verdes), SVM usa un "Kernel" para proyectar los datos a 3D, donde un plano plano sí puede cortarlos limpiamente.
+- Ideal para...
+- Datos complejos con fronteras claras.
+- Reconocimiento de imágenes (clásico).
+- Bioinformática.
+- Votación por mayoría en el vecindario
+- Para un nuevo dato, KNN encuentra los K vecinos más cercanos y deja que  voten . La clase con más votos gana.
+- K = 5 Vecinos
+- ? Nuevo
+- 3 Rojos vs 2 Verdes ➔ ¡Es Rojo!
+- Regla de Oro para KNN Clasificación:
+- Si tienes 2 categorías (ej: Enfermo / Sano),  K siempre debe ser IMPAR  (3, 5, 7...). Si K=4, podrías tener un empate 2 a 2 y el algoritmo no sabría qué decidir.
+- Resumen Algoritmos Clasificación
+- Regresión Logística:  Probabilidades (0 a 1) y umbrales.
+- Naive Bayes:  Análisis de texto / NLP.
+- Support Vector Machine (SVM):  Fronteras complejas e imágenes.
+- K-Nearest Neighbors (KNN):  Votación por mayoría entre los "K" vecinos más similares. El que se junta con lobos, a aullar aprende.
+- Micro-Actividad 3
+- Clasificando en el Mundo Real
+- Decide qué modelo de clasificación usarías para estos problemas.
+- Diagnóstico Médico
+- Tienes miles de imágenes de radiografías y necesitas separar las que muestran neumonía de las sanas. La frontera entre ambas es sutil y compleja.
+- SUPPORT VECTOR MACHINE (SVM).  Porque al usar el truco del Kernel, SVM es excelente separando datos altamente complejos (incluso imágenes clásicas) buscando el hiperplano óptimo.
+- Filtro Antispam
+- Analizar el texto de los correos electrónicos entrantes para decidir si es "Spam" o "No Spam" basándose en la frecuencia de ciertas palabras ("Gratis", "Oferta").
+- NAIVE BAYES.  Es el algoritmo estrella e históricamente utilizado para clasificar textos usando probabilidades de ocurrencia de palabras.
+- Sesión 4 - Evaluación
+- ¿Cómo sabemos si la máquina realmente aprendió?
+- Train vs Test
+- Error Cuadrático
+- Matriz de Confusión
+- Curva ROC
+- ¿Aprender o Memorizar? (Underfitting vs Overfitting)
+- Subajuste (Underfitting)
+- "El que no estudió nada"
+- El modelo es tan simple que ni siquiera entiende los datos de entrenamiento. Se equivoca en todo, como tratar de trazar una línea recta en un círculo.
+- Sobreajuste (Overfitting)
+- "El Machetero (Memorión)"
+- El modelo se aprende de memoria hasta el más mínimo error de los datos. Saca 100% en el entrenamiento, pero fracasa terriblemente en el mundo real.
+- Buen Ajuste (Good Fit)
+- "El que entendió la lógica"
+- El modelo no memorizó, aprendió el patrón general. Por ende, cuando le pasamos datos nuevos, generaliza bien y acierta de forma consistente.
+- Train / Test Split
+- La regla de oro: nunca evalúes con lo que entrenaste
+- Para saber si un modelo puede  generalizar  (predecir el mundo real) y no solo  memorizar , dividimos nuestros datos históricos en dos.
+- 1. Datos de Entrenamiento (Train) ~ 80%
+- La "Guía de estudio". El modelo ve estos datos y sus respuestas.
+- 2. Datos de Prueba (Test) ~ 20%
+- El "Examen final". Están ocultos durante el entrenamiento.
+- El peligro del Sobreajuste (Overfitting)
+- Pasa cuando el modelo tiene nota 100 en Entrenamiento pero reprueba en Prueba. Memorizó el ruido en lugar de aprender el patrón.
+- Validación Cruzada (Cross-Validation)
+- Es un nivel de seguridad mayor: dividimos los datos en 5 bloques y repetimos el examen 5 veces, rotando el bloque de prueba. Así evitamos tener "suerte" con un corte fácil de datos.
+- Evaluando Regresión
+- Midiendo el margen de error
+- MAE
+- Error Absoluto Medio
+- El promedio simple de todos los errores. Súper fácil de explicar a gerencia.
+- Ej: "Nos equivocamos por $10.000 promedio"
+- RMSE
+- Raíz del Error Cuadrático Medio
+- Penaliza severamente los  errores grandes  (porque eleva el error al cuadrado).
+- Úsalo si un error grande es catastrófico.
+- Coeficiente de Determinación
+- Puntaje de 0 a 1. Qué tanto mejor es tu modelo que simplemente adivinar el promedio.
+- Ej: R² de 0.85 significa un modelo muy bueno.
+- Evaluando Clasificación
+- La Matriz de Confusión
+- Compara lo que predijo el modelo vs la realidad. Fundamental para entender  CÓMO  se equivoca.
+- Predicción del Modelo
+- Realidad
+- Dijo Positivo (+)
+- Dijo Negativo (-)
+- Real Positivo (+)
+- Verdadero Positivo (VP)
+- Enfermo, diagnosticado enfermo
+- Falso Negativo (FN)
+- Enfermo, mandado a casa ⚠️
+- Real Negativo (-)
+- Falso Positivo (FP)
+- Sano, pero asustado
+- Verdadero Negativo (VN)
+- Sano, diagnosticado sano
+- No todos los errores cuestan lo mismo
+- En Medicina:  Un Falso Negativo (decir que está sano cuando tiene cáncer) es fatal.
+- En Filtro Spam:  Un Falso Positivo (mandar el email de tu jefe a Spam) es peor que dejar pasar un spam (Falso Negativo).
+- Métricas: El Detector de Metales
+- El guardia estricto (Alto Recall)
+- El guardia decide pitarle a TODOS los pasajeros ante la más mínima duda.
+- Lo Bueno:  No se le escapó absolutamente ninguna amenaza real (Recall 100%).
+- Lo Malo:  Hizo perder el vuelo a 500 personas inocentes revisándoles los zapatos (Baja Precisión).
+- ¿Y en la medicina?
+- Imagina un doctor diagnosticando cáncer.
+- Aquí queremos  Alto Recall (Guardia Estricto) . Es preferible asustar a un paciente sano con exámenes extra (Falso Positivo), a mandar a un enfermo a su casa diciéndole que está bien (Falso Negativo).
+- Métricas derivadas
+- Más allá del simple "porcentaje de acierto"
+- Exactitud (Accuracy)
+- Total aciertos / Total de casos.
+- ¡Engañosa en datos desbalanceados!  Si el 99% de los correos no son spam, un modelo que siempre diga "No Spam" tendrá 99% de Accuracy, ¡pero es un modelo inútil!
+- Precisión (Precision)
+- De todos los que el modelo etiquetó como POSITIVOS, ¿cuántos eran realmente positivos? (Mide los Falsos Positivos).
+- Sensibilidad (Recall)
+- De TODOS los positivos REALES que existen, ¿cuántos logró detectar el modelo? (Mide los Falsos Negativos).
+- F1-Score
+- Es el promedio (armónico) entre Precisión y Recall. Úsalo como métrica principal cuando las clases están muy desbalanceadas.
+- Actividad Formativa 4: Ética y Sesgos
+- Micro-Actividad 4
+- ¿Precisión o Recall?
+- Si estuvieras a cargo de estos dos proyectos de Machine Learning, ¿qué métrica intentarías maximizar a toda costa?
+- Detección de Fraude Bancario
+- El modelo alerta cuando una transacción parece fraudulenta. Si el modelo se equivoca (falso fraude), el cliente tiene que llamar para desbloquear su tarjeta. Si se le escapa un fraude real, el banco pierde miles de dólares.
+- RECALL (Sensibilidad).  Es preferible molestar a algunos clientes bloqueando tarjetas sanas (falsos positivos) con tal de no dejar escapar  ningún  fraude real que pueda quebrar al banco.
+- Sistema de Justicia
+- Un modelo predice si un acusado es Culpable (Positivo) o Inocente (Negativo). Si lo marca como Positivo, va a la cárcel.
+- PRECISIÓN.  En el sistema de justicia prima la presunción de inocencia. Es gravísimo meter a un inocente a la cárcel (Falso Positivo). Queremos estar 100% seguros de que si decimos "Culpable", realmente lo sea.
+- Cierre de Unidad
+- Evaluación y Práctica
+- Llevando la teoría al mundo real
+- Instrucciones Evaluación 2
+- Proyecto de Unidad (20%)
+- El Encargo
+- Se les entregará un  Caso de Negocio Real .
+- Deben identificar si requiere Regresión o Clasificación.
+- Proponer 2 algoritmos candidatos y explicar por qué.
+- Definir la métrica de evaluación adecuada (ej. Por qué Accuracy no sirve y proponen Recall).
+- Presentar un esquema de Validación (Train/Test split).
+- Criterios de Éxito
+- Justificación lógica de la elección del modelo.
+- Correcta selección de métricas (Matriz de confusión o RMSE).
+- Claridad en la comunicación hacia un "gerente" no técnico.
+- Plazos
+- Revisar el Aula Virtual para la fecha de entrega exacta y formato de subida (PDF).
+- Paso 1 de la Evaluación
+- Definición del Problema y Algoritmos
+- Analicen la variable objetivo del caso.
+- Regresión:  Si predicen precios, cantidades, tiempos.
+- Clasificación:  Si predicen etiquetas (Spam, Fraude, Tipo de cliente).
+- Selección de 2 Modelos
+- Propongan 2 algoritmos competidores. Ejemplo para Clasificación:
+- Modelo 1 (Regresión Logística):  Porque es simple, rápido y fácil de interpretar.
+- Modelo 2 (Árboles de Decisión):  Porque puede capturar relaciones no lineales en el comportamiento de los clientes.
+- Paso 2 de la Evaluación
+- Validación y Métricas de Éxito
+- Estrategia de Validación
+- Deben proponer un esquema  Train/Test Split .
+- Entrenar con el 80% de los datos históricos.
+- Evaluar el rendimiento en el 20% restante (datos nunca vistos por el modelo).
+- Elección de Métricas
+- No basta con nombrar una métrica, hay que  justificarla en el contexto del negocio .
+- Caso Médico/Fraude:  Privilegiar  Recall (Sensibilidad)  para no dejar escapar casos positivos.
+- Caso Ventas/Precios:  Usar  MAE o RMSE  para entender el error en dinero o unidades reales.
+- Fin de la Unidad 2
+- "No se trata de tener el algoritmo más complejo, sino de hacer la pregunta correcta a los datos y medir con honestidad el resultado."
+- Revisen el Aula Virtual
+- Comiencen Evaluación 2
+- INTRO
+- Algoritmos de Machine Learning
+- 1  /  24
+- Modo Orador
+- Anterior
+- Siguiente
+- Actividad

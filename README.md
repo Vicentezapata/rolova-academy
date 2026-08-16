@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rolova Academy
 
-## Getting Started
+Portal 3D que centraliza el material docente de `cursos/` y genera presentaciones con IA.
 
-First, run the development server:
+## Puesta en marcha
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Variables de entorno
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Se leen de `.env.local` (no versionado).
 
-## Learn More
+| Variable | Obligatoria | Descripción |
+|---|---|---|
+| `GEMINI_API_KEY` | Para generar presentaciones | Clave de la API de Google Gemini. |
+| `GEMINI_MODEL` | No | Modelo a usar. Por defecto `gemini-2.5-pro`. |
+| `APP_PASSWORD` | Recomendada al desplegar | Activa Basic Auth en toda la app. **Si no se define, el sitio queda abierto.** |
+| `PYTHON_BIN` | No | Intérprete de Python. Por defecto `python3`. |
 
-To learn more about Next.js, take a look at the following resources:
+## Estructura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/
+  api/
+    courses/              listado de cursos con su árbol de materiales
+    course-units/         listado de cursos y sus unidades
+    file/[...path]/       sirve archivos de cursos/ (restringido a esa raíz)
+    generate-presentation/ ingesta material -> Gemini -> ensamblador Python
+    export-pptx/          captura un preview.html con Puppeteer -> .pptx
+  components/             escena 3D (React Three Fiber) y HUD
+  lib/
+    safePath.js           resolución de rutas contenidas en cursos/
+    courses.js            escaneo del sistema de archivos con caché
+    theme.js              paleta por curso
+cursos/                   material docente (una carpeta por asignatura)
+.agents/skills/           ensamblador de presentaciones (Python + theme packs)
+proxy.js                  Basic Auth opcional
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Comandos
 
-## Deploy on Vercel
+```bash
+npm run dev     # servidor de desarrollo
+npm run build   # compilación de producción
+npm run lint    # ESLint
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notas
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- El generador de presentaciones invoca `.agents/skills/eva-presentation-generator/scripts/generate_presentation_template.py`, que requiere Python 3 y escribe en `cursos/<curso>/<unidad>/presentation/`.
+- La exportación a PPTX lanza Chromium mediante Puppeteer, por lo que necesita un entorno con sistema de archivos y memoria suficientes (no funciona tal cual en serverless).
+

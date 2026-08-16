@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 // Parse .env.local manually
-const envPath = path.join('C:', 'Users', 'vicen', 'OneDrive', 'Escritorio', 'EVA IPSS', 'academy-portal', '.env.local');
+const envPath = path.join(process.cwd(), '.env.local');
 const envContent = fs.readFileSync(envPath, 'utf8');
 for (const line of envContent.split('\n')) {
   const match = line.match(/^([^=]+)=(.*)$/);

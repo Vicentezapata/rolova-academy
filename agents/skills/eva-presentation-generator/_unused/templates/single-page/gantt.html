@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"/><title>Gantt</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/minimal-white.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+<style>
+.gantt{margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+.gantt .hd{display:grid;grid-template-columns:200px repeat(12,1fr);gap:4px;font-size:12px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.gantt .row{display:grid;grid-template-columns:200px repeat(12,1fr);gap:4px;align-items:center;height:40px}
+.gantt .lbl{font-size:14px;font-weight:500}
+.gantt .cells{grid-column:2/-1;position:relative;height:28px;background:linear-gradient(90deg,var(--surface-2) 1px,transparent 1px) 0 0/calc(100%/12) 100%}
+.gantt .bar{position:absolute;top:4px;height:20px;border-radius:6px;background:var(--grad);display:flex;align-items:center;padding:0 10px;font-size:11px;color:#fff;font-weight:600;box-shadow:var(--shadow)}
+</style>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Gantt">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="gantt">
+<div class="hd"><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div><div>{{ text }}</div></div>
+<div class="row"><div class="lbl">{{ text }}</div><div class="cells"><div class="bar" style="left:0;width:25%">{{ text }}</div></div></div>
+<div class="row"><div class="lbl">{{ text }}</div><div class="cells"><div class="bar" style="left:17%;width:33%">{{ text }}</div></div></div>
+<div class="row"><div class="lbl">{{ text }}</div><div class="cells"><div class="bar" style="left:42%;width:25%">{{ text }}</div></div></div>
+<div class="row"><div class="lbl">{{ text }}</div><div class="cells"><div class="bar" style="left:58%;width:25%">{{ text }}</div></div></div>
+<div class="row"><div class="lbl">{{ text }}</div><div class="cells"><div class="bar" style="left:75%;width:25%">{{ text }}</div></div></div>
+</div>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

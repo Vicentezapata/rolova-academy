@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><title>Chart · Bar</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/minimal-white.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Bar chart">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="card mt-l" style="height:520px;padding:28px"><canvas id="c"></canvas></div>
+<script>
+    addEventListener('DOMContentLoaded',()=>{
+      const css=getComputedStyle(document.documentElement);
+      const accent=css.getPropertyValue('--accent').trim();
+      const text2=css.getPropertyValue('--text-2').trim();
+      const border=css.getPropertyValue('--border').trim();
+      new Chart(document.getElementById('c'),{type:'bar',
+        data:{labels:['ETIQUETA', 'ETIQUETA', 'ETIQUETA', 'ETIQUETA', 'ETIQUETA'],
+          datasets:[{label:'ETIQUETA',data:[42,58,73,96,124,158,204,261],
+            backgroundColor:accent,borderRadius:8,barThickness:36}]},
+        options:{plugins:{legend:{labels:{color:text2}}},
+          scales:{x:{ticks:{color:text2},grid:{color:border}},
+                  y:{ticks:{color:text2},grid:{color:border}}}}});
+    });
+  </script>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

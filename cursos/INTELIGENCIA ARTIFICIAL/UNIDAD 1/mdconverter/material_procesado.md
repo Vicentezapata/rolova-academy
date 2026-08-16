@@ -1,0 +1,1905 @@
+
+
+# ===== PPT Presentación asignatura INTELIGENCIA ARTIFICIAL.pptx =====
+
+
+## Slide 1
+- INTELIGENCIA ARTIFICIAL
+- PRESENTACIÓN DE LA ASIGNATURA
+
+## Slide 2
+- CONOCIENDO LA ASIGNATURA
+- Competencia(s)
+- Utiliza datos a través de su recolección, análisis y entrenamiento de algoritmos permitiendo identificar problemas y proponer posibles soluciones.
+- Unidades de competencia
+- 1.  Desarrolla algoritmos de machine learning utilizando librerías del lenguaje a programación Python.
+
+## Slide 3
+- CONOCIENDO LA ASIGNATURA
+- Unidades de Aprendizaje
+- FUNDAMENTOS Y ÉTICA DE LA IA
+- 2. PREPARACIÓN Y PROCESAMIENTO DE DATOS PARA IA
+- 3. MODELOS DE ML Y APLICACIONES
+
+## Slide 4
+- CONTENIDOS CONCEPTUALES
+
+## Slide 5
+- Contenidos conceptuales unidad 1
+- - Conceptos básicos:
+- Inteligencia Artificial.
+- Machine learning.
+- Deep learning.
+- Ciencia de datos.
+- Aprendizaje supervisado.
+- Aprendizaje no supervisado.
+- Redes neuronales
+- Aprendizaje por refuerzo.
+- Ramas y aplicaciones de la IA.
+- Campos.
+- Visión por computadora.
+- Procesamientos de lenguaje natural.
+- Sistemas expertos.
+- Python
+- Sesgos
+- Privacidad
+- Impacto laboral responsabilidad.
+
+## Slide 6
+- Contenidos conceptuales unidad 2
+- - Tipos de algoritmos de machine learning.
+- - Modelos de regresión: lineal, árboles de decisión, SVMR, KNNR.
+- - Modelos de clasificación: logística, Naive Bayes, árboles de decisión, SVMC, K-NNC.
+- - Modelos y métricas.
+
+## Slide 7
+- Contenidos conceptuales unidad 3
+- Técnicas de:
+- Limpieza de datos
+- Transformación de datos
+- Métodos de selección
+- - Algoritmos de machine learning (ML)
+- - Librerías de Python
+- - TensorFlow
+- - Keras
+- - Scikit-learn
+- - Procesamiento de lenguaje natural (PLN)
+- - Librería NLTK
+- - Herramientas de Python
+
+## Slide 8
+- EVALUACIONES
+
+## Slide 9
+- CONOCIENDO LA ASIGNATURA
+- Evaluaciones
+- UNIDAD 1
+- Tipo de Evidencia
+- Situación Evaluativa
+- Instrumento de Evaluación
+- Porcentaje Ponderación
+- PRODUCTO
+- ENTREGA DE ENCARGO
+- RÚBRICA
+- 10%
+
+## Slide 10
+- Evaluaciones
+- UNIDAD 2
+- Tipo de Evidencia
+- Situación Evaluativa
+- Instrumento de Evaluación
+- Porcentaje Ponderación
+- PRODUCTO
+- ENTREGA DE ENCARGO
+- RÚBRICA
+- 20%
+
+## Slide 11
+- Evaluaciones
+- UNIDAD 3
+- Tipo de Evidencia
+- Situación Evaluativa
+- Instrumento de Evaluación
+- Porcentaje Ponderación
+- PRODUCTO
+- ENTREGA DE ENCARGO
+- RÚBRICA
+- 30%
+
+## Slide 12
+- Evaluaciones
+- EVALUACIÓN FINAL
+- Tipo de Evidencia
+- Situación Evaluativa
+- Instrumento de Evaluación
+- Porcentaje Ponderación
+- PROCESO
+- ENTREGA DE ENCARGO
+- RÚBRICA
+- 40%
+
+## Slide 13
+- BIBLIOGRAFÍA
+
+## Slide 14
+- RECURSOS BIBLIOGRÁFICOS
+- Obligatorios
+- Complementarios
+- Saxena, P. (2024). Ultimate machine learning with Scikit-Learn: Unleash the power of Scikit-Learn and Python to build cutting-edge predictive modeling applications and unlock deeper insights into machine learning (English Edition). Orange Education Pvt Ltd. https://ipss.odilo.us/info/ultimate-machine-learning-with-scikit-learn-unleash-the-power-of-scikit-learn-and-python-to-build-cutting-edge-predictive-modeling-applications-and-unlock-deeper-insights-into-machine-learning-english-edition-02760950
+- Curso Art of Machine Learning. https://ipss.odilo.us/info/the-art-of-machine-learning-02596413
+- Raschka, S. (2023). Machine learning with PyTorch and Scikit-Learn: Develop machine learning and deep learning models with Python. Packt Publishing. https://ipss.odilo.us/info/machine-learning-with-pytorch-and-scikit-learn-develop-machine-learning-and-deep-learning-models-with-python-02597032
+- Curso: The Machine Learning Solutions Architect Handbook: Create machine learning platforms to run solutions in an enterprise setting. https://ipss.odilo.us/info/the-machine-learning-solutions-architect-handbook-create-machine-learning-platforms-to-run-solutions-in-an-enterprise-setting-02594569
+- Bobadilla Sancho, J. (2020). Machine learning y deep learning. RA-MA Editorial. https://ipss.odilo.us/info/machine-learning-y-deep-learning-02596995
+- Müller, A. C., & Guido, S. (2023). Introducción al machine learning con Python: Una guía para científicos de datos. O'Reilly Media. Curso: Machine learning: How machines learn. https://ipss.odilo.us/info/machine-learning-how-machines-learn-02596294
+
+## Slide 15
+- RECURSOS EN AULA POR UNIDAD
+
+## Slide 16
+- Recursos por unidad
+- Apunte activador
+- Foro
+- Cuaderno de Ejercitación (practica tu aprendizaje)
+- URL
+- Video
+- Cuestionario
+- Infografía resumen
+- Evaluación
+
+## Slide 17
+- INTELIGENCIA ARTIFICIAL
+- PRESENTACIÓN DE LA ASIGNATURA
+
+
+# ===== presentacion_unidad_1.html =====
+
+- Unidad 1 — Inteligencia Artificial | IPSS 2026
+- SESIÓN 1
+- SESIÓN 2
+- SESIÓN 3
+- EVALUACIÓN
+- UNIDAD 1 · SEMANAS 1-4
+- FUNDAMENTOS Y ÉTICA DE LA IA
+- Inteligencia
+- Artificial | IPSS 2026
+- Descubre cómo los algoritmos aprenden, las principales ramas que impulsan
+- la tecnología actual y los dilemas éticos que enfrentamos en la era de la información.
+- SEMANA 1 · CLASE SINCRÓNICA
+- Conceptos y Tipos de Aprendizaje
+- ¿Qué es realmente la IA? ¿Cómo aprende una máquina? Desmitificándolo con
+- ejemplos del día a día.
+- Actividad de Activación
+- ¡Rompamos el Hielo!
+- Respondan en el
+- chat en 60 segundos:
+- ¿Qué es para
+- ustedes la inteligencia artificial?  En una frase.
+- Nombren  UNA app
+- que usen a diario  que crean que usa IA.
+- ¿Creen que la IA
+- nos va a quitar el trabajo ?  Sí   No   Depende
+- Definición Fundamental
+- ¿Qué es la Inteligencia Artificial?
+- Lograr que una computadora realice tareas que
+- normalmente requerirían  inteligencia humana  — reconocer caras, entender idiomas, tomar
+- decisiones, crear contenido.
+- Analogía del Día
+- a Día
+- Programa Tradicional  = una receta de cocina que sigues paso a
+- paso, siempre igual.
+- Inteligencia Artificial  = un chef que  prueba  cada
+- plato, recibe opiniones de los comensales, y va  mejorando sus recetas  automáticamente.
+- Tu Celular
+- Face ID te reconoce aunque cambies de peinado o uses lentes.
+- Waze / Google Maps
+- Analiza datos de millones de conductores en tiempo real para predecir el tráfico.
+- Spotify / YouTube
+- Estudia qué te gusta para recomendarte contenido nuevo que probablemente
+- disfrutarás.
+- Comparación Fundamental
+- Programa Clásico vs. Inteligencia Artificial
+- Programa Clásico
+- Reglas escritas por humanos
+- "Si asunto contiene GRATIS → Spam"
+- Resultado fijo
+- No se adapta. El spammer cambia y el filtro falla.
+- Estático y frágil
+- IA / Machine Learning
+- Datos de ejemplo
+- 10.000 correos etiquetados: Spam / No Spam
+- Descubre patrones solo
+- Se re-entrena y adapta automáticamente.
+- Dinámico y adaptable
+- Evolución de la IA
+- Línea de Tiempo: De las Reglas al Aprendizaje
+- De reglas codificadas manualmente a
+- sistemas que crean contenido inédito.
+- 1950s - 1980s
+- Sistemas Expertos
+- Lógica "Si-Entonces" dictada por humanos. Como un médico dictando TODAS sus
+- reglas a una computadora.
+- 1990s - 2000s
+- Machine Learning
+- La máquina aprende de datos históricos. Como dar 50.000 fichas clínicas y que
+- descubra patrones sola.
+- 2010s
+- Deep Learning
+- Redes neuronales con millones de conexiones. Explosión gracias a GPUs. Siri
+- dejó de ser un chiste.
+- 2020s - Hoy
+- IA Generativa
+- Transformers. ChatGPT, DALL-E, Midjourney. Crea texto, imágenes, código y
+- música desde cero.
+- Definiciones Clave
+- IA vs ML vs DL — Las Muñecas Rusas
+- Sistemas que emulan inteligencia humana.
+- Modelos que aprenden de datos.
+- Diferencia
+- Fundamental
+- En  ML clásico , un humano le dice al modelo qué buscar. En
+- Deep Learning , la red neuronal lo descubre POR SÍ MISMA desde datos crudos.
+- Ejemplos
+- Cotidianos
+- IA:  Un NPC en un videojuego que reacciona inteligentemente.
+- ML:  Netflix recomendándote series ("Porque viste X...").
+- DL:  Face ID reconociendo tu rostro en 3D.
+- ¿Y la Ciencia de Datos?
+- Pirámide de Jerarquía de Datos
+- No se puede hacer IA sin datos sólidos. El  Data Science
+- abarca toda la pirámide.
+- Regla de Oro
+- "Garbage In, Garbage Out"  — Basura entra, basura sale. Datos
+- sesgados = predicciones peligrosas.
+- Analogía de la
+- Cocina
+- La mejor receta + el mejor chef + ingredientes podridos =  plato
+- horrible . La IA necesita  buenos ingredientes  (datos limpios).
+- Inteligencia Artificial
+- Deep Learning, Predicción
+- Entrenamiento, Testing
+- Analítica / BI
+- Métricas, Dashboards
+- Limpieza y Recolección
+- Bases de datos, Pipelines (ETL)
+- Cómo aprende la máquina
+- 1. Aprendizaje Supervisado
+- Input (X)
+- Ej: Foto de una fruta
+- Etiqueta (Y)
+- Respuesta: "Manzana"
+- CLAVE
+- Modelo ML
+- Ajusta sus pesos internos
+- Predicción
+- Identifica frutas nuevas
+- Analogía del Niño
+- Le muestras 1.000 frutas diciéndole el nombre de cada una. Después puede
+- reconocer frutas que  nunca vio .
+- Casos
+- Gmail:  Filtrando tu spam automáticamente.
+- Banco:  Detectando transacciones sospechosas.
+- Clima:  Prediciendo que mañana serán 22°C.
+- Uber:  Estimando el precio antes de pedir.
+- 2. Aprendizaje No Supervisado
+- Historial de compras
+- Busca patrones ocultos
+- Clústeres
+- Grupos A, B, C
+- SIN ETIQUETAS
+- Analogía del Lego
+- Te dan 500 piezas y te dicen "ordénalos". Nadie dice CÓMO. Tú descubres
+- agrupaciones naturales (color, tamaño, forma).
+- Supermercado:  Agrupando clientes para ofertas.
+- Banco:  Bloqueando compra sospechosa a las 3am.
+- Spotify:  Agrupando canciones por similitud acústica.
+- 3. Aprendizaje por Refuerzo
+- Entorno
+- Estado actual del mundo
+- Agente (IA)
+- Ejecuta una ACCIÓN
+- POLÍTICA
+- Feedback
+- +1 Recompensa  /  -1 Castigo
+- Analogía del Bebé
+- Un bebé aprende a caminar  sin manual : se cae (castigo), lo intenta, da
+- un paso (recompensa). Miles de intentos hasta dominar el equilibrio.
+- Robot Roomba:  Aprende tu casa chocando con muebles.
+- AlphaGo:  Venció al campeón mundial de Go.
+- Tesla Autopilot:  Mejora con cada km recorrido.
+- Resumen Comparativo
+- Los 3 Tipos de Aprendizaje Automático
+- Característica
+- Supervisado
+- No Supervisado
+- Por Refuerzo
+- ¿Tiene etiquetas?
+- Premios/castigos
+- Analogía
+- Estudiar con solucionario
+- Ordenar sin instrucciones
+- Entrenar una mascota
+- Objetivo
+- Predecir una respuesta
+- Descubrir patrones
+- Maximizar recompensa
+- Ejemplo cotidiano
+- Gmail filtrando spam
+- Banco detectando fraude
+- Robot Roomba
+- ¿Cuál es "mejor"?  Ninguno. Un
+- martillo no es mejor que un destornillador — son herramientas distintas para situaciones distintas.
+- Actividad Lúdica
+- Adivina: ¿Cómo aprende la máquina?
+- Vota:  S
+- (Supervisado),  N  (No Supervisado),  R  (Refuerzo)
+- 1.  Un robot aspiradora
+- que aprende a navegar chocando con las paredes.
+- Ver Respuesta
+- POR REFUERZO (R) :
+- Interactúa con el entorno, recibe castigos al chocar.
+- 2.  Una app médica que
+- detecta tumores con 10.000 radiografías marcadas por médicos.
+- SUPERVISADO (S) :
+- Datos de entrada + etiquetas correctas.
+- 3.  Spotify agrupando
+- canciones por similitud acústica, sin saber el género.
+- NO SUPERVISADO (N) :
+- Agrupa por similitud sin etiquetas previas.
+- SEMANA 2 · ASINCRÓNICA
+- Ramas, Aplicaciones y Redes Neuronales
+- Antes de Empezar: Reflexiona
+- Antes de avanzar,
+- haz este ejercicio:
+- Piensa en tus  últimas 24 horas . ¿Cuántas veces interactuaste con IA sin darte
+- cuenta?
+- Pista:  probablemente fueron  más de 20 veces .
+- Escribe en un papel
+- al menos 5 momentos  antes de avanzar al siguiente slide. Luego compara tu lista con lo
+- que veremos a continuación.
+- Visión por Computadora
+- Haciendo que la máquina "vea"
+- Usa  Redes Neuronales Convolucionales (CNN)  — filtros que
+- detectan bordes, texturas y formas progresivamente.
+- Face ID:  30.000
+- puntos infrarrojos 3D.
+- Google Fotos:
+- Reconoce familiares automáticamente.
+- Cajeros
+- auto:  Reconocen frutas sin código.
+- Medicina:
+- Detecta tumores en radiografías.
+- Caso Polémico: Clearview AI
+- Policías identifican sospechosos escaneando miles de millones de fotos públicas de
+- redes sociales.
+- ¿Es aceptable que tu foto de Instagram pueda usarse para buscarte sin tu
+- consentimiento?
+- Deep Learning (DINTA)
+- ¿Cómo Funciona una Red Neuronal?
+- Las 3
+- Capas Básicas
+- Entrada:  Datos crudos (píxeles, números).
+- Ocultas:  Pesos + activación. Aquí ocurre el
+- aprendizaje.
+- Salida:  Predicción final.
+- de la Votación
+- Cada conexión es un  voto con diferente peso . Si la suma
+- supera un umbral, la neurona se "enciende".
+- ENTRADA
+- OCULTA
+- SALIDA
+- Backpropagation:  Predice → compara → calcula error → ajusta pesos → repite  millones de
+- veces . Como corregir errores examen tras examen.
+- Procesamiento de Lenguaje Natural
+- Haciendo que la máquina "entienda"
+- El salto gigante: los  Transformers  (2017) entienden el
+- contexto completo de un texto simultáneamente.
+- El Problema del
+- "Banco"
+- "El  banco  está cerca del río" vs "Voy al  banco
+- a sacar dinero". Los Transformers entienden esto por el  contexto .
+- Google Translate:
+- Traduce párrafos con coherencia.
+- WhatsApp:
+- Sugiere palabras mientras escribes.
+- ChatGPT:  Genera
+- texto, código, respuestas.
+- ¿Qué son los
+- Transformers?
+- Antes:  Leían de izquierda a derecha y "olvidaban" el
+- inicio.
+- Transformers:  Miran TODA la frase simultáneamente con
+- "Atención".
+- Dato:  Chat G P T  =  Generative
+- Pre-trained  Transformer  .
+- La IA en Tu Día a Día
+- Un Día Completo con Inteligencia Artificial
+- 7:00 AM
+- "Alexa, alarma".  PLN  interpreta tu voz.
+- 8:00 AM
+- Gmail separa tu spam.  ML Supervisado .
+- 9:00 AM
+- Desbloqueas con Face ID.  Deep Learning .
+- 9:30 AM
+- Uber estima precio.  Regresión ML .
+- 12:00 PM
+- Instagram muestra lo que te gusta.  DL .
+- 2:00 PM
+- Traduces con DeepL.  Transformers .
+- 5:00 PM
+- Banco bloquea compra rara.  Anomalías .
+- 9:00 PM
+- Netflix recomienda serie.  ML .
+- La IA  no está "llegando"  — ya
+- llegó hace años y está en cada app que usas.
+- Reto Asincrónico
+- Actividad: Cazadores de Deepfakes
+- En el  foro de la
+- plataforma EVA :
+- Busca una imagen/video  generado
+- por IA  que sea extremadamente realista.
+- Sube la URL o imagen al foro.
+- Explica en 2-3 líneas  qué pistas
+- visuales  te indican que NO es real (dedos deformados, texto sin sentido, reflejos ilógicos).
+- SEMANA 3 · CLASE SINCRÓNICA
+- Ética, Impacto y Responsabilidad
+- Escenario para Reflexionar
+- Escenario:
+- Vas a pedir un  crédito
+- hipotecario  para tu primera casa. El banco usa un sistema de IA que analiza tu perfil y te
+- dice:
+- RECHAZADO
+- No te dan  ninguna explicación  de por qué.
+- Solo "rechazado".
+- ¿Cómo te sentirías?
+- ¿Te parece justo?
+- Escribe en el chat
+- Los 4 Pilares Éticos
+- ¿Cuáles son los Grandes Riesgos de la IA?
+- 1. Sesgos Algorítmicos
+- La IA  amplifica  prejuicios históricos a escala industrial. Amazon
+- rechazaba CVs de mujeres porque aprendió de 10 años de contrataciones masculinas.
+- 2. Privacidad
+- IA analiza datos personales masivamente. En China, el  Crédito
+- Social  puntúa el comportamiento ciudadano con IA.
+- 3. Impacto Laboral
+- Automatiza tareas rutinarias. No elimina TODOS los empleos, pero exige
+- reskilling  (nuevas habilidades).
+- 4. Accountability
+- Si un auto autónomo atropella a alguien, ¿de quién es la culpa?  El marco
+- legal no fue diseñado para algoritmos.
+- Debate Express
+- El Tribunal de la IA
+- Caso Real
+- (2018):  Una IA de Amazon rechazaba CVs de mujeres. Aprendió de 10 años de contrataciones
+- mayoritariamente masculinas.
+- Fiscalía
+- La empresa es culpable por no auditar los sesgos.  ¡1 argumento en el
+- chat!
+- Defensa
+- El algoritmo es matemático, no machista. Solo reflejó la realidad.  ¡1
+- argumento en el chat!
+- SEMANA 4 · EVALUACIÓN ASINCRÓNICA
+- Evaluación Unidad 1
+- 10% de la nota final
+- ¿Qué tienen que hacer?
+- Análisis de Caso de Estudio IA
+- Datos Generales
+- Modalidad:  Individual o equipos (máx. 3 personas)
+- Entrega:  Semana 4 vía plataforma EVA
+- Ponderación:  10% de la nota final
+- Instrumento:  Rúbrica de evaluación
+- ¡IMPORTANTE! No
+- usar temas genéricos
+- "La IA en redes
+- sociales"
+- "Machine
+- Learning en la medicina"
+- "El algoritmo de
+- recomendación de  YouTube "
+- "El sistema de
+- reconocimiento facial de  FaceID "
+- "Cómo
+- Spotify  crea la playlist Discover Weekly"
+- Las 5 Fases Obligatorias:
+- Descripción del Caso
+- ¿Qué problema resuelve? ¿Quiénes son los usuarios? ¿Cuál es el objetivo
+- principal?
+- Tecnología Utilizada
+- ¿Es ML supervisado? ¿Deep Learning? ¿Qué datos de entrenamiento usa?
+- ¿Qué rama de IA?
+- Beneficios
+- Eficiencia, optimización, bienestar social. ¿Qué mejora concretamente?
+- Implicancias Éticas
+- Sesgos potenciales, riesgos de privacidad, impacto laboral,
+- accountability.
+- Conclusión y Mitigación
+- Balance crítico: ¿superan los beneficios a los riesgos? Propuestas de
+- mitigación.
+- Criterios de Evaluación
+- Rúbrica: ¿Cómo los evalúo?
+- Logrado
+- 100%
+- Caso específico y bien investigado
+- Conexión explícita con conceptos del curso (ML vs DL, tipo de aprendizaje)
+- Análisis ético con escenarios específicos
+- Propuestas de mitigación realistas y concretas
+- Conclusión argumentada con equilibrio
+- Medianamente
+- 50-75%
+- Caso identificado pero análisis superficial
+- Conexiones teóricas vagas
+- Ética mencionada sin profundidad
+- Mitigaciones genéricas
+- Conclusión sin argumentación fuerte
+- Por Lograr
+- 0-50%
+- Tema genérico o copiado
+- Sin conexión con conceptos del curso
+- Ética ignorada o solo mencionada
+- Sin propuestas de mitigación
+- Sin conclusión o conclusión vacía
+- La diferencia clave:  No digan solo "la IA
+- tiene sesgos". Digan  QUÉ  sesgo específico,  POR QUÉ  se genera, y
+- CÓMO  se mitiga. Esa profundidad es lo que separa un 50% de un 100%.
+- Ejemplo de Caso Bien Hecho
+- Caso: "El Algoritmo de TikTok"
+- Descripción
+- IA decide qué videos mostrar en el "For You Page".
+- Analiza likes, tiempo de visualización, compartidos, scroll.
+- Tecnología
+- Deep Learning  con señales de video,
+- texto y audio. Supervisado (predice likes) + Refuerzo (maximiza engagement).
+- Democratiza la creación: cualquiera puede viralizar sin
+- ser famoso. Negocios pequeños alcanzan audiencias masivas.
+- Burbujas:  Solo ves contenido que refuerza tus creencias.
+- Adicción:  Riesgo alto especialmente en menores.
+- Privacidad:  Recopila datos de ubicación y comportamiento.
+- Sesgo:  Puede favorecer ciertos perfiles físicos.
+- Conclusión + Mitigación
+- Beneficios superan riesgos  si se regulan .
+- Límites de tiempo obligatorios para menores.
+- Permitir control de criterios del algoritmo al usuario.
+- Auditorías independientes de sesgo de contenido.
+- ¡A Trabajar!
+- Ideas de Casos + Instrucciones Finales
+- Ideas de Casos Específicos:
+- Spotify Discover Weekly
+- ML + Filtrado colaborativo
+- Google Translate
+- Transformers + NLP
+- Tesla Autopilot
+- Visión + Refuerzo
+- Detección de cáncer con IA
+- Deep Learning + CNN
+- ChatGPT / Claude
+- LLM + Transformers
+- COMPAS (justicia predictiva)
+- ML + Sesgos raciales
+- ¡Empiecen AHORA!
+- Elijan su caso  en equipo (o individual). Confirmen con el docente que no se
+- repita.
+- Investiguen  su caso en internet: cómo funciona, qué tecnología usa, qué
+- controversias tiene.
+- Estructuren  su análisis siguiendo las 5 fases obligatorias.
+- Entreguen  en la Semana 4 vía plataforma EVA.
+- ¿Dudas?
+- Tienen el  resto de la clase para empezar . Aprovechen
+- para:
+- Elegir caso y formar equipo
+- Consultar dudas al docente
+- Iniciar la investigación
+- Notas del Orador
+- 1 / 1
+- Pantalla Orador
+- Notas
+- Anterior
+- Siguiente
+- navegar |  F  fullscreen |  N  notas |  P  pantalla orador
+
+
+# ===== presentacion_unidad_1_gruvbox.html =====
+
+- Unidad 1 — Fundamentos y Etica de la IA
+- Unidad 1 · Inteligencia Artificial · IPSS 2026
+- FUNDAMENTOS Y ÉTICA DE LA IA
+- Descubre cómo los algoritmos aprenden, las principales ramas que impulsan la tecnología actual y los dilemas éticos de la era de la información.
+- Semanas 1-4
+- Machine Learning
+- Deep Learning
+- Etica IA
+- Flechas ←→ para avanzar  •  O = vista general  •  N = notas  •  F = pantalla completa
+- Bienvenidos a la primera unidad de Inteligencia Artificial. Mi nombre es [tu nombre] y seré su docente. NO necesitan saber programar ni ser genios de las matemáticas para entender esto. La IA ya está en sus vidas — en su celular, en Netflix, en Waze. Lo que haremos es entender CÓMO funciona por dentro. Esta unidad cubre 4 semanas: las dos primeras son conceptuales, la tercera es ética, y la cuarta es evaluación.
+- Activación
+- ¡Rompamos el Hielo!
+- Respondan en el chat en  60 segundos :
+- ¿Qué es la Inteligencia Artificial?
+- En una frase.
+- UNA app que usen a diario que use IA
+- Spotify, TikTok, Waze...
+- ¿La IA nos va a quitar el trabajo?
+- Depende
+- Esta primera sesión sincrónica sienta las bases. Cubriremos: qué es la IA, cómo se relaciona con Machine Learning y Deep Learning, y los tres tipos de aprendizaje automático. Todo con ejemplos cotidianos. Al final hay actividad interactiva.
+- Contexto
+- La IA ya está en tu vida
+- Instagram / TikTok
+- Algoritmo de recomendación
+- Spotify / Netflix
+- Predicción de gustos
+- Waze / Maps
+- Rutas en tiempo real
+- Gmail
+- Filtro de spam, autocompletado
+- Asistentes de Voz
+- Siri, Alexa, Google
+- ChatGPT / Gemini
+- IA Generativa de texto
+- Antes de entrar en materia, hagamos una actividad de activación para romper el hielo y saber qué piensan ustedes. Les haré 3 preguntas rápidas que deben responder en el chat en 60 segundos. No hay respuestas correctas ni incorrectas, solo quiero saber qué saben y qué piensan. Pregunta 1: ¿Qué es para ustedes la inteligencia artificial? En una frase. Pregunta 2: Nombren UNA app o herramienta que usen a diario que crean que usa IA. Pregunta 3: ¿Creen que la IA nos va a quitar el trabajo? Sí, No, o Depende. Vamos, escriban en el chat, tienen 60 segundos. Mientras responden, les cuento que la mayoría de las personas tiene una idea de la IA basada en películas de ciencia ficción — robots con conciencia propia, Terminator, HAL 9000. La realidad es muy diferente y mucho más cercana a ustedes de lo que creen.
+- Definición
+- La capacidad de una  máquina  para imitar comportamientos cognitivos que asociamos con la  mente humana : aprender, razonar y resolver problemas.
+- 🤖 IA Estrecha (Narrow AI)
+- Excelente en  una sola tarea . Ej: reconocer tumores en radiografías.
+- ● HOY
+- 🌟 IA General (AGI)
+- Razona en  cualquier dominio  como un humano.
+- ○ FUTURO
+- Arranquemos: ¿qué es la Inteligencia Artificial? Olvídense de los robots de las películas. La IA, en su definición más simple, es lograr que una computadora haga cosas que normalmente necesitarían inteligencia humana: reconocer una cara, entender lo que alguien dice, tomar una decisión, traducir un idioma. No es magia, son matemáticas y datos. La diferencia clave con un programa tradicional: un programa sigue instrucciones fijas escritas por un humano. La IA aprende de los datos y mejora sola. Un programa es como una receta de cocina que sigues al pie de la letra. La IA es como un chef que prueba platos, recibe comentarios, y va mejorando sus recetas automáticamente.
+- Cambio de Paradigma
+- Programación Clásica vs Machine Learning
+- ✗ Enfoque Clásico
+- Reglas + Datos
+- Respuestas
+- El humano programa  todas las reglas  de antemano.
+- ✓ Machine Learning
+- Datos + Respuestas
+- Reglas (Modelo)
+- La máquina  deduce patrones  sin reglas explícitas.
+- Profundicemos en la diferencia. Un programa clásico funciona así: un humano escribe reglas como 'Si el asunto contiene GRATIS y URGENTE, marcar como spam'. Pero los spammers se adaptan: escriben 'GR4TIS'. Y tus reglas fallan. Con Machine Learning, le das al sistema 10.000 correos ya clasificados como spam y no-spam, y el algoritmo DESCUBRE los patrones solo. Es como estudiar de memoria las respuestas de un examen (programa) versus ENTENDER la materia (IA).
+- Historia
+- Evolución de la IA
+- 1950s
+- Inicios
+- IA Simbólica
+- 1980s
+- Sistemas Expertos
+- Reglas If-Then
+- 1990s
+- Algoritmos Estadísticos
+- 2010s
+- Redes Neuronales
+- 2020s
+- IA Generativa
+- Transformers, LLMs
+- Ahora veamos cómo llegamos aquí. En los 50-80s teníamos Sistemas Expertos con reglas manuales. En los 90s-2000s, Machine Learning: la máquina aprende de datos históricos. En los 2010s, Deep Learning con redes neuronales masivas. Y ahora en los 2020s, IA Generativa con ChatGPT, DALL-E, Midjourney.
+- Conceptos
+- IA vs ML vs DL — Las Muñecas Rusas
+- 🌐 1. Inteligencia Artificial (IA)
+- Cualquier técnica que permite a máquinas  imitar comportamientos humanos . Gran paraguas.
+- 🧠 2. Machine Learning (ML)
+- Sistemas que  aprenden de datos  sin ser programados explícitamente.
+- 🤖 3. Deep Learning (DL)
+- ML con  Redes Neuronales Artificiales  de múltiples capas.
+- Esto es clave: IA, ML y DL no son lo mismo. Imaginen muñecas rusas. IA es la más grande — el objetivo general. ML es una forma de lograr IA usando datos. DL es una técnica dentro del ML con redes neuronales profundas. Ejemplo cotidiano: IA = NPC de videojuego. ML = Netflix recomendando series. DL = Face ID reconociendo tu rostro.
+- Estructura del Conocimiento
+- Jerarquía DIKW
+- Datos
+- Hechos crudos.
+- Ej:  38
+- Información
+- Datos con contexto.
+- Ej:  38°C
+- Conocimiento
+- Patrones y relaciones.
+- 38°C = Fiebre
+- Sabiduría
+- Acción basada en el patrón.
+- Tomar paracetamol
+- La IA NO funciona sin datos. Los data scientists pasan el 80% del tiempo limpiando datos. Garbage In, Garbage Out: si alimentas un modelo con datos sesgados, el resultado es basura. La pirámide muestra que primero necesitas datos limpios, luego analítica, luego ML, y finalmente IA en la cima.
+- Cómo aprende la máquina
+- 1. Aprendizaje Supervisado
+- Analogía del Niño
+- Le muestras 1.000 frutas diciéndole el nombre de cada una. Después puede
+- reconocer frutas que  nunca vio .
+- Casos
+- Cotidianos
+- Gmail:  Filtrando tu spam automáticamente.
+- Banco:  Detectando transacciones sospechosas.
+- Clima:  Prediciendo que mañana serán 22°C.
+- Uber:  Estimando el precio antes de pedir.
+- El primer tipo de aprendizaje: Supervisado. Hay un 'profesor' que le da las respuestas correctas. Como enseñarle a un niño a distinguir frutas mostrándole 1000 frutas con nombre. El modelo aprende la relación entre los datos de entrada (X) y las etiquetas (Y). Hay dos sub-tipos: Clasificación (spam/no spam) y Regresión (predecir temperatura, precio de casa).
+- 2. Aprendizaje No Supervisado
+- Analogía del Lego
+- Te dan 500 piezas y te dicen "ordénalos". Nadie dice CÓMO. Tú descubres
+- agrupaciones naturales (color, tamaño, forma).
+- Supermercado:  Agrupando clientes para ofertas.
+- Banco:  Bloqueando compra sospechosa a las 3am.
+- Spotify:  Agrupando canciones por similitud acústica.
+- El segundo tipo: No Supervisado. NO hay profesor ni respuestas. Le das datos y le dices 'encuentra patrones'. Es como darte 500 piezas de Lego y decirte 'ordénalos' sin decirte cómo. Ejemplo: tu banco monitorea transacciones. Si aparece una compra de $2M en Bangkok a las 3am, el algoritmo la detecta como anomalía y bloquea la tarjeta.
+- 3. Aprendizaje por Refuerzo
+- Analogía del Bebé
+- Un bebé aprende a caminar  sin manual : se cae (castigo), lo intenta, da
+- un paso (recompensa). Miles de intentos hasta dominar el equilibrio.
+- Robot Roomba:  Aprende tu casa chocando con muebles.
+- AlphaGo:  Venció al campeón mundial de Go.
+- Tesla Autopilot:  Mejora con cada km recorrido.
+- El tercer tipo: Por Refuerzo. Funciona como un bebé aprendiendo a caminar: prueba y error con premios y castigos. Un 'agente' interactúa con un 'entorno', ejecuta acciones, recibe recompensas o castigos, y optimiza su estrategia. AlphaGo aprendió jugadas que ningún humano pensó en 3000 años.
+- Resumen Comparativo
+- Los 3 Tipos de Aprendizaje Automático
+- Característica
+- Supervisado
+- No Supervisado
+- Por Refuerzo
+- ¿Tiene etiquetas?
+- Premios/castigos
+- Analogía
+- Estudiar con solucionario
+- Ordenar sin instrucciones
+- Entrenar una mascota
+- Objetivo
+- Predecir una respuesta
+- Descubrir patrones
+- Maximizar recompensa
+- Ejemplo cotidiano
+- Gmail filtrando spam
+- Banco detectando fraude
+- Robot Roomba
+- ¿Cuál es "mejor"?  Ninguno. Un
+- martillo no es mejor que un destornillador — son herramientas distintas para situaciones distintas.
+- Resumamos en una tabla. Supervisado: tiene etiquetas, como estudiar con solucionario. No Supervisado: sin etiquetas, como ordenar sin instrucciones. Refuerzo: premios y castigos, como entrenar una mascota. ¿Cuál es mejor? Depende del problema. Son herramientas distintas para situaciones distintas.
+- Actividad Lúdica
+- Adivina: ¿Cómo aprende la máquina?
+- 1.  Un robot aspiradora
+- que aprende a navegar chocando con las paredes.
+- Ver Respuesta
+- POR REFUERZO (R) :
+- Interactúa con el entorno, recibe castigos al chocar.
+- 2.  Una app médica que
+- detecta tumores con 10.000 radiografías marcadas por médicos.
+- SUPERVISADO (S) :
+- Datos de entrada + etiquetas correctas.
+- 3.  Spotify agrupando
+- canciones por similitud acústica, sin saber el género.
+- NO SUPERVISADO (N) :
+- Agrupa por similitud sin etiquetas previas.
+- Vamos a poner a prueba lo aprendido. Tres situaciones, voten en el chat: S (Supervisado), N (No Supervisado) o R (Refuerzo). 30 segundos por pregunta.
+- Demo Técnica
+- Google Colab: Regularización en Vivo
+- ridge_regularizacion.py
+- from  sklearn.linear_model  import  Ridge
+- from  sklearn.model_selection  import  train_test_split
+- # Dividir datos
+- X_train, X_test, y_train, y_test = train_test_split(X, y, test_size= 0.2 )
+- # Ridge = Regresion L2: penaliza coeficientes grandes
+- modelo = Ridge(alpha= 1.0 )
+- modelo.fit(X_train, y_train)
+- # r2 cercano a 1.0 = buen ajuste sin memorizar
+- score = modelo.score(X_test, y_test)
+- print (f "Precision del modelo: {score:.3f}" )
+- Ridge aplica penalizacion L2 a los coeficientes para evitar overfitting. El parametro alpha controla la fuerza de la penalizacion.
+- Ramas, Aplicaciones y Redes Neuronales
+- Sesión asincrónica de Semana 2. Exploraremos: Visión por Computadora, PLN, Sistemas Expertos, Redes Neuronales y IA Generativa. Al final hay actividad del foro.
+- Actividad de Activación
+- Antes de Empezar: Reflexiona
+- Piensa en tus  últimas 24 horas . ¿Cuántas veces interactuaste con IA sin darte
+- cuenta?
+- Pista:  probablemente fueron  más de 20 veces .
+- Escribe en un papel
+- al menos 5 momentos  antes de avanzar al siguiente slide. Luego compara tu lista con lo
+- que veremos a continuación.
+- Actividad de activación para la sesión asincrónica. Antes de leer el material, quiero que reflexionen. Piensen en las últimas 24 horas: ¿cuántas veces interactuaron con IA sin darse cuenta? Les doy una pista: probablemente fueron más de 20 veces. Escriban en un papel al menos 5 momentos antes de avanzar al siguiente slide.
+- Visión por Computadora — CNN
+- Haciendo que la máquina “vea”
+- Usa  Redes Neuronales Convolucionales (CNN)  — filtros que detectan bordes, texturas y formas progresivamente.
+- Face ID  30.000 puntos infrarrojos 3D analizan tu cara.
+- Google Fotos  Reconoce familiares automáticamente.
+- Medicina  Detecta tumores en radiografías con precisión.
+- ⚠️ Caso Polémico: Clearview AI
+- Policías identifican sospechosos escaneando  miles de millones  de fotos públicas de redes sociales.
+- ¿Es aceptable que tu foto de Instagram pueda usarse para buscarte  sin tu consentimiento ?
+- Debate Ético
+- Vision por Computadora: ensenamos a la computadora a ver usando CNNs. Filtros progresivos: primero detectan lineas, luego texturas, luego objetos completos. Face ID analiza 30.000 puntos infrarrojos. Clearview AI es el caso polemico: usa fotos publicas de redes sociales para reconocimiento facial policial sin consentimiento.
+- Deep Learning — Arquitectura
+- ¿Cómo Funciona una Red Neuronal?
+- Entrada
+- Píxeles, números, texto crudo
+- Capas Ocultas
+- Cada neurona vota con un  peso . Si la suma supera el umbral, se “enciende”.
+- Salida
+- Predicción final: Gato 97%
+- 🔄 Backpropagation — Cómo aprende
+- 1. Predice
+- 2. Compara
+- 3. Calcula Error
+- 4. Ajusta Pesos
+- Repite millones de veces
+- Como corregir errores examen tras examen — la red mejora con cada iteración.
+- Profundicemos en Redes Neuronales. Entrada recibe datos crudos. Capas Ocultas procesan con pesos como una votacion. Backpropagation es como el mecanismo de aprendizaje: predice, compara con respuesta real, calcula error, ajusta pesos. Repite millones de veces. Analogia: como estudiar para un examen repasando los errores.
+- Procesamiento de Lenguaje Natural — PLN
+- Haciendo que la máquina “entienda”
+- 💬 El Problema del “Banco”
+- “El  banco  está cerca del río”
+- “Voy al  banco  a sacar dinero”
+- Los Transformers entienden esto por el  contexto completo .
+- 💡 El Salto: Transformers (2017)
+- Antes: Leían  izquierda a derecha  y “olvidaban” el inicio.
+- Ahora: Leen  toda la frase simultáneamente  con “atención”.
+- La  T  de Cha T GPT = Transformer
+- Aplicaciones del PLN en tu vida:
+- Google Translate  Traduce párrafos con coherencia semántica.
+- WhatsApp  Sugiere palabras mientras escribes.
+- ChatGPT / Gemini  Genera texto, código y respuestas complejas.
+- PLN: ensenamos a la maquina a entender lenguaje humano. El problema del Banco muestra la ambiguedad del idioma. Los Transformers (2017) resolvieron esto leyendo toda la frase simultaneamente. La T de ChatGPT es Transformer. Hoy: Google Translate, WhatsApp, ChatGPT, Alexa.
+- La IA en Tu Día a Día
+- Un Día Completo con Inteligencia Artificial
+- 7:00 AM
+- "Alexa, alarma".  PLN  interpreta tu voz.
+- 8:00 AM
+- Gmail separa tu spam.  ML Supervisado .
+- 9:00 AM
+- Desbloqueas con Face ID.  Deep Learning .
+- 9:30 AM
+- Uber estima precio.  Regresión ML .
+- Veamos dónde está la IA en tu día a día completo. Cada momento del día involucra alguna forma de IA. La IA no está 'llegando' — ya llegó hace años.
+- Reto Asincrónico
+- Actividad: Cazadores de Deepfakes
+- En el  foro de la
+- plataforma EVA :
+- Busca una imagen/video  generado
+- por IA  que sea extremadamente realista.
+- Sube la URL o imagen al foro.
+- Explica en 2-3 líneas  qué pistas
+- visuales  te indican que NO es real (dedos deformados, texto sin sentido, reflejos ilógicos).
+- Actividad del foro: Cazadores de Deepfakes. Busquen una imagen o video generado por IA, súbanla al foro, y expliquen qué pistas visuales les indican que NO es real.
+- Ética, Impacto y Responsabilidad
+- Última sesión sincrónica. Ética en IA: sesgos, privacidad, impacto laboral, accountability. La IA puede salvar vidas o destruirlas. Hoy enfrentamos esos dilemas de frente.
+- Escenario para Reflexionar
+- Escenario:
+- Vas a pedir un  crédito
+- hipotecario  para tu primera casa. El banco usa un sistema de IA que analiza tu perfil y te
+- dice:
+- RECHAZADO
+- No te dan  ninguna explicación  de por qué.
+- Solo "rechazado".
+- ¿Cómo te sentirías?
+- ¿Te parece justo?
+- Escribe en el chat
+- Actividad de activación para la sesión de ética. Voy a mostrarles un escenario y quiero su reacción instintiva en el chat. El escenario es: imaginen que van a pedir un crédito hipotecario para su primera casa. El banco usa un sistema de IA que analiza su perfil y les dice 'rechazado'. No les dan ninguna explicación de por qué. Solo 'rechazado'. ¿Cómo se sentirían? ¿Les parece justo? Escriban en el chat. Este es exactamente el dilema de accountability que vamos a explorar hoy.
+- Los 4 Pilares Éticos
+- ¿Cuáles son los Grandes Riesgos de la IA?
+- 1. Sesgos Algorítmicos
+- La IA  amplifica  prejuicios históricos a escala industrial. Amazon
+- rechazaba CVs de mujeres porque aprendió de 10 años de contrataciones masculinas.
+- 2. Privacidad
+- IA analiza datos personales masivamente. En China, el  Crédito
+- Social  puntúa el comportamiento ciudadano con IA.
+- 3. Impacto Laboral
+- Automatiza tareas rutinarias. No elimina TODOS los empleos, pero exige
+- reskilling  (nuevas habilidades).
+- 4. Accountability
+- Si un auto autónomo atropella a alguien, ¿de quién es la culpa?  El marco
+- legal no fue diseñado para algoritmos.
+- Los 4 pilares éticos de la IA: 1) Sesgos: la IA amplifica prejuicios históricos a escala industrial. Amazon rechazaba CVs de mujeres. 2) Privacidad: la IA analiza datos personales a escala masiva. Crédito Social en China. 3) Impacto Laboral: automatiza tareas rutinarias, exige reskilling. 4) Accountability: si un auto autónomo atropella, ¿de quién es la culpa?
+- Debate Express
+- El Tribunal de la IA
+- Fiscalía
+- La empresa es culpable por no auditar los sesgos.  ¡1 argumento en el
+- chat!
+- Defensa
+- El algoritmo es matemático, no machista. Solo reflejó la realidad.  ¡1
+- argumento en el chat!
+- Debate express: En 2018, la IA de Amazon rechazaba CVs de mujeres. Divídanse en Fiscalía (acusa a la empresa) y Defensa (defiende al algoritmo). Escriban UN argumento en el chat. 3 minutos.
+- Evaluación Unidad 1
+- Ahora pasamos a lo más importante para ustedes: la Evaluación 1. Presten mucha atención porque les voy a explicar exactamente qué deben hacer, cómo hacerlo bien, y qué criterios voy a usar para calificarlos. Esta evaluación vale el 10% de la nota final.
+- ¿Qué tienen que hacer?
+- Análisis de Caso de Estudio IA
+- Datos Generales
+- Modalidad:  Individual o equipos (máx. 3 personas)
+- Entrega:  Semana 4 vía plataforma EVA
+- Ponderación:  10% de la nota final
+- Instrumento:  Rúbrica de evaluación
+- ¡IMPORTANTE! No
+- usar temas genéricos
+- "La IA en redes
+- sociales"
+- "Machine
+- Learning en la medicina"
+- "El algoritmo de
+- recomendación de  YouTube "
+- "El sistema de
+- reconocimiento facial de  FaceID "
+- "Cómo
+- Spotify  crea la playlist Discover Weekly"
+- Las 5 Fases Obligatorias:
+- Descripción del Caso
+- ¿Qué problema resuelve? ¿Quiénes son los usuarios? ¿Cuál es el objetivo
+- principal?
+- Tecnología Utilizada
+- ¿Es ML supervisado? ¿Deep Learning? ¿Qué datos de entrenamiento usa?
+- ¿Qué rama de IA?
+- Beneficios
+- Eficiencia, optimización, bienestar social. ¿Qué mejora concretamente?
+- Implicancias Éticas
+- Sesgos potenciales, riesgos de privacidad, impacto laboral,
+- accountability.
+- Conclusión y Mitigación
+- Balance crítico: ¿superan los beneficios a los riesgos? Propuestas de
+- mitigación.
+- La evaluación es un Análisis de Caso de Estudio de IA. Pueden trabajar individualmente o en equipos de máximo 3 personas. Deben elegir un caso de aplicación REAL y ESPECÍFICO de inteligencia artificial — no algo genérico como 'Redes Sociales', sino algo concreto como 'El algoritmo de recomendación de YouTube' o 'El sistema de reconocimiento facial del Transantiago' o 'Cómo Spotify crea la playlist Discover Weekly'. El análisis tiene 5 fases obligatorias que les voy a detallar ahora.
+- Criterios de Evaluación
+- Rúbrica: ¿Cómo los evalúo?
+- Logrado
+- 100%
+- Caso específico y bien investigado
+- Conexión explícita con conceptos del curso (ML vs DL, tipo de aprendizaje)
+- Análisis ético con escenarios específicos
+- Propuestas de mitigación realistas y concretas
+- Conclusión argumentada con equilibrio
+- Medianamente
+- 50-75%
+- Caso identificado pero análisis superficial
+- Conexiones teóricas vagas
+- Ética mencionada sin profundidad
+- Mitigaciones genéricas
+- Conclusión sin argumentación fuerte
+- Por Lograr
+- 0-50%
+- Tema genérico o copiado
+- Sin conexión con conceptos del curso
+- Ética ignorada o solo mencionada
+- Sin propuestas de mitigación
+- Sin conclusión o conclusión vacía
+- Ahora veamos la rúbrica con la que los voy a evaluar. Hay 3 niveles de logro: Logrado (100%), Medianamente Logrado (50-75%), y Por Lograr (0-50%). Lo que marca la diferencia entre un trabajo promedio y uno sobresaliente es la profundidad del análisis ético y la conexión explícita con los conceptos teóricos que vimos en clase. No se queden en lo superficial. Si solo dicen 'la IA tiene sesgos', eso es insuficiente. Necesito que digan QUÉ tipo de sesgo específico podría tener su caso, POR QUÉ se generaría, y CÓMO se podría mitigar.
+- Ejemplo de Caso Bien Hecho
+- Caso: "El Algoritmo de TikTok"
+- Burbujas:  Solo ves contenido que refuerza tus creencias.
+- Adicción:  Riesgo alto especialmente en menores.
+- Privacidad:  Recopila datos de ubicación y comportamiento.
+- Sesgo:  Puede favorecer ciertos perfiles físicos.
+- Conclusión + Mitigación
+- Beneficios superan riesgos  si se regulan .
+- Límites de tiempo obligatorios para menores.
+- Permitir control de criterios del algoritmo al usuario.
+- Auditorías independientes de sesgo de contenido.
+- Les doy un ejemplo de cómo se vería un caso bien hecho para que tengan referencia. Imaginen el caso: 'El algoritmo de recomendación de TikTok'. Fase 1 - Descripción: TikTok usa IA para decidir qué videos mostrar en el 'For You Page', analizando cada interacción del usuario (likes, tiempo de visualización, compartidos, comentarios). Fase 2 - Tecnología: Usa Deep Learning con redes neuronales que procesan señales de video, texto y audio. Aprendizaje supervisado (predice si le darás like) + refuerzo (optimiza el engagement). Fase 3 - Beneficios: Democratiza la creación de contenido. Cualquier usuario puede viralizar sin ser famoso. Los negocios pequeños llegan a audiencias masivas sin pagar publicidad. Fase 4 - Ética: El algoritmo puede crear 'burbujas de información' donde solo ves contenido que refuerza tus creencias. Hay riesgo de adicción especialmente en menores. TikTok recopila datos sensibles de ubicación y comportamiento. Fase 5 - Mitigación: Implementar límites de tiempo de uso obligatorios, permitir a los usuarios controlar los criterios del algoritmo, auditorías independientes de sesgo. Ven cómo cada fase tiene profundidad y especificidad? Eso es lo que espero.
+- ¡A Trabajar!
+- Ideas de Casos + Instrucciones Finales
+- Ideas de Casos Específicos:
+- Spotify Discover Weekly
+- ML + Filtrado colaborativo
+- Google Translate
+- Transformers + NLP
+- Tesla Autopilot
+- Visión + Refuerzo
+- Detección de cáncer con IA
+- Deep Learning + CNN
+- ChatGPT / Claude
+- LLM + Transformers
+- COMPAS (justicia predictiva)
+- ML + Sesgos raciales
+- ¡Empiecen AHORA!
+- Elijan su caso  en equipo (o individual). Confirmen con el docente que no se
+- repita.
+- Investiguen  su caso en internet: cómo funciona, qué tecnología usa, qué
+- controversias tiene.
+- Estructuren  su análisis siguiendo las 5 fases obligatorias.
+- Entreguen  en la Semana 4 vía plataforma EVA.
+- ¿Dudas?
+- Tienen el  resto de la clase para empezar . Aprovechen
+- para:
+- Elegir caso y formar equipo
+- Consultar dudas al docente
+- Iniciar la investigación
+- Aquí les dejo ideas de casos que pueden elegir. Recuerden: deben ser ESPECÍFICOS, no genéricos. Tienen el resto de la clase para empezar a trabajar en la evaluación. Pueden consultarme dudas ahora mismo. La entrega es en la Semana 4 a través de la plataforma EVA. Les recomiendo que empiecen hoy eligiendo su caso y comenzando la investigación. ¡Manos a la obra!
+- 1 / 30
+- Flechas ←→ • Espacio • O=vista • N=notas • F=fullscreen
+
+
+# ===== presentacion_unidad_1_v2.html =====
+
+- Unidad 1 — Inteligencia Artificial | v2 Xiaomi Orange
+- SESIÓN 1
+- SESIÓN 2
+- SESIÓN 3
+- EVALUACIÓN
+- UNIDAD 1 · SEMANAS 1-4
+- FUNDAMENTOS Y ÉTICA DE LA IA
+- Inteligencia
+- Artificial | IPSS 2026
+- Descubre cómo los algoritmos aprenden, las principales ramas que impulsan
+- la tecnología actual y los dilemas éticos que enfrentamos en la era de la información.
+- SEMANA 1 · CLASE SINCRÓNICA
+- Conceptos y Tipos de Aprendizaje
+- ¿Qué es realmente la IA? ¿Cómo aprende una máquina? Desmitificándolo con
+- ejemplos del día a día.
+- Actividad de Activación
+- ¡Rompamos el Hielo!
+- Respondan en el
+- chat en 60 segundos:
+- ¿Qué es para
+- ustedes la inteligencia artificial?  En una frase.
+- Nombren  UNA app
+- que usen a diario  que crean que usa IA.
+- ¿Creen que la IA
+- nos va a quitar el trabajo ?  Sí   No   Depende
+- Definición Fundamental
+- ¿Qué es la Inteligencia Artificial?
+- Lograr que una computadora realice tareas que
+- normalmente requerirían  inteligencia humana  — reconocer caras, entender idiomas, tomar
+- decisiones, crear contenido.
+- Analogía del Día
+- a Día
+- Programa Tradicional  = una receta de cocina que sigues paso a
+- paso, siempre igual.
+- Inteligencia Artificial  = un chef que  prueba  cada
+- plato, recibe opiniones de los comensales, y va  mejorando sus recetas  automáticamente.
+- Tu Celular
+- Face ID te reconoce aunque cambies de peinado o uses lentes.
+- Waze / Google Maps
+- Analiza datos de millones de conductores en tiempo real para predecir el tráfico.
+- Spotify / YouTube
+- Estudia qué te gusta para recomendarte contenido nuevo que probablemente
+- disfrutarás.
+- Comparación Fundamental
+- Programa Clásico vs. Inteligencia Artificial
+- Programa Clásico
+- Reglas escritas por humanos
+- "Si asunto contiene GRATIS → Spam"
+- Resultado fijo
+- No se adapta. El spammer cambia y el filtro falla.
+- Estático y frágil
+- IA / Machine Learning
+- Datos de ejemplo
+- 10.000 correos etiquetados: Spam / No Spam
+- Descubre patrones solo
+- Se re-entrena y adapta automáticamente.
+- Dinámico y adaptable
+- Evolución de la IA
+- Línea de Tiempo: De las Reglas al Aprendizaje
+- De reglas codificadas manualmente a
+- sistemas que crean contenido inédito.
+- 1950s - 1980s
+- Sistemas Expertos
+- Lógica "Si-Entonces" dictada por humanos. Como un médico dictando TODAS sus
+- reglas a una computadora.
+- 1990s - 2000s
+- Machine Learning
+- La máquina aprende de datos históricos. Como dar 50.000 fichas clínicas y que
+- descubra patrones sola.
+- 2010s
+- Deep Learning
+- Redes neuronales con millones de conexiones. Explosión gracias a GPUs. Siri
+- dejó de ser un chiste.
+- 2020s - Hoy
+- IA Generativa
+- Transformers. ChatGPT, DALL-E, Midjourney. Crea texto, imágenes, código y
+- música desde cero.
+- Definiciones Clave
+- IA vs ML vs DL — Las Muñecas Rusas
+- Sistemas que emulan inteligencia humana.
+- Modelos que aprenden de datos.
+- Diferencia
+- Fundamental
+- En  ML clásico , un humano le dice al modelo qué buscar. En
+- Deep Learning , la red neuronal lo descubre POR SÍ MISMA desde datos crudos.
+- Ejemplos
+- Cotidianos
+- IA:  Un NPC en un videojuego que reacciona inteligentemente.
+- ML:  Netflix recomendándote series ("Porque viste X...").
+- DL:  Face ID reconociendo tu rostro en 3D.
+- ¿Y la Ciencia de Datos?
+- Pirámide de Jerarquía de Datos
+- No se puede hacer IA sin datos sólidos. El  Data Science
+- abarca toda la pirámide.
+- Regla de Oro
+- "Garbage In, Garbage Out"  — Basura entra, basura sale. Datos
+- sesgados = predicciones peligrosas.
+- Analogía de la
+- Cocina
+- La mejor receta + el mejor chef + ingredientes podridos =  plato
+- horrible . La IA necesita  buenos ingredientes  (datos limpios).
+- Inteligencia Artificial
+- Deep Learning, Predicción
+- Entrenamiento, Testing
+- Analítica / BI
+- Métricas, Dashboards
+- Limpieza y Recolección
+- Bases de datos, Pipelines (ETL)
+- Cómo aprende la máquina
+- 1. Aprendizaje Supervisado
+- Input (X)
+- Ej: Foto de una fruta
+- Etiqueta (Y)
+- Respuesta: "Manzana"
+- CLAVE
+- Modelo ML
+- Ajusta sus pesos internos
+- Predicción
+- Identifica frutas nuevas
+- Analogía del Niño
+- Le muestras 1.000 frutas diciéndole el nombre de cada una. Después puede
+- reconocer frutas que  nunca vio .
+- Casos
+- Gmail:  Filtrando tu spam automáticamente.
+- Banco:  Detectando transacciones sospechosas.
+- Clima:  Prediciendo que mañana serán 22°C.
+- Uber:  Estimando el precio antes de pedir.
+- 2. Aprendizaje No Supervisado
+- Historial de compras
+- Busca patrones ocultos
+- Clústeres
+- Grupos A, B, C
+- SIN ETIQUETAS
+- Analogía del Lego
+- Te dan 500 piezas y te dicen "ordénalos". Nadie dice CÓMO. Tú descubres
+- agrupaciones naturales (color, tamaño, forma).
+- Supermercado:  Agrupando clientes para ofertas.
+- Banco:  Bloqueando compra sospechosa a las 3am.
+- Spotify:  Agrupando canciones por similitud acústica.
+- 3. Aprendizaje por Refuerzo
+- Entorno
+- Estado actual del mundo
+- Agente (IA)
+- Ejecuta una ACCIÓN
+- POLÍTICA
+- Feedback
+- +1 Recompensa  /  -1 Castigo
+- Analogía del Bebé
+- Un bebé aprende a caminar  sin manual : se cae (castigo), lo intenta, da
+- un paso (recompensa). Miles de intentos hasta dominar el equilibrio.
+- Robot Roomba:  Aprende tu casa chocando con muebles.
+- AlphaGo:  Venció al campeón mundial de Go.
+- Tesla Autopilot:  Mejora con cada km recorrido.
+- Resumen Comparativo
+- Los 3 Tipos de Aprendizaje Automático
+- Característica
+- Supervisado
+- No Supervisado
+- Por Refuerzo
+- ¿Tiene etiquetas?
+- Premios/castigos
+- Analogía
+- Estudiar con solucionario
+- Ordenar sin instrucciones
+- Entrenar una mascota
+- Objetivo
+- Predecir una respuesta
+- Descubrir patrones
+- Maximizar recompensa
+- Ejemplo cotidiano
+- Gmail filtrando spam
+- Banco detectando fraude
+- Robot Roomba
+- ¿Cuál es "mejor"?  Ninguno. Un
+- martillo no es mejor que un destornillador — son herramientas distintas para situaciones distintas.
+- Actividad Lúdica
+- Adivina: ¿Cómo aprende la máquina?
+- Vota:  S
+- (Supervisado),  N  (No Supervisado),  R  (Refuerzo)
+- 1.  Un robot aspiradora
+- que aprende a navegar chocando con las paredes.
+- Ver Respuesta
+- POR REFUERZO (R) :
+- Interactúa con el entorno, recibe castigos al chocar.
+- 2.  Una app médica que
+- detecta tumores con 10.000 radiografías marcadas por médicos.
+- SUPERVISADO (S) :
+- Datos de entrada + etiquetas correctas.
+- 3.  Spotify agrupando
+- canciones por similitud acústica, sin saber el género.
+- NO SUPERVISADO (N) :
+- Agrupa por similitud sin etiquetas previas.
+- SEMANA 2 · ASINCRÓNICA
+- Ramas, Aplicaciones y Redes Neuronales
+- Antes de Empezar: Reflexiona
+- Antes de avanzar,
+- haz este ejercicio:
+- Piensa en tus  últimas 24 horas . ¿Cuántas veces interactuaste con IA sin darte
+- cuenta?
+- Pista:  probablemente fueron  más de 20 veces .
+- Escribe en un papel
+- al menos 5 momentos  antes de avanzar al siguiente slide. Luego compara tu lista con lo
+- que veremos a continuación.
+- Visión por Computadora
+- Haciendo que la máquina "vea"
+- Usa  Redes Neuronales Convolucionales (CNN)  — filtros que
+- detectan bordes, texturas y formas progresivamente.
+- Face ID:  30.000
+- puntos infrarrojos 3D.
+- Google Fotos:
+- Reconoce familiares automáticamente.
+- Cajeros
+- auto:  Reconocen frutas sin código.
+- Medicina:
+- Detecta tumores en radiografías.
+- Caso Polémico: Clearview AI
+- Policías identifican sospechosos escaneando miles de millones de fotos públicas de
+- redes sociales.
+- ¿Es aceptable que tu foto de Instagram pueda usarse para buscarte sin tu
+- consentimiento?
+- Deep Learning (DINTA)
+- ¿Cómo Funciona una Red Neuronal?
+- Las 3
+- Capas Básicas
+- Entrada:  Datos crudos (píxeles, números).
+- Ocultas:  Pesos + activación. Aquí ocurre el
+- aprendizaje.
+- Salida:  Predicción final.
+- de la Votación
+- Cada conexión es un  voto con diferente peso . Si la suma
+- supera un umbral, la neurona se "enciende".
+- ENTRADA
+- OCULTA
+- SALIDA
+- Backpropagation:  Predice → compara → calcula error → ajusta pesos → repite  millones de
+- veces . Como corregir errores examen tras examen.
+- Procesamiento de Lenguaje Natural
+- Haciendo que la máquina "entienda"
+- El salto gigante: los  Transformers  (2017) entienden el
+- contexto completo de un texto simultáneamente.
+- El Problema del
+- "Banco"
+- "El  banco  está cerca del río" vs "Voy al  banco
+- a sacar dinero". Los Transformers entienden esto por el  contexto .
+- Google Translate:
+- Traduce párrafos con coherencia.
+- WhatsApp:
+- Sugiere palabras mientras escribes.
+- ChatGPT:  Genera
+- texto, código, respuestas.
+- ¿Qué son los
+- Transformers?
+- Antes:  Leían de izquierda a derecha y "olvidaban" el
+- inicio.
+- Transformers:  Miran TODA la frase simultáneamente con
+- "Atención".
+- Dato:  Chat G P T  =  Generative
+- Pre-trained  Transformer  .
+- La IA en Tu Día a Día
+- Un Día Completo con Inteligencia Artificial
+- 7:00 AM
+- "Alexa, alarma".  PLN  interpreta tu voz.
+- 8:00 AM
+- Gmail separa tu spam.  ML Supervisado .
+- 9:00 AM
+- Desbloqueas con Face ID.  Deep Learning .
+- 9:30 AM
+- Uber estima precio.  Regresión ML .
+- 12:00 PM
+- Instagram muestra lo que te gusta.  DL .
+- 2:00 PM
+- Traduces con DeepL.  Transformers .
+- 5:00 PM
+- Banco bloquea compra rara.  Anomalías .
+- 9:00 PM
+- Netflix recomienda serie.  ML .
+- La IA  no está "llegando"  — ya
+- llegó hace años y está en cada app que usas.
+- Reto Asincrónico
+- Actividad: Cazadores de Deepfakes
+- En el  foro de la
+- plataforma EVA :
+- Busca una imagen/video  generado
+- por IA  que sea extremadamente realista.
+- Sube la URL o imagen al foro.
+- Explica en 2-3 líneas  qué pistas
+- visuales  te indican que NO es real (dedos deformados, texto sin sentido, reflejos ilógicos).
+- SEMANA 3 · CLASE SINCRÓNICA
+- Ética, Impacto y Responsabilidad
+- Escenario para Reflexionar
+- Escenario:
+- Vas a pedir un  crédito
+- hipotecario  para tu primera casa. El banco usa un sistema de IA que analiza tu perfil y te
+- dice:
+- RECHAZADO
+- No te dan  ninguna explicación  de por qué.
+- Solo "rechazado".
+- ¿Cómo te sentirías?
+- ¿Te parece justo?
+- Escribe en el chat
+- Los 4 Pilares Éticos
+- ¿Cuáles son los Grandes Riesgos de la IA?
+- 1. Sesgos Algorítmicos
+- La IA  amplifica  prejuicios históricos a escala industrial. Amazon
+- rechazaba CVs de mujeres porque aprendió de 10 años de contrataciones masculinas.
+- 2. Privacidad
+- IA analiza datos personales masivamente. En China, el  Crédito
+- Social  puntúa el comportamiento ciudadano con IA.
+- 3. Impacto Laboral
+- Automatiza tareas rutinarias. No elimina TODOS los empleos, pero exige
+- reskilling  (nuevas habilidades).
+- 4. Accountability
+- Si un auto autónomo atropella a alguien, ¿de quién es la culpa?  El marco
+- legal no fue diseñado para algoritmos.
+- Debate Express
+- El Tribunal de la IA
+- Caso Real
+- (2018):  Una IA de Amazon rechazaba CVs de mujeres. Aprendió de 10 años de contrataciones
+- mayoritariamente masculinas.
+- Fiscalía
+- La empresa es culpable por no auditar los sesgos.  ¡1 argumento en el
+- chat!
+- Defensa
+- El algoritmo es matemático, no machista. Solo reflejó la realidad.  ¡1
+- argumento en el chat!
+- SEMANA 4 · EVALUACIÓN ASINCRÓNICA
+- Evaluación Unidad 1
+- 10% de la nota final
+- ¿Qué tienen que hacer?
+- Análisis de Caso de Estudio IA
+- Datos Generales
+- Modalidad:  Individual o equipos (máx. 3 personas)
+- Entrega:  Semana 4 vía plataforma EVA
+- Ponderación:  10% de la nota final
+- Instrumento:  Rúbrica de evaluación
+- ¡IMPORTANTE! No
+- usar temas genéricos
+- "La IA en redes
+- sociales"
+- "Machine
+- Learning en la medicina"
+- "El algoritmo de
+- recomendación de  YouTube "
+- "El sistema de
+- reconocimiento facial de  FaceID "
+- "Cómo
+- Spotify  crea la playlist Discover Weekly"
+- Las 5 Fases Obligatorias:
+- Descripción del Caso
+- ¿Qué problema resuelve? ¿Quiénes son los usuarios? ¿Cuál es el objetivo
+- principal?
+- Tecnología Utilizada
+- ¿Es ML supervisado? ¿Deep Learning? ¿Qué datos de entrenamiento usa?
+- ¿Qué rama de IA?
+- Beneficios
+- Eficiencia, optimización, bienestar social. ¿Qué mejora concretamente?
+- Implicancias Éticas
+- Sesgos potenciales, riesgos de privacidad, impacto laboral,
+- accountability.
+- Conclusión y Mitigación
+- Balance crítico: ¿superan los beneficios a los riesgos? Propuestas de
+- mitigación.
+- Criterios de Evaluación
+- Rúbrica: ¿Cómo los evalúo?
+- Logrado
+- 100%
+- Caso específico y bien investigado
+- Conexión explícita con conceptos del curso (ML vs DL, tipo de aprendizaje)
+- Análisis ético con escenarios específicos
+- Propuestas de mitigación realistas y concretas
+- Conclusión argumentada con equilibrio
+- Medianamente
+- 50-75%
+- Caso identificado pero análisis superficial
+- Conexiones teóricas vagas
+- Ética mencionada sin profundidad
+- Mitigaciones genéricas
+- Conclusión sin argumentación fuerte
+- Por Lograr
+- 0-50%
+- Tema genérico o copiado
+- Sin conexión con conceptos del curso
+- Ética ignorada o solo mencionada
+- Sin propuestas de mitigación
+- Sin conclusión o conclusión vacía
+- La diferencia clave:  No digan solo "la IA
+- tiene sesgos". Digan  QUÉ  sesgo específico,  POR QUÉ  se genera, y
+- CÓMO  se mitiga. Esa profundidad es lo que separa un 50% de un 100%.
+- Ejemplo de Caso Bien Hecho
+- Caso: "El Algoritmo de TikTok"
+- Descripción
+- IA decide qué videos mostrar en el "For You Page".
+- Analiza likes, tiempo de visualización, compartidos, scroll.
+- Tecnología
+- Deep Learning  con señales de video,
+- texto y audio. Supervisado (predice likes) + Refuerzo (maximiza engagement).
+- Democratiza la creación: cualquiera puede viralizar sin
+- ser famoso. Negocios pequeños alcanzan audiencias masivas.
+- Burbujas:  Solo ves contenido que refuerza tus creencias.
+- Adicción:  Riesgo alto especialmente en menores.
+- Privacidad:  Recopila datos de ubicación y comportamiento.
+- Sesgo:  Puede favorecer ciertos perfiles físicos.
+- Conclusión + Mitigación
+- Beneficios superan riesgos  si se regulan .
+- Límites de tiempo obligatorios para menores.
+- Permitir control de criterios del algoritmo al usuario.
+- Auditorías independientes de sesgo de contenido.
+- ¡A Trabajar!
+- Ideas de Casos + Instrucciones Finales
+- Ideas de Casos Específicos:
+- Spotify Discover Weekly
+- ML + Filtrado colaborativo
+- Google Translate
+- Transformers + NLP
+- Tesla Autopilot
+- Visión + Refuerzo
+- Detección de cáncer con IA
+- Deep Learning + CNN
+- ChatGPT / Claude
+- LLM + Transformers
+- COMPAS (justicia predictiva)
+- ML + Sesgos raciales
+- ¡Empiecen AHORA!
+- Elijan su caso  en equipo (o individual). Confirmen con el docente que no se
+- repita.
+- Investiguen  su caso en internet: cómo funciona, qué tecnología usa, qué
+- controversias tiene.
+- Estructuren  su análisis siguiendo las 5 fases obligatorias.
+- Entreguen  en la Semana 4 vía plataforma EVA.
+- ¿Dudas?
+- Tienen el  resto de la clase para empezar . Aprovechen
+- para:
+- Elegir caso y formar equipo
+- Consultar dudas al docente
+- Iniciar la investigación
+- 1 / 1
+- Pantalla Orador
+- Notas
+- Anterior
+- Siguiente
+- Notas del Orador
+- \n \n \n
+
+
+# ===== presentacion_unidad_1_v3.html =====
+
+- Unidad 1 — Inteligencia Artificial | v3
+- UNIDAD 1 · SEMANAS 1-4
+- FUNDAMENTOS Y ÉTICA DE LA IA
+- Inteligencia
+- Artificial | IPSS 2026
+- Descubre cómo los algoritmos aprenden, las principales ramas que impulsan
+- la tecnología actual y los dilemas éticos que enfrentamos en la era de la información.
+- Bienvenidos a la primera unidad de Inteligencia Artificial. Mi nombre es [tu nombre] y seré su docente. NO necesitan saber programar ni ser genios de las matemáticas para entender esto. La IA ya está en sus vidas — en su celular, en Netflix, en Waze. Lo que haremos es entender CÓMO funciona por dentro. Esta unidad cubre 4 semanas: las dos primeras son conceptuales, la tercera es ética, y la cuarta es evaluación.
+- Inteligencia Artificial
+- \n\n
+- SEMANA 1 · CLASE SINCRÓNICA
+- Conceptos y Tipos de Aprendizaje
+- ¿Qué es realmente la IA? ¿Cómo aprende una máquina? Desmitificándolo con
+- ejemplos del día a día.
+- Esta primera sesión sincrónica sienta las bases. Cubriremos: qué es la IA, cómo se relaciona con Machine Learning y Deep Learning, y los tres tipos de aprendizaje automático. Todo con ejemplos cotidianos. Al final hay actividad interactiva.
+- Actividad de Activación
+- ¡Rompamos el Hielo!
+- Respondan en el
+- chat en 60 segundos:
+- ¿Qué es para
+- ustedes la inteligencia artificial?  En una frase.
+- Nombren  UNA app
+- que usen a diario  que crean que usa IA.
+- ¿Creen que la IA
+- nos va a quitar el trabajo ?  Sí   No   Depende
+- Antes de entrar en materia, hagamos una actividad de activación para romper el hielo y saber qué piensan ustedes. Les haré 3 preguntas rápidas que deben responder en el chat en 60 segundos. No hay respuestas correctas ni incorrectas, solo quiero saber qué saben y qué piensan. Pregunta 1: ¿Qué es para ustedes la inteligencia artificial? En una frase. Pregunta 2: Nombren UNA app o herramienta que usen a diario que crean que usa IA. Pregunta 3: ¿Creen que la IA nos va a quitar el trabajo? Sí, No, o Depende. Vamos, escriban en el chat, tienen 60 segundos. Mientras responden, les cuento que la mayoría de las personas tiene una idea de la IA basada en películas de ciencia ficción — robots con conciencia propia, Terminator, HAL 9000. La realidad es muy diferente y mucho más cercana a ustedes de lo que creen.
+- Definición Fundamental
+- ¿Qué es la Inteligencia Artificial?
+- Lograr que una computadora realice tareas que
+- normalmente requerirían  inteligencia humana  — reconocer caras, entender idiomas, tomar
+- decisiones, crear contenido.
+- Analogía del Día
+- a Día
+- Programa Tradicional  = una receta de cocina que sigues paso a
+- paso, siempre igual.
+- Inteligencia Artificial  = un chef que  prueba  cada
+- plato, recibe opiniones de los comensales, y va  mejorando sus recetas  automáticamente.
+- Tu Celular
+- Face ID te reconoce aunque cambies de peinado o uses lentes.
+- Waze / Google Maps
+- Analiza datos de millones de conductores en tiempo real para predecir el tráfico.
+- Spotify / YouTube
+- Estudia qué te gusta para recomendarte contenido nuevo que probablemente
+- disfrutarás.
+- Arranquemos: ¿qué es la Inteligencia Artificial? Olvídense de los robots de las películas. La IA, en su definición más simple, es lograr que una computadora haga cosas que normalmente necesitarían inteligencia humana: reconocer una cara, entender lo que alguien dice, tomar una decisión, traducir un idioma. No es magia, son matemáticas y datos. La diferencia clave con un programa tradicional: un programa sigue instrucciones fijas escritas por un humano. La IA aprende de los datos y mejora sola. Un programa es como una receta de cocina que sigues al pie de la letra. La IA es como un chef que prueba platos, recibe comentarios, y va mejorando sus recetas automáticamente.
+- Comparación Fundamental
+- Programa Clásico vs. Inteligencia Artificial
+- Programa Clásico
+- Reglas escritas por humanos
+- "Si asunto contiene GRATIS → Spam"
+- Resultado fijo
+- No se adapta. El spammer cambia y el filtro falla.
+- Estático y frágil
+- IA / Machine Learning
+- Datos de ejemplo
+- 10.000 correos etiquetados: Spam / No Spam
+- Descubre patrones solo
+- Se re-entrena y adapta automáticamente.
+- Dinámico y adaptable
+- Profundicemos en la diferencia. Un programa clásico funciona así: un humano escribe reglas como 'Si el asunto contiene GRATIS y URGENTE, marcar como spam'. Pero los spammers se adaptan: escriben 'GR4TIS'. Y tus reglas fallan. Con Machine Learning, le das al sistema 10.000 correos ya clasificados como spam y no-spam, y el algoritmo DESCUBRE los patrones solo. Es como estudiar de memoria las respuestas de un examen (programa) versus ENTENDER la materia (IA).
+- Evolución de la IA
+- Línea de Tiempo: De las Reglas al Aprendizaje
+- De reglas codificadas manualmente a
+- sistemas que crean contenido inédito.
+- 1950s - 1980s
+- Sistemas Expertos
+- Lógica "Si-Entonces" dictada por humanos. Como un médico dictando TODAS sus
+- reglas a una computadora.
+- 1990s - 2000s
+- Machine Learning
+- La máquina aprende de datos históricos. Como dar 50.000 fichas clínicas y que
+- descubra patrones sola.
+- 2010s
+- Deep Learning
+- Redes neuronales con millones de conexiones. Explosión gracias a GPUs. Siri
+- dejó de ser un chiste.
+- 2020s - Hoy
+- IA Generativa
+- Transformers. ChatGPT, DALL-E, Midjourney. Crea texto, imágenes, código y
+- música desde cero.
+- Ahora veamos cómo llegamos aquí. En los 50-80s teníamos Sistemas Expertos con reglas manuales. En los 90s-2000s, Machine Learning: la máquina aprende de datos históricos. En los 2010s, Deep Learning con redes neuronales masivas. Y ahora en los 2020s, IA Generativa con ChatGPT, DALL-E, Midjourney.
+- Definiciones Clave
+- IA vs ML vs DL — Las Muñecas Rusas
+- Sistemas que emulan inteligencia humana.
+- Modelos que aprenden de datos.
+- Diferencia
+- Fundamental
+- En  ML clásico , un humano le dice al modelo qué buscar. En
+- Deep Learning , la red neuronal lo descubre POR SÍ MISMA desde datos crudos.
+- Ejemplos
+- Cotidianos
+- IA:  Un NPC en un videojuego que reacciona inteligentemente.
+- ML:  Netflix recomendándote series ("Porque viste X...").
+- DL:  Face ID reconociendo tu rostro en 3D.
+- Esto es clave: IA, ML y DL no son lo mismo. Imaginen muñecas rusas. IA es la más grande — el objetivo general. ML es una forma de lograr IA usando datos. DL es una técnica dentro del ML con redes neuronales profundas. Ejemplo cotidiano: IA = NPC de videojuego. ML = Netflix recomendando series. DL = Face ID reconociendo tu rostro.
+- ¿Y la Ciencia de Datos?
+- Pirámide de Jerarquía de Datos
+- No se puede hacer IA sin datos sólidos. El  Data Science
+- abarca toda la pirámide.
+- Regla de Oro
+- "Garbage In, Garbage Out"  — Basura entra, basura sale. Datos
+- sesgados = predicciones peligrosas.
+- Analogía de la
+- Cocina
+- La mejor receta + el mejor chef + ingredientes podridos =  plato
+- horrible . La IA necesita  buenos ingredientes  (datos limpios).
+- Deep Learning, Predicción
+- Entrenamiento, Testing
+- Analítica / BI
+- Métricas, Dashboards
+- Limpieza y Recolección
+- Bases de datos, Pipelines (ETL)
+- La IA NO funciona sin datos. Los data scientists pasan el 80% del tiempo limpiando datos. Garbage In, Garbage Out: si alimentas un modelo con datos sesgados, el resultado es basura. La pirámide muestra que primero necesitas datos limpios, luego analítica, luego ML, y finalmente IA en la cima.
+- Cómo aprende la máquina
+- 1. Aprendizaje Supervisado
+- Input (X)
+- Ej: Foto de una fruta
+- Etiqueta (Y)
+- Respuesta: "Manzana"
+- CLAVE
+- Modelo ML
+- Ajusta sus pesos internos
+- Predicción
+- Identifica frutas nuevas
+- Analogía del Niño
+- Le muestras 1.000 frutas diciéndole el nombre de cada una. Después puede
+- reconocer frutas que  nunca vio .
+- Casos
+- Gmail:  Filtrando tu spam automáticamente.
+- Banco:  Detectando transacciones sospechosas.
+- Clima:  Prediciendo que mañana serán 22°C.
+- Uber:  Estimando el precio antes de pedir.
+- El primer tipo de aprendizaje: Supervisado. Hay un 'profesor' que le da las respuestas correctas. Como enseñarle a un niño a distinguir frutas mostrándole 1000 frutas con nombre. El modelo aprende la relación entre los datos de entrada (X) y las etiquetas (Y). Hay dos sub-tipos: Clasificación (spam/no spam) y Regresión (predecir temperatura, precio de casa).
+- 2. Aprendizaje No Supervisado
+- Historial de compras
+- Busca patrones ocultos
+- Clústeres
+- Grupos A, B, C
+- SIN ETIQUETAS
+- Analogía del Lego
+- Te dan 500 piezas y te dicen "ordénalos". Nadie dice CÓMO. Tú descubres
+- agrupaciones naturales (color, tamaño, forma).
+- Supermercado:  Agrupando clientes para ofertas.
+- Banco:  Bloqueando compra sospechosa a las 3am.
+- Spotify:  Agrupando canciones por similitud acústica.
+- El segundo tipo: No Supervisado. NO hay profesor ni respuestas. Le das datos y le dices 'encuentra patrones'. Es como darte 500 piezas de Lego y decirte 'ordénalos' sin decirte cómo. Ejemplo: tu banco monitorea transacciones. Si aparece una compra de $2M en Bangkok a las 3am, el algoritmo la detecta como anomalía y bloquea la tarjeta.
+- 3. Aprendizaje por Refuerzo
+- Entorno
+- Estado actual del mundo
+- Agente (IA)
+- Ejecuta una ACCIÓN
+- POLÍTICA
+- Feedback
+- +1 Recompensa  /  -1 Castigo
+- Analogía del Bebé
+- Un bebé aprende a caminar  sin manual : se cae (castigo), lo intenta, da
+- un paso (recompensa). Miles de intentos hasta dominar el equilibrio.
+- Robot Roomba:  Aprende tu casa chocando con muebles.
+- AlphaGo:  Venció al campeón mundial de Go.
+- Tesla Autopilot:  Mejora con cada km recorrido.
+- El tercer tipo: Por Refuerzo. Funciona como un bebé aprendiendo a caminar: prueba y error con premios y castigos. Un 'agente' interactúa con un 'entorno', ejecuta acciones, recibe recompensas o castigos, y optimiza su estrategia. AlphaGo aprendió jugadas que ningún humano pensó en 3000 años.
+- Resumen Comparativo
+- Los 3 Tipos de Aprendizaje Automático
+- Característica
+- Supervisado
+- No Supervisado
+- Por Refuerzo
+- ¿Tiene etiquetas?
+- Premios/castigos
+- Analogía
+- Estudiar con solucionario
+- Ordenar sin instrucciones
+- Entrenar una mascota
+- Objetivo
+- Predecir una respuesta
+- Descubrir patrones
+- Maximizar recompensa
+- Ejemplo cotidiano
+- Gmail filtrando spam
+- Banco detectando fraude
+- Robot Roomba
+- ¿Cuál es "mejor"?  Ninguno. Un
+- martillo no es mejor que un destornillador — son herramientas distintas para situaciones distintas.
+- Resumamos en una tabla. Supervisado: tiene etiquetas, como estudiar con solucionario. No Supervisado: sin etiquetas, como ordenar sin instrucciones. Refuerzo: premios y castigos, como entrenar una mascota. ¿Cuál es mejor? Depende del problema. Son herramientas distintas para situaciones distintas.
+- Actividad Lúdica
+- Adivina: ¿Cómo aprende la máquina?
+- Vota:  S
+- (Supervisado),  N  (No Supervisado),  R  (Refuerzo)
+- 1.  Un robot aspiradora
+- que aprende a navegar chocando con las paredes.
+- Ver Respuesta
+- POR REFUERZO (R) :
+- Interactúa con el entorno, recibe castigos al chocar.
+- 2.  Una app médica que
+- detecta tumores con 10.000 radiografías marcadas por médicos.
+- SUPERVISADO (S) :
+- Datos de entrada + etiquetas correctas.
+- 3.  Spotify agrupando
+- canciones por similitud acústica, sin saber el género.
+- NO SUPERVISADO (N) :
+- Agrupa por similitud sin etiquetas previas.
+- Vamos a poner a prueba lo aprendido. Tres situaciones, voten en el chat: S (Supervisado), N (No Supervisado) o R (Refuerzo). 30 segundos por pregunta.
+- SEMANA 2 · ASINCRÓNICA
+- Ramas, Aplicaciones y Redes Neuronales
+- Sesión asincrónica de Semana 2. Exploraremos: Visión por Computadora, PLN, Sistemas Expertos, Redes Neuronales y IA Generativa. Al final hay actividad del foro.
+- Antes de Empezar: Reflexiona
+- Antes de avanzar,
+- haz este ejercicio:
+- Piensa en tus  últimas 24 horas . ¿Cuántas veces interactuaste con IA sin darte
+- cuenta?
+- Pista:  probablemente fueron  más de 20 veces .
+- Escribe en un papel
+- al menos 5 momentos  antes de avanzar al siguiente slide. Luego compara tu lista con lo
+- que veremos a continuación.
+- Actividad de activación para la sesión asincrónica. Antes de leer el material, quiero que reflexionen. Piensen en las últimas 24 horas: ¿cuántas veces interactuaron con IA sin darse cuenta? Les doy una pista: probablemente fueron más de 20 veces. Escriban en un papel al menos 5 momentos antes de avanzar al siguiente slide.
+- Visión por Computadora
+- Haciendo que la máquina "vea"
+- Usa  Redes Neuronales Convolucionales (CNN)  — filtros que
+- detectan bordes, texturas y formas progresivamente.
+- Face ID:  30.000
+- puntos infrarrojos 3D.
+- Google Fotos:
+- Reconoce familiares automáticamente.
+- Cajeros
+- auto:  Reconocen frutas sin código.
+- Medicina:
+- Detecta tumores en radiografías.
+- Caso Polémico: Clearview AI
+- Policías identifican sospechosos escaneando miles de millones de fotos públicas de
+- redes sociales.
+- ¿Es aceptable que tu foto de Instagram pueda usarse para buscarte sin tu
+- consentimiento?
+- Visión por Computadora: enseñarle a una computadora a 'ver'. Usa Redes Neuronales Convolucionales (CNNs) que aplican filtros progresivos — primero líneas, luego texturas, luego objetos completos. Face ID analiza 30.000 puntos infrarrojos de tu cara. Google Fotos reconoce amigos. Y Clearview AI es un caso polémico de vigilancia masiva.
+- Deep Learning (DINTA)
+- ¿Cómo Funciona una Red Neuronal?
+- Las 3
+- Capas Básicas
+- Entrada:  Datos crudos (píxeles, números).
+- Ocultas:  Pesos + activación. Aquí ocurre el
+- aprendizaje.
+- Salida:  Predicción final.
+- de la Votación
+- Cada conexión es un  voto con diferente peso . Si la suma
+- supera un umbral, la neurona se "enciende".
+- ENTRADA
+- OCULTA
+- SALIDA
+- Backpropagation:  Predice → compara → calcula error → ajusta pesos → repite  millones de
+- veces . Como corregir errores examen tras examen.
+- Profundicemos en Redes Neuronales. Capa de Entrada recibe datos crudos. Capas Ocultas procesan con pesos y funciones de activación — como una votación donde cada conexión vota con diferente fuerza. Capa de Salida da la predicción. Backpropagation: la red predice, compara con la respuesta real, calcula el error, y ajusta los pesos. Repite millones de veces.
+- Procesamiento de Lenguaje Natural
+- Haciendo que la máquina "entienda"
+- El salto gigante: los  Transformers  (2017) entienden el
+- contexto completo de un texto simultáneamente.
+- El Problema del
+- "Banco"
+- "El  banco  está cerca del río" vs "Voy al  banco
+- a sacar dinero". Los Transformers entienden esto por el  contexto .
+- Google Translate:
+- Traduce párrafos con coherencia.
+- WhatsApp:
+- Sugiere palabras mientras escribes.
+- ChatGPT:  Genera
+- texto, código, respuestas.
+- ¿Qué son los
+- Transformers?
+- Antes:  Leían de izquierda a derecha y "olvidaban" el
+- inicio.
+- Transformers:  Miran TODA la frase simultáneamente con
+- "Atención".
+- Dato:  Chat G P T  =  Generative
+- Pre-trained  Transformer  .
+- PLN: que la máquina entienda lenguaje humano. Los Transformers (2017) miraron TODA la frase simultáneamente en vez de leer de izquierda a derecha. La T de ChatGPT es Transformer. Ejemplos: Google Translate, WhatsApp sugiriendo palabras, Alexa, ChatGPT.
+- La IA en Tu Día a Día
+- Un Día Completo con Inteligencia Artificial
+- 7:00 AM
+- "Alexa, alarma".  PLN  interpreta tu voz.
+- 8:00 AM
+- Gmail separa tu spam.  ML Supervisado .
+- 9:00 AM
+- Desbloqueas con Face ID.  Deep Learning .
+- 9:30 AM
+- Uber estima precio.  Regresión ML .
+- 12:00 PM
+- Instagram muestra lo que te gusta.  DL .
+- 2:00 PM
+- Traduces con DeepL.  Transformers .
+- 5:00 PM
+- Banco bloquea compra rara.  Anomalías .
+- 9:00 PM
+- Netflix recomienda serie.  ML .
+- La IA  no está "llegando"  — ya
+- llegó hace años y está en cada app que usas.
+- Veamos dónde está la IA en tu día a día completo. Cada momento del día involucra alguna forma de IA. La IA no está 'llegando' — ya llegó hace años.
+- Reto Asincrónico
+- Actividad: Cazadores de Deepfakes
+- En el  foro de la
+- plataforma EVA :
+- Busca una imagen/video  generado
+- por IA  que sea extremadamente realista.
+- Sube la URL o imagen al foro.
+- Explica en 2-3 líneas  qué pistas
+- visuales  te indican que NO es real (dedos deformados, texto sin sentido, reflejos ilógicos).
+- Actividad del foro: Cazadores de Deepfakes. Busquen una imagen o video generado por IA, súbanla al foro, y expliquen qué pistas visuales les indican que NO es real.
+- SEMANA 3 · CLASE SINCRÓNICA
+- Ética, Impacto y Responsabilidad
+- Última sesión sincrónica. Ética en IA: sesgos, privacidad, impacto laboral, accountability. La IA puede salvar vidas o destruirlas. Hoy enfrentamos esos dilemas de frente.
+- Escenario para Reflexionar
+- Escenario:
+- Vas a pedir un  crédito
+- hipotecario  para tu primera casa. El banco usa un sistema de IA que analiza tu perfil y te
+- dice:
+- RECHAZADO
+- No te dan  ninguna explicación  de por qué.
+- Solo "rechazado".
+- ¿Cómo te sentirías?
+- ¿Te parece justo?
+- Escribe en el chat
+- Actividad de activación para la sesión de ética. Voy a mostrarles un escenario y quiero su reacción instintiva en el chat. El escenario es: imaginen que van a pedir un crédito hipotecario para su primera casa. El banco usa un sistema de IA que analiza su perfil y les dice 'rechazado'. No les dan ninguna explicación de por qué. Solo 'rechazado'. ¿Cómo se sentirían? ¿Les parece justo? Escriban en el chat. Este es exactamente el dilema de accountability que vamos a explorar hoy.
+- Los 4 Pilares Éticos
+- ¿Cuáles son los Grandes Riesgos de la IA?
+- 1. Sesgos Algorítmicos
+- La IA  amplifica  prejuicios históricos a escala industrial. Amazon
+- rechazaba CVs de mujeres porque aprendió de 10 años de contrataciones masculinas.
+- 2. Privacidad
+- IA analiza datos personales masivamente. En China, el  Crédito
+- Social  puntúa el comportamiento ciudadano con IA.
+- 3. Impacto Laboral
+- Automatiza tareas rutinarias. No elimina TODOS los empleos, pero exige
+- reskilling  (nuevas habilidades).
+- 4. Accountability
+- Si un auto autónomo atropella a alguien, ¿de quién es la culpa?  El marco
+- legal no fue diseñado para algoritmos.
+- Los 4 pilares éticos de la IA: 1) Sesgos: la IA amplifica prejuicios históricos a escala industrial. Amazon rechazaba CVs de mujeres. 2) Privacidad: la IA analiza datos personales a escala masiva. Crédito Social en China. 3) Impacto Laboral: automatiza tareas rutinarias, exige reskilling. 4) Accountability: si un auto autónomo atropella, ¿de quién es la culpa?
+- Debate Express
+- El Tribunal de la IA
+- Caso Real
+- (2018):  Una IA de Amazon rechazaba CVs de mujeres. Aprendió de 10 años de contrataciones
+- mayoritariamente masculinas.
+- Fiscalía
+- La empresa es culpable por no auditar los sesgos.  ¡1 argumento en el
+- chat!
+- Defensa
+- El algoritmo es matemático, no machista. Solo reflejó la realidad.  ¡1
+- argumento en el chat!
+- Debate express: En 2018, la IA de Amazon rechazaba CVs de mujeres. Divídanse en Fiscalía (acusa a la empresa) y Defensa (defiende al algoritmo). Escriban UN argumento en el chat. 3 minutos.
+- SEMANA 4 · EVALUACIÓN ASINCRÓNICA
+- Evaluación Unidad 1
+- 10% de la nota final
+- Ahora pasamos a lo más importante para ustedes: la Evaluación 1. Presten mucha atención porque les voy a explicar exactamente qué deben hacer, cómo hacerlo bien, y qué criterios voy a usar para calificarlos. Esta evaluación vale el 10% de la nota final.
+- ¿Qué tienen que hacer?
+- Análisis de Caso de Estudio IA
+- Datos Generales
+- Modalidad:  Individual o equipos (máx. 3 personas)
+- Entrega:  Semana 4 vía plataforma EVA
+- Ponderación:  10% de la nota final
+- Instrumento:  Rúbrica de evaluación
+- ¡IMPORTANTE! No
+- usar temas genéricos
+- "La IA en redes
+- sociales"
+- "Machine
+- Learning en la medicina"
+- "El algoritmo de
+- recomendación de  YouTube "
+- "El sistema de
+- reconocimiento facial de  FaceID "
+- "Cómo
+- Spotify  crea la playlist Discover Weekly"
+- Las 5 Fases Obligatorias:
+- Descripción del Caso
+- ¿Qué problema resuelve? ¿Quiénes son los usuarios? ¿Cuál es el objetivo
+- principal?
+- Tecnología Utilizada
+- ¿Es ML supervisado? ¿Deep Learning? ¿Qué datos de entrenamiento usa?
+- ¿Qué rama de IA?
+- Beneficios
+- Eficiencia, optimización, bienestar social. ¿Qué mejora concretamente?
+- Implicancias Éticas
+- Sesgos potenciales, riesgos de privacidad, impacto laboral,
+- accountability.
+- Conclusión y Mitigación
+- Balance crítico: ¿superan los beneficios a los riesgos? Propuestas de
+- mitigación.
+- La evaluación es un Análisis de Caso de Estudio de IA. Pueden trabajar individualmente o en equipos de máximo 3 personas. Deben elegir un caso de aplicación REAL y ESPECÍFICO de inteligencia artificial — no algo genérico como 'Redes Sociales', sino algo concreto como 'El algoritmo de recomendación de YouTube' o 'El sistema de reconocimiento facial del Transantiago' o 'Cómo Spotify crea la playlist Discover Weekly'. El análisis tiene 5 fases obligatorias que les voy a detallar ahora.
+- Criterios de Evaluación
+- Rúbrica: ¿Cómo los evalúo?
+- Logrado
+- 100%
+- Caso específico y bien investigado
+- Conexión explícita con conceptos del curso (ML vs DL, tipo de aprendizaje)
+- Análisis ético con escenarios específicos
+- Propuestas de mitigación realistas y concretas
+- Conclusión argumentada con equilibrio
+- Medianamente
+- 50-75%
+- Caso identificado pero análisis superficial
+- Conexiones teóricas vagas
+- Ética mencionada sin profundidad
+- Mitigaciones genéricas
+- Conclusión sin argumentación fuerte
+- Por Lograr
+- 0-50%
+- Tema genérico o copiado
+- Sin conexión con conceptos del curso
+- Ética ignorada o solo mencionada
+- Sin propuestas de mitigación
+- Sin conclusión o conclusión vacía
+- La diferencia clave:  No digan solo "la IA
+- tiene sesgos". Digan  QUÉ  sesgo específico,  POR QUÉ  se genera, y
+- CÓMO  se mitiga. Esa profundidad es lo que separa un 50% de un 100%.
+- Ahora veamos la rúbrica con la que los voy a evaluar. Hay 3 niveles de logro: Logrado (100%), Medianamente Logrado (50-75%), y Por Lograr (0-50%). Lo que marca la diferencia entre un trabajo promedio y uno sobresaliente es la profundidad del análisis ético y la conexión explícita con los conceptos teóricos que vimos en clase. No se queden en lo superficial. Si solo dicen 'la IA tiene sesgos', eso es insuficiente. Necesito que digan QUÉ tipo de sesgo específico podría tener su caso, POR QUÉ se generaría, y CÓMO se podría mitigar.
+- Ejemplo de Caso Bien Hecho
+- Caso: "El Algoritmo de TikTok"
+- Descripción
+- IA decide qué videos mostrar en el "For You Page".
+- Analiza likes, tiempo de visualización, compartidos, scroll.
+- Tecnología
+- Deep Learning  con señales de video,
+- texto y audio. Supervisado (predice likes) + Refuerzo (maximiza engagement).
+- Democratiza la creación: cualquiera puede viralizar sin
+- ser famoso. Negocios pequeños alcanzan audiencias masivas.
+- Burbujas:  Solo ves contenido que refuerza tus creencias.
+- Adicción:  Riesgo alto especialmente en menores.
+- Privacidad:  Recopila datos de ubicación y comportamiento.
+- Sesgo:  Puede favorecer ciertos perfiles físicos.
+- Conclusión + Mitigación
+- Beneficios superan riesgos  si se regulan .
+- Límites de tiempo obligatorios para menores.
+- Permitir control de criterios del algoritmo al usuario.
+- Auditorías independientes de sesgo de contenido.
+- Les doy un ejemplo de cómo se vería un caso bien hecho para que tengan referencia. Imaginen el caso: 'El algoritmo de recomendación de TikTok'. Fase 1 - Descripción: TikTok usa IA para decidir qué videos mostrar en el 'For You Page', analizando cada interacción del usuario (likes, tiempo de visualización, compartidos, comentarios). Fase 2 - Tecnología: Usa Deep Learning con redes neuronales que procesan señales de video, texto y audio. Aprendizaje supervisado (predice si le darás like) + refuerzo (optimiza el engagement). Fase 3 - Beneficios: Democratiza la creación de contenido. Cualquier usuario puede viralizar sin ser famoso. Los negocios pequeños llegan a audiencias masivas sin pagar publicidad. Fase 4 - Ética: El algoritmo puede crear 'burbujas de información' donde solo ves contenido que refuerza tus creencias. Hay riesgo de adicción especialmente en menores. TikTok recopila datos sensibles de ubicación y comportamiento. Fase 5 - Mitigación: Implementar límites de tiempo de uso obligatorios, permitir a los usuarios controlar los criterios del algoritmo, auditorías independientes de sesgo. Ven cómo cada fase tiene profundidad y especificidad? Eso es lo que espero.
+- ¡A Trabajar!
+- Ideas de Casos + Instrucciones Finales
+- Ideas de Casos Específicos:
+- Spotify Discover Weekly
+- ML + Filtrado colaborativo
+- Google Translate
+- Transformers + NLP
+- Tesla Autopilot
+- Visión + Refuerzo
+- Detección de cáncer con IA
+- Deep Learning + CNN
+- ChatGPT / Claude
+- LLM + Transformers
+- COMPAS (justicia predictiva)
+- ML + Sesgos raciales
+- ¡Empiecen AHORA!
+- Elijan su caso  en equipo (o individual). Confirmen con el docente que no se
+- repita.
+- Investiguen  su caso en internet: cómo funciona, qué tecnología usa, qué
+- controversias tiene.
+- Estructuren  su análisis siguiendo las 5 fases obligatorias.
+- Entreguen  en la Semana 4 vía plataforma EVA.
+- ¿Dudas?
+- Tienen el  resto de la clase para empezar . Aprovechen
+- para:
+- Elegir caso y formar equipo
+- Consultar dudas al docente
+- Iniciar la investigación
+- Aquí les dejo ideas de casos que pueden elegir. Recuerden: deben ser ESPECÍFICOS, no genéricos. Tienen el resto de la clase para empezar a trabajar en la evaluación. Pueden consultarme dudas ahora mismo. La entrega es en la Semana 4 a través de la plataforma EVA. Les recomiendo que empiecen hoy eligiendo su caso y comenzando la investigación. ¡Manos a la obra!

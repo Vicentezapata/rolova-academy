@@ -1,391 +1,1234 @@
 {
-  "theme": "dark_tech",
-  "title": "Unidad 3 — Testing Aplicado al Desarrollo de Sistemas",
+  "pack": "dark_tech",
+  "title": "Unidad 3 — Automatización de Pruebas, Rendimiento con k6 y Ciclo de Vida del Defecto",
   "slides": [
     {
-      "slide_index": 0,
-      "page_type": "cover",
-      "title": "Automatización y Ciclo de Vida del Defecto",
-      "part_label": "UNIDAD 03",
-      "layout_hint": "single-focus",
-      "card_types": [
-        "text"
-      ],
-      "decoration_hints": [
-        "W1",
-        "W10"
-      ],
-      "speaker_notes": "Bienvenida a la Unidad 3. Explicaremos los fundamentos de la automatización y el ciclo de vida de los defectos.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">UNIDAD 03</p>\n  <h1 style=\"font-family:var(--display-font); font-size:64px; font-weight:800; color:var(--text-primary); line-height:1.05; letter-spacing:-0.04em; margin:0;\">Automatización y Ciclo de Vida del Defecto</h1>\n  <p style=\"color:var(--text-secondary); font-size:24px; max-width:55ch; line-height:1.6; margin:0;\">Fundamentos de la automatización de pruebas y gestión integral del ciclo de vida del defecto en proyectos de software.</p>\n</div>"
+      "archetype": "cover",
+      "title": "Automatización, rendimiento y ciclo de vida del defecto",
+      "notes": "Bienvenida a la Unidad 3 de Testing Aplicado al Desarrollo de Sistemas. La unidad tiene tres mitades que se necesitan mutuamente: automatizar la ejecución funcional, medir el rendimiento bajo carga y gestionar con disciplina el defecto que esas pruebas encuentran. Anuncia desde el principio que esta unidad es sobre todo práctica: hay cinco demos guiadas, de la instalación al informe, con Selenium, Appium, Cucumber, Robot Framework y k6. Al final del semestre cada estudiante debe ser capaz de instalar, configurar, ejecutar y leer los resultados de las cinco. Anticipa también el taller evaluado sobre una aplicación de gestión de tareas.",
+      "slots": {
+        "EYEBROW": "UNIDAD 03 · TESTING APLICADO AL DESARROLLO",
+        "TITLE": "Automatización, rendimiento y ciclo de vida del defecto",
+        "SUBTITLE": "Cinco herramientas de principio a fin: instalar, configurar, ejecutar y leer los resultados.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          { "label": "5 demos guiadas", "accent": "a1" },
+          { "label": "k6 · rendimiento", "accent": "a2" },
+          { "label": "Taller evaluado", "accent": "a3" }
+        ]
+      }
     },
     {
-      "slide_index": 1,
-      "page_type": "toc",
-      "title": "Tabla de Contenidos",
-      "part_label": "UNIDAD 03",
-      "layout_hint": "mixed-grid",
-      "card_types": [
-        "data"
-      ],
-      "decoration_hints": [
-        "W5"
-      ],
-      "speaker_notes": "Visión general de los 4 capítulos que componen esta unidad.",
-      "html_content": "<div style=\"display:grid; grid-template:1fr 1fr / 1fr 1fr; gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\">\n    <h3 style=\"color:var(--accent-1); font-size:24px;\">Parte 1</h3>\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px; margin:12px 0;\">Automatización</h2>\n    <p style=\"color:var(--text-secondary); font-size:18px;\">Fundamentos y beneficios.</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\">\n    <h3 style=\"color:var(--accent-2); font-size:24px;\">Parte 2</h3>\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px; margin:12px 0;\">Ciclo de Vida</h2>\n    <p style=\"color:var(--text-secondary); font-size:18px;\">Gestión y fases de un defecto.</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-3); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\">\n    <h3 style=\"color:var(--accent-3); font-size:24px;\">Parte 3</h3>\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px; margin:12px 0;\">Herramientas</h2>\n    <p style=\"color:var(--text-secondary); font-size:18px;\">Stack técnico y tendencias (IA).</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-4); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\">\n    <h3 style=\"color:var(--accent-4); font-size:24px;\">Parte 4</h3>\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px; margin:12px 0;\">Buenas Prácticas</h2>\n    <p style=\"color:var(--text-secondary); font-size:18px;\">Estrategias y anti-patrones.</p>\n  </div>\n</div>"
+      "archetype": "toc",
+      "title": "Qué veremos en esta unidad",
+      "notes": "Presenta el mapa completo antes de entrar en detalle. Las partes 1 y 2 son fundamento y criterio de selección; la parte 3 es el laboratorio de las cuatro herramientas funcionales; la parte 4 es rendimiento con k6, que este semestre es obligatorio; la parte 5 vuelve al proceso, y la 6 es el taller que se evalúa. Deja claro que las partes 3 y 4 son las que hay que reproducir en el ordenador: no basta con verlas.",
+      "slots": {
+        "TAG_LEFT": "MAPA DE LA UNIDAD",
+        "TITLE": "Qué veremos",
+        "TAG_RIGHT": "02",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          { "num": "01", "icon": "◆", "title": "Automatización", "desc": "Qué es, de dónde viene y qué resuelve de verdad.", "chips": "Fundamentos" },
+          { "num": "02", "icon": "◆", "title": "Herramientas", "desc": "Comparativa y criterios para elegir el stack.", "chips": "Criterio" },
+          { "num": "03", "icon": "◆", "title": "Demos guiadas", "desc": "Selenium, Appium, Cucumber y Robot paso a paso.", "chips": "Laboratorio" },
+          { "num": "04", "icon": "◆", "title": "Rendimiento", "desc": "k6: carga, umbrales y lectura de métricas.", "chips": "Obligatorio" },
+          { "num": "05", "icon": "◆", "title": "Ciclo del defecto", "desc": "De la identificación al cierre documentado.", "chips": "Proceso" },
+          { "num": "06", "icon": "◆", "title": "Taller", "desc": "Pruebas manuales sobre una app de tareas.", "chips": "Evaluado" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 1 · Automatización de pruebas",
+      "notes": "Separador del primer bloque. Aquí se establece el vocabulario común. Advierte desde el principio que automatizar no es «probar mejor», es «volver a probar barato». La automatización no descubre defectos nuevos: protege los que ya se arreglaron. Esa distinción evita la expectativa equivocada más común del alumnado.",
+      "slots": {
+        "PART_LABEL": "PARTE 01",
+        "TITLE": "Automatización de pruebas",
+        "SUBTITLE": "Antes de instalar nada, entender qué problema resuelve y cuál no",
+        "AGENDA": [
+          { "label": "01", "text": "Definición, propósito y alcance" },
+          { "label": "02", "text": "De WinRunner a los pipelines de CI/CD" },
+          { "label": "03", "text": "Beneficios medibles y límites reales" }
+        ]
+      }
     },
     {
-      "slide_index": 2,
-      "page_type": "section",
-      "title": "Parte 1: Automatización de Pruebas",
-      "part_label": "PART 01",
-      "layout_hint": "single-focus",
-      "card_types": [
-        "text"
-      ],
-      "decoration_hints": [
-        "W3"
-      ],
-      "speaker_notes": "Iniciamos con el primer tema clave: La Automatización.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">PART 01</p>\n  <h1 style=\"font-family:var(--display-font); font-size:56px; font-weight:800; color:var(--text-primary); margin:0;\">Automatización de Pruebas</h1>\n</div>"
+      "archetype": "concept-cards",
+      "title": "Qué es, para qué sirve y qué abarca",
+      "notes": "Tres tarjetas que fijan el vocabulario. Definición: ejecutar pruebas mediante herramientas y scripts predefinidos que simulan la interacción humana y verifican resultados. Propósito: liberar al tester de la tarea repetitiva para que dedique su criterio a lo exploratorio, que es donde aparece lo que nadie previó. Alcance: funcionales, regresión, carga y rendimiento, con informes detallados. Insiste en que el alcance no es «todo»: la usabilidad y la exploración siguen siendo humanas.",
+      "slots": {
+        "TAG_LEFT": "CONCEPTOS",
+        "TITLE": "Qué es y qué no es automatizar",
+        "TAG_RIGHT": "04",
+        "COLS": "3",
+        "CARDS": [
+          { "badge": "01", "title": "Definición", "body": "Ejecutar pruebas de software mediante herramientas y scripts predefinidos que simulan la interacción del usuario y verifican el resultado obtenido contra el esperado.", "note_label": "Clave", "note": "El script no juzga: compara contra un valor que alguien decidió antes." },
+          { "badge": "02", "title": "Propósito", "body": "Ejecutar muchos casos de forma rápida y repetible, liberando al tester de la tarea mecánica para que dedique su criterio a lo exploratorio.", "note_label": "Clave", "note": "Gana consistencia y cobertura; no gana intuición." },
+          { "badge": "03", "title": "Alcance", "body": "Funcionales, de regresión, de carga y de rendimiento, con informes que identifican dónde y cuándo se rompió cada comportamiento.", "note_label": "Clave", "note": "Usabilidad y exploración siguen siendo trabajo humano." }
+        ]
+      }
     },
     {
-      "slide_index": 3,
-      "page_type": "content",
-      "title": "¿Qué es la Automatización de Pruebas?",
-      "part_label": "PART 01",
-      "layout_hint": "hero-top",
-      "card_types": [
-        "text",
-        "quote"
-      ],
-      "decoration_hints": [
-        "W1"
-      ],
-      "speaker_notes": "Definición de automatización. El uso de software para controlar la ejecución de pruebas.",
-      "html_content": "<div style=\"display:grid; grid-template:auto 1fr / repeat(3,1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/-1; background:linear-gradient(135deg, var(--card-bg-from), var(--card-bg-to)); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px 32px; display:flex; align-items:center; gap:24px;\">\n    <div style=\"flex:1;\">\n      <h2 style=\"font-family:var(--display-font); font-size:36px; color:var(--text-primary); margin:8px 0;\">¿Qué es la Automatización de Pruebas?</h2>\n    </div>\n  </div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-1);\">01</p><h3 style=\"color:var(--text-primary);\">Precisión</h3></div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-2);\">02</p><h3 style=\"color:var(--text-primary);\">Velocidad</h3></div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-3);\">03</p><h3 style=\"color:var(--text-primary);\">Cobertura</h3></div>\n</div>"
+      "archetype": "timeline",
+      "title": "Cuarenta años de automatización",
+      "notes": "Recorrido histórico. En los 80 aparecen herramientas rudimentarias atadas a un lenguaje concreto, con el único objetivo de reducir el tiempo de la prueba manual. En los 90 llegan las herramientas comerciales, WinRunner marca el estándar, y aparece JUnit (Kent Beck y Erich Gamma) que estandariza la prueba unitaria automatizada. En los 2000 se abre el campo: Selenium en 2004 permite manejar navegadores reales desde varios lenguajes y aparece el patrón Page Object. Desde 2010 la automatización deja de ser una actividad y pasa a ser una puerta del pipeline: si la suite no está verde, no se despliega. Cada salto no sustituyó al anterior, se apiló encima.",
+      "slots": {
+        "TAG_LEFT": "HISTORIA",
+        "TITLE": "Cuarenta años de automatización",
+        "TAG_RIGHT": "05",
+        "LEAD": "Cada etapa no sustituyó a la anterior: se apiló encima. Por eso hoy conviven pruebas unitarias, de navegador y de pipeline.",
+        "COLS": "4",
+        "STEPS": [
+          { "n": "1", "phase": "Años 1980", "title": "Primeras herramientas", "desc": "Utilidades rudimentarias y atadas a un lenguaje concreto, nacidas para recortar el tiempo de la prueba manual.", "output": "Menos repetición" },
+          { "n": "2", "phase": "Años 1990", "title": "Estándar comercial", "desc": "WinRunner populariza la automatización funcional y JUnit estandariza la prueba unitaria repetible.", "output": "Prueba unitaria" },
+          { "n": "3", "phase": "Años 2000", "title": "Apertura y web", "desc": "Selenium (2004) y QTP abren la automatización a varios lenguajes y navegadores; llega el patrón Page Object.", "output": "Regresión web" },
+          { "n": "4", "phase": "2010 → hoy", "title": "Puerta del pipeline", "desc": "La suite deja de ser una tarea y se convierte en un requisito: sin verde, no hay despliegue.", "output": "CI/CD" }
+        ]
+      }
     },
     {
-      "slide_index": 4,
-      "page_type": "content",
-      "title": "Manual vs Automatizado",
-      "part_label": "PART 01",
-      "layout_hint": "symmetric",
-      "card_types": [
-        "comparison"
-      ],
-      "decoration_hints": [
-        "W5"
-      ],
-      "speaker_notes": "Comparación directa. Lo manual es susceptible a error y tedioso, lo automatizado es rápido y repetible.",
-      "html_content": "<div style=\"display:grid; grid-template:1fr / 1fr 1fr; gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Pruebas Manuales / TDD</h2>\n    <ul style=\"color:var(--text-secondary); font-size:18px; margin-top:20px; line-height:1.8;\">\n      <li>Susceptible a error humano</li>\n      <li>Tedioso y repetitivo</li>\n      <li>Difícil de escalar</li>\n    </ul>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Automatizadas / BDD</h2>\n    <ul style=\"color:var(--text-secondary); font-size:18px; margin-top:20px; line-height:1.8;\">\n      <li>Ejecución rápida y repetible</li>\n      <li>Liberan tiempo para testing exploratorio</li>\n      <li>Integración continua (CI/CD)</li>\n    </ul>\n  </div>\n</div>"
+      "archetype": "metrics",
+      "title": "Qué gana el equipo al automatizar",
+      "notes": "Cuatro cifras para justificar la inversión ante quien decide el presupuesto. No las presentes como promesas universales: son órdenes de magnitud típicos del sector y dependen por completo de que la suite se mantenga. Si el equipo abandona los scripts, todos estos números se invierten. Aprovecha para introducir el coste de mantenimiento, que es la desventaja principal de la automatización.",
+      "slots": {
+        "TAG_LEFT": "CIFRAS",
+        "TITLE": "Qué gana el equipo al automatizar",
+        "TAG_RIGHT": "06",
+        "LEAD": "Órdenes de magnitud habituales en el sector. Todos dependen de una condición: que alguien mantenga la suite.",
+        "COLS": "4",
+        "SOURCE": "Rangos de referencia del sector; contrástalos siempre con los datos de tu propio proyecto.",
+        "METRICS": [
+          { "label": "Ciclo de regresión", "value": "10", "unit": "×", "desc": "Más rápido que ejecutar la misma batería a mano.", "pct": "90%" },
+          { "label": "Cobertura de ejecución", "value": "3", "unit": "×", "desc": "Más casos por ciclo con el mismo equipo.", "pct": "70%" },
+          { "label": "Detección temprana", "value": "80", "unit": "%", "desc": "Defectos que se cazan antes de salir del pipeline.", "pct": "80%" },
+          { "label": "Coste de corregir tarde", "value": "100", "unit": "×", "desc": "Lo que cuesta el mismo fallo ya en producción.", "pct": "100%" }
+        ]
+      }
     },
     {
-      "slide_index": 5,
-      "page_type": "content",
-      "title": "Beneficios Clave",
-      "part_label": "PART 01",
-      "layout_hint": "primary-secondary",
-      "card_types": [
-        "text",
-        "data"
-      ],
-      "decoration_hints": [
-        "W10"
-      ],
-      "speaker_notes": "Eficiencia, reducción de costos, mejor cobertura e integración continua.",
-      "html_content": "<div style=\"display:grid; grid-template:1fr 1fr / 2fr 1fr; gap:20px; height:100%;\">\n  <div style=\"grid-row:1/-1; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:36px;\">Beneficios Clave</h2>\n    <p style=\"color:var(--text-secondary); font-size:20px; margin-top:20px; line-height:1.6;\">Es fundamental entender las métricas de impacto que la automatización trae a un proyecto de software, como la mejora de la cobertura, eficiencia y detección temprana.</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;\">\n    <h3 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">80%</h3>\n    <p style=\"color:var(--text-secondary);\">Reducción de Tiempo</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;\">\n    <h3 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">95%</h3>\n    <p style=\"color:var(--text-secondary);\">Cobertura Aumentada</p>\n  </div>\n</div>"
+      "archetype": "comparison",
+      "title": "Prueba manual frente a prueba automatizada",
+      "notes": "El error más común es plantear esto como una competencia. No lo es: son dos herramientas para dos problemas distintos. La prueba manual gana en todo lo que requiere criterio, sorpresa y percepción; la automatizada gana en todo lo que hay que repetir de forma idéntica. Aterriza con el ejemplo del material: un botón desplazado tres píxeles o un texto que suena raro lo detecta una persona en dos segundos y un script no lo ve nunca. Conecta con la pregunta del apunte activador sobre errores más fáciles de detectar manualmente.",
+      "slots": {
+        "TAG_LEFT": "CONTRASTE",
+        "TITLE": "Manual frente a automatizada",
+        "TAG_RIGHT": "07",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "MANUAL",
+        "LEFT_TITLE": "Aporta criterio",
+        "LEFT_BODY": "Una persona observa, se extraña y sigue la pista de algo que nadie había previsto en el caso de prueba.",
+        "LEFT_EXAMPLE": "«Este mensaje de error no se entiende» no lo detecta ningún script.",
+        "RIGHT_LABEL": "AUTOMATIZADA",
+        "RIGHT_TITLE": "Aporta repetición",
+        "RIGHT_BODY": "Un script ejecuta cien veces la misma comprobación exactamente igual, de madrugada y sin cansarse.",
+        "RIGHT_EXAMPLE": "La regresión completa corre en cada commit sin que nadie la lance.",
+        "LEFT_POINTS": [
+          { "text": "Detecta lo inesperado y lo estético" },
+          { "text": "Imprescindible en exploratorio y usabilidad" },
+          { "text": "Cara, lenta y sensible al cansancio" }
+        ],
+        "RIGHT_POINTS": [
+          { "text": "Consistente: cero variación entre ejecuciones" },
+          { "text": "Escala a cientos de casos por noche" },
+          { "text": "Solo encuentra lo que se le pidió mirar" }
+        ],
+        "RIGHT_TAGS": [
+          { "text": "Regresión" },
+          { "text": "Carga" },
+          { "text": "CI/CD" }
+        ]
+      }
     },
     {
-      "slide_index": 6,
-      "page_type": "content",
-      "title": "¿Cuándo Automatizar?",
-      "part_label": "PART 01",
-      "layout_hint": "l-shape",
-      "card_types": [
-        "text",
-        "diagram"
-      ],
-      "decoration_hints": [
-        "W2"
-      ],
-      "speaker_notes": "No todo se automatiza. Pruebas de regresión sí, pruebas exploratorias no.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">¿Cuándo Automatizar?</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">No todo se automatiza. Pruebas de regresión sí, pruebas exploratorias no.</p>\n  </div>\n</div>"
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 1",
+      "notes": "Cierre del primer bloque. Deja treinta segundos de discusión en parejas antes de revelar con la tecla R. La respuesta correcta es la B. El punto que hay que dejar clavado: la automatización no descubre defectos nuevos, protege los que ya se corrigieron.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 1",
+        "TAG_RIGHT": "08",
+        "BADGE": "PREGUNTA 1",
+        "QUESTION": "¿Cuál es la aportación principal de una suite automatizada?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Un script solo comprueba lo que alguien le indicó. No se extraña ni improvisa: repite. Su valor está en detectar que algo que funcionaba ha dejado de funcionar, no en descubrir lo que nadie había imaginado.",
+        "OPTIONS": [
+          { "key": "A", "text": "Descubrir defectos que nadie había anticipado", "correct": "" },
+          { "key": "B", "text": "Detectar de forma barata que algo que funcionaba se rompió", "correct": "true" },
+          { "key": "C", "text": "Sustituir por completo al equipo de pruebas manuales", "correct": "" },
+          { "key": "D", "text": "Garantizar que el software no tiene defectos", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 2 · Herramientas y criterios",
+      "notes": "Separador del segundo bloque. Aviso para el aula: la herramienta es la decisión menos importante y la que más discusiones genera. Lo que determina el éxito es quién va a mantener la suite dentro de un año y si el equipo domina el lenguaje del framework. En la parte 3 las instalaremos todas; aquí decidimos para qué sirve cada una.",
+      "slots": {
+        "PART_LABEL": "PARTE 02",
+        "TITLE": "Herramientas y criterios",
+        "SUBTITLE": "Para qué sirve cada una antes de instalarlas todas en la parte 3",
+        "AGENDA": [
+          { "label": "01", "text": "Selenium, Appium, Cucumber, Robot y k6" },
+          { "label": "02", "text": "Qué funciones se esperan de una herramienta" },
+          { "label": "03", "text": "Scripts que se mantienen y adopción por fases" }
+        ]
+      }
     },
     {
-      "slide_index": 7,
-      "page_type": "section",
-      "title": "Parte 2: Ciclo de Vida del Defecto",
-      "part_label": "PART 02",
-      "layout_hint": "single-focus",
-      "card_types": [
-        "text"
-      ],
-      "decoration_hints": [
-        "W3"
-      ],
-      "speaker_notes": "Pasamos a cómo se gestionan los bugs una vez encontrados.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">PART 02</p>\n  <h1 style=\"font-family:var(--display-font); font-size:56px; font-weight:800; color:var(--text-primary); margin:0;\">Ciclo de Vida del Defecto</h1>\n</div>"
+      "archetype": "feature-matrix",
+      "title": "Comparativa de herramientas",
+      "notes": "Comparativa de las cinco herramientas del semestre. Selenium es el estándar de facto para web y el que más empleo tiene detrás, por eso está marcado como columna de referencia. Appium se apoya en el mismo protocolo WebDriver pero para móvil. Cucumber no es un ejecutor: es una capa de lenguaje natural (Gherkin) que se monta encima de otro. Robot Framework es el más accesible para quien no programa. k6 juega en otra liga: no comprueba funcionalidad, mide latencia y errores bajo carga. Insiste en la última fila: el coste de mantenimiento es lo que mata las suites, no la curva inicial.",
+      "slots": {
+        "TAG_LEFT": "COMPARATIVA",
+        "TITLE": "Cinco herramientas, cinco problemas",
+        "TAG_RIGHT": "10",
+        "LEAD": "Los criterios que importan al mantener la suite dentro de un año, no los del folleto comercial.",
+        "HEADERS": "<th>Criterio</th><th class=\"best\">Selenium</th><th>Appium</th><th>Cucumber</th><th>Robot</th><th>k6</th>",
+        "NOTE_LABEL": "Criterio de decisión",
+        "NOTE": "Selenium, Appium, Cucumber y Robot responden «¿funciona?». k6 responde «¿aguanta?». Son preguntas distintas y ninguna sustituye a la otra.",
+        "ROWS": [
+          { "cells": "<td>Aplicaciones web</td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk part\">~</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td>" },
+          { "cells": "<td>Aplicaciones móviles</td><td class=\"best\"><span class=\"mk no\">✗</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk part\">~</span></td><td><span class=\"mk part\">~</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Escenarios en lenguaje natural</td><td class=\"best\"><span class=\"mk no\">✗</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Carga y rendimiento</td><td class=\"best\"><span class=\"mk no\">✗</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk yes\">✓</span></td>" },
+          { "cells": "<td>Accesible sin programar</td><td class=\"best\"><span class=\"mk no\">✗</span></td><td><span class=\"mk no\">✗</span></td><td><span class=\"mk part\">~</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk part\">~</span></td>" },
+          { "cells": "<td>Integración directa con CI/CD</td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td>" }
+        ]
+      }
     },
     {
-      "slide_index": 8,
-      "page_type": "content",
-      "title": "¿Qué es un Defecto?",
-      "part_label": "PART 02",
-      "layout_hint": "single-focus",
-      "card_types": [
-        "quote"
-      ],
-      "decoration_hints": [
-        "W1"
-      ],
-      "speaker_notes": "Un defecto o bug es cualquier desviación del comportamiento esperado.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">¿Qué es un Defecto?</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">Un defecto o bug es cualquier desviación del comportamiento esperado.</p>\n  </div>\n</div>"
+      "archetype": "concept-cards",
+      "title": "Qué debe ofrecer una herramienta",
+      "notes": "Cuatro funciones que el material identifica como imprescindibles. La cuarta, la integración con CI/CD, es la que separa una herramienta útil de un juguete: si los resultados no llegan solos al pipeline, alguien tendrá que acordarse de lanzarlos, y ese alguien dejará de hacerlo la primera semana con prisa. Pide al grupo que ordene las cuatro por importancia: casi siempre subestiman el registro y el análisis de resultados, que es lo que permite detectar pruebas inestables.",
+      "slots": {
+        "TAG_LEFT": "FUNCIONES",
+        "TITLE": "Qué debe ofrecer la herramienta",
+        "TAG_RIGHT": "11",
+        "COLS": "4",
+        "CARDS": [
+          { "badge": "01", "title": "Gestión de casos", "body": "Crear, editar y organizar los casos de prueba con una estructura que sobreviva a cien casos, no solo a diez.", "note_label": "Señal", "note": "Si no puedes buscar un caso, ya está perdido." },
+          { "badge": "02", "title": "Ejecución", "body": "Correr los casos en distintos entornos y navegadores sin reescribir el script para cada combinación.", "note_label": "Señal", "note": "Un script por navegador es una suite muerta." },
+          { "badge": "03", "title": "Registro y análisis", "body": "Guardar el resultado de cada ejecución con evidencia suficiente para saber por qué falló, no solo que falló.", "note_label": "Señal", "note": "Sin histórico no se detectan las pruebas inestables." },
+          { "badge": "04", "title": "Integración CI/CD", "body": "Dispararse sola con cada cambio de código y bloquear el despliegue cuando el resultado no es verde.", "note_label": "Señal", "note": "Si hay que acordarse de lanzarla, nadie lo hará." }
+        ]
+      }
     },
     {
-      "slide_index": 9,
-      "page_type": "content",
-      "title": "Etapas del Ciclo de Vida",
-      "part_label": "PART 02",
-      "layout_hint": "waterfall",
-      "card_types": [
-        "timeline"
-      ],
-      "decoration_hints": [
-        "W5"
-      ],
-      "speaker_notes": "Desde el reporte hasta el cierre.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; gap:20px; height:100%;\">\n  <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:36px; margin:0;\">Etapas del Ciclo de Vida</h2>\n  <div style=\"display:flex; flex-direction:column; gap:12px; flex:1; justify-content:center;\">\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-1); padding:16px; border-radius:4px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">1. Reporte y Registro</p></div>\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-2); padding:16px; border-radius:4px; margin-left:40px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">2. Análisis y Priorización</p></div>\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-3); padding:16px; border-radius:4px; margin-left:80px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">3. Asignación y Trabajo</p></div>\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-4); padding:16px; border-radius:4px; margin-left:120px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">4. Corrección y Pruebas Unitarias</p></div>\n    <div style=\"background:var(--card-bg-from); border-left:4px solid var(--accent-1); padding:16px; border-radius:4px; margin-left:160px;\"><p style=\"color:var(--text-primary); font-weight:bold; margin:0;\">5. Pruebas de Regresión y Resolución</p></div>\n  </div>\n</div>"
+      "archetype": "quote",
+      "title": "Automatizar no arregla el proceso",
+      "notes": "Diapositiva de respiro. La cita es de Bill Gates y resume la trampa más cara de la automatización: si el proceso de pruebas está mal diseñado, automatizarlo solo hace que el desorden avance más rápido. Traducido al aula: automatizar casos de prueba mal escritos produce cientos de fallos que nadie sabe interpretar, y en dos sprints el equipo empieza a ignorar el rojo del pipeline. Ese día la suite ha muerto aunque siga ejecutándose.",
+      "slots": {
+        "QUOTE": "La automatización aplicada a una operación ineficiente amplificará la ineficiencia.",
+        "AUTHOR": "Bill Gates",
+        "ROLE": "Cofundador de Microsoft",
+        "CONTEXT_LABEL": "Por qué importa aquí",
+        "CONTEXT": "Automatizar casos mal escritos produce cientos de fallos que nadie interpreta. En dos sprints el equipo empieza a ignorar el rojo del pipeline, y ese día la suite ha muerto aunque siga ejecutándose."
+      }
     },
     {
-      "slide_index": 10,
-      "page_type": "content",
-      "title": "Fase 1: Reporte y Registro",
-      "part_label": "PART 02",
-      "layout_hint": "three-column",
-      "card_types": [
-        "text"
-      ],
-      "decoration_hints": [
-        "W7"
-      ],
-      "speaker_notes": "La importancia de documentar bien: pasos, entorno, severidad.",
-      "html_content": "<div style=\"display:grid; grid-template:1fr / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-1); font-size:24px; margin-bottom:12px;\">Paso 1</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Descripción clara del defecto y pasos para reproducir.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-2); font-size:24px; margin-bottom:12px;\">Paso 2</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Detallar el entorno (OS, red, dispositivo).</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-3); font-size:24px; margin-bottom:12px;\">Paso 3</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Impacto esperado vs Impacto real.</p></div>\n</div>"
+      "archetype": "dodont",
+      "title": "Scripts que se mantienen frente a scripts que se abandonan",
+      "notes": "Esta es la diapositiva más rentable del bloque y la que hay que tener presente durante todas las demos. La causa número uno de que una suite se abandone no es la herramienta, es el acoplamiento entre el script y la interfaz. A la izquierda, el antipatrón: selector frágil basado en la posición del DOM, espera por tiempo fijo, datos escritos a mano. A la derecha, el patrón: selector semántico, espera por condición y datos generados. Refuerza las tres buenas prácticas del material: selección adecuada de casos, modularidad y mantenimiento regular.",
+      "slots": {
+        "TAG_LEFT": "PRÁCTICA",
+        "TITLE": "Scripts que sobreviven al rediseño",
+        "TAG_RIGHT": "13",
+        "BAD_TITLE": "Así no",
+        "BAD_SNIPPET": "driver.find_element(\n  By.XPATH, \"/html/body/div[3]/div/form/input[2]\"\n).send_keys(\"Comprar leche\")\n\ntime.sleep(3)\nassert \"Comprar leche\" in driver.page_source",
+        "GOOD_TITLE": "Así sí",
+        "GOOD_SNIPPET": "pagina = PaginaTareas(driver)\npagina.crear(titulo=datos.titulo_unico())\n\nassert pagina.esta_en_pendientes(\n  datos.titulo_unico()\n)",
+        "WHY_LABEL": "Por qué",
+        "WHY": "El script frágil no falla cuando hay un defecto: falla cuando alguien mueve un div. Después de tres falsos rojos, el equipo deja de mirar el resultado y la suite se convierte en decoración cara.",
+        "BAD_POINTS": [
+          { "text": "Selector atado a la posición del DOM: cualquier rediseño lo rompe" },
+          { "text": "Espera fija: lento si la red va bien, inestable si va mal" },
+          { "text": "Datos escritos a mano que chocan al ejecutar dos veces" },
+          { "text": "Copiado y pegado en veinte tests: se arregla veinte veces" }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Selector semántico y estable frente al rediseño" },
+          { "text": "Espera por condición: rápido y fiable a la vez" },
+          { "text": "Datos generados: cada ejecución es independiente" },
+          { "text": "Lógica encapsulada: se arregla en un solo sitio" }
+        ]
+      }
     },
     {
-      "slide_index": 11,
-      "page_type": "content",
-      "title": "Fase 2: Análisis y Priorización",
-      "part_label": "PART 02",
-      "layout_hint": "primary-secondary",
-      "card_types": [
-        "matrix-chart"
-      ],
-      "decoration_hints": [
-        "W10"
-      ],
-      "speaker_notes": "Severidad (impacto técnico) vs Prioridad (impacto de negocio).",
-      "html_content": "<div style=\"display:grid; grid-template:1fr 1fr / 2fr 1fr; gap:20px; height:100%;\">\n  <div style=\"grid-row:1/-1; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:36px;\">Fase 2: Análisis y Priorización</h2>\n    <p style=\"color:var(--text-secondary); font-size:20px; margin-top:20px; line-height:1.6;\">Es fundamental entender las métricas de impacto que la automatización trae a un proyecto de software, como la mejora de la cobertura, eficiencia y detección temprana.</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;\">\n    <h3 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">80%</h3>\n    <p style=\"color:var(--text-secondary);\">Reducción de Tiempo</p>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;\">\n    <h3 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">95%</h3>\n    <p style=\"color:var(--text-secondary);\">Cobertura Aumentada</p>\n  </div>\n</div>"
+      "archetype": "roadmap",
+      "title": "Adopción por fases, no de golpe",
+      "notes": "Nadie automatiza una aplicación entera de una vez, y quien lo intenta fracasa. El plan realista tiene tres tiempos. Primero se automatiza el camino crítico y se conecta al pipeline, aunque solo sean diez casos. Después se extiende a los flujos secundarios y se establece el gobierno: quién revisa los fallos y qué se hace con las pruebas inestables. Solo entonces se añade profundidad, y ahí es donde entra el rendimiento con k6. Recalca los criterios para elegir qué automatizar: casos repetitivos, críticos y con alta frecuencia de error humano.",
+      "slots": {
+        "TAG_LEFT": "PLAN",
+        "TITLE": "Adopción por fases",
+        "TAG_RIGHT": "14",
+        "LEAD": "Nadie automatiza una aplicación entera de una vez. Empieza por lo que, si se rompe, deja el producto inservible.",
+        "COLS": "3",
+        "LANES": [
+          { "phase": "Fase 1 · Base", "when": "Primeras semanas", "color": "var(--a1)", "items": "Automatizar el camino crítico|Conectar la suite al pipeline|Definir convención de nombres|Elegir herramienta con prueba piloto" },
+          { "phase": "Fase 2 · Extensión", "when": "Siguiente trimestre", "color": "var(--a2)", "items": "Cubrir los flujos secundarios|Encapsular la lógica repetida|Poner en cuarentena lo inestable|Asignar quién revisa cada fallo" },
+          { "phase": "Fase 3 · Profundidad", "when": "Cuando la base es fiable", "color": "var(--a3)", "items": "Pruebas de carga con k6|Datos de prueba sembrados|Informe periódico de calidad|Poda de casos obsoletos" }
+        ]
+      }
     },
     {
-      "slide_index": 12,
-      "page_type": "content",
-      "title": "Fases 3 y 4: Trabajo y Corrección",
-      "part_label": "PART 02",
-      "layout_hint": "t-shape",
-      "card_types": [
-        "text",
-        "comparison"
-      ],
-      "decoration_hints": [
-        "W2"
-      ],
-      "speaker_notes": "El desarrollador analiza, codifica la solución y aplica pruebas unitarias.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">Fases 3 y 4: Trabajo y Corrección</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">El desarrollador analiza, codifica la solución y aplica pruebas unitarias.</p>\n  </div>\n</div>"
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 2",
+      "notes": "Cierre del segundo bloque. La respuesta correcta es la C. Es la pregunta con más respuestas equivocadas del deck porque el instinto lleva a elegir la herramienta o la cobertura. Si el grupo se divide, vuelve a la diapositiva de buenas y malas prácticas y muestra el selector XPath frágil.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 2",
+        "TAG_RIGHT": "15",
+        "BADGE": "PREGUNTA 2",
+        "QUESTION": "¿Cuál es la causa más frecuente de que una suite automatizada se abandone?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Cuando un script falla porque alguien movió un elemento, el equipo aprende que el rojo no significa defecto. Después de tres falsos positivos deja de mirarlo, y la suite muere aunque siga ejecutándose todas las noches.",
+        "OPTIONS": [
+          { "key": "A", "text": "Se eligió la herramienta equivocada al empezar", "correct": "" },
+          { "key": "B", "text": "La cobertura conseguida nunca llegó al objetivo", "correct": "" },
+          { "key": "C", "text": "Los scripts fallan por cambios de interfaz y nadie confía ya en el resultado", "correct": "true" },
+          { "key": "D", "text": "La ejecución completa tarda demasiados minutos", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 3 · Demos guiadas",
+      "notes": "Empieza el laboratorio. Aviso importante: a partir de aquí todo el mundo tiene que estar delante del ordenador. Cada herramienta sigue exactamente el mismo guion de cinco pasos, y esa repetición es deliberada: cuando el patrón se interioriza, aprender la sexta herramienta cuesta una tarde. Recuerda los prerrequisitos comunes: Python 3.10 o superior, Node.js 18 o superior, y Git. Pide que los instalen antes de la sesión si no los tienen.",
+      "slots": {
+        "PART_LABEL": "PARTE 03",
+        "TITLE": "Demos guiadas",
+        "SUBTITLE": "Selenium, Appium, Cucumber y Robot Framework, de la instalación al informe",
+        "AGENDA": [
+          { "label": "01", "text": "El mismo guion de cinco pasos en las cuatro" },
+          { "label": "02", "text": "Instalar, configurar, escribir, ejecutar y leer" },
+          { "label": "03", "text": "Prerrequisitos: Python 3.10+, Node 18+ y Git" }
+        ]
+      }
     },
     {
-      "slide_index": 13,
-      "page_type": "content",
-      "title": "Fase 5: Pruebas de Regresión",
-      "part_label": "PART 02",
-      "layout_hint": "mixed-grid",
-      "card_types": [
-        "text",
-        "data"
-      ],
-      "decoration_hints": [
-        "W5"
-      ],
-      "speaker_notes": "Asegurar que el parche no rompió nada más.",
-      "html_content": "<div style=\"display:grid; grid-template:repeat(2, 1fr) / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/3; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Fase 5: Pruebas de Regresión</h2><p style=\"color:var(--text-secondary); font-size:18px;\">Ecosistema robusto de herramientas.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Selenium</h3><p style=\"color:var(--text-secondary);\">Web automatization</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Appium</h3><p style=\"color:var(--text-secondary);\">Mobile testing</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-3); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Cucumber</h3><p style=\"color:var(--text-secondary);\">BDD Framework</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-4); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Robot FW</h3><p style=\"color:var(--text-secondary);\">Keyword-driven</p></div>\n</div>"
+      "archetype": "timeline",
+      "title": "El guion común de las cinco demos",
+      "notes": "Este es el esqueleto que se repite en Selenium, Appium, Cucumber, Robot y k6. Insiste en el paso 5: la mayoría del alumnado se detiene cuando el test pasa, y ahí es justo donde empieza el trabajo del tester. Un informe que nadie lee es un informe que no existe. Pide que en cada demo anoten dónde queda el artefacto de salida, porque es lo que tendrán que entregar. Y avisa: si un paso falla, no se salta; se resuelve, porque el 90% de los problemas de estas herramientas son de entorno, no de código.",
+      "slots": {
+        "TAG_LEFT": "MÉTODO",
+        "TITLE": "El guion común de las cinco demos",
+        "TAG_RIGHT": "17",
+        "LEAD": "Las cinco herramientas siguen exactamente estos pasos. Cuando interiorices el patrón, la sexta herramienta te costará una tarde.",
+        "COLS": "5",
+        "STEPS": [
+          { "n": "1", "phase": "Instalar", "title": "Preparar el entorno", "desc": "Aislar dependencias en un entorno virtual o en un package.json propio del proyecto.", "output": "Entorno limpio" },
+          { "n": "2", "phase": "Configurar", "title": "Declarar el contexto", "desc": "Navegador, dispositivo, URL base, tiempos de espera y rutas de salida en un archivo de configuración.", "output": "Archivo de config" },
+          { "n": "3", "phase": "Escribir", "title": "Redactar el caso", "desc": "Un caso, un comportamiento. Nombre descriptivo y verificación explícita del resultado.", "output": "Script de prueba" },
+          { "n": "4", "phase": "Ejecutar", "title": "Lanzar y observar", "desc": "Ejecución local primero, luego en el pipeline. Con salida detallada la primera vez.", "output": "Ejecución" },
+          { "n": "5", "phase": "Leer", "title": "Interpretar el informe", "desc": "Dónde queda el artefacto, qué significa cada estado y qué evidencia se adjunta al defecto.", "output": "Informe" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "code",
+      "title": "Selenium · instalación y configuración",
+      "notes": "Demo 1, paso de instalación. Puntos que hay que decir en voz alta. Primero: el entorno virtual no es opcional; sin él, en tres semanas el equipo tendrá cinco versiones distintas de Selenium y nadie sabrá cuál falla. Segundo: desde Selenium 4.6 el Selenium Manager descarga y ajusta el chromedriver solo, así que ya no hace falta bajar binarios a mano ni usar webdriver-manager; esto ahorra la mitad de los problemas de instalación que había hace dos años. Tercero: el conftest.py es donde vive la configuración compartida; la fixture con yield garantiza que el navegador se cierre incluso si el test falla, y sin eso quedan procesos zombis consumiendo memoria. Cuarto: --headless=new es el modo sin ventana que se usa en el pipeline; en local conviene ejecutar con ventana la primera vez para ver qué hace el script.",
+      "slots": {
+        "TAG_LEFT": "DEMO 1 · SELENIUM",
+        "TITLE": "Instalación y configuración",
+        "TAG_RIGHT": "18",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "Entorno aislado, dependencias fijadas y una única fixture que abre y cierra el navegador para toda la suite.",
+        "CALLOUT_LABEL": "Novedad importante",
+        "CALLOUT": "Desde Selenium 4.6 el Selenium Manager descarga el driver solo. Ya no hay que bajar chromedriver a mano ni instalar webdriver-manager.",
+        "FILENAME": "terminal · conftest.py",
+        "CODE": "<span class='c-cm'># 1 · Entorno virtual aislado</span>\npython3 -m venv .venv\nsource .venv/bin/activate   <span class='c-cm'># Windows: .venv\\Scripts\\activate</span>\n\n<span class='c-cm'># 2 · Dependencias con versión fijada</span>\npip install selenium==<span class='c-num'>4.25</span>.0 pytest==<span class='c-num'>8.3</span>.3 pytest-html\npip freeze &gt; requirements.txt\n\n<span class='c-cm'># 3 · conftest.py — configuración compartida</span>\n<span class='c-kw'>import</span> pytest\n<span class='c-kw'>from</span> selenium <span class='c-kw'>import</span> webdriver\n\n@pytest.fixture\n<span class='c-kw'>def</span> <span class='c-fn'>driver</span>():\n    op = webdriver.ChromeOptions()\n    op.add_argument(<span class='c-str'>\"--headless=new\"</span>)\n    d = webdriver.Chrome(options=op)\n    d.implicitly_wait(<span class='c-num'>0</span>)\n    <span class='c-kw'>yield</span> d\n    d.quit()",
+        "STEPS": [
+          { "n": "1", "text": "El entorno virtual no es opcional: sin él, en tres semanas habrá cinco versiones distintas de Selenium y nadie sabrá cuál falla." },
+          { "n": "2", "text": "Fija la versión con == y guarda requirements.txt. «Funciona en mi máquina» casi siempre es una versión distinta." },
+          { "n": "3", "text": "conftest.py es la configuración compartida de pytest: lo que pongas ahí lo ven todos los tests sin importarlo." },
+          { "n": "4", "text": "El yield garantiza que el navegador se cierra aunque el test falle. Sin eso quedan procesos zombis comiendo memoria." },
+          { "n": "5", "text": "implicitly_wait(0) desactiva la espera implícita: mezclarla con esperas explícitas produce tiempos impredecibles." }
+        ]
+      }
     },
     {
-      "slide_index": 14,
-      "page_type": "section",
-      "title": "Parte 3: Herramientas y Tendencias",
-      "part_label": "PART 03",
-      "layout_hint": "single-focus",
-      "card_types": [
-        "text"
-      ],
-      "decoration_hints": [
-        "W3"
-      ],
-      "speaker_notes": "El ecosistema actual y hacia dónde va el testing.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">PART 03</p>\n  <h1 style=\"font-family:var(--display-font); font-size:56px; font-weight:800; color:var(--text-primary); margin:0;\">Herramientas y Tendencias</h1>\n</div>"
+      "archetype": "code-criteria",
+      "title": "Selenium · el test completo",
+      "notes": "Demo 1, paso de escritura. Recorre el test línea a línea. El nombre del test es documentación: cuando falle en el pipeline, esa cadena es lo único que verás en el log. La estructura Arrange-Act-Assert se ve físicamente en los tres bloques separados por líneas en blanco. El punto crítico es WebDriverWait con expected_conditions: se espera a que el elemento esté visible, no un número fijo de segundos. Señala que el localizador está en una constante de clase: ese es el germen del patrón Page Object, que veremos cuando la suite crezca. Y el assert comprueba un único comportamiento observable; si hubiera dos asserts distintos, harían falta dos tests.",
+      "slots": {
+        "TAG_LEFT": "DEMO 1 · SELENIUM",
+        "TITLE": "El test completo",
+        "TAG_RIGHT": "19",
+        "KICKER": "Escribir · paso 3 de 5",
+        "CODE_TITLE": "tests/test_crear_tarea.py",
+        "CODE": "<span class='c-kw'>from</span> selenium.webdriver.common.by <span class='c-kw'>import</span> By\n<span class='c-kw'>from</span> selenium.webdriver.support.ui <span class='c-kw'>import</span> WebDriverWait\n<span class='c-kw'>from</span> selenium.webdriver.support <span class='c-kw'>import</span> expected_conditions <span class='c-kw'>as</span> EC\n\nBASE = <span class='c-str'>\"https://app.local/tareas\"</span>\n\n<span class='c-kw'>def</span> <span class='c-fn'>test_crear_tarea_aparece_en_pendientes</span>(driver):\n    <span class='c-cm'># Arrange</span>\n    driver.get(BASE)\n\n    <span class='c-cm'># Act</span>\n    driver.find_element(By.ID, <span class='c-str'>\"titulo\"</span>).send_keys(<span class='c-str'>\"Comprar leche\"</span>)\n    driver.find_element(By.ID, <span class='c-str'>\"guardar\"</span>).click()\n\n    <span class='c-cm'># Assert — espera por condición, no por tiempo</span>\n    lista = WebDriverWait(driver, <span class='c-num'>10</span>).until(\n        EC.visibility_of_element_located((By.ID, <span class='c-str'>\"pendientes\"</span>)))\n    <span class='c-kw'>assert</span> <span class='c-str'>\"Comprar leche\"</span> <span class='c-kw'>in</span> lista.text",
+        "PANEL_TITLE": "Criterios de revisión",
+        "WHY_TITLE": "Por qué este test pasa la revisión",
+        "WHY": "El nombre dice qué comprueba, la estructura Arrange-Act-Assert se ve a simple vista y la espera es por condición. Si falla en el pipeline a las 3 de la madrugada, el log te dice qué se rompió sin abrir el archivo.",
+        "CRITERIA": [
+          { "letter": "A", "name": "Nombre describe el comportamiento", "meta": "Obligatorio", "highlight": "true" },
+          { "letter": "B", "name": "Arrange · Act · Assert separados", "meta": "Legibilidad", "highlight": "" },
+          { "letter": "C", "name": "Espera por condición, nunca sleep", "meta": "Estabilidad", "highlight": "true" },
+          { "letter": "D", "name": "Localizadores por id, no por XPath posicional", "meta": "Mantenimiento", "highlight": "" },
+          { "letter": "E", "name": "Un solo assert conceptual", "meta": "Diagnóstico", "highlight": "" },
+          { "letter": "F", "name": "Independiente del orden de ejecución", "meta": "Obligatorio", "highlight": "" }
+        ]
+      }
     },
     {
-      "slide_index": 15,
-      "page_type": "content",
-      "title": "El Stack de Automatización",
-      "part_label": "PART 03",
-      "layout_hint": "mixed-grid",
-      "card_types": [
-        "text"
-      ],
-      "decoration_hints": [
-        "W10"
-      ],
-      "speaker_notes": "Selenium, Appium, Cucumber, Robot Framework.",
-      "html_content": "<div style=\"display:grid; grid-template:repeat(2, 1fr) / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/3; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">El Stack de Automatización</h2><p style=\"color:var(--text-secondary); font-size:18px;\">Ecosistema robusto de herramientas.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Selenium</h3><p style=\"color:var(--text-secondary);\">Web automatization</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Appium</h3><p style=\"color:var(--text-secondary);\">Mobile testing</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-3); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Cucumber</h3><p style=\"color:var(--text-secondary);\">BDD Framework</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-4); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Robot FW</h3><p style=\"color:var(--text-secondary);\">Keyword-driven</p></div>\n</div>"
+      "archetype": "anatomy",
+      "title": "Selenium · ejecutar y leer el informe",
+      "notes": "Demo 1, pasos 4 y 5. Se ejecuta con pytest -v --html=reporte.html --self-contained-html. Recorre la salida campo a campo: el punto verde es un test que pasó, la F es un fallo de aserción y la E es un error de ejecución, que no es lo mismo; una F significa que el software se comportó distinto de lo esperado, una E significa que el test se rompió antes de poder comprobar nada, normalmente por un problema de entorno. El tiempo total permite detectar tests que se están volviendo lentos. El reporte HTML autocontenido es un solo archivo que se puede adjuntar al ticket del defecto, y eso es exactamente lo que se pide en la evidencia. Menciona el flag -k para ejecutar un subconjunto y --lf para repetir solo los que fallaron la última vez, que es el flujo real de depuración.",
+      "slots": {
+        "TAG_LEFT": "DEMO 1 · SELENIUM",
+        "TITLE": "Ejecutar y leer el informe",
+        "TAG_RIGHT": "20",
+        "SPEC_TITLE": "$ pytest -v --html=reporte.html --self-contained-html",
+        "FIELDS": [
+          { "key": "Comando de ejecución", "value": "pytest -v --html=reporte.html --self-contained-html", "highlight": "true" },
+          { "key": "Repetir solo los fallidos", "value": "pytest --lf   ·   filtrar por nombre: pytest -k crear_tarea", "highlight": "" },
+          { "key": "Línea de resultado", "value": "tests/test_crear_tarea.py::test_crear_tarea_aparece_en_pendientes PASSED [100%]", "highlight": "" },
+          { "key": "Marcas de estado", "value": ". = pasó   ·   F = falló la aserción   ·   E = error de ejecución   ·   s = omitido", "highlight": "true" },
+          { "key": "Resumen final", "value": "==== 1 passed, 0 failed in 3.42s ====", "highlight": "" },
+          { "key": "Artefacto de salida", "value": "reporte.html — un único archivo adjuntable al ticket del defecto", "highlight": "" },
+          { "key": "En el pipeline", "value": "pytest --junitxml=resultados.xml para que CI lo lea y pinte el histórico", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "F no es lo mismo que E", "text": "Una F dice que el software se comportó distinto de lo esperado. Una E dice que el test se rompió antes de comprobar nada, casi siempre por entorno." },
+          { "n": "2", "title": "Vigila el tiempo", "text": "El segundero del resumen es una métrica: un test que pasó de 3 a 30 segundos avisa de un problema de rendimiento antes que ninguna alarma." },
+          { "n": "3", "title": "El informe es la evidencia", "text": "Adjunta el HTML al defecto. Un reporte que se queda en la carpeta de quien lo ejecutó no ha servido para nada." }
+        ]
+      }
+    },
+
+    {
+      "archetype": "code",
+      "title": "Appium · instalación y arranque del servidor",
+      "notes": "Demo 2, instalación. Appium es la que más problemas de entorno da, así que ve despacio. Appium 2 separa el núcleo de los drivers: instalar appium ya no instala nada capaz de manejar un dispositivo, hay que instalar el driver aparte, uiautomator2 para Android y xcuitest para iOS. iOS solo funciona en macOS con Xcode, dilo antes de que alguien con Windows lo intente veinte minutos. El comando appium-doctor es el mejor amigo de esta demo: comprueba JAVA_HOME, ANDROID_HOME y las rutas del SDK y dice exactamente qué falta. Y recuerda arrancar el emulador o conectar el móvil con depuración USB activada antes de lanzar el test; adb devices debe listar el dispositivo, si sale vacío no hay nada que hacer.",
+      "slots": {
+        "TAG_LEFT": "DEMO 2 · APPIUM",
+        "TITLE": "Instalación y arranque del servidor",
+        "TAG_RIGHT": "21",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "Appium 2 separa el núcleo de los drivers. Instalar Appium no basta: hay que instalar el driver de cada plataforma por separado.",
+        "CALLOUT_LABEL": "Antes de seguir",
+        "CALLOUT": "Ejecuta appium-doctor. Comprueba JAVA_HOME, ANDROID_HOME y las rutas del SDK, y te dice exactamente qué falta. Ahorra horas.",
+        "FILENAME": "terminal",
+        "CODE": "<span class='c-cm'># 1 · Núcleo de Appium (necesita Node 18+)</span>\nnpm install -g appium@<span class='c-num'>2</span>\n\n<span class='c-cm'># 2 · Drivers por plataforma (Appium 2 no los trae)</span>\nappium driver install uiautomator2   <span class='c-cm'># Android</span>\nappium driver install xcuitest        <span class='c-cm'># iOS · solo macOS + Xcode</span>\nappium driver list --installed\n\n<span class='c-cm'># 3 · Diagnóstico del entorno</span>\nnpm install -g appium-doctor &amp;&amp; appium-doctor --android\n\n<span class='c-cm'># 4 · Cliente de Python</span>\npip install Appium-Python-Client==<span class='c-num'>4.1</span>.0 pytest\n\n<span class='c-cm'># 5 · Dispositivo visible y servidor en marcha</span>\nadb devices                <span class='c-cm'># debe listar el emulador o el móvil</span>\nappium --port <span class='c-num'>4723</span>       <span class='c-cm'># deja esta terminal abierta</span>",
+        "STEPS": [
+          { "n": "1", "text": "Appium 2 no trae drivers. Sin appium driver install no hay nada capaz de manejar un dispositivo." },
+          { "n": "2", "text": "iOS solo funciona en macOS con Xcode instalado. Dilo antes de que alguien con Windows lo intente veinte minutos." },
+          { "n": "3", "text": "appium-doctor revisa JAVA_HOME, ANDROID_HOME y el SDK, y dice exactamente qué falta. Úsalo siempre primero." },
+          { "n": "4", "text": "Arranca el emulador o conecta el móvil con depuración USB. Si adb devices sale vacío, no hay nada que hacer." },
+          { "n": "5", "text": "El servidor de Appium ocupa su propia terminal. Es un proceso que debe seguir vivo mientras se ejecutan los tests." }
+        ]
+      }
     },
     {
-      "slide_index": 16,
-      "page_type": "content",
-      "title": "Integración Continua (CI/CD)",
-      "part_label": "PART 03",
-      "layout_hint": "hero-top",
-      "card_types": [
-        "diagram",
-        "text"
-      ],
-      "decoration_hints": [
-        "W1"
-      ],
-      "speaker_notes": "El testing dentro del pipeline DevOps.",
-      "html_content": "<div style=\"display:grid; grid-template:auto 1fr / repeat(3,1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/-1; background:linear-gradient(135deg, var(--card-bg-from), var(--card-bg-to)); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px 32px; display:flex; align-items:center; gap:24px;\">\n    <div style=\"flex:1;\">\n      <h2 style=\"font-family:var(--display-font); font-size:36px; color:var(--text-primary); margin:8px 0;\">Integración Continua (CI/CD)</h2>\n    </div>\n  </div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-1);\">01</p><h3 style=\"color:var(--text-primary);\">Precisión</h3></div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-2);\">02</p><h3 style=\"color:var(--text-primary);\">Velocidad</h3></div>\n  <div class=\"card\" style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><p style=\"font-size:32px; color:var(--accent-3);\">03</p><h3 style=\"color:var(--text-primary);\">Cobertura</h3></div>\n</div>"
+      "archetype": "anatomy",
+      "title": "Appium · las capabilities, campo a campo",
+      "notes": "Demo 2, configuración. Las capabilities son el contrato entre tu test y el dispositivo: le dicen al servidor qué plataforma, qué dispositivo y qué aplicación. En Appium 2 todas las capabilities que no son estándar del W3C llevan el prefijo appium:, y olvidarlo produce el error más frecuente de la herramienta, un críptico «invalid or unsupported WebDriver capabilities». Explica la diferencia entre app, que instala el APK, y la pareja appPackage/appActivity, que abre una app ya instalada; en clase usaremos la segunda porque es más rápida. noReset conserva el estado entre ejecuciones: útil para depurar, peligroso para la suite, porque introduce dependencia del orden. Y newCommandTimeout evita que el servidor cierre la sesión si el test se queda pensando.",
+      "slots": {
+        "TAG_LEFT": "DEMO 2 · APPIUM",
+        "TITLE": "Las capabilities, campo a campo",
+        "TAG_RIGHT": "22",
+        "SPEC_TITLE": "UiAutomator2Options() · el contrato entre tu test y el dispositivo",
+        "FIELDS": [
+          { "key": "platformName", "value": "\"Android\"  ·  estándar W3C, sin prefijo", "highlight": "" },
+          { "key": "appium:automationName", "value": "\"UiAutomator2\"  ·  debe coincidir con el driver instalado", "highlight": "true" },
+          { "key": "appium:deviceName", "value": "\"Pixel_7_API_34\"  ·  el nombre que devuelve adb devices", "highlight": "" },
+          { "key": "appium:appPackage", "value": "\"cl.ipss.tareas\"  ·  abre una app ya instalada", "highlight": "" },
+          { "key": "appium:appActivity", "value": "\".MainActivity\"  ·  pantalla de entrada", "highlight": "" },
+          { "key": "appium:noReset", "value": "True conserva el estado entre ejecuciones. Útil al depurar, peligroso en suite.", "highlight": "true" },
+          { "key": "appium:newCommandTimeout", "value": "120  ·  segundos antes de que el servidor cierre la sesión por inactividad", "highlight": "" },
+          { "key": "Conexión", "value": "webdriver.Remote(\"http://127.0.0.1:4723\", options=opciones)", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "El prefijo appium: es obligatorio", "text": "Toda capability que no sea estándar del W3C lo lleva. Olvidarlo produce el error más frecuente de la herramienta: «invalid or unsupported WebDriver capabilities»." },
+          { "n": "2", "title": "app frente a appPackage", "text": "app apunta a un .apk y lo instala en cada ejecución. appPackage abre una app ya instalada: mucho más rápido para la clase." },
+          { "n": "3", "title": "Nunca dejes noReset en True", "text": "Al depurar ahorra tiempo, pero en la suite hace que un test dependa del estado que dejó el anterior. Ese es el origen del 90% de la inestabilidad." }
+        ]
+      }
     },
     {
-      "slide_index": 17,
-      "page_type": "content",
-      "title": "Frameworks: BDD vs TDD",
-      "part_label": "PART 03",
-      "layout_hint": "symmetric",
-      "card_types": [
-        "comparison"
-      ],
-      "decoration_hints": [
-        "W5"
-      ],
-      "speaker_notes": "Behavior Driven Development (Gherkin) vs Test Driven Development.",
-      "html_content": "<div style=\"display:grid; grid-template:1fr / 1fr 1fr; gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Pruebas Manuales / TDD</h2>\n    <ul style=\"color:var(--text-secondary); font-size:18px; margin-top:20px; line-height:1.8;\">\n      <li>Susceptible a error humano</li>\n      <li>Tedioso y repetitivo</li>\n      <li>Difícil de escalar</li>\n    </ul>\n  </div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; padding:32px;\">\n    <h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Automatizadas / BDD</h2>\n    <ul style=\"color:var(--text-secondary); font-size:18px; margin-top:20px; line-height:1.8;\">\n      <li>Ejecución rápida y repetible</li>\n      <li>Liberan tiempo para testing exploratorio</li>\n      <li>Integración continua (CI/CD)</li>\n    </ul>\n  </div>\n</div>"
+      "archetype": "code-criteria",
+      "title": "Appium · el test y su ejecución",
+      "notes": "Demo 2, escritura y ejecución. El código es prácticamente idéntico al de Selenium, y eso no es casualidad: Appium habla el mismo protocolo WebDriver. Lo único que cambia son los localizadores, que en móvil son AppiumBy.ID o AppiumBy.ACCESSIBILITY_ID. Insiste en accessibility_id: es el localizador más estable en móvil porque el equipo de desarrollo lo pone a propósito para accesibilidad y no cambia con el rediseño, a diferencia de la posición en el árbol de vistas. Se ejecuta con pytest igual que Selenium, pero con el servidor de Appium vivo en otra terminal. Si aparece «Could not find a connected Android device», el problema es adb, no el test. Para inspeccionar la app y descubrir los identificadores, Appium Inspector es la herramienta gráfica que se conecta al mismo servidor.",
+      "slots": {
+        "TAG_LEFT": "DEMO 2 · APPIUM",
+        "TITLE": "El test y su ejecución",
+        "TAG_RIGHT": "23",
+        "KICKER": "Escribir y ejecutar · pasos 3 y 4 de 5",
+        "CODE_TITLE": "tests/test_movil_crear_tarea.py",
+        "CODE": "<span class='c-kw'>from</span> appium <span class='c-kw'>import</span> webdriver\n<span class='c-kw'>from</span> appium.options.android <span class='c-kw'>import</span> UiAutomator2Options\n<span class='c-kw'>from</span> appium.webdriver.common.appiumby <span class='c-kw'>import</span> AppiumBy\n\nopciones = UiAutomator2Options().load_capabilities({\n    <span class='c-str'>\"platformName\"</span>: <span class='c-str'>\"Android\"</span>,\n    <span class='c-str'>\"appium:automationName\"</span>: <span class='c-str'>\"UiAutomator2\"</span>,\n    <span class='c-str'>\"appium:deviceName\"</span>: <span class='c-str'>\"Pixel_7_API_34\"</span>,\n    <span class='c-str'>\"appium:appPackage\"</span>: <span class='c-str'>\"cl.ipss.tareas\"</span>,\n    <span class='c-str'>\"appium:appActivity\"</span>: <span class='c-str'>\".MainActivity\"</span>})\n\n<span class='c-kw'>def</span> <span class='c-fn'>test_crear_tarea_en_movil</span>():\n    d = webdriver.Remote(<span class='c-str'>\"http://127.0.0.1:4723\"</span>, options=opciones)\n    d.find_element(AppiumBy.ACCESSIBILITY_ID, <span class='c-str'>\"campo-titulo\"</span>).send_keys(<span class='c-str'>\"Comprar leche\"</span>)\n    d.find_element(AppiumBy.ACCESSIBILITY_ID, <span class='c-str'>\"btn-guardar\"</span>).click()\n    <span class='c-kw'>assert</span> d.find_element(AppiumBy.ID, <span class='c-str'>\"cl.ipss.tareas:id/lista\"</span>).text\n    d.quit()\n\n<span class='c-cm'># $ pytest -v tests/test_movil_crear_tarea.py</span>",
+        "PANEL_TITLE": "Qué comprobar en la demo",
+        "WHY_TITLE": "Por qué se parece tanto a Selenium",
+        "WHY": "Appium habla el mismo protocolo WebDriver que Selenium. Lo único que cambia son los localizadores y las capabilities. Quien domina uno tiene el otro medio aprendido: ese es el motivo de estudiarlos seguidos.",
+        "CRITERIA": [
+          { "letter": "A", "name": "El servidor appium sigue vivo en otra terminal", "meta": "Requisito", "highlight": "true" },
+          { "letter": "B", "name": "adb devices lista el dispositivo", "meta": "Requisito", "highlight": "true" },
+          { "letter": "C", "name": "accessibility_id antes que id o XPath", "meta": "Estabilidad", "highlight": "" },
+          { "letter": "D", "name": "d.quit() cierra la sesión siempre", "meta": "Higiene", "highlight": "" },
+          { "letter": "E", "name": "Appium Inspector para descubrir localizadores", "meta": "Herramienta", "highlight": "" },
+          { "letter": "F", "name": "«Could not find a connected device» es adb, no el test", "meta": "Diagnóstico", "highlight": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "code",
+      "title": "Cucumber · instalación y estructura del proyecto",
+      "notes": "Demo 3, instalación. Usamos cucumber-js para reutilizar el Node que ya instalamos con Appium; en un proyecto Java sería Cucumber-JVM con Maven, y los conceptos son idénticos. Lo importante de esta demo no es la instalación, que es trivial, sino la estructura de carpetas: Cucumber espera encontrar los .feature en features/ y las implementaciones en features/step_definitions/. Si no sigues esa convención hay que configurarlo a mano y la mitad de los errores de principiante vienen de ahí. Explica el archivo cucumber.json: define el perfil por defecto, el formato de salida y el idioma. Y recalca que el .feature lo escribe idealmente alguien de negocio, no un programador: ese es todo el sentido de la herramienta.",
+      "slots": {
+        "TAG_LEFT": "DEMO 3 · CUCUMBER",
+        "TITLE": "Instalación y estructura del proyecto",
+        "TAG_RIGHT": "24",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "Cucumber no ejecuta el navegador: traduce lenguaje natural a código. Necesita a Selenium o Playwright debajo para actuar.",
+        "CALLOUT_LABEL": "Convención sobre configuración",
+        "CALLOUT": "Cucumber busca los .feature en features/ y las implementaciones en features/step_definitions/. Salirse de esa estructura es la primera fuente de errores.",
+        "FILENAME": "terminal · cucumber.json",
+        "CODE": "<span class='c-cm'># 1 · Proyecto Node y dependencias</span>\nnpm init -y\nnpm install --save-dev @cucumber/cucumber selenium-webdriver\n\n<span class='c-cm'># 2 · Estructura que Cucumber espera por convención</span>\nmkdir -p features/step_definitions features/support\n\n<span class='c-cm'># 3 · cucumber.json — perfil por defecto</span>\n{\n  <span class='c-str'>\"default\"</span>: {\n    <span class='c-str'>\"paths\"</span>: [<span class='c-str'>\"features/**/*.feature\"</span>],\n    <span class='c-str'>\"require\"</span>: [<span class='c-str'>\"features/step_definitions/**/*.js\"</span>],\n    <span class='c-str'>\"format\"</span>: [<span class='c-str'>\"progress-bar\"</span>, <span class='c-str'>\"html:informe.html\"</span>],\n    <span class='c-str'>\"formatOptions\"</span>: { <span class='c-str'>\"snippetInterface\"</span>: <span class='c-str'>\"async-await\"</span> }\n  }\n}\n\n<span class='c-cm'># 4 · Ejecutar</span>\nnpx cucumber-js",
+        "STEPS": [
+          { "n": "1", "text": "Usamos cucumber-js para reutilizar Node. En un proyecto Java sería Cucumber-JVM con Maven; los conceptos son idénticos." },
+          { "n": "2", "text": "Cucumber traduce, no actúa. Debajo necesita Selenium, Playwright o una llamada HTTP que haga el trabajo real." },
+          { "n": "3", "text": "La estructura de carpetas es una convención: respétala y no tendrás que configurar rutas." },
+          { "n": "4", "text": "El formato html genera un informe navegable con cada escenario y su estado. Es el artefacto que se entrega." },
+          { "n": "5", "text": "El .feature debería escribirlo alguien de negocio, no un programador. Ese es todo el sentido de la herramienta." }
+        ]
+      }
     },
     {
-      "slide_index": 18,
-      "page_type": "content",
-      "title": "Tendencia: Codeless Testing",
-      "part_label": "PART 03",
-      "layout_hint": "single-focus",
-      "card_types": [
-        "quote"
-      ],
-      "decoration_hints": [
-        "W7"
-      ],
-      "speaker_notes": "Herramientas que graban acciones o usan drag-and-drop.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">Tendencia: Codeless Testing</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">Herramientas que graban acciones o usan drag-and-drop.</p>\n  </div>\n</div>"
+      "archetype": "code-criteria",
+      "title": "Cucumber · el feature en Gherkin y sus steps",
+      "notes": "Demo 3, escritura. Arriba, el archivo .feature en Gherkin con la directiva de idioma español, que permite escribir Dado, Cuando y Entonces en lugar de Given, When, Then. Abajo, las step definitions: cada expresión con {string} captura un parámetro y lo pasa a la función. Insiste en la regla de oro de Gherkin: el escenario describe QUÉ hace el usuario y qué espera, nunca CÓMO se implementa. En cuanto aparece «hago clic en el botón con id guardar», el escenario ha dejado de ser legible para negocio y la herramienta ha perdido su razón de ser. Menciona también que si ejecutas un feature sin implementar, Cucumber imprime el esqueleto de la función que falta y solo hay que pegarlo: es la forma más cómoda de empezar.",
+      "slots": {
+        "TAG_LEFT": "DEMO 3 · CUCUMBER",
+        "TITLE": "El feature en Gherkin y sus steps",
+        "TAG_RIGHT": "25",
+        "KICKER": "Escribir · paso 3 de 5",
+        "CODE_TITLE": "features/tareas.feature  +  step_definitions/tareas.js",
+        "CODE": "<span class='c-cm'># language: es</span>\nCaracterística: Gestión de tareas\n\n  Escenario: Crear una tarea nueva\n    Dado que estoy en la lista de tareas\n    Cuando creo la tarea <span class='c-str'>\"Comprar leche\"</span>\n    Entonces la tarea <span class='c-str'>\"Comprar leche\"</span> aparece en pendientes\n\n<span class='c-cm'>// ── features/step_definitions/tareas.js ──</span>\n<span class='c-kw'>const</span> { Dado, Cuando, Entonces } = <span class='c-fn'>require</span>(<span class='c-str'>'@cucumber/cucumber'</span>);\n\n<span class='c-fn'>Dado</span>(<span class='c-str'>'que estoy en la lista de tareas'</span>, <span class='c-kw'>async function</span> () {\n  <span class='c-kw'>await this</span>.driver.get(<span class='c-str'>'https://app.local/tareas'</span>);\n});\n\n<span class='c-fn'>Cuando</span>(<span class='c-str'>'creo la tarea {string}'</span>, <span class='c-kw'>async function</span> (titulo) {\n  <span class='c-kw'>await this</span>.pagina.<span class='c-fn'>crear</span>(titulo);\n});",
+        "PANEL_TITLE": "Reglas de un buen Gherkin",
+        "WHY_TITLE": "La regla de oro",
+        "WHY": "El escenario describe QUÉ hace el usuario y qué espera, nunca CÓMO se implementa. En cuanto aparece «hago clic en el botón con id guardar», el escenario deja de ser legible para negocio y la herramienta pierde su razón de ser.",
+        "CRITERIA": [
+          { "letter": "A", "name": "# language: es habilita Dado / Cuando / Entonces", "meta": "Configuración", "highlight": "" },
+          { "letter": "B", "name": "Un escenario, un comportamiento de negocio", "meta": "Diseño", "highlight": "true" },
+          { "letter": "C", "name": "Sin detalles técnicos ni selectores en el .feature", "meta": "Regla de oro", "highlight": "true" },
+          { "letter": "D", "name": "{string} y {int} capturan parámetros", "meta": "Sintaxis", "highlight": "" },
+          { "letter": "E", "name": "Esquema del escenario para varios juegos de datos", "meta": "Reutilización", "highlight": "" },
+          { "letter": "F", "name": "Cucumber imprime el esqueleto del step que falta", "meta": "Truco", "highlight": "" }
+        ]
+      }
     },
     {
-      "slide_index": 19,
-      "page_type": "content",
-      "title": "Inteligencia Artificial en QA",
-      "part_label": "PART 03",
-      "layout_hint": "three-column",
-      "card_types": [
-        "data",
-        "text"
-      ],
-      "decoration_hints": [
-        "W2"
-      ],
-      "speaker_notes": "Self-healing tests y generación de casos con IA.",
-      "html_content": "<div style=\"display:grid; grid-template:1fr / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-1); font-size:24px; margin-bottom:12px;\">Paso 1</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Descripción clara del defecto y pasos para reproducir.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-2); font-size:24px; margin-bottom:12px;\">Paso 2</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Detallar el entorno (OS, red, dispositivo).</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--accent-3); font-size:24px; margin-bottom:12px;\">Paso 3</h3><p style=\"color:var(--text-secondary); font-size:18px;\">Impacto esperado vs Impacto real.</p></div>\n</div>"
+      "archetype": "table",
+      "title": "Cucumber · leer el informe de escenarios",
+      "notes": "Demo 3, ejecución y lectura. Se ejecuta con npx cucumber-js y el informe queda en informe.html. Recorre la tabla estado a estado. Los dos estados que hay que entender bien son «undefined» y «pending»: undefined significa que el escenario menciona un paso que nadie ha implementado todavía, y Cucumber te regala el esqueleto de la función en la consola; pending significa que la función existe pero está marcada como no terminada. Ninguno de los dos es un fallo del software: son deuda del equipo de pruebas, y por eso se cuentan aparte. El estado «skipped» aparece cuando un paso anterior falló y Cucumber no sigue ejecutando el resto del escenario. Insiste en que el resumen distingue escenarios de pasos, y que la cifra que se reporta a negocio es la de escenarios.",
+      "slots": {
+        "TAG_LEFT": "DEMO 3 · CUCUMBER",
+        "TITLE": "Leer el informe de escenarios",
+        "TAG_RIGHT": "26",
+        "LEAD": "Salida de npx cucumber-js. Los estados de Cucumber son más ricos que un simple pasa/falla, y esa riqueza es información de gestión.",
+        "HEADERS": "<th>Estado</th><th>Símbolo</th><th>Qué significa</th><th>Quién lo arregla</th>",
+        "NOTE_LABEL": "Cómo se reporta",
+        "NOTE": "El resumen distingue escenarios de pasos. La cifra que se lleva a negocio es la de escenarios: «7 escenarios (6 passed, 1 failed)». Los pasos son detalle técnico.",
+        "ROWS": [
+          { "cells": "<td>passed</td><td>.</td><td>El paso se ejecutó y la aserción se cumplió</td><td>Nadie</td>" },
+          { "cells": "<td>failed</td><td>F</td><td>El software se comportó distinto de lo esperado</td><td>Desarrollo</td>" },
+          { "cells": "<td>undefined</td><td>U</td><td>El .feature usa un paso que nadie ha implementado</td><td>Automatización</td>" },
+          { "cells": "<td>pending</td><td>P</td><td>La función existe pero está marcada como no terminada</td><td>Automatización</td>" },
+          { "cells": "<td>skipped</td><td>-</td><td>Un paso anterior falló y el resto no se ejecutó</td><td>Consecuencia</td>" },
+          { "cells": "<td>ambiguous</td><td>A</td><td>Dos expresiones distintas coinciden con el mismo paso</td><td>Automatización</td>" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "code",
+      "title": "Robot Framework · instalación y librerías",
+      "notes": "Demo 4, instalación. Robot Framework es la más accesible de las cuatro porque no se escribe código: se combinan palabras clave en una tabla. El núcleo no sabe hacer nada por sí solo, la capacidad viene de las librerías: SeleniumLibrary para web, AppiumLibrary para móvil, RequestsLibrary para API y Browser, que usa Playwright por debajo y es la recomendación moderna. Explica la estructura del archivo .robot: las secciones Settings, Variables, Test Cases y Keywords, cada una con su sintaxis de dos asteriscos. Y avisa del error de principiante número uno: en Robot el separador entre una palabra clave y su argumento son dos espacios como mínimo; con un solo espacio la línea se interpreta como una sola palabra clave y falla con un mensaje que no ayuda nada.",
+      "slots": {
+        "TAG_LEFT": "DEMO 4 · ROBOT FRAMEWORK",
+        "TITLE": "Instalación y librerías",
+        "TAG_RIGHT": "27",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "El núcleo de Robot no sabe hacer nada. Toda su capacidad viene de las librerías que le instalas encima.",
+        "CALLOUT_LABEL": "El error número uno",
+        "CALLOUT": "El separador entre una palabra clave y su argumento son DOS espacios como mínimo. Con uno solo, la línea entera se lee como una única palabra clave.",
+        "FILENAME": "terminal · tareas.robot",
+        "CODE": "<span class='c-cm'># 1 · Núcleo y librerías</span>\npip install robotframework==<span class='c-num'>7.1</span>\npip install robotframework-seleniumlibrary   <span class='c-cm'># web</span>\npip install robotframework-appiumlibrary     <span class='c-cm'># móvil</span>\npip install robotframework-requests          <span class='c-cm'># API</span>\n\n<span class='c-cm'># 2 · Comprobar la instalación</span>\nrobot --version\n\n<span class='c-cm'># 3 · Estructura de un archivo .robot</span>\n*** Settings ***\nLibrary           SeleniumLibrary\nSuite Teardown    Close All Browsers\n\n*** Variables ***\n${URL}            https://app.local/tareas\n${NAVEGADOR}      headlesschrome\n\n<span class='c-cm'># 4 · Ejecutar y guardar resultados</span>\nrobot --outputdir resultados tareas.robot",
+        "STEPS": [
+          { "n": "1", "text": "Robot no se programa: se combinan palabras clave en una tabla. Por eso es la puerta de entrada para quien no viene de desarrollo." },
+          { "n": "2", "text": "Una librería por tecnología. Browser (Playwright por debajo) es hoy la alternativa moderna a SeleniumLibrary." },
+          { "n": "3", "text": "Settings importa librerías y define qué ocurre al empezar y al terminar la suite." },
+          { "n": "4", "text": "Variables centraliza URLs, usuarios y tiempos: cambiar de entorno es cambiar una línea." },
+          { "n": "5", "text": "--outputdir mantiene los resultados fuera del código. Sin él, log.html y report.html acaban en el repositorio." }
+        ]
+      }
     },
     {
-      "slide_index": 20,
-      "page_type": "section",
-      "title": "Parte 4: Buenas Prácticas",
-      "part_label": "PART 04",
-      "layout_hint": "single-focus",
-      "card_types": [
-        "text"
-      ],
-      "decoration_hints": [
-        "W3"
-      ],
-      "speaker_notes": "Estrategias para no fracasar automatizando.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:16px;\">\n  <p class=\"kicker\" style=\"color:var(--accent-1); letter-spacing:0.18em;\">PART 04</p>\n  <h1 style=\"font-family:var(--display-font); font-size:56px; font-weight:800; color:var(--text-primary); margin:0;\">Buenas Prácticas</h1>\n</div>"
+      "archetype": "code-criteria",
+      "title": "Robot Framework · el caso de prueba completo",
+      "notes": "Demo 4, escritura. Muestra las dos secciones que faltaban: Test Cases y Keywords. Lo que hay que hacer ver al grupo es que el caso de prueba se lee como una frase en inglés y que la complejidad técnica está encapsulada en la sección Keywords. Esa separación es lo que permite que un analista funcional lea, e incluso escriba, el caso sin saber qué es un selector CSS. Señala Wait Until Element Is Visible: es la forma de Robot de esperar por condición, y sustituye al Sleep que hay que desterrar. Los argumentos con [Arguments] convierten una palabra clave en una función reutilizable. Y menciona las etiquetas [Tags]: permiten ejecutar subconjuntos con robot --include humo, que es como se organiza una suite grande.",
+      "slots": {
+        "TAG_LEFT": "DEMO 4 · ROBOT FRAMEWORK",
+        "TITLE": "El caso de prueba completo",
+        "TAG_RIGHT": "28",
+        "KICKER": "Escribir · paso 3 de 5",
+        "CODE_TITLE": "tareas.robot · secciones Test Cases y Keywords",
+        "CODE": "*** Test Cases ***\nCrear tarea aparece en pendientes\n    [Tags]    humo    tareas\n    Abrir la aplicación\n    Crear la tarea    Comprar leche\n    Page Should Contain    Comprar leche\n\n*** Keywords ***\nAbrir la aplicación\n    Open Browser    ${URL}    ${NAVEGADOR}\n    Set Selenium Implicit Wait    0\n\nCrear la tarea\n    [Arguments]    ${titulo}\n    Input Text      id:titulo    ${titulo}\n    Click Button    id:guardar\n    Wait Until Element Is Visible    id:pendientes    timeout=10s",
+        "PANEL_TITLE": "Qué mirar en este archivo",
+        "WHY_TITLE": "Por qué esta separación importa",
+        "WHY": "El caso de prueba se lee como una frase; la complejidad técnica vive en Keywords. Esa separación permite que un analista funcional lea, e incluso escriba, el caso sin saber qué es un selector CSS.",
+        "CRITERIA": [
+          { "letter": "A", "name": "Dos espacios mínimo entre palabra clave y argumento", "meta": "Sintaxis", "highlight": "true" },
+          { "letter": "B", "name": "El caso se lee como lenguaje natural", "meta": "Diseño", "highlight": "" },
+          { "letter": "C", "name": "Wait Until… en lugar de Sleep", "meta": "Estabilidad", "highlight": "true" },
+          { "letter": "D", "name": "[Arguments] convierte la keyword en reutilizable", "meta": "Modularidad", "highlight": "" },
+          { "letter": "E", "name": "[Tags] permite robot --include humo", "meta": "Organización", "highlight": "" },
+          { "letter": "F", "name": "Variables ${} centralizadas, nunca literales", "meta": "Mantenimiento", "highlight": "" }
+        ]
+      }
     },
     {
-      "slide_index": 21,
-      "page_type": "content",
-      "title": "Pirámide del Testing",
-      "part_label": "PART 04",
-      "layout_hint": "l-shape",
-      "card_types": [
-        "diagram",
-        "text"
-      ],
-      "decoration_hints": [
-        "W10"
-      ],
-      "speaker_notes": "Muchas pruebas unitarias, algunas de integración, pocas de UI.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">Pirámide del Testing</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">Muchas pruebas unitarias, algunas de integración, pocas de UI.</p>\n  </div>\n</div>"
+      "archetype": "anatomy",
+      "title": "Robot Framework · los tres artefactos de salida",
+      "notes": "Demo 4, lectura de resultados. Aquí Robot es claramente el mejor de los cuatro y hay que enseñarlo bien. Cada ejecución genera tres archivos y cada uno tiene un destinatario distinto. report.html es el resumen ejecutivo: verde o rojo, estadísticas por etiqueta y por suite, y es el que se manda al jefe de proyecto. log.html es la joya: registra cada palabra clave ejecutada con sus argumentos, su tiempo y su resultado, en un árbol desplegable, así que puedes reconstruir exactamente qué pasó sin volver a ejecutar nada. output.xml es la fuente de datos legible por máquina, y sirve para dos cosas: que el pipeline pinte el histórico y fusionar varias ejecuciones con rebot. Pide que abran log.html y desplieguen un paso fallido: verán la captura de pantalla incrustada, que es la evidencia perfecta para adjuntar a un defecto.",
+      "slots": {
+        "TAG_LEFT": "DEMO 4 · ROBOT FRAMEWORK",
+        "TITLE": "Los tres artefactos de salida",
+        "TAG_RIGHT": "29",
+        "SPEC_TITLE": "$ robot --outputdir resultados tareas.robot",
+        "FIELDS": [
+          { "key": "report.html", "value": "Resumen ejecutivo: verde o rojo, estadísticas por etiqueta y por suite", "highlight": "true" },
+          { "key": "log.html", "value": "Árbol desplegable de cada palabra clave con argumentos, tiempo y resultado", "highlight": "true" },
+          { "key": "output.xml", "value": "Fuente de datos legible por máquina; la consume el pipeline", "highlight": "" },
+          { "key": "Capturas", "value": "SeleniumLibrary incrusta la captura del fallo dentro de log.html", "highlight": "" },
+          { "key": "Ejecución parcial", "value": "robot --include humo   ·   robot --rerunfailed output.xml", "highlight": "" },
+          { "key": "Fusionar ejecuciones", "value": "rebot --merge resultados/*.xml para consolidar varias corridas", "highlight": "" },
+          { "key": "Código de salida", "value": "0 si todo pasó; distinto de 0 detiene el pipeline", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "log.html es la joya", "text": "Reconstruye qué ocurrió sin volver a ejecutar nada: cada palabra clave, sus argumentos reales y su duración. Ninguna de las otras tres herramientas da este nivel de detalle de serie." },
+          { "n": "2", "title": "Cada archivo, un destinatario", "text": "report.html al jefe de proyecto, log.html a quien depura, output.xml al pipeline. Mandar el equivocado es perder el tiempo de alguien." },
+          { "n": "3", "title": "La captura es la evidencia", "text": "Despliega un paso fallido en log.html: la captura de pantalla está incrustada. Eso es exactamente lo que se adjunta al ticket del defecto." }
+        ]
+      }
     },
     {
-      "slide_index": 22,
-      "page_type": "content",
-      "title": "Errores Comunes (Anti-patrones)",
-      "part_label": "PART 04",
-      "layout_hint": "mixed-grid",
-      "card_types": [
-        "text"
-      ],
-      "decoration_hints": [
-        "W5"
-      ],
-      "speaker_notes": "Automatizar todo, no mantener scripts, ignorar falsos positivos.",
-      "html_content": "<div style=\"display:grid; grid-template:repeat(2, 1fr) / repeat(3, 1fr); gap:20px; height:100%;\">\n  <div style=\"grid-column:1/3; background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h2 style=\"font-family:var(--display-font); color:var(--text-primary); font-size:32px;\">Errores Comunes (Anti-patrones)</h2><p style=\"color:var(--text-secondary); font-size:18px;\">Ecosistema robusto de herramientas.</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-1); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Selenium</h3><p style=\"color:var(--text-secondary);\">Web automatization</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-2); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Appium</h3><p style=\"color:var(--text-secondary);\">Mobile testing</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-3); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Cucumber</h3><p style=\"color:var(--text-secondary);\">BDD Framework</p></div>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--accent-4); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column;\"><h3 style=\"color:var(--text-primary);\">Robot FW</h3><p style=\"color:var(--text-secondary);\">Keyword-driven</p></div>\n</div>"
+      "archetype": "callouts",
+      "title": "Errores frecuentes en las cuatro instalaciones",
+      "notes": "Cierre práctico del bloque de demos. Estos cinco avisos concentran la mayoría del tiempo que se pierde en clase. El del PATH es transversal: si el intérprete o el binario no está en el PATH, el sistema dice «command not found» y el alumnado interpreta que la instalación falló, cuando en realidad se instaló bien en otro sitio. El de la versión de navegador y driver ya casi no aplica en Selenium 4.6+, pero sí en proyectos heredados. El del proxy y el cortafuegos es el clásico de las salas de informática institucionales. Y el último, el del entorno virtual no activado, explica el 90% de los «pero si lo acabo de instalar».",
+      "slots": {
+        "TAG_LEFT": "DIAGNÓSTICO",
+        "TITLE": "Errores frecuentes en las instalaciones",
+        "TAG_RIGHT": "30",
+        "LEAD": "Cinco problemas concentran casi todo el tiempo que se pierde montando estas herramientas por primera vez.",
+        "CALLOUTS": [
+          { "kind": "danger", "icon": "inrunzby", "title": "«command not found» casi nunca es un fallo de instalación", "text": "El binario se instaló, pero en una carpeta que no está en el PATH. Comprueba con which robot o where appium antes de reinstalar nada." },
+          { "kind": "warn", "icon": "usownftb", "title": "El entorno virtual no está activado", "text": "Explica el 90% de los «pero si lo acabo de instalar». Si el prompt no muestra (.venv), pip instaló en el Python del sistema, no en el tuyo." },
+          { "kind": "info", "icon": "qhgmphtg", "title": "Proxy y cortafuegos institucional", "text": "En la sala de informática, pip y npm pueden necesitar configuración de proxy. Si la descarga se cuelga sin error, es esto." },
+          { "kind": "tip", "icon": "xtzvywzp", "title": "Fija las versiones desde el primer día", "text": "pip freeze > requirements.txt y package-lock.json en el repositorio. Sin eso, dentro de un mes cada máquina tendrá una combinación distinta." },
+          { "kind": "note", "icon": "msoeawqm", "title": "Lee el error completo, no la última línea", "text": "Estas herramientas imprimen trazas largas y la causa real suele estar en el primer «Caused by», no al final del volcado." }
+        ]
+      }
     },
     {
-      "slide_index": 23,
-      "page_type": "content",
-      "title": "Knowledge Check",
-      "part_label": "PART 04",
-      "layout_hint": "single-focus",
-      "card_types": [
-        "quote"
-      ],
-      "decoration_hints": [
-        "W1"
-      ],
-      "speaker_notes": "Pregunta: ¿Qué tipo de pruebas es mejor dejar manuales?",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; height:100%; gap:24px;\">\n  <h2 style=\"font-family:var(--display-font); font-size:48px; color:var(--text-primary); margin:0;\">Knowledge Check</h2>\n  <div style=\"background:var(--card-bg-from); border:1px solid var(--card-border); border-radius:var(--card-radius); padding:24px; display:flex; flex-direction:column; flex:1; justify-content:center;\">\n    <p style=\"color:var(--text-secondary); font-size:24px; line-height:1.6;\">Pregunta: ¿Qué tipo de pruebas es mejor dejar manuales?</p>\n  </div>\n</div>"
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 3",
+      "notes": "Cierre del bloque de demos. La respuesta correcta es la C. Comprueba que se ha entendido la división de responsabilidades: Cucumber es una capa de traducción, no un motor de ejecución, y quien no lo entiende acaba intentando que Cucumber abra el navegador solo. Si el grupo duda, vuelve a la diapositiva de instalación de Cucumber y señala la línea donde se instala selenium-webdriver junto a @cucumber/cucumber.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 3",
+        "TAG_RIGHT": "31",
+        "BADGE": "PREGUNTA 3",
+        "QUESTION": "En un proyecto con Cucumber, ¿quién abre y maneja el navegador?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Cucumber traduce lenguaje natural a llamadas de función. Quien abre el navegador y hace clic es la librería que pongas debajo: Selenium, Playwright o una llamada HTTP. Por eso se instalan las dos juntas.",
+        "OPTIONS": [
+          { "key": "A", "text": "Cucumber, mediante su motor de navegación integrado", "correct": "" },
+          { "key": "B", "text": "El archivo .feature, al declarar el escenario", "correct": "" },
+          { "key": "C", "text": "La librería que se invoca dentro de las step definitions", "correct": "true" },
+          { "key": "D", "text": "El sistema operativo, a través del driver del navegador", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 4 · Rendimiento con k6",
+      "notes": "Cambio de bloque y cambio de pregunta. Hasta aquí todas las herramientas respondían «¿funciona?». k6 responde «¿aguanta?», y son preguntas independientes: una aplicación puede pasar el 100% de los tests funcionales y caerse con cincuenta usuarios simultáneos. Explica por qué este bloque es obligatorio este semestre: el rendimiento es donde más se nota la diferencia entre un tester que sabe usar herramientas y uno que solo sabe hacer clic, y es la competencia que más se pide en las ofertas de empleo de QA en Chile. k6 se escribe en JavaScript pero se ejecuta en Go, lo que le permite generar miles de usuarios virtuales desde un portátil, algo imposible con Selenium.",
+      "slots": {
+        "PART_LABEL": "PARTE 04",
+        "TITLE": "Rendimiento con k6",
+        "SUBTITLE": "Las otras cuatro preguntan «¿funciona?». k6 pregunta «¿aguanta?»",
+        "AGENDA": [
+          { "label": "01", "text": "Usuarios virtuales, iteraciones y umbrales" },
+          { "label": "02", "text": "Instalar, escribir y ejecutar una prueba de carga" },
+          { "label": "03", "text": "Leer las métricas y decidir con ellas" }
+        ]
+      }
     },
     {
-      "slide_index": 24,
-      "page_type": "end",
-      "title": "Conclusión",
-      "part_label": "UNIDAD 03",
-      "layout_hint": "single-focus",
-      "card_types": [
-        "text"
-      ],
-      "decoration_hints": [
-        "W1",
-        "W10"
-      ],
-      "speaker_notes": "Resumen final y cierre de la clase.",
-      "html_content": "<div style=\"display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:100%; gap:24px;\">\n  <h1 style=\"font-family:var(--display-font); font-size:64px; font-weight:800; color:var(--text-primary); margin:0;\">Gracias</h1>\n  <p style=\"color:var(--text-secondary); font-size:24px; max-width:40ch;\">El testing automatizado no reemplaza al QA, lo empodera.</p>\n</div>"
+      "archetype": "concept-cards",
+      "title": "El vocabulario de una prueba de carga",
+      "notes": "Antes de instalar nada, fijar el vocabulario, porque en rendimiento la mayoría de los errores son de interpretación. Usuario virtual no es una persona: es un hilo que ejecuta el script en bucle, y cien VUs no equivalen a cien personas reales sino a un ritmo de peticiones. La media es la métrica que más engaña: si noventa peticiones tardan 100 ms y diez tardan 5 segundos, la media dice 590 ms y parece aceptable, pero uno de cada diez usuarios ha esperado cinco segundos; por eso se usa el percentil 95, que responde a «el 95% de mis usuarios esperó menos que esto». El umbral es la condición que convierte la medición en una decisión automática: sin umbral, la prueba solo produce números bonitos que nadie usa para nada.",
+      "slots": {
+        "TAG_LEFT": "VOCABULARIO",
+        "TITLE": "Qué se mide en una prueba de carga",
+        "TAG_RIGHT": "33",
+        "COLS": "4",
+        "CARDS": [
+          { "badge": "VU", "title": "Usuario virtual", "body": "Un hilo que ejecuta tu script en bucle. Cien VUs no son cien personas: son un ritmo de peticiones sostenido contra el sistema.", "note_label": "Cuidado", "note": "Sin sleep() entre peticiones, 10 VUs golpean más que 100 usuarios reales." },
+          { "badge": "p95", "title": "Percentil 95", "body": "El 95% de las peticiones tardó menos que este valor. Es la métrica honesta: describe la experiencia del usuario con mala suerte.", "note_label": "Cuidado", "note": "La media esconde los picos. Nunca decidas con la media." },
+          { "badge": "RPS", "title": "Peticiones por segundo", "body": "El caudal que el sistema procesa. Si sube la carga y el caudal no sube, ya encontraste el techo del sistema.", "note_label": "Cuidado", "note": "Caudal plano con latencia creciente = saturación." },
+          { "badge": "TH", "title": "Umbral (threshold)", "body": "La condición que convierte la medición en decisión: si el p95 supera 500 ms, k6 termina con error y el pipeline se detiene.", "note_label": "Cuidado", "note": "Sin umbral, la prueba solo produce números que nadie usa." }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "k6 · instalación y primer script",
+      "notes": "Demo 5, instalación. k6 es un binario único, sin dependencias, y esa es una de sus grandes ventajas frente a JMeter: no hay JVM que configurar. Muestra las tres vías: Homebrew en macOS, Chocolatey o winget en Windows, y Docker para quien no pueda instalar nada en la máquina de la sala. Explica el script mínimo: la función exportada por defecto es lo que ejecuta cada usuario virtual en bucle, http.get devuelve la respuesta, check verifica condiciones sin detener la ejecución (a diferencia de un assert, que abortaría), y sleep simula el tiempo que una persona real tarda en leer la pantalla antes de hacer la siguiente acción. Insiste en el sleep: sin él, diez usuarios virtuales generan más carga que cien personas reales y los resultados no representan nada.",
+      "slots": {
+        "TAG_LEFT": "DEMO 5 · K6",
+        "TITLE": "Instalación y primer script",
+        "TAG_RIGHT": "34",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "k6 es un binario único sin dependencias: no hay JVM que configurar. Se escribe en JavaScript y se ejecuta en Go.",
+        "CALLOUT_LABEL": "No olvides el sleep",
+        "CALLOUT": "Sin sleep() entre peticiones, 10 usuarios virtuales generan más carga que 100 personas reales y el resultado no representa nada.",
+        "FILENAME": "terminal · carga.js",
+        "CODE": "<span class='c-cm'># 1 · Instalación (elige tu sistema)</span>\nbrew install k6                        <span class='c-cm'># macOS</span>\nwinget install k6 --source winget       <span class='c-cm'># Windows</span>\ndocker run --rm -i grafana/k6 run - &lt; carga.js   <span class='c-cm'># sin instalar</span>\n\nk6 version\n\n<span class='c-cm'>// ── carga.js — script mínimo ──</span>\n<span class='c-kw'>import</span> http <span class='c-kw'>from</span> <span class='c-str'>'k6/http'</span>;\n<span class='c-kw'>import</span> { check, sleep } <span class='c-kw'>from</span> <span class='c-str'>'k6'</span>;\n\n<span class='c-kw'>export default function</span> () {\n  <span class='c-kw'>const</span> r = http.<span class='c-fn'>get</span>(<span class='c-str'>'https://app.local/api/tareas'</span>);\n  <span class='c-fn'>check</span>(r, {\n    <span class='c-str'>'estado 200'</span>: (res) =&gt; res.status === <span class='c-num'>200</span>,\n    <span class='c-str'>'responde &lt; 500ms'</span>: (res) =&gt; res.timings.duration &lt; <span class='c-num'>500</span>,\n  });\n  <span class='c-fn'>sleep</span>(<span class='c-num'>1</span>);   <span class='c-cm'>// tiempo de lectura del usuario</span>\n}\n\n<span class='c-cm'># 2 · Ejecutar</span>\nk6 run --vus <span class='c-num'>10</span> --duration 30s carga.js",
+        "STEPS": [
+          { "n": "1", "text": "Un solo binario, sin dependencias. Si no puedes instalar en la sala, la imagen de Docker hace exactamente lo mismo." },
+          { "n": "2", "text": "La función exportada por defecto es lo que cada usuario virtual repite en bucle hasta que acaba la prueba." },
+          { "n": "3", "text": "check verifica sin detener: registra el fallo y sigue. Un assert abortaría la iteración y falsearía las métricas." },
+          { "n": "4", "text": "sleep simula el tiempo que una persona tarda en leer la pantalla. Sin él la prueba no representa tráfico real." },
+          { "n": "5", "text": "--vus y --duration sirven para probar rápido; en un script serio la carga se declara dentro con stages." }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "k6 · escenarios, rampas y umbrales",
+      "notes": "Demo 5, configuración seria. Aquí está el corazón de k6. Las stages describen la forma de la carga en el tiempo: subida gradual, meseta y bajada. La subida gradual no es un capricho: un salto instantáneo a cien usuarios mide cómo arranca el sistema, no cómo se comporta en régimen. Los thresholds son la parte que convierte esto en una prueba y no en una medición: si el p95 supera 500 ms o si más del 1% de las peticiones falla, k6 termina con código de salida distinto de cero y el pipeline se detiene solo. Explica también los tipos de prueba según la forma de la rampa: de humo con 1 VU para verificar que el script funciona, de carga con la carga esperada, de estrés subiendo hasta romper para encontrar el techo, y de resistencia manteniendo la carga durante horas para detectar fugas de memoria.",
+      "slots": {
+        "TAG_LEFT": "DEMO 5 · K6",
+        "TITLE": "Escenarios, rampas y umbrales",
+        "TAG_RIGHT": "35",
+        "KICKER": "Configurar · paso 2 de 5",
+        "CODE_TITLE": "carga.js · bloque options",
+        "CODE": "<span class='c-kw'>export const</span> options = {\n  <span class='c-cm'>// Forma de la carga en el tiempo</span>\n  stages: [\n    { duration: <span class='c-str'>'1m'</span>,  target: <span class='c-num'>20</span> },   <span class='c-cm'>// subida gradual</span>\n    { duration: <span class='c-str'>'3m'</span>,  target: <span class='c-num'>50</span> },   <span class='c-cm'>// meseta: régimen</span>\n    { duration: <span class='c-str'>'1m'</span>,  target: <span class='c-num'>0</span>  },   <span class='c-cm'>// bajada</span>\n  ],\n\n  <span class='c-cm'>// Criterios de aceptación: detienen el pipeline</span>\n  thresholds: {\n    <span class='c-str'>'http_req_duration'</span>: [<span class='c-str'>'p(95)&lt;500'</span>, <span class='c-str'>'p(99)&lt;1200'</span>],\n    <span class='c-str'>'http_req_failed'</span>:   [<span class='c-str'>'rate&lt;0.01'</span>],\n    <span class='c-str'>'checks'</span>:            [<span class='c-str'>'rate&gt;0.99'</span>],\n  },\n};\n\n<span class='c-cm'># Ejecutar y exportar el resumen a JSON</span>\nk6 run --summary-export=resumen.json carga.js",
+        "PANEL_TITLE": "Tipos de prueba según la rampa",
+        "WHY_TITLE": "Por qué la subida es gradual",
+        "WHY": "Un salto instantáneo a 50 usuarios mide cómo arranca el sistema, no cómo se comporta en régimen. La rampa separa el coste de calentamiento del rendimiento real, que es lo que se quiere medir.",
+        "CRITERIA": [
+          { "letter": "H", "name": "Humo · 1 VU, 1 minuto: ¿el script funciona?", "meta": "Siempre primero", "highlight": "true" },
+          { "letter": "C", "name": "Carga · la concurrencia esperada en producción", "meta": "La habitual", "highlight": "" },
+          { "letter": "E", "name": "Estrés · subir hasta romper para hallar el techo", "meta": "Capacidad", "highlight": "true" },
+          { "letter": "P", "name": "Pico · salto brusco y vuelta: ¿se recupera?", "meta": "Resiliencia", "highlight": "" },
+          { "letter": "R", "name": "Resistencia · horas de carga constante", "meta": "Fugas de memoria", "highlight": "" },
+          { "letter": "U", "name": "Umbral incumplido = código de salida ≠ 0", "meta": "Puerta de CI", "highlight": "true" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "k6 · leer la salida de la consola",
+      "notes": "Demo 5, lectura de resultados. Esta es la diapositiva que hay que explicar con más calma de toda la unidad, porque saber leer esta salida es exactamente la competencia que se pide en una entrevista de trabajo. Recorre campo a campo. http_req_duration es el tiempo total de la petición y es la métrica estrella, pero hay que mirar el p95, no la media. http_req_failed es la tasa de error: cualquier valor por encima del 1% en una prueba de carga normal indica que el sistema ya está sufriendo. http_req_waiting es el tiempo que el servidor tardó en empezar a responder, y separarlo de la duración total permite distinguir un problema de backend de un problema de red o de tamaño de respuesta. iterations y http_reqs dan el caudal. Y la línea de thresholds con la marca verde o roja es la que decide si el pipeline continúa. Insiste: un p95 alto con tasa de error cero significa que el sistema aguanta pero va lento; un p95 normal con errores significa que el sistema descarta peticiones para mantener el tiempo, y eso es peor.",
+      "slots": {
+        "TAG_LEFT": "DEMO 5 · K6",
+        "TITLE": "Leer la salida de la consola",
+        "TAG_RIGHT": "36",
+        "SPEC_TITLE": "$ k6 run carga.js  ·  resumen tras 5 minutos y 50 VUs",
+        "FIELDS": [
+          { "key": "http_req_duration", "value": "avg=182ms  med=141ms  p(90)=386ms  p(95)=478ms  max=2.1s", "highlight": "true" },
+          { "key": "http_req_waiting", "value": "avg=163ms — tiempo hasta el primer byte: es el servidor pensando", "highlight": "" },
+          { "key": "http_req_failed", "value": "0.42%  ✓ (umbral: rate<0.01) — peticiones que no devolvieron 2xx/3xx", "highlight": "true" },
+          { "key": "http_reqs", "value": "14 208 peticiones  ·  47.3 por segundo — el caudal que el sistema procesó", "highlight": "" },
+          { "key": "iterations", "value": "14 208 ejecuciones completas de la función por defecto", "highlight": "" },
+          { "key": "checks", "value": "99.58%  ✓ — porcentaje de comprobaciones que se cumplieron", "highlight": "" },
+          { "key": "vus / vus_max", "value": "50 / 50 — concurrencia alcanzada frente a la solicitada", "highlight": "" },
+          { "key": "THRESHOLDS", "value": "✓ todos cumplidos → código de salida 0 → el pipeline continúa", "highlight": "true" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Mira el p95, nunca la media", "text": "Si 90 peticiones tardan 100 ms y 10 tardan 5 s, la media dice 590 ms y parece aceptable. Pero uno de cada diez usuarios esperó cinco segundos." },
+          { "n": "2", "title": "Lento no es lo mismo que roto", "text": "p95 alto con 0% de error: el sistema aguanta pero va lento. p95 normal con errores: el sistema descarta peticiones para mantener el tiempo. Lo segundo es peor." },
+          { "n": "3", "title": "duration menos waiting es la red", "text": "Si la duración total es mucho mayor que el tiempo de espera, el cuello de botella no es el backend: es el tamaño de la respuesta o la red." },
+          { "n": "4", "title": "El resumen JSON es el entregable", "text": "--summary-export=resumen.json produce el archivo que se versiona y se compara entre ejecuciones para detectar regresiones de rendimiento." }
+        ]
+      }
+    },
+    {
+      "archetype": "chart-split",
+      "title": "k6 · resultados por endpoint",
+      "notes": "Resultados de la ejecución de la demo, desglosados por endpoint. La forma del gráfico dice de un vistazo dónde está el problema; la tabla da la cifra exacta para el informe. El caso interesante es el endpoint de búsqueda: casi cinco veces más lento que el resto y es el único que incumple el umbral de 500 ms. Pregunta al grupo qué haría cada uno con esa información antes de dar la respuesta. La respuesta correcta no es «optimizar la búsqueda» sin más: primero hay que saber si ese endpoint recibe el 2% o el 60% del tráfico real, porque optimizar lo que casi nadie usa es tirar el tiempo. Ahí es donde la prueba de rendimiento se conecta con la analítica de producto.",
+      "slots": {
+        "TAG_LEFT": "DEMO 5 · RESULTADOS",
+        "TITLE": "Latencia p95 por endpoint",
+        "TAG_RIGHT": "37",
+        "SPLIT": "1.15fr 1fr",
+        "LEAD": "Misma ejecución, desglosada por endpoint. La forma señala el problema; la tabla da la cifra que va al informe.",
+        "TABLE_TITLE": "Detalle de la ejecución",
+        "HEADERS": "<th>Endpoint</th><th>Peticiones</th><th>p95</th><th>Error</th>",
+        "INSIGHT_TITLE": "Qué hacer con esto",
+        "INSIGHT": "GET /buscar es el único que incumple el umbral de 500 ms y concentra el 78% de los errores. Antes de optimizarlo, comprueba qué porcentaje del tráfico real recibe: optimizar lo que casi nadie usa es tirar el tiempo.",
+        "SOURCE": "k6 · 5 min · 50 VUs · 14 208 peticiones",
+        "BARS": [
+          { "label": "GET /tareas", "value": "141", "unit": "ms", "tone": "ok" },
+          { "label": "POST /tareas", "value": "268", "unit": "ms", "tone": "" },
+          { "label": "PUT /tareas/:id", "value": "312", "unit": "ms", "tone": "alt" },
+          { "label": "DELETE /tareas/:id", "value": "189", "unit": "ms", "tone": "ok" },
+          { "label": "GET /buscar", "value": "1420", "unit": "ms", "tone": "warn" }
+        ],
+        "ROWS": [
+          { "cells": "<td>GET /tareas</td><td>6 940</td><td>141 ms</td><td>0.01%</td>" },
+          { "cells": "<td>POST /tareas</td><td>3 120</td><td>268 ms</td><td>0.06%</td>" },
+          { "cells": "<td>PUT /tareas/:id</td><td>2 080</td><td>312 ms</td><td>0.10%</td>" },
+          { "cells": "<td>DELETE /tareas/:id</td><td>1 240</td><td>189 ms</td><td>0.00%</td>" },
+          { "cells": "<td>GET /buscar</td><td>828</td><td>1 420 ms</td><td>5.68%</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "gauges",
+      "title": "k6 · cumplimiento de umbrales",
+      "notes": "La misma ejecución vista como cumplimiento de criterios de aceptación. Esta es la vista que se lleva a una reunión: cuatro anillos y una decisión. Tres umbrales verdes y uno en amarillo. Explica que un solo umbral incumplido basta para que k6 devuelva un código de salida distinto de cero y el pipeline se detenga, y que eso es deliberado: si se permite pasar «solo por esta vez», el umbral deja de significar nada en dos semanas. La conversación que hay que tener no es «¿bajamos el umbral?» sino «¿por qué la búsqueda tarda tanto?». Aprovecha para explicar la diferencia entre un umbral y un objetivo: el umbral es el mínimo que no se negocia, el objetivo es a lo que se aspira.",
+      "slots": {
+        "TAG_LEFT": "DEMO 5 · RESULTADOS",
+        "TITLE": "Cumplimiento de umbrales",
+        "TAG_RIGHT": "38",
+        "LEAD": "La vista que se lleva a la reunión: cuatro indicadores y una decisión. Un solo umbral incumplido detiene el despliegue.",
+        "COLS": "4",
+        "READ_LABEL": "Lectura",
+        "READ": "Tres de cuatro en verde. La conversación correcta no es «¿bajamos el umbral?», sino «¿por qué la búsqueda tarda tanto?». Un umbral que se negocia deja de significar nada en dos semanas.",
+        "SOURCE": "k6 · resumen.json · ejecución del 15 de agosto",
+        "GAUGES": [
+          { "label": "Peticiones OK", "value": "99.58", "goal": "umbral 99.00", "desc": "Respuestas 2xx sobre el total de peticiones.", "tone": "ok" },
+          { "label": "Checks superados", "value": "99.58", "goal": "umbral 99.00", "desc": "Comprobaciones de estado y tiempo dentro del script.", "tone": "ok" },
+          { "label": "p95 bajo 500 ms", "value": "96", "goal": "umbral 95", "desc": "Porcentaje de endpoints que cumplen el tiempo objetivo.", "tone": "" },
+          { "label": "Búsqueda bajo 500 ms", "value": "34", "goal": "umbral 95", "desc": "El único endpoint que incumple. Bloquea el despliegue.", "tone": "warn" }
+        ]
+      }
+    },
+    {
+      "archetype": "trend",
+      "title": "k6 · la latencia durante la rampa",
+      "notes": "La lectura más valiosa de una prueba de carga no es el número final, es la forma de la curva. Recorre los hitos. Hasta 30 usuarios la latencia se mantiene plana: el sistema tiene holgura. A partir de 35 empieza a subir de forma lineal, que es el comportamiento esperado al acercarse a la capacidad. Y en 45 la curva se dispara: eso es el codo, el punto donde el sistema deja de degradarse con elegancia y empieza a encolar peticiones. Ese codo es el dato que se lleva a la reunión de capacidad, porque define cuántos usuarios simultáneos soporta el sistema hoy, y por tanto cuándo hay que escalar. Señala que la bajada no vuelve inmediatamente al valor inicial: esa histéresis indica que quedaron peticiones encoladas, y si tardara mucho en recuperarse habría que sospechar de una fuga de recursos.",
+      "slots": {
+        "TAG_LEFT": "DEMO 5 · RESULTADOS",
+        "TITLE": "La latencia durante la rampa",
+        "TAG_RIGHT": "39",
+        "SPLIT": "1.25fr 1fr",
+        "LEAD": "Lo valioso de una prueba de carga no es el número final: es la forma de la curva y el punto exacto donde se dobla.",
+        "SIDE_TITLE": "Dónde está el codo",
+        "DELTA_LABEL": "Capacidad estimada",
+        "DELTA": "≈ 42 VUs",
+        "DELTA_NOTE": "Concurrencia máxima manteniendo el p95 bajo 500 ms. Por encima de ese punto el sistema encola en lugar de responder.",
+        "SOURCE": "k6 · p95 en ventanas de 30 s durante la rampa de 5 minutos",
+        "SERIES": [
+          { "when": "0:30", "value": "118" },
+          { "when": "1:00", "value": "126" },
+          { "when": "1:30", "value": "139" },
+          { "when": "2:00", "value": "168" },
+          { "when": "2:30", "value": "224" },
+          { "when": "3:00", "value": "341" },
+          { "when": "3:30", "value": "497" },
+          { "when": "4:00", "value": "982" },
+          { "when": "4:30", "value": "1410" },
+          { "when": "5:00", "value": "612" }
+        ],
+        "MILESTONES": [
+          { "when": "0:30 – 2:00", "title": "Zona plana", "text": "Hasta 30 usuarios la latencia apenas se mueve. El sistema tiene holgura de sobra." },
+          { "when": "2:30 – 3:30", "title": "Degradación lineal", "text": "Sube de forma proporcional a la carga. Es el comportamiento sano al acercarse a la capacidad." },
+          { "when": "4:00", "title": "El codo", "text": "La curva se dispara: el sistema deja de degradarse con elegancia y empieza a encolar peticiones." },
+          { "when": "5:00", "title": "Recuperación lenta", "text": "No vuelve al valor inicial de inmediato. Si tardara mucho más, habría que sospechar de una fuga de recursos." }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "k6 · errores al diseñar la prueba de carga",
+      "notes": "Los cuatro errores que invalidan una prueba de rendimiento. El primero, probar contra producción: nunca, bajo ningún concepto, y menos aún «solo un momentito». El segundo, no correlacionar datos: si todos los usuarios virtuales piden el mismo identificador, la base de datos lo sirve desde caché y la prueba mide la caché, no el sistema. El tercero, no calentar: las primeras peticiones incluyen compilación JIT, apertura de conexiones y caches vacías, y meterlas en la media falsea el resultado. El cuarto, ejecutar el generador de carga en la misma máquina que la aplicación, porque entonces compiten por CPU y se está midiendo la contención del portátil. Insiste en que una prueba de carga mal diseñada es peor que ninguna, porque produce confianza injustificada.",
+      "slots": {
+        "TAG_LEFT": "DEMO 5 · K6",
+        "TITLE": "Errores que invalidan la prueba",
+        "TAG_RIGHT": "40",
+        "BAD_TITLE": "Así no",
+        "BAD_SNIPPET": "// Mismo id para los 50 usuarios\nexport default function () {\n  http.get('https://PRODUCCION/api/tareas/1');\n}\n// Sin sleep, sin stages, sin thresholds",
+        "GOOD_TITLE": "Así sí",
+        "GOOD_SNIPPET": "const ids = new SharedArray('ids', () =>\n  JSON.parse(open('./ids.json')));\n\nexport default function () {\n  const id = ids[Math.floor(Math.random() * ids.length)];\n  http.get(`${__ENV.BASE_URL}/api/tareas/${id}`);\n  sleep(Math.random() * 2 + 1);\n}",
+        "WHY_LABEL": "Por qué",
+        "WHY": "Una prueba de carga mal diseñada es peor que ninguna: produce un informe verde que genera confianza injustificada, y el equipo descubre el problema real el día del lanzamiento.",
+        "BAD_POINTS": [
+          { "text": "Contra producción: nunca, ni «solo un momentito»" },
+          { "text": "Todos piden el mismo id: mides la caché, no el sistema" },
+          { "text": "Sin sleep: 50 VUs golpean más que 500 personas reales" },
+          { "text": "Sin thresholds: números bonitos que no deciden nada" },
+          { "text": "Generador y aplicación en la misma máquina" }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Entorno de pruebas equivalente al de producción" },
+          { "text": "Datos variados desde SharedArray: caché realista" },
+          { "text": "Pausas aleatorias que imitan el ritmo humano" },
+          { "text": "URL por variable de entorno: nunca en el código" },
+          { "text": "Descartar el calentamiento antes de calcular la media" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 4",
+      "notes": "Cierre del bloque de rendimiento. La respuesta correcta es la B. Es la pregunta que más se falla porque la media es la métrica con la que todo el mundo está familiarizado. Si alguien elige la A, usa el ejemplo numérico: noventa peticiones a 100 ms y diez a 5 segundos dan una media de 590 ms, que parece correcta, mientras uno de cada diez usuarios ha esperado cinco segundos. La media oculta exactamente a los usuarios que se van a quejar.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 4",
+        "TAG_RIGHT": "41",
+        "BADGE": "PREGUNTA 4",
+        "QUESTION": "¿Por qué se decide con el percentil 95 y no con la media?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Con 90 peticiones a 100 ms y 10 a 5 segundos, la media da 590 ms y parece aceptable. Pero uno de cada diez usuarios esperó cinco segundos: exactamente los que se van a quejar. El p95 los hace visibles.",
+        "OPTIONS": [
+          { "key": "A", "text": "Porque el percentil 95 es más fácil de calcular", "correct": "" },
+          { "key": "B", "text": "Porque la media esconde los picos que sufre parte de los usuarios", "correct": "true" },
+          { "key": "C", "text": "Porque la media no se puede usar como umbral en k6", "correct": "" },
+          { "key": "D", "text": "Porque el percentil 95 mide el caudal y la media no", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 5 · Ciclo de vida del defecto",
+      "notes": "Cambio de foco. Hasta aquí hablábamos de encontrar; a partir de aquí, de qué se hace con lo encontrado. La idea que sostiene el bloque: un defecto sin ciclo de vida es un rumor. Si no está registrado, priorizado, asignado, corregido y verificado, no ha ocurrido nada aunque alguien lo haya visto. Conecta con las demos: todos los informes que hemos generado, el HTML de pytest, el log.html de Robot y el resumen.json de k6, son la evidencia que alimenta este proceso.",
+      "slots": {
+        "PART_LABEL": "PARTE 05",
+        "TITLE": "Ciclo de vida del defecto",
+        "SUBTITLE": "Un defecto que no está registrado, asignado y verificado es solo un rumor",
+        "AGENDA": [
+          { "label": "01", "text": "El flujo completo, de la detección al cierre" },
+          { "label": "02", "text": "Anatomía de un reporte que se puede arreglar" },
+          { "label": "03", "text": "Cómo se prioriza sin discutir cada vez" }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "title": "El flujo completo del defecto",
+      "notes": "Recorre el diagrama de arriba abajo. Lo importante no son las cajas sino la flecha de retorno. Si la verificación falla, el defecto no se cierra: vuelve al análisis, y esa reapertura es una métrica de calidad del proceso, no un fracaso personal. Insiste en que el cierre solo lo firma quien reportó, nunca quien corrigió: el desarrollador no puede ser juez y parte de su propia solución. Y la retrospectiva final no es opcional: sin análisis de causa raíz el equipo repite el mismo tipo de defecto sin ver el patrón.",
+      "slots": {
+        "TAG_LEFT": "FLUJO",
+        "TITLE": "El flujo completo del defecto",
+        "TAG_RIGHT": "43",
+        "SPLIT": "1.3fr 1fr",
+        "DIAGRAM": "flowchart TD\n  A[Identificación y registro] --> B[Análisis y priorización]\n  B --> C[Asignación y corrección]\n  C --> D{Verificación}\n  D -->|Persiste| B\n  D -->|Resuelto| E[Cierre y retrospectiva]",
+        "SIDE_TITLE": "Las cuatro puertas",
+        "LEAD": "Lo importante no son las cajas sino la flecha de retorno: si la verificación falla, el defecto no se cierra, vuelve al análisis.",
+        "NOTE_LABEL": "Regla",
+        "NOTE": "El cierre lo firma quien reportó el defecto, nunca quien lo corrigió. El desarrollador no puede ser juez y parte de su propia solución.",
+        "STEPS": [
+          { "n": "1", "name": "Detectar y registrar", "text": "El tester documenta el comportamiento anómalo en el bug tracker con pasos, entorno y evidencia." },
+          { "n": "2", "name": "Analizar y priorizar", "text": "Se busca la causa raíz y se clasifica por severidad, frecuencia y usuarios afectados." },
+          { "n": "3", "name": "Asignar y corregir", "text": "Se asigna según experiencia y carga; el desarrollador modifica el código y prueba en local." },
+          { "n": "4", "name": "Verificar y cerrar", "text": "El tester reproduce el escenario original, pasa regresión y documenta antes de cerrar." }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "Qué ocurre en cada fase",
+      "notes": "Detalle de las cinco fases centrales, con el entregable que cada una debe producir. Insiste en el entregable: una fase sin producto observable es una fase que se salta sin que nadie se entere. En análisis, menciona las dos técnicas del material para la causa raíz: el diagrama de Ishikawa y los cinco porqués. En asignación, los criterios son experiencia del desarrollador, carga de trabajo, urgencia y disponibilidad. En verificación, no basta con que el escenario original pase: hay que ejecutar regresión sobre las zonas que comparten código.",
+      "slots": {
+        "TAG_LEFT": "PROCESO",
+        "TITLE": "Qué ocurre en cada fase",
+        "TAG_RIGHT": "44",
+        "LEAD": "Cada fase debe producir algo observable. Una fase sin entregable es una fase que se salta sin que nadie se entere.",
+        "COLS": "5",
+        "STEPS": [
+          { "n": "1", "phase": "Identificar", "title": "Detectar el fallo", "desc": "Durante las pruebas o desde el uso real, alguien observa un comportamiento distinto del esperado.", "output": "Evidencia" },
+          { "n": "2", "phase": "Registrar", "title": "Documentar", "desc": "Descripción, pasos, entorno y comportamiento esperado frente al obtenido, en JIRA o Bugzilla.", "output": "Ticket" },
+          { "n": "3", "phase": "Analizar", "title": "Buscar la causa raíz", "desc": "Ishikawa o los cinco porqués para llegar a la causa, no al síntoma, y estimar el impacto.", "output": "Prioridad" },
+          { "n": "4", "phase": "Corregir", "title": "Modificar y probar", "desc": "Se ajusta el código manteniendo la arquitectura y se añade la prueba que lo protege.", "output": "Parche" },
+          { "n": "5", "phase": "Cerrar", "title": "Verificar y documentar", "desc": "Se reproduce el escenario original, se pasa regresión y se registra el resultado del cierre.", "output": "Cierre" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Anatomía de un reporte de defecto",
+      "notes": "Este es el contenido con más transferencia directa al taller. Un reporte útil se distingue por dos campos: los pasos para reproducir y la separación explícita entre esperado y obtenido. Sin pasos, el desarrollador devuelve el ticket con «no reproduzco» y se pierde una semana. Sin la pareja esperado/obtenido, cada persona interpreta lo que quiere. Aprovecha para conectar con las demos: el campo de evidencia se rellena con el log.html de Robot, el reporte de pytest o la captura incrustada, no con una descripción de memoria.",
+      "slots": {
+        "TAG_LEFT": "ANATOMÍA",
+        "TITLE": "Anatomía de un reporte útil",
+        "TAG_RIGHT": "45",
+        "SPEC_TITLE": "DEF-1042 · La edición de una tarea no guarda los cambios",
+        "FIELDS": [
+          { "key": "Severidad", "value": "Alta · funcionalidad principal bloqueada", "highlight": "true" },
+          { "key": "Entorno", "value": "Staging · Chrome 121 · Windows 11 · build 1.0.3", "highlight": "" },
+          { "key": "Pasos", "value": "1. Abrir la lista 2. Seleccionar «Comprar leche» 3. Cambiar el título 4. Pulsar Guardar", "highlight": "" },
+          { "key": "Esperado", "value": "La tarea aparece en la lista con el título actualizado", "highlight": "" },
+          { "key": "Obtenido", "value": "Error «NullReferenceException» y el título anterior se mantiene", "highlight": "true" },
+          { "key": "Frecuencia", "value": "3 de 3 intentos · reproducible siempre", "highlight": "" },
+          { "key": "Evidencia", "value": "log.html de Robot con la captura incrustada + traza del servidor", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Reproducible", "text": "Si el desarrollador no puede repetirlo con tus pasos, el ticket vuelve con un «no reproduzco» y se pierde una semana." },
+          { "n": "2", "title": "Esperado y obtenido", "text": "Sin esa pareja explícita cada persona interpreta lo que quiere, y se discute el defecto en vez de arreglarlo." },
+          { "n": "3", "title": "La evidencia sale de la herramienta", "text": "Adjunta el artefacto que generó la ejecución, no una descripción de memoria. Para eso hemos aprendido a leer los informes." }
+        ]
+      }
+    },
+    {
+      "archetype": "matrix",
+      "title": "Cómo se prioriza un defecto",
+      "notes": "La priorización es la fase donde más se discute y donde más tiempo se pierde. Con esta matriz la discusión se acaba: dos ejes objetivos, impacto en el usuario y frecuencia de aparición. El cuadrante crítico se corrige antes de cualquier funcionalidad nueva. El caso interesante es el de alto impacto y baja frecuencia: parece menor porque casi no ocurre, pero cuando ocurre es grave. Therac-25 y Ariane 5, que veremos después, están exactamente ahí. Recuerda que la priorización debe ser colaborativa: desarrollo, calidad y, cuando toca, el cliente.",
+      "slots": {
+        "TAG_LEFT": "DECISIÓN",
+        "TITLE": "Cómo se prioriza sin discutir",
+        "TAG_RIGHT": "46",
+        "AXIS_X": "Frecuencia de aparición →",
+        "AXIS_Y": "↑ Impacto en el usuario",
+        "SIDE_TITLE": "Cómo leer el cuadrante",
+        "Q1_TAG": "CRÍTICO",
+        "Q1_TITLE": "Alto impacto y frecuente",
+        "Q1_DESC": "Se corrige antes que cualquier funcionalidad nueva. Bloquea la entrega.",
+        "Q2_TAG": "ALTO",
+        "Q2_TITLE": "Alto impacto y esporádico",
+        "Q2_DESC": "Parece menor porque casi no ocurre, pero cuando ocurre es grave. No lo entierres.",
+        "Q3_TAG": "BAJO",
+        "Q3_TITLE": "Bajo impacto y esporádico",
+        "Q3_DESC": "Al backlog documentado. Se revisa en la poda trimestral, no antes.",
+        "Q4_TAG": "MEDIO",
+        "Q4_TITLE": "Bajo impacto y frecuente",
+        "Q4_DESC": "Molesta a todo el mundo cada día y erosiona la confianza en el producto.",
+        "RULES": [
+          { "label": "Regla 1", "text": "La severidad la fija quien prueba; la prioridad la fija el negocio. No son lo mismo y se confunden siempre." },
+          { "label": "Regla 2", "text": "Si un defecto afecta a datos o a seguridad, sube automáticamente al cuadrante crítico sin discusión." },
+          { "label": "Regla 3", "text": "Priorizar es un acto colaborativo: desarrollo, calidad y, cuando corresponde, el cliente." }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Avisos sobre la gestión de defectos",
+      "notes": "Cinco advertencias que se repiten en todas las auditorías de proceso. La del riesgo de regresión es la más costosa: corregir un defecto en un módulo puede romper otro que nadie tocó, y por eso la regresión no es opcional después de cada corrección. La de la retrospectiva es la que más se salta: sin análisis de causa raíz posterior, el equipo corrige el mismo tipo de defecto una y otra vez sin darse cuenta del patrón. Conecta con la pregunta del apunte activador sobre CI/CD y detección temprana.",
+      "slots": {
+        "TAG_LEFT": "AVISOS",
+        "TITLE": "Lo que conviene recordar",
+        "TAG_RIGHT": "47",
+        "LEAD": "Cinco advertencias que aparecen en casi todas las auditorías de proceso de calidad.",
+        "CALLOUTS": [
+          { "kind": "info", "icon": "qhgmphtg", "title": "Severidad no es prioridad", "text": "La severidad describe el daño técnico; la prioridad, la urgencia de negocio. Un fallo grave en una función que nadie usa puede esperar." },
+          { "kind": "tip", "icon": "xtzvywzp", "title": "Cada corrección, una prueba", "text": "Todo defecto corregido debería dejar tras de sí una prueba automatizada que impida su regreso. Así crece una suite con sentido." },
+          { "kind": "warn", "icon": "usownftb", "title": "La corrección puede romper otra cosa", "text": "Modificar un módulo afecta a lo que depende de él. La regresión después de cada corrección no es opcional." },
+          { "kind": "danger", "icon": "inrunzby", "title": "Nunca cierres sin verificar", "text": "«El desarrollador dice que está arreglado» no es una verificación. Reproduce el escenario original tú mismo." },
+          { "kind": "note", "icon": "msoeawqm", "title": "Sin retrospectiva no hay aprendizaje", "text": "Sin análisis de causa raíz posterior, el equipo corrige el mismo tipo de defecto una y otra vez sin ver el patrón." }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 5",
+      "notes": "Cierre del bloque de proceso. La respuesta correcta es la D. La confusión entre severidad y prioridad es la más extendida en equipos reales y genera semanas de discusión. Da un ejemplo si hace falta: una caída total en la pantalla de configuración de idioma es severidad crítica y prioridad baja; un texto mal escrito en el botón de pago es severidad mínima y prioridad alta.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 5",
+        "TAG_RIGHT": "48",
+        "BADGE": "PREGUNTA 5",
+        "QUESTION": "¿Qué diferencia hay entre la severidad y la prioridad de un defecto?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Una caída total en la pantalla de idioma es severidad crítica y prioridad baja. Un texto mal escrito en el botón de pago es severidad mínima y prioridad alta. Son ejes independientes y por eso los fija gente distinta.",
+        "OPTIONS": [
+          { "key": "A", "text": "Son sinónimos: describen la gravedad del mismo modo", "correct": "" },
+          { "key": "B", "text": "La severidad la fija el cliente y la prioridad el tester", "correct": "" },
+          { "key": "C", "text": "La prioridad solo se usa en metodologías ágiles", "correct": "" },
+          { "key": "D", "text": "La severidad mide el daño técnico; la prioridad, la urgencia de negocio", "correct": "true" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 6 · Evidencia, casos y taller",
+      "notes": "Último bloque. Se cierra el círculo: primero por qué encontrar tarde es tan caro, después qué ocurrió cuando el proceso falló de verdad, y por último el laboratorio y el taller que se evalúan. Este bloque conecta la teoría con la sesión sincrónica S9 y con los entregables.",
+      "slots": {
+        "PART_LABEL": "PARTE 06",
+        "TITLE": "Evidencia, casos y taller",
+        "SUBTITLE": "Por qué encontrar tarde es tan caro y qué se entrega al final",
+        "AGENDA": [
+          { "label": "01", "text": "La regla 1 · 10 · 100 del coste del defecto" },
+          { "label": "02", "text": "Tres casos históricos que cambiaron el oficio" },
+          { "label": "03", "text": "Laboratorio de herramientas y taller evaluado" }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "La regla 1 · 10 · 100",
+      "notes": "El argumento económico que sostiene toda la unidad. Un defecto detectado en diseño cuesta una unidad de esfuerzo: se corrige un documento. El mismo defecto en desarrollo cuesta diez: ya hay código escrito y hay que rehacerlo y volver a probarlo. En producción cuesta cien: hay incidente, parche urgente, comunicación al cliente y pérdida de confianza, que es la parte que no aparece en ninguna factura. Esta es la respuesta completa a la pregunta del apunte activador sobre cómo ayudan CI y CD: no aceleran la corrección, mueven la detección hacia la izquierda del gráfico, donde todavía es barata. Y ahí es donde encajan las cinco herramientas que hemos instalado.",
+      "slots": {
+        "TAG_LEFT": "PRINCIPIO",
+        "TITLE": "La regla 1 · 10 · 100",
+        "TAG_RIGHT": "50",
+        "GHOST": "100×",
+        "KICKER": "El coste de encontrar tarde",
+        "PRINCIPLE": "Corregir un defecto cuesta diez veces más en cada fase que avanza sin detectarlo.",
+        "PRINCIPLE_BODY": "En diseño se corrige un documento. En desarrollo hay que rehacer código y volver a probar. En producción hay incidente, parche urgente y una pérdida de confianza que no aparece en ninguna factura. Las cinco herramientas de esta unidad no aceleran la corrección: mueven la detección hacia la izquierda, donde todavía es barata.",
+        "LIST_TITLE": "Qué mueve la detección a la izquierda",
+        "FACTORS": [
+          { "name": "Revisión de código", "text": "Dos pares de ojos antes de integrar detectan lo que ninguna herramienta ve.", "color": "var(--a1)" },
+          { "name": "Pruebas unitarias", "text": "Segundos por caso y avisan en la misma máquina donde se escribió el fallo.", "color": "var(--a2)" },
+          { "name": "Suite funcional en CI", "text": "Selenium, Appium, Cucumber o Robot en cada cambio: el defecto no llega a la rama principal.", "color": "var(--a3)" },
+          { "name": "Umbrales de k6", "text": "Ninguna versión se despliega si el p95 se degrada respecto a la anterior.", "color": "var(--ok)" }
+        ],
+        "EXAMPLES": [
+          { "tag": "En desarrollo", "value": "1", "label": "unidad de coste", "desc": "Se corrige antes de integrar. Nadie fuera del equipo se entera.", "color": "var(--ok)" },
+          { "tag": "En producción", "value": "100", "label": "unidades de coste", "desc": "Incidente, parche urgente, comunicación y confianza perdida.", "color": "var(--err)" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Tres casos que cambiaron el oficio",
+      "notes": "Los tres casos del material. El bug de 1947: Grace Hopper documentó una polilla atrapada en un relé del Mark II en Harvard, y aunque el término ya se usaba en ingeniería, ese registro lo popularizó en informática. Ariane 5, 1996: la conversión de un valor de coma flotante de 64 bits a entero de 16 desbordó, se lanzó una excepción no gestionada y el cohete se autodestruyó cuarenta segundos después del despegue; el código venía heredado de Ariane 4, donde ese valor nunca alcanzaba ese rango, y no se volvió a probar en el contexto nuevo. Therac-25, entre 1985 y 1987: una condición de carrera permitía administrar dosis letales de radiación y murieron seis pacientes. La lección común: ninguno fue un fallo de programación exótico, los tres fueron fallos de proceso de pruebas.",
+      "slots": {
+        "TAG_LEFT": "CASOS",
+        "TITLE": "Tres casos que cambiaron el oficio",
+        "TAG_RIGHT": "51",
+        "COLS": "3",
+        "CARDS": [
+          { "badge": "1947", "title": "El primer «bug»", "body": "Grace Hopper documenta una polilla atrapada en un relé del Mark II en Harvard. El término ya existía en ingeniería, pero ese registro lo popularizó en informática.", "note_label": "Lección", "note": "Documentar el fallo es parte del trabajo." },
+          { "badge": "1996", "title": "Ariane 5", "body": "Una conversión numérica desbordó su rango y lanzó una excepción no gestionada. El cohete se autodestruyó a los 40 segundos, con cientos de millones perdidos.", "note_label": "Lección", "note": "El código heredado hay que reprobarlo en su contexto nuevo." },
+          { "badge": "1985-87", "title": "Therac-25", "body": "Una condición de carrera en el software de radioterapia permitió administrar dosis letales. Seis pacientes murieron como consecuencia directa.", "note_label": "Lección", "note": "En sistemas críticos, el proceso de pruebas salva vidas." }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Laboratorio · reproduce las cinco demos",
+      "notes": "Primer entregable, el de herramientas. Cada estudiante debe reproducir en su máquina las cinco demos y entregar la evidencia de que funcionan. No se evalúa la elegancia del código: se evalúa que el entorno esté montado, que el script se ejecute y que sepan explicar qué dice el informe. Insiste en el tercer caso: la lectura de resultados es lo que separa a un tester de alguien que sabe copiar comandos. Da margen: quien no consiga montar Appium por falta de dispositivo Android puede entregar la salida de appium-doctor y appium driver list documentando el bloqueo, porque documentar por qué algo no funciona también es trabajo de calidad.",
+      "slots": {
+        "TAG_LEFT": "ENTREGABLE 1",
+        "TITLE": "Laboratorio de herramientas",
+        "TAG_RIGHT": "52",
+        "ICON": "kjkiqtxg",
+        "ACTIVITY_NAME": "Monta, ejecuta y explica las cinco herramientas",
+        "INSTRUCTIONS": "Individual, en tu propia máquina. Se evalúa que el entorno esté montado, que el script se ejecute y que sepas explicar qué dice el informe. La elegancia del código no puntúa; la lectura de resultados sí.",
+        "COLS": "3",
+        "META": [
+          { "label": "Individual" },
+          { "label": "Repositorio Git" },
+          { "label": "Captura de cada informe" }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Montar el entorno",
+            "desc": "Las cinco instaladas y verificadas: pytest, appium-doctor, npx cucumber-js, robot --version y k6 version.",
+            "challenge_label": "Evidencia",
+            "challenge": "Captura de la terminal con la versión de cada herramienta."
+          },
+          {
+            "num": "02",
+            "title": "Ejecutar un caso",
+            "desc": "Un caso propio por herramienta sobre la app de tareas o sobre una API pública de prueba.",
+            "challenge_label": "Evidencia",
+            "challenge": "El script versionado y la salida de la ejecución."
+          },
+          {
+            "num": "03",
+            "title": "Explicar el informe",
+            "desc": "Media página por herramienta: qué archivo genera, qué significa cada estado y qué adjuntarías a un defecto.",
+            "challenge_label": "Evidencia",
+            "challenge": "Esto es lo que separa a un tester de quien copia comandos."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "Ficha de resultados del taller",
+      "notes": "Segundo entregable, el del taller manual sobre la app de gestión de tareas, que coincide con el mini problema de la sesión sincrónica S9. Repasa las columnas: cada fila es un caso, con lo esperado, lo obtenido, el estado y la severidad propuesta. Las tres primeras filas están rellenas como ejemplo con los resultados del material; las tres últimas las completa cada pareja. Advierte de dos cosas: el estado «Fallo» sin registro asociado no puntúa, y la severidad hay que justificarla. Recuerda que un caso que pasa también se documenta: la evidencia de que algo funciona vale tanto como la de que algo falla.",
+      "slots": {
+        "TAG_LEFT": "ENTREGABLE 2",
+        "TITLE": "Ficha de resultados del taller",
+        "TAG_RIGHT": "53",
+        "LEAD": "Taller manual sobre la app de gestión de tareas. Las tres primeras filas son el ejemplo resuelto; las tres últimas las completa cada pareja.",
+        "HEADERS": "<th>Caso</th><th>Escenario</th><th>Esperado</th><th>Obtenido</th><th>Estado</th><th>Severidad</th>",
+        "NOTE_LABEL": "Criterio de evaluación",
+        "NOTE": "Un estado «Fallo» sin registro reproducible asociado no puntúa. La severidad hay que justificarla: «alta» a secas no es una justificación.",
+        "ROWS": [
+          { "cells": "<td>CP-01</td><td>Crear tarea «Comprar leche»</td><td>Aparece en pendientes</td><td>Aparece correctamente</td><td>Correcto</td><td>—</td>" },
+          { "cells": "<td>CP-02</td><td>Editar el título de una tarea</td><td>Se guarda el nuevo título</td><td>NullReferenceException</td><td>Fallo</td><td>Alta</td>" },
+          { "cells": "<td>CP-03</td><td>Ordenar tareas por fecha</td><td>Lista reordenada</td><td>La aplicación se cierra</td><td>Fallo</td><td>Crítica</td>" },
+          { "cells": "<td>CP-04</td><td>Eliminar una tarea</td><td>—</td><td>—</td><td>—</td><td>—</td>" },
+          { "cells": "<td>CP-05</td><td>Guardar con el título vacío</td><td>—</td><td>—</td><td>—</td><td>—</td>" },
+          { "cells": "<td>CP-06</td><td>Exploración libre</td><td>—</td><td>—</td><td>—</td><td>—</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "title": "Documentación oficial de las cinco herramientas",
+      "notes": "Recursos para el laboratorio. Insiste en una cosa: para estas cinco herramientas, la documentación oficial es mejor que cualquier tutorial de YouTube, porque los tutoriales envejecen y la instalación cambia cada año. El caso más claro es Selenium: la mitad de los tutoriales que encontrarán siguen explicando webdriver-manager, que ya no hace falta desde la versión 4.6. Y para Appium, muchos tutoriales siguen usando la sintaxis de Appium 1, que ya no funciona. Recomienda empezar siempre por la sección de instalación de la web oficial y solo después buscar ejemplos.",
+      "slots": {
+        "TAG_LEFT": "MATERIAL",
+        "TITLE": "Documentación oficial",
+        "TAG_RIGHT": "54",
+        "LIST_TITLE": "Empieza siempre por aquí, no por un tutorial",
+        "QR_LABEL": "AULA VIRTUAL",
+        "QR_DATA": "https%3A%2F%2Feva.ipss.cl",
+        "QR_ALT": "Código QR del aula virtual EVA IPSS",
+        "QR_CAPTION": "Guiones completos de las cinco demos",
+        "NEXT_LABEL": "Entregas",
+        "NEXT": "Laboratorio de herramientas (individual) y ficha de resultados del taller (en parejas), antes de la próxima sesión.",
+        "RESOURCES": [
+          { "icon": "▤", "title": "Selenium · documentación", "desc": "Esperas explícitas, localizadores y Page Object. Ojo: webdriver-manager ya no hace falta.", "url": "selenium.dev/documentation" },
+          { "icon": "▤", "title": "Appium 2 · guía de inicio", "desc": "Instalación de drivers y capabilities con prefijo. Los tutoriales de Appium 1 ya no valen.", "url": "appium.io/docs/en/latest" },
+          { "icon": "▤", "title": "Cucumber · docs y Gherkin", "desc": "Referencia del lenguaje, palabras clave en español y expresiones de captura.", "url": "cucumber.io/docs" },
+          { "icon": "▤", "title": "Robot Framework · User Guide", "desc": "Sintaxis, librerías estándar y organización de suites grandes.", "url": "robotframework.org/robotframework" },
+          { "icon": "▤", "title": "k6 · documentación", "desc": "Escenarios, métricas, umbrales y ejemplos listos para copiar.", "url": "grafana.com/docs/k6" }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "title": "Lo que te llevas de la Unidad 3",
+      "notes": "Cierre. Insiste en la idea que une las tres mitades de la unidad: automatizar sin gestionar defectos produce mucha ejecución y ninguna mejora; medir el rendimiento sin umbrales produce informes que nadie usa; y gestionar defectos sin automatizar agota al equipo repitiendo la misma regresión a mano. Cierra recordando los dos entregables y anunciando que en la sesión sincrónica se revisarán las preguntas del apunte activador y del foro crítico reflexivo, en particular la comparación entre el ciclo de vida del defecto en Agile y en Waterfall.",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "Lo que te llevas",
+        "TAG_RIGHT": "55",
+        "ICON": "wzwygmng",
+        "HERO_TITLE": "Saber usar la herramienta es saber leer su informe",
+        "HERO_TEXT": "Instalar y ejecutar lo aprende cualquiera en una tarde. Lo que te hace tester es saber qué significa el p95, por qué una F no es una E y qué evidencia adjuntar al defecto. Esa es la parte que se evalúa.",
+        "LEFT_PANEL_TITLE": "Ideas clave",
+        "RIGHT_PANEL_TITLE": "Siguientes pasos",
+        "NEXT_LABEL": "Próxima sesión",
+        "NEXT": "Sesión sincrónica S9: mapa conceptual, retroalimentación del apunte activador y del foro, y puesta en común del laboratorio y el taller.",
+        "TAKEAWAYS": [
+          { "n": "1", "text": "Las cinco herramientas siguen el mismo guion: instalar, configurar, escribir, ejecutar y leer." },
+          { "n": "2", "text": "Selenium, Appium, Cucumber y Robot responden «¿funciona?»; k6 responde «¿aguanta?»." },
+          { "n": "3", "text": "En rendimiento se decide con el p95, nunca con la media: la media esconde a quien se queja." },
+          { "n": "4", "text": "Un umbral que se negocia deja de significar nada en dos semanas." },
+          { "n": "5", "text": "Un defecto sin registro reproducible no existe para el equipo de desarrollo." }
+        ],
+        "NEXT_STEPS": [
+          { "n": "1", "text": "Monta las cinco herramientas y entrega la evidencia de cada informe." },
+          { "n": "2", "text": "Completa la ficha de resultados del taller con los defectos que encontraste." },
+          { "n": "3", "text": "Ejecuta k6 contra una API pública y explica dónde está el codo de la curva." },
+          { "n": "4", "text": "Prepara la comparación del ciclo del defecto en Agile frente a Waterfall." }
+        ]
+      }
     }
   ]
 }

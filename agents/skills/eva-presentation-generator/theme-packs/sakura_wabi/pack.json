@@ -1,0 +1,39 @@
+{
+  "id": "sakura_wabi",
+  "name": "Sakura Wabi",
+  "source": "Recreado desde style-gallery/sakura_wabi.html sobre el contrato de tokens",
+  "best_for": ["Filosofía y contemplación", "Bienestar y mindfulness", "Marca artesanal", "Cierre de sesión"],
+  "preset": "washi_quiet",
+  "decoration": "hairlines_petal_seal",
+  "notes": "El vacío es el material: no llenes la lámina. Display a peso 400 — en wabi-sabi nada se impone. Un solo punto de sakura por slide y nada más de color. El rosa #d97a87 se queda en 2.9:1 sobre el washi, así que vive en los rellenos y el token de texto es el rosa profundo #b8535f.",
+  "palette": {
+    "bg": "#f5f0e8",
+    "text": "#2c2826",
+    "a1": "#b8535f",
+    "a2": "#7a6f66",
+    "a3": "#4a423d"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. PETAL mueve el punto de sakura; WASH debe traer siempre exactamente dos lavados radiales.",
+  "background_rhythm": [
+    {
+      "WASH": "radial-gradient(ellipse 70% 84% at 18% 22%, rgba(217,122,135,0.025) 0%, transparent 60%), radial-gradient(ellipse 55% 70% at 82% 78%, rgba(44,40,38,0.025) 0%, transparent 55%)",
+      "PETAL": "right:118px;bottom:78px;",
+      "BG": "#f5f0e8"
+    },
+    {
+      "WASH": "radial-gradient(ellipse 66% 80% at 78% 20%, rgba(217,122,135,0.022) 0%, transparent 60%), radial-gradient(ellipse 58% 72% at 16% 82%, rgba(44,40,38,0.025) 0%, transparent 55%)",
+      "PETAL": "left:118px;bottom:76px;",
+      "BG": "linear-gradient(180deg, #f5f0e8 0%, #f1ebe1 100%)"
+    },
+    {
+      "WASH": "radial-gradient(ellipse 74% 76% at 46% 12%, rgba(217,122,135,0.022) 0%, transparent 62%), radial-gradient(ellipse 52% 66% at 86% 88%, rgba(44,40,38,0.022) 0%, transparent 55%)",
+      "PETAL": "right:150px;top:70px;",
+      "BG": "linear-gradient(165deg, #f5f0e8 0%, #ede6da 100%)"
+    },
+    {
+      "WASH": "radial-gradient(ellipse 62% 82% at 12% 70%, rgba(217,122,135,0.025) 0%, transparent 58%), radial-gradient(ellipse 60% 68% at 90% 18%, rgba(44,40,38,0.024) 0%, transparent 55%)",
+      "PETAL": "left:150px;top:68px;",
+      "BG": "linear-gradient(200deg, #ede6da 0%, #f5f0e8 55%)"
+    }
+  ]
+}

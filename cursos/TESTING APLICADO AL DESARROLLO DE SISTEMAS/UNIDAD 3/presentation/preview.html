@@ -89,7 +89,7 @@
 <div id="top-trigger"></div>
 <div class="toolbar">
   <button id="btn-prev" onclick="nav(-1)"><i data-lucide="chevron-left" style="width:18px;"></i> Prev</button>
-  <span class="page-info" id="page-info">1 / 25</span>
+  <span class="page-info" id="page-info">1 / 55</span>
   <button id="btn-next" onclick="nav(1)">Next <i data-lucide="chevron-right" style="width:18px;"></i></button>
   <div style="width:1px;height:20px;background:rgba(255,255,255,0.2);margin:0 8px"></div>
   <button onclick="toggleOverview()"><i data-lucide="layout-grid" style="width:18px;"></i> Grid (O)</button>
@@ -99,13 +99,67 @@
 </div>
 
 <div class="stage" id="stage">
-  <div class="slide-wrap" onclick="show(0)"><iframe class="slide-frame" src="slides/slide_00.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(1)"><iframe class="slide-frame" src="slides/slide_01.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(2)"><iframe class="slide-frame" src="slides/slide_02.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(3)"><iframe class="slide-frame" src="slides/slide_03.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(4)"><iframe class="slide-frame" src="slides/slide_04.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(5)"><iframe class="slide-frame" src="slides/slide_05.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(6)"><iframe class="slide-frame" src="slides/slide_06.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(7)"><iframe class="slide-frame" src="slides/slide_07.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(8)"><iframe class="slide-frame" src="slides/slide_08.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(9)"><iframe class="slide-frame" src="slides/slide_09.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(10)"><iframe class="slide-frame" src="slides/slide_10.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(11)"><iframe class="slide-frame" src="slides/slide_11.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(12)"><iframe class="slide-frame" src="slides/slide_12.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(13)"><iframe class="slide-frame" src="slides/slide_13.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(14)"><iframe class="slide-frame" src="slides/slide_14.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(15)"><iframe class="slide-frame" src="slides/slide_15.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(16)"><iframe class="slide-frame" src="slides/slide_16.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(17)"><iframe class="slide-frame" src="slides/slide_17.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(18)"><iframe class="slide-frame" src="slides/slide_18.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(19)"><iframe class="slide-frame" src="slides/slide_19.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(20)"><iframe class="slide-frame" src="slides/slide_20.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(21)"><iframe class="slide-frame" src="slides/slide_21.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(22)"><iframe class="slide-frame" src="slides/slide_22.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(23)"><iframe class="slide-frame" src="slides/slide_23.html"></iframe></div>\n  <div class="slide-wrap" onclick="show(24)"><iframe class="slide-frame" src="slides/slide_24.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(0)"><iframe class="slide-frame" src="slides/slide_00.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(1)"><iframe class="slide-frame" src="slides/slide_01.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(2)"><iframe class="slide-frame" src="slides/slide_02.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(3)"><iframe class="slide-frame" src="slides/slide_03.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(4)"><iframe class="slide-frame" src="slides/slide_04.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(5)"><iframe class="slide-frame" src="slides/slide_05.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(6)"><iframe class="slide-frame" src="slides/slide_06.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(7)"><iframe class="slide-frame" src="slides/slide_07.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(8)"><iframe class="slide-frame" src="slides/slide_08.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(9)"><iframe class="slide-frame" src="slides/slide_09.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(10)"><iframe class="slide-frame" src="slides/slide_10.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(11)"><iframe class="slide-frame" src="slides/slide_11.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(12)"><iframe class="slide-frame" src="slides/slide_12.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(13)"><iframe class="slide-frame" src="slides/slide_13.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(14)"><iframe class="slide-frame" src="slides/slide_14.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(15)"><iframe class="slide-frame" src="slides/slide_15.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(16)"><iframe class="slide-frame" src="slides/slide_16.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(17)"><iframe class="slide-frame" src="slides/slide_17.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(18)"><iframe class="slide-frame" src="slides/slide_18.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(19)"><iframe class="slide-frame" src="slides/slide_19.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(20)"><iframe class="slide-frame" src="slides/slide_20.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(21)"><iframe class="slide-frame" src="slides/slide_21.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(22)"><iframe class="slide-frame" src="slides/slide_22.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(23)"><iframe class="slide-frame" src="slides/slide_23.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(24)"><iframe class="slide-frame" src="slides/slide_24.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(25)"><iframe class="slide-frame" src="slides/slide_25.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(26)"><iframe class="slide-frame" src="slides/slide_26.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(27)"><iframe class="slide-frame" src="slides/slide_27.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(28)"><iframe class="slide-frame" src="slides/slide_28.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(29)"><iframe class="slide-frame" src="slides/slide_29.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(30)"><iframe class="slide-frame" src="slides/slide_30.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(31)"><iframe class="slide-frame" src="slides/slide_31.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(32)"><iframe class="slide-frame" src="slides/slide_32.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(33)"><iframe class="slide-frame" src="slides/slide_33.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(34)"><iframe class="slide-frame" src="slides/slide_34.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(35)"><iframe class="slide-frame" src="slides/slide_35.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(36)"><iframe class="slide-frame" src="slides/slide_36.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(37)"><iframe class="slide-frame" src="slides/slide_37.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(38)"><iframe class="slide-frame" src="slides/slide_38.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(39)"><iframe class="slide-frame" src="slides/slide_39.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(40)"><iframe class="slide-frame" src="slides/slide_40.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(41)"><iframe class="slide-frame" src="slides/slide_41.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(42)"><iframe class="slide-frame" src="slides/slide_42.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(43)"><iframe class="slide-frame" src="slides/slide_43.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(44)"><iframe class="slide-frame" src="slides/slide_44.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(45)"><iframe class="slide-frame" src="slides/slide_45.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(46)"><iframe class="slide-frame" src="slides/slide_46.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(47)"><iframe class="slide-frame" src="slides/slide_47.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(48)"><iframe class="slide-frame" src="slides/slide_48.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(49)"><iframe class="slide-frame" src="slides/slide_49.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(50)"><iframe class="slide-frame" src="slides/slide_50.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(51)"><iframe class="slide-frame" src="slides/slide_51.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(52)"><iframe class="slide-frame" src="slides/slide_52.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(53)"><iframe class="slide-frame" src="slides/slide_53.html"></iframe></div>
+  <div class="slide-wrap" onclick="show(54)"><iframe class="slide-frame" src="slides/slide_54.html"></iframe></div>
 </div>
 
 <script>
   lucide.createIcons();
   let cur = 0;
-  const total = 25;
+  const total = 55;
   let isOverview = false;
   const bc = new BroadcastChannel('ppt_channel');
   

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<title>Matriz de Riesgo</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS DEL PACK — ver theme-packs/TOKENS.md ===== */
+:root{
+  --bg:#faf7f2; --bg2:#f0ebe1;
+  --text:#1c1917; --text-sec:rgba(28,25,23,0.66); --text-ter:rgba(28,25,23,0.40);
+  --strong:#1c1917;
+
+  --a1:#9a3412; --a2:#1e3a5f; --a3:#a16207;
+  --ok:#166534; --warn:#a16207; --err:#9f1239;
+  --a1-t:rgba(154,52,18,0.08); --a1-b:rgba(154,52,18,0.28);
+  --a2-t:rgba(30,58,95,0.07); --a2-b:rgba(30,58,95,0.24);
+  --a3-t:rgba(161,98,7,0.08); --a3-b:rgba(161,98,7,0.26);
+  --ok-t:rgba(22,101,52,0.09); --ok-b:rgba(22,101,52,0.28);
+  --warn-t:rgba(161,98,7,0.10); --warn-b:rgba(161,98,7,0.30);
+  --err-t:rgba(159,18,57,0.08); --err-b:rgba(159,18,57,0.26);
+
+  --card-bg:#ffffff;
+  --border:rgba(28,25,23,0.14); --bw:1px; --rule-h:1px;
+  --radius:3px; --radius-lg:4px;
+  --shadow:0 1px 2px rgba(28,25,23,0.05); --shadow-sm:none;
+  --inset-bg:rgba(28,25,23,0.03); --inset-border:rgba(28,25,23,0.10);
+  --hi-bg:rgba(154,52,18,0.06);
+  --hairline:rgba(28,25,23,0.09);
+  --zebra:rgba(28,25,23,0.025);
+  --thead-bg:rgba(30,58,95,0.07);
+
+  --code-bg:#f5f2ec; --code-fg:#1c1917;
+  --c-kw:#9a3412; --c-fn:#1e3a5f; --c-str:#166534; --c-cm:rgba(28,25,23,0.42); --c-num:#a16207;
+
+  --display:'Newsreader',Georgia,serif;
+  --display-xl:'Newsreader',Georgia,serif;
+  --body:'Inter',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --serif:'Newsreader',Georgia,serif;
+  --title-shadow:none;
+  --em-family:var(--serif); --em-style:italic; --em-weight:400;
+  --heavy:700;
+
+  --mermaid-primary:#ffffff; --mermaid-text:#1c1917; --mermaid-border:#1e3a5f;
+  --mermaid-line:#9a3412; --mermaid-secondary:#f0ebe1; --mermaid-tertiary:#faf7f2;
+}
+/* ============================================================
+   PRIMITIVAS COMPARTIDAS — idénticas en todos los theme packs.
+   El renderer las inyecta en el marcador SHARED_CSS de cada _frame.html.
+   Todo aquí se expresa con los tokens del contrato (TOKENS.md).
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1280px;height:720px;overflow:hidden;font-family:var(--body);background:var(--bg);color:var(--text);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;}
+
+/* Chrome de slide de contenido */
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:10;}
+.tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.17em;color:var(--a2);text-transform:uppercase;white-space:nowrap;}
+.h2{font-family:var(--display);font-size:22px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.02em;text-align:center;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:var(--rule-h);background:linear-gradient(90deg,var(--a2),transparent);opacity:0.45;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text-ter);letter-spacing:0.1em;z-index:10;}
+
+/* Primitivas de contenido */
+.card{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 26px;display:flex;flex-direction:column;gap:10px;}
+.card h3{font-family:var(--display);font-size:17px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.015em;line-height:1.25;}
+.card p{font-size:13px;color:var(--text-sec);line-height:1.65;}
+.kicker{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase;color:var(--a1);}
+.chip{background:var(--inset-bg);border:var(--bw) solid var(--inset-border);border-radius:4px;padding:3px 9px;font-size:10px;color:var(--text-sec);letter-spacing:0.04em;}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+
+em{font-family:var(--em-family);font-style:var(--em-style);font-weight:var(--em-weight);color:var(--a1);}
+b,strong{color:var(--strong);font-weight:700;}
+code{font-family:var(--mono);font-size:0.92em;background:var(--a1-t);border:1px solid var(--a1-b);border-radius:4px;padding:1px 6px;color:var(--a1);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+
+/* Accesibilidad y exportación */
+:focus-visible{outline:2px solid var(--a1);outline-offset:3px;border-radius:3px;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
+@media print{@page{size:1280px 720px;margin:0;}html,body{width:1280px;height:720px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.no-print{display:none!important;}}
+
+
+/* ===== DECORACIONES DE FIRMA DEL PACK ===== */
+/* Editorial impreso: reglas finas, sin ruido, márgenes tipográficos. */
+.deco-a{position:absolute;top:0;left:0;right:0;height:4px;z-index:1;background:var(--a2);}
+.deco-b{position:absolute;top:14px;left:48px;right:48px;height:1px;z-index:1;background:var(--hairline);}
+.deco-c{position:absolute;bottom:34px;left:48px;right:48px;height:1px;z-index:1;background:var(--hairline);}
+.h2{letter-spacing:-0.01em;}
+.tag{letter-spacing:0.14em;}
+.slide{background:linear-gradient(180deg,#faf7f2 0%,#f6f2ea 100%);}
+
+.hm-wrap{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:flex;flex-direction:column;gap:18px;}
+.hm-top{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 26px;display:grid;grid-template:1fr / auto 1fr;gap:32px;align-items:center;}
+.hm-plot{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.hm-axis-top{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-sec);}
+.hm-grid{display:grid;grid-template:repeat(3,1fr) / repeat(3,1fr);gap:6px;}
+.hm-cell{width:80px;height:54px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:0.06em;border:var(--bw) solid;}
+.hm-cell.lv1{background:var(--ok-t);border-color:var(--ok-b);color:var(--ok);}
+.hm-cell.lv2{background:var(--warn-t);border-color:var(--warn-b);color:var(--warn);}
+.hm-cell.lv3{background:var(--err-t);border-color:var(--err-b);color:var(--err);}
+.hm-cell.lv4{background:var(--err-t);border-color:var(--err-b);color:var(--err);}
+.hm-axis-bot{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-sec);}
+.hm-expl h3{font-family:var(--display);font-size:19px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.02em;margin-bottom:9px;}
+.hm-expl p{font-size:13.5px;color:var(--text-sec);line-height:1.75;}
+.hm-cards{display:grid;grid-template:1fr / repeat(3,1fr);gap:16px;flex:1;min-height:0;}
+.hm-card{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;display:flex;flex-direction:column;gap:8px;}
+.hm-badge{width:fit-content;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:5px 12px;border-radius:5px;border:var(--bw) solid;}
+.hm-cond{font-family:var(--mono);font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;}
+.hm-card h4{font-family:var(--display);font-size:15.5px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.015em;}
+.hm-card p{font-size:12px;color:var(--text-sec);line-height:1.65;}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="Matriz de Riesgo">
+  <div class="deco-a" aria-hidden="true"></div>
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+  <div class="header">
+    <span class="tag">Sesión 01 · Selección de tipos</span>
+    <span class="h2">Matriz de Riesgo: Impacto × Probabilidad</span>
+    <span class="tag">S1</span>
+  </div>
+  <div class="divider"></div>
+  <div class="hm-wrap">
+    <div class="hm-top">
+      <div class="hm-plot">
+        <div class="hm-axis-top">↑ Impacto</div>
+        <div class="hm-grid">
+          <div class="hm-cell lv2">MED</div>
+          <div class="hm-cell lv3">ALTO</div>
+          <div class="hm-cell lv4">CRÍTICO</div>
+          <div class="hm-cell lv1">BAJO</div>
+          <div class="hm-cell lv2">MED</div>
+          <div class="hm-cell lv3">ALTO</div>
+          <div class="hm-cell lv1">BAJO</div>
+          <div class="hm-cell lv1">BAJO</div>
+          <div class="hm-cell lv2">MED</div>
+        </div>
+        <div class="hm-axis-bot">Probabilidad →</div>
+      </div>
+      <div class="hm-expl">
+        <h3>Priorización basada en Riesgo</h3>
+        <p>La Matriz de Riesgo decide <b>dónde invertir el esfuerzo de prueba</b>. Clasifica cada funcionalidad por <b>Probabilidad × Impacto</b>. El cuadrante Crítico recibe cobertura máxima; el cuadrante Bajo puede quedar fuera de alcance en proyectos con tiempo limitado.</p>
+      </div>
+    </div>
+    <div class="hm-cards">
+      <div class="hm-card">
+        <div class="hm-badge" style="border-color:#fca5a5;color:#fca5a5;background:rgba(239,68,68,0.12)">Crítico</div>
+        <div class="hm-cond" style="color:#fca5a5">Alta prob. + alto impacto</div>
+        <h4>Cobertura Máxima</h4>
+        <p>Unitarias, integración, E2E y seguridad en cada build. Ejemplo: módulo de pagos en e-commerce.</p>
+      </div>
+      <div class="hm-card">
+        <div class="hm-badge" style="border-color:#fcd34d;color:#fcd34d;background:rgba(245,158,11,0.12)">Alto</div>
+        <div class="hm-cond" style="color:#fcd34d">Alta prob. + bajo impacto</div>
+        <h4>Cobertura Selectiva</h4>
+        <p>Regresión y humo. Se automatizan los caminos felices. Ejemplo: buscador con texto libre que devuelve 0 resultados.</p>
+      </div>
+      <div class="hm-card">
+        <div class="hm-badge" style="border-color:#6ee7b7;color:#6ee7b7;background:rgba(16,185,129,0.12)">Bajo</div>
+        <div class="hm-cond" style="color:#6ee7b7">Baja prob. + bajo impacto</div>
+        <h4>Cobertura Mínima</h4>
+        <p>Se documenta la decisión de no probar. El riesgo lo asume el Product Owner. Ejemplo: página institucional estática.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">01 / 03</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "id": "medical_pulse",
+  "name": "Medical Pulse",
+  "source": "Recreado desde style-gallery/medical_pulse.html sobre el contrato de tokens",
+  "best_for": ["Salud y medicina", "Biotecnología", "Datos clínicos", "Producto SaaS técnico"],
+  "preset": "clinical_white",
+  "decoration": "grid_glow_ecg",
+  "notes": "Blanco clínico y retícula de 64px: el aire es parte del diseño, no lo llenes. Cada tarjeta lleva su barra lateral turquesa. Los cianes del original (#00b4d8, #4ecdc4) no llegan a 3:1 sobre blanco, así que viven en los tokens gráficos (--a1-b, --a2-b) y el texto usa versiones profundas. El rojo de cruz queda reservado para el estado de error.",
+  "palette": {
+    "bg": "#ffffff",
+    "text": "#0a2540",
+    "a1": "#0086a8",
+    "a2": "#0e7c74",
+    "a3": "#5a7a96"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. GLOW mueve el halo turquesa; BAR gira el degradado de la franja superior.",
+  "background_rhythm": [
+    {
+      "GLOW": "radial-gradient(circle 260px at 96% 22%, rgba(78,205,196,0.18) 0%, rgba(149,225,211,0.06) 40%, transparent 70%)",
+      "BAR": "linear-gradient(90deg, #00b4d8 0%, #4ecdc4 50%, #95e1d3 100%)",
+      "BG": "#ffffff"
+    },
+    {
+      "GLOW": "radial-gradient(circle 240px at 6% 78%, rgba(0,180,216,0.14) 0%, rgba(149,225,211,0.05) 40%, transparent 70%)",
+      "BAR": "linear-gradient(90deg, #95e1d3 0%, #4ecdc4 50%, #00b4d8 100%)",
+      "BG": "linear-gradient(180deg, #ffffff 0%, #fbfeff 100%)"
+    },
+    {
+      "GLOW": "radial-gradient(circle 280px at 88% 84%, rgba(78,205,196,0.16) 0%, rgba(149,225,211,0.05) 40%, transparent 70%)",
+      "BAR": "linear-gradient(90deg, #4ecdc4 0%, #00b4d8 55%, #4ecdc4 100%)",
+      "BG": "linear-gradient(160deg, #ffffff 0%, #f7fdfd 100%)"
+    },
+    {
+      "GLOW": "radial-gradient(circle 250px at 12% 14%, rgba(0,180,216,0.13) 0%, rgba(149,225,211,0.05) 40%, transparent 70%)",
+      "BAR": "linear-gradient(90deg, #00b4d8 0%, #95e1d3 40%, #4ecdc4 100%)",
+      "BG": "linear-gradient(200deg, #fbfeff 0%, #ffffff 60%)"
+    }
+  ]
+}

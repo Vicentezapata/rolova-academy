@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<title>Portada</title>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Inter+Tight:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== TOKENS DEL PACK — ver theme-packs/TOKENS.md ===== */
+:root{
+  --bg:#f4e9d0; --bg2:#ebdcb2;
+  --text:#2a1810; --text-sec:rgba(42,24,16,0.62); --text-ter:rgba(42,24,16,0.38);
+  --strong:#6b4423;
+
+  --a1:#e07a3e; --a2:#c14d3f; --a3:#d4a82a;
+  --ok:#2f5c3d; --warn:#7a5f10; --err:#6b1f14;
+  --a1-t:rgba(224,122,62,0.20); --a1-b:rgba(42,24,16,0.85);
+  --a2-t:rgba(193,77,63,0.16); --a2-b:rgba(42,24,16,0.85);
+  --a3-t:rgba(212,168,42,0.22); --a3-b:rgba(42,24,16,0.85);
+  --ok-t:rgba(74,124,89,0.24); --ok-b:rgba(42,24,16,0.85);
+  --warn-t:rgba(212,168,42,0.30); --warn-b:rgba(42,24,16,0.85);
+  --err-t:rgba(193,77,63,0.22); --err-b:rgba(42,24,16,0.85);
+
+  --card-bg:rgba(255,255,255,0.45);
+  --border:#2a1810; --bw:2px; --rule-h:3px;
+  --radius:10px; --radius-lg:14px;
+  --shadow:4px 4px 0 rgba(42,24,16,0.85); --shadow-sm:3px 3px 0 rgba(42,24,16,0.85);
+  --inset-bg:rgba(255,255,255,0.55); --inset-border:rgba(42,24,16,0.35);
+  --hi-bg:rgba(212,168,42,0.22);
+  --hairline:rgba(107,68,35,0.16);
+  --zebra:rgba(107,68,35,0.05);
+  --thead-bg:rgba(224,122,62,0.30);
+
+  --code-bg:rgba(255,255,255,0.72); --code-fg:#2a1810;
+  --c-kw:#d4a82a; --c-fn:#e07a3e; --c-str:#c14d3f; --c-cm:rgba(42,24,16,0.42); --c-num:#7a5f10;
+
+  --display:'Inter Tight','Inter',sans-serif;
+  --display-xl:'Bagel Fat One','Inter Tight',sans-serif;
+  --body:'Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Bagel Fat One','Inter Tight',sans-serif;
+  --title-shadow:2px 2px 0 rgba(193,77,63,0.18);
+  --em-family:var(--serif); --em-style:normal; --em-weight:400;
+  --heavy:900;
+
+  --mermaid-primary:#f4e9d0; --mermaid-text:#2a1810; --mermaid-border:#6b4423;
+  --mermaid-line:#e07a3e; --mermaid-secondary:#ebdcb2; --mermaid-tertiary:#ffffff;
+}
+/* ============================================================
+   PRIMITIVAS COMPARTIDAS — idénticas en todos los theme packs.
+   El renderer las inyecta en el marcador SHARED_CSS de cada _frame.html.
+   Todo aquí se expresa con los tokens del contrato (TOKENS.md).
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1280px;height:720px;overflow:hidden;font-family:var(--body);background:var(--bg);color:var(--text);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;}
+
+/* Chrome de slide de contenido */
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:10;}
+.tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.17em;color:var(--a2);text-transform:uppercase;white-space:nowrap;}
+.h2{font-family:var(--display);font-size:22px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.02em;text-align:center;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:var(--rule-h);background:linear-gradient(90deg,var(--a2),transparent);opacity:0.45;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text-ter);letter-spacing:0.1em;z-index:10;}
+
+/* Primitivas de contenido */
+.card{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 26px;display:flex;flex-direction:column;gap:10px;}
+.card h3{font-family:var(--display);font-size:17px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.015em;line-height:1.25;}
+.card p{font-size:13px;color:var(--text-sec);line-height:1.65;}
+.kicker{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase;color:var(--a1);}
+.chip{background:var(--inset-bg);border:var(--bw) solid var(--inset-border);border-radius:4px;padding:3px 9px;font-size:10px;color:var(--text-sec);letter-spacing:0.04em;}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+
+em{font-family:var(--em-family);font-style:var(--em-style);font-weight:var(--em-weight);color:var(--a1);}
+b,strong{color:var(--strong);font-weight:700;}
+code{font-family:var(--mono);font-size:0.92em;background:var(--a1-t);border:1px solid var(--a1-b);border-radius:4px;padding:1px 6px;color:var(--a1);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+
+/* Accesibilidad y exportación */
+:focus-visible{outline:2px solid var(--a1);outline-offset:3px;border-radius:3px;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
+@media print{@page{size:1280px 720px;margin:0;}html,body{width:1280px;height:720px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.no-print{display:none!important;}}
+
+
+/* ===== DECORACIONES DE FIRMA DEL PACK ===== */
+.deco-a{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 60% 45% at 18% 22%, rgba(212,168,42,0.18) 0%, transparent 60%),radial-gradient(ellipse 55% 40% at 86% 84%, rgba(224,122,62,0.14) 0%, transparent 65%);}
+.deco-b{position:absolute;left:0;right:0;top:0;height:14px;z-index:1;opacity:0.78;background:repeating-linear-gradient(90deg,#6b4423 0 36px,#e07a3e 36px 72px,#d4a82a 72px 108px,#c14d3f 108px 144px);}
+.deco-c{position:absolute;left:0;right:0;bottom:0;height:14px;z-index:1;opacity:0.78;background:repeating-linear-gradient(90deg,#6b4423 0 36px,#e07a3e 36px 72px,#d4a82a 72px 108px,#c14d3f 108px 144px);}
+.deco-grain{position:absolute;inset:0;width:100%;height:100%;opacity:0.08;z-index:9;pointer-events:none;}
+.h2,.card h3{text-shadow:var(--title-shadow);}
+
+.cover-content{position:relative;z-index:10;padding:60px 80px;display:flex;flex-direction:column;justify-content:center;height:100%;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--a1-t);border:var(--bw) solid var(--a1-b);color:var(--a1);padding:8px 18px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:28px;width:fit-content;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--a1);animation:pulse 2s ease-in-out infinite;}
+.cover-title{font-family:var(--display-xl);font-size:56px;font-weight:var(--heavy);line-height:1.1;letter-spacing:-0.045em;color:var(--text);margin-bottom:20px;}
+.cover-sub{font-size:17px;color:var(--text-sec);line-height:1.7;max-width:580px;margin-bottom:44px;}
+.meta-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.meta-chip{background:var(--hairline);border:var(--bw) solid var(--inset-border);padding:7px 16px;border-radius:6px;font-size:12px;color:var(--text-sec);letter-spacing:0.05em;font-family:var(--mono);}
+.meta-chip.accent{background:var(--a2-b);border-color:var(--a2-b);color:var(--a2);}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="Portada">
+  <div class="deco-a" aria-hidden="true"></div>
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+  <svg class="deco-grain" preserveAspectRatio="none" aria-hidden="true"><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/></filter><rect width="100%" height="100%" filter="url(#gr)" fill="#6b4423"/></svg>
+  <div class="bg-img" style="background-image:url('')"></div>
+  <div class="bg-overlay"></div>
+  <div class="cover-content">
+    <div class="eyebrow"><div class="dot"></div>Desarrollo de Software Web I · Unidad 5</div>
+    <h1 class="cover-title">APIs REST<br>con <span class="gradient-text">Laravel</span></h1>
+    <p class="cover-sub">Diseño de recursos, autenticación con Sanctum y versionado de endpoints.</p>
+    <div class="meta-row">
+      <div class="meta-chip accent">4 Sesiones</div>
+      <div class="meta-chip ">26 Slides</div>
+      <div class="meta-chip ">Sanctum · JSON:API</div>
+    </div>
+  </div>
+  <div class="slide-num">00 / 02</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

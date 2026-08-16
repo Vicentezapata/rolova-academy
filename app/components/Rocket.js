@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-export default function Rocket({ targetPosition }) {
+export default function Rocket({ targetPosition, reducedMotion = false }) {
   const groupRef = useRef();
   
   // Track current position and target separately for smooth interpolation
@@ -12,7 +12,7 @@ export default function Rocket({ targetPosition }) {
   const targetVec  = useRef(new THREE.Vector3());
 
   useFrame((state) => {
-    if (!groupRef.current) return;
+    if (!groupRef.current || reducedMotion) return;
     
     const t = state.clock.elapsedTime;
 
@@ -64,7 +64,7 @@ export default function Rocket({ targetPosition }) {
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} position={[0, 4, 8]}>
       {/* 
         The rocket is built pointing UP (Y axis). 
         We rotate this inner group by 90deg on X so the nose points to +Z.

@@ -1,0 +1,35 @@
+{
+  "id": "nocturne_violet",
+  "name": "Nocturne Violet",
+  "source": "Recreado desde style-gallery/nocturne_violet.html sobre el contrato de tokens",
+  "best_for": ["Producto digital", "Lanzamiento y release notes", "Estudio creativo", "Tecnología nocturna"],
+  "preset": "violet_night",
+  "decoration": "aurora_grid_corners",
+  "notes": "La aurora va desenfocada a 60px: es lo que da profundidad y lo primero que se pierde si se toca. Las tarjetas llevan backdrop-filter, así que sobre ellas nunca va texto de bajo contraste. La cursiva Instrument en lila es el único contrapunto al sans apretado — una idea por slide.",
+  "palette": {
+    "bg": "#0a0612",
+    "text": "#ffffff",
+    "a1": "#9b64ff",
+    "a2": "#c4a8ff",
+    "a3": "#6d3df0"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. AURORA mueve los tres focos de luz que se desenfocan a 60px.",
+  "background_rhythm": [
+    {
+      "AURORA": "radial-gradient(circle at 78% 22%, rgba(155,100,255,0.42) 0%, transparent 38%), radial-gradient(circle at 18% 75%, rgba(109,61,240,0.28) 0%, transparent 35%), radial-gradient(circle at 50% 110%, rgba(196,168,255,0.18) 0%, transparent 40%)",
+      "BG": "radial-gradient(ellipse 110% 85% at 50% -15%, #1a0d2e 0%, #0a0612 55%, #06030d 100%)"
+    },
+    {
+      "AURORA": "radial-gradient(circle at 20% 20%, rgba(155,100,255,0.38) 0%, transparent 38%), radial-gradient(circle at 84% 70%, rgba(109,61,240,0.30) 0%, transparent 36%), radial-gradient(circle at 50% -10%, rgba(196,168,255,0.16) 0%, transparent 40%)",
+      "BG": "radial-gradient(ellipse 105% 90% at 20% -10%, #1a0d2e 0%, #0a0612 58%, #06030d 100%)"
+    },
+    {
+      "AURORA": "radial-gradient(circle at 60% 85%, rgba(155,100,255,0.36) 0%, transparent 38%), radial-gradient(circle at 12% 24%, rgba(109,61,240,0.30) 0%, transparent 34%), radial-gradient(circle at 92% 48%, rgba(196,168,255,0.18) 0%, transparent 38%)",
+      "BG": "radial-gradient(ellipse 115% 80% at 70% 110%, #1a0d2e 0%, #0a0612 52%, #06030d 100%)"
+    },
+    {
+      "AURORA": "radial-gradient(circle at 88% 58%, rgba(155,100,255,0.40) 0%, transparent 36%), radial-gradient(circle at 30% 92%, rgba(109,61,240,0.26) 0%, transparent 36%), radial-gradient(circle at 8% 12%, rgba(196,168,255,0.18) 0%, transparent 38%)",
+      "BG": "radial-gradient(ellipse 100% 95% at 88% -12%, #1a0d2e 0%, #0a0612 55%, #06030d 100%)"
+    }
+  ]
+}

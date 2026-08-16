@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/><title>Table of Contents</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/minimal-white.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+</head>
+<body class="single">
+<div class="deck">
+<section class="slide is-active" data-title="Contents">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="grid g2 mt-l anim-stagger-list" data-anim-target="">
+<div class="card"><div class="row"><div class="h3 dim2" style="width:56px">{{ title }}</div><div><h4>{{ title }}</h4><p class="dim">{{ text }}</p></div></div></div>
+<div class="card"><div class="row"><div class="h3 dim2" style="width:56px">{{ title }}</div><div><h4>{{ title }}</h4><p class="dim">{{ text }}</p></div></div></div>
+<div class="card"><div class="row"><div class="h3 dim2" style="width:56px">{{ title }}</div><div><h4>{{ title }}</h4><p class="dim">{{ text }}</p></div></div></div>
+<div class="card"><div class="row"><div class="h3 dim2" style="width:56px">{{ title }}</div><div><h4>{{ title }}</h4><p class="dim">{{ text }}</p></div></div></div>
+<div class="card" style="grid-column:span 2"><div class="row"><div class="h3 dim2" style="width:56px">{{ title }}</div><div><h4>{{ title }}</h4><p class="dim">{{ text }}</p></div></div></div>
+</div>
+<div class="slide-footer"><span class="dim2">{{ text }}</span><span>{{ footer_label }}</span></div>
+</section>
+</div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

@@ -1,0 +1,58 @@
+{
+  "id": "retro_warm",
+  "name": "Retro Warm",
+  "source": "Extraído de DESARROLLO DE SOFTWARE WEB I / UNIDAD 3 y UNIDAD 4",
+  "best_for": [
+    "Programación web",
+    "Frameworks (Laravel, React)",
+    "Contenido con mucho código",
+    "Cursos introductorios"
+  ],
+  "fonts": [
+    "Bagel Fat One",
+    "Inter Tight",
+    "Inter",
+    "JetBrains Mono"
+  ],
+  "palette": {
+    "cream": "#f4e9d0",
+    "brown": "#6b4423",
+    "orange": "#e07a3e",
+    "mustard": "#d4a82a",
+    "vermilion": "#c14d3f",
+    "ink": "#2a1810"
+  },
+  "signature_decorations": [
+    "warm-wash (radiales cálidos)",
+    "stripe-band arriba y abajo",
+    "grain SVG feTurbulence",
+    "hard shadow 4px sin blur"
+  ],
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. Da variedad visual sin que el agente decida nada.",
+  "background_rhythm": [
+    {
+      "WASH_A": "18% 22%",
+      "WASH_B": "86% 84%"
+    },
+    {
+      "WASH_A": "82% 18%",
+      "WASH_B": "14% 80%"
+    },
+    {
+      "WASH_A": "50% 12%",
+      "WASH_B": "50% 88%"
+    },
+    {
+      "WASH_A": "12% 78%",
+      "WASH_B": "88% 22%"
+    },
+    {
+      "WASH_A": "70% 50%",
+      "WASH_B": "20% 30%"
+    },
+    {
+      "WASH_A": "30% 85%",
+      "WASH_B": "75% 15%"
+    }
+  ]
+}

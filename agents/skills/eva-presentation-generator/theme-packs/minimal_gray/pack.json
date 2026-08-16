@@ -1,0 +1,35 @@
+{
+  "id": "minimal_gray",
+  "name": "Minimal Gray",
+  "source": "Recreado desde style-gallery/minimal_gray.html sobre el contrato de tokens",
+  "best_for": ["Ensayo y opinión", "Informes de investigación", "Arquitectura y diseño", "Publicación periódica"],
+  "preset": "quarterly_paper",
+  "decoration": "grain_frame_rules",
+  "notes": "Revista trimestral: Playfair en el titular, cuerpo serif, cero radio y cero sombra. El filete de 2px bajo la cabecera es lo que la convierte en portada — no lo suavices. La paleta es tinta más un solo ladrillo #a0392b; el pack no inventa un cuarto color.",
+  "palette": {
+    "bg": "#f7f1e3",
+    "text": "#1a1a1a",
+    "a1": "#a0392b",
+    "a2": "#1a1a1a",
+    "a3": "#666666"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. NOISE debe traer siempre exactamente dos capas radiales.",
+  "background_rhythm": [
+    {
+      "NOISE": "radial-gradient(circle at 18% 22%, rgba(160,57,43,0.030) 0%, transparent 30%), radial-gradient(circle at 88% 78%, rgba(60,40,20,0.045) 0%, transparent 35%)",
+      "BG": "#f7f1e3"
+    },
+    {
+      "NOISE": "radial-gradient(circle at 84% 18%, rgba(160,57,43,0.028) 0%, transparent 32%), radial-gradient(circle at 14% 82%, rgba(60,40,20,0.045) 0%, transparent 36%)",
+      "BG": "linear-gradient(180deg, #f7f1e3 0%, #f2ebda 100%)"
+    },
+    {
+      "NOISE": "radial-gradient(circle at 50% 8%, rgba(160,57,43,0.026) 0%, transparent 34%), radial-gradient(circle at 22% 92%, rgba(60,40,20,0.040) 0%, transparent 34%)",
+      "BG": "linear-gradient(165deg, #f7f1e3 0%, #efe7d2 100%)"
+    },
+    {
+      "NOISE": "radial-gradient(circle at 12% 70%, rgba(160,57,43,0.030) 0%, transparent 32%), radial-gradient(circle at 90% 22%, rgba(60,40,20,0.042) 0%, transparent 36%)",
+      "BG": "linear-gradient(200deg, #efe7d2 0%, #f7f1e3 55%)"
+    }
+  ]
+}

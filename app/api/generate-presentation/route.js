@@ -1,52 +1,63 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
-import { exec } from 'child_process';
+import { execFile } from 'child_process';
 import util from 'util';
 import { GoogleGenAI } from '@google/genai';
+import { COURSES_ROOT, realPathInsideRoot, toFileApiUrl } from '@/app/lib/safePath';
 
-const execPromise = util.promisify(exec);
+const execFilePromise = util.promisify(execFile);
+
+const SKILL_ROOT = path.join(process.cwd(), '.agents', 'skills', 'eva-presentation-generator');
+const THEME_ID = /^[a-z0-9_]{1,40}$/;
+const MAX_INGESTED_CHARS = 30000;
+
+async function isKnownTheme(theme) {
+  if (typeof theme !== 'string' || !THEME_ID.test(theme) || theme.startsWith('_')) return false;
+  try {
+    const stat = await fs.stat(path.join(SKILL_ROOT, 'theme-packs', theme));
+    return stat.isDirectory();
+  } catch {
+    return false;
+  }
+}
 
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { topic, selectedCourse, selectedUnit, theme, mode, investigate } = body;
+    const { topic, selectedCourse, selectedUnit, theme, investigate } = body;
 
-    console.log("Iniciando generación para:", topic);
-    
-    // Construir la ruta absoluta basada en el portal
-    let materialPath = null;
-    if (selectedCourse && selectedUnit) {
-      materialPath = path.join(process.cwd(), 'cursos', selectedCourse, selectedUnit, 'material');
+    if (typeof topic !== 'string' || topic.trim().length === 0) {
+      return NextResponse.json({ error: 'Debes indicar un tema.' }, { status: 400 });
+    }
+    if (!(await isKnownTheme(theme))) {
+      return NextResponse.json({ error: 'Tema no válido.' }, { status: 400 });
+    }
+    if (!selectedCourse || !selectedUnit) {
+      return NextResponse.json({ error: 'Debes seleccionar un curso y una unidad.' }, { status: 400 });
     }
 
-    // 1. Ingesta: Leer los documentos de la ruta
-    let ingestedText = "";
-    let unitDir = "";
-    
-    if (materialPath && fs.existsSync(materialPath)) {
-      const isDir = fs.lstatSync(materialPath).isDirectory();
-      if (isDir) {
-        // Encontrar archivos .md, .txt, etc.
-        const files = fs.readdirSync(materialPath);
-        for (const file of files) {
-          if (file.endsWith('.md') || file.endsWith('.txt')) {
-            const filePath = path.join(materialPath, file);
-            ingestedText += `\n\n--- Archivo: ${file} ---\n`;
-            ingestedText += fs.readFileSync(filePath, 'utf-8');
-          }
-        }
-        unitDir = path.dirname(materialPath); // El directorio padre (ej: UNIDAD 3)
-      } else {
-        ingestedText = fs.readFileSync(materialPath, 'utf-8');
-        unitDir = path.dirname(path.dirname(materialPath));
+    // La unidad debe existir y estar contenida en cursos/
+    const unitDir = await realPathInsideRoot(COURSES_ROOT, selectedCourse, selectedUnit);
+    if (!unitDir) {
+      return NextResponse.json({ error: 'Curso o unidad no válidos.' }, { status: 400 });
+    }
+
+    console.log('Iniciando generación para:', topic);
+
+    // 1. Ingesta: leer los documentos de material/ (opcional)
+    let ingestedText = 'Sin material base proveído.';
+    const materialPath = await realPathInsideRoot(unitDir, 'material');
+    if (materialPath) {
+      const entries = await fs.readdir(materialPath, { withFileTypes: true });
+      const chunks = [];
+      for (const entry of entries) {
+        if (!entry.isFile()) continue;
+        if (!/\.(md|txt)$/i.test(entry.name)) continue;
+        const content = await fs.readFile(path.join(materialPath, entry.name), 'utf-8');
+        chunks.push(`\n\n--- Archivo: ${entry.name} ---\n${content}`);
       }
-    } else {
-      console.log("Ruta no válida o vacía. Usando solo el tema.");
-      ingestedText = "Sin material base proveído.";
-      // Si no hay ruta, crearemos un temp dir en el portal
-      unitDir = path.join(process.cwd(), 'public', 'temp_presentation');
-      if (!fs.existsSync(unitDir)) fs.mkdirSync(unitDir, { recursive: true });
+      if (chunks.length > 0) ingestedText = chunks.join('');
     }
 
     // 2. Cerebro (LLM): Generar el visual_plan.json
@@ -81,7 +92,7 @@ Esquema JSON requerido:
 
     const prompt = `Por favor, genera el plan visual para la presentación en formato JSON.
 Material base extraído:
-${ingestedText.substring(0, 30000)} // Truncado para no exceder límites si es muy largo
+${ingestedText.substring(0, MAX_INGESTED_CHARS)}
 `;
 
     const modelToUse = process.env.GEMINI_MODEL || 'gemini-2.5-pro';
@@ -97,36 +108,53 @@ ${ingestedText.substring(0, 30000)} // Truncado para no exceder límites si es m
       }
     });
 
-    let jsonString = response.text;
-    
+    const jsonString = response.text;
+    if (!jsonString) {
+      return NextResponse.json({ error: 'El modelo no devolvió contenido.' }, { status: 502 });
+    }
+    try {
+      JSON.parse(jsonString);
+    } catch {
+      return NextResponse.json({ error: 'El modelo devolvió un JSON no válido.' }, { status: 502 });
+    }
+
     // 3. Músculo (Python): Guardar JSON y ejecutar ensamblador
     const planPath = path.join(unitDir, 'visual_plan.json');
-    fs.writeFileSync(planPath, jsonString, 'utf-8');
+    await fs.writeFile(planPath, jsonString, 'utf-8');
     
     console.log(`Plan visual guardado en: ${planPath}`);
     console.log("Ejecutando ensamblador Python...");
     
-    // Ruta absoluta del script Python (que vive en .agents/...)
-    // Asumiendo que academy-portal está al mismo nivel que .agents
-    const pythonScriptPath = path.join(process.cwd(), '..', '.agents', 'skills', 'eva-presentation-generator', 'scripts', 'generate_presentation_template.py');
-    
-    if (!fs.existsSync(pythonScriptPath)) {
-        return NextResponse.json({ error: `No se encontró el script de Python en ${pythonScriptPath}` }, { status: 500 });
+    const pythonScriptPath = path.join(SKILL_ROOT, 'scripts', 'generate_presentation_template.py');
+
+    try {
+      await fs.access(pythonScriptPath);
+    } catch {
+      return NextResponse.json({ error: `No se encontró el script de Python en ${pythonScriptPath}` }, { status: 500 });
     }
 
-    const cmd = `python "${pythonScriptPath}" --unit-path "${unitDir}" --theme "${theme}"`;
-    const { stdout, stderr } = await execPromise(cmd);
+    // execFile sin shell: los argumentos nunca se interpretan como comandos
+    const { stdout, stderr } = await execFilePromise(
+      process.env.PYTHON_BIN || 'python3',
+      [pythonScriptPath, '--unit-path', unitDir, '--pack', theme],
+      { timeout: 120000, maxBuffer: 10 * 1024 * 1024 }
+    );
     
     console.log("Resultado de Python:", stdout);
     if (stderr) console.warn("Advertencia de Python:", stderr);
 
-    const presentationUrl = `file:///${path.join(unitDir, 'presentation', 'preview.html').replace(/\\/g, '/')}`;
+    const previewPath = path.join(unitDir, 'presentation', 'preview.html');
+    try {
+      await fs.access(previewPath);
+    } catch {
+      return NextResponse.json({ error: 'El ensamblador no generó preview.html.' }, { status: 500 });
+    }
 
     return NextResponse.json({ 
         success: true, 
         message: "Presentación generada con éxito.",
-        presentationPath: path.join(unitDir, 'presentation'),
-        localUrl: presentationUrl
+        presentationPath: path.relative(COURSES_ROOT, path.dirname(previewPath)),
+        previewUrl: toFileApiUrl(previewPath)
     });
 
   } catch (error) {

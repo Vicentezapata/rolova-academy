@@ -1,0 +1,35 @@
+{
+  "id": "luxury_purple",
+  "name": "Maison Noir",
+  "source": "Recreado desde style-gallery/luxury_purple.html sobre el contrato de tokens",
+  "best_for": ["Lujo", "Alta gama", "Ceremonias", "Marca premium"],
+  "preset": "noir_gold",
+  "decoration": "vignette_corners_rule",
+  "notes": "El id dice 'purple' pero el diseño original es negro y oro; el nombre visible es Maison Noir. Cero radio y cero sombra. Necesita mucho aire: pocas ideas por slide y titulares cortos en cursiva.",
+  "palette": {
+    "bg": "#060606",
+    "text": "#f5e8c8",
+    "a1": "#c9a960",
+    "a2": "#8a6f3a",
+    "a3": "#d8bd7a"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. RULE mueve la regla ornamental de oro.",
+  "background_rhythm": [
+    {
+      "RULE": "top:96px;left:50%;width:220px;transform:translateX(-50%);",
+      "BG": "radial-gradient(ellipse 80% 60% at 50% 50%, #0c0a07 0%, #060606 70%, #030303 100%)"
+    },
+    {
+      "RULE": "bottom:92px;left:50%;width:260px;transform:translateX(-50%);",
+      "BG": "radial-gradient(ellipse 75% 58% at 50% 42%, #0d0b08 0%, #060606 72%, #030303 100%)"
+    },
+    {
+      "RULE": "top:50%;left:64px;width:140px;",
+      "BG": "radial-gradient(ellipse 70% 55% at 32% 50%, #0c0a07 0%, #060606 70%, #030303 100%)"
+    },
+    {
+      "RULE": "top:50%;right:64px;width:140px;",
+      "BG": "radial-gradient(ellipse 70% 55% at 68% 50%, #0c0a07 0%, #060606 70%, #030303 100%)"
+    }
+  ]
+}

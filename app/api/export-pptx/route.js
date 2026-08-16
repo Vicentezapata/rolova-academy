@@ -3,21 +3,31 @@ import puppeteer from 'puppeteer';
 import pptxgen from 'pptxgenjs';
 
 export async function POST(request) {
+  let browser;
   try {
     const { url, title } = await request.json();
-    if (!url) return NextResponse.json({ error: 'No URL provided' }, { status: 400 });
 
-    const baseUrl = new URL(request.url).origin;
-    const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url.startsWith('/') ? '' : '/'}${url}`;
-    
+    // Solo se permiten rutas servidas por esta app: evita SSRF hacia hosts arbitrarios
+    if (typeof url !== 'string' || !url.startsWith('/api/file/') || url.includes('..')) {
+      return NextResponse.json({ error: 'URL no permitida' }, { status: 400 });
+    }
+
+    const fullUrl = new URL(request.url).origin + url;
+
     console.log(`[Export-PPTX] Iniciando exportación de: ${fullUrl}`);
 
-    const browser = await puppeteer.launch({
+    browser = await puppeteer.launch({
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = await browser.newPage();
+
+    // Puppeteer se conecta a esta misma app: si hay contraseña, debe autenticarse.
+    if (process.env.APP_PASSWORD) {
+      await page.authenticate({ username: 'internal', password: process.env.APP_PASSWORD });
+    }
+
     // Resolucion 1280x720 con Device Scale 2 = 2560x1440 para alta definición en el PPTX
     await page.setViewport({ width: 1280, height: 720, deviceScaleFactor: 2 });
 
@@ -30,6 +40,13 @@ export async function POST(request) {
     });
 
     console.log(`[Export-PPTX] Encontradas ${totalSlides} diapositivas.`);
+
+    if (totalSlides === 0) {
+      return NextResponse.json(
+        { error: 'No se encontraron diapositivas en la presentación.' },
+        { status: 422 }
+      );
+    }
 
     let pres = new pptxgen();
     pres.layout = 'LAYOUT_16x9';
@@ -55,6 +72,7 @@ export async function POST(request) {
     }
 
     await browser.close();
+    browser = undefined;
     console.log(`[Export-PPTX] Generando archivo PPTX...`);
 
     const pptxBuffer = await pres.write({ outputType: 'nodebuffer' });
@@ -72,5 +90,7 @@ export async function POST(request) {
   } catch (err) {
     console.error('[Export-PPTX] Error:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
+  } finally {
+    if (browser) await browser.close().catch(() => {});
   }
 }

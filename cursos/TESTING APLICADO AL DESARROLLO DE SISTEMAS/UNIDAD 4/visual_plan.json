@@ -1,0 +1,1108 @@
+{
+  "pack": "dark_tech",
+  "title": "Unidad 4 — Ingeniería de Calidad Continua",
+  "slides": [
+    {
+      "archetype": "cover",
+      "title": "Ingeniería de Calidad Continua",
+      "notes": "Bienvenida a la Unidad 4, la que cierra la asignatura y la que más se parece a lo que van a encontrar en su primer empleo. Recuerda de dónde venimos: la Unidad 1 dio los fundamentos, niveles y tipos de prueba; la Unidad 2 enseñó a planificar y diseñar casos con historias de usuario, Gherkin, RTM y plan de pruebas; la Unidad 3 los puso a automatizar con Selenium, Appium, Cucumber, Robot y k6. Todo eso responde a la pregunta «cómo pruebo». Esta unidad responde a otra: «cómo hago que la calidad ocurra sola, en cada cambio, sin que nadie tenga que acordarse». Ese es el salto de tester a ingeniero de calidad, y es el que separa un sueldo de otro.",
+      "slots": {
+        "EYEBROW": "UNIDAD 04 · TESTING APLICADO AL DESARROLLO",
+        "TITLE": "Ingeniería de calidad continua",
+        "SUBTITLE": "De ejecutar pruebas a construir el sistema que las ejecuta solo, en cada cambio y sin permiso de nadie.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          { "label": "GitFlow + GitHub Actions", "accent": "a1" },
+          { "label": "Shift-left y shift-right", "accent": "a2" },
+          { "label": "Proyecto final", "accent": "a3" }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "title": "Qué veremos en esta unidad",
+      "notes": "El mapa de la unidad. Las seis partes forman una escalera: primero el cambio de rol y de mentalidad, después la infraestructura que lo sostiene (GitFlow y GitHub Actions), luego las técnicas avanzadas que auditan la propia suite, después la calidad no funcional que casi nadie prueba, después el shift-right que lleva la calidad a producción, y por último la IA, las métricas y el plan de carrera. Avisa: la parte 2 es la más práctica y la que hay que reproducir en un repositorio propio, porque el proyecto final se entrega precisamente ahí.",
+      "slots": {
+        "TAG_LEFT": "MAPA DE LA UNIDAD",
+        "TITLE": "Qué veremos",
+        "TAG_RIGHT": "02",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          { "num": "01", "icon": "◆", "title": "El nuevo rol", "desc": "De tester a ingeniero de calidad: shift-left y shift-right.", "chips": "Mentalidad" },
+          { "num": "02", "icon": "◆", "title": "GitFlow + Actions", "desc": "Del commit al despliegue con puertas de calidad.", "chips": "Práctico" },
+          { "num": "03", "icon": "◆", "title": "Probar las pruebas", "desc": "Mutación, propiedades y contratos entre servicios.", "chips": "Avanzado" },
+          { "num": "04", "icon": "◆", "title": "No funcional", "desc": "Seguridad, accesibilidad, visual y resiliencia.", "chips": "Lo olvidado" },
+          { "num": "05", "icon": "◆", "title": "Shift-right", "desc": "Observabilidad, SLO y probar en producción sin miedo.", "chips": "Producción" },
+          { "num": "06", "icon": "◆", "title": "IA y carrera", "desc": "Métricas de calidad y ruta profesional del QA.", "chips": "Futuro" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 1 · De tester a ingeniero de calidad",
+      "notes": "Primer bloque, el del cambio de mentalidad. La idea que lo sostiene: mientras el testing sea una fase que ocurre después de programar, siempre será el cuello de botella y siempre será lo primero que se recorta cuando hay prisa. La ingeniería de calidad no es una fase, es una propiedad del sistema de entrega. Si al final de la unidad se llevan una sola frase, que sea esta.",
+      "slots": {
+        "PART_LABEL": "PARTE 01",
+        "TITLE": "De tester a ingeniero de calidad",
+        "SUBTITLE": "Mientras probar sea una fase, será siempre lo primero que se recorta",
+        "AGENDA": [
+          { "label": "01", "text": "Qué cambia entre QA clásico e ingeniería de calidad" },
+          { "label": "02", "text": "La evolución del rol y del sueldo" },
+          { "label": "03", "text": "Shift-left, shift-right y las métricas DORA" }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "title": "QA clásico frente a ingeniería de calidad",
+      "notes": "El contraste que define la unidad. A la izquierda, el modelo que probablemente vean en su primera práctica: un equipo de QA separado que recibe una versión terminada, la prueba durante dos semanas y devuelve una lista de defectos. Ese modelo tiene un problema estructural: el defecto se encuentra cuando ya cuesta diez o cien veces más arreglarlo, y el equipo de QA acaba siendo percibido como quien retrasa la entrega. A la derecha, el modelo hacia el que va la industria: la calidad es responsabilidad de todo el equipo y el ingeniero de calidad no ejecuta pruebas, construye el sistema que las ejecuta. Aclara una cosa importante para que nadie se asuste: esto no elimina al tester, elimina la ejecución manual repetitiva. El criterio, la exploración y el diseño de casos siguen siendo humanos y más valiosos que nunca.",
+      "slots": {
+        "TAG_LEFT": "CONTRASTE",
+        "TITLE": "Dos formas de entender la calidad",
+        "TAG_RIGHT": "04",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "QA CLÁSICO",
+        "LEFT_TITLE": "La calidad es una fase",
+        "LEFT_BODY": "Un equipo separado recibe la versión terminada, la prueba y devuelve una lista de defectos antes de la entrega.",
+        "LEFT_EXAMPLE": "«Se lo pasamos a QA el lunes y nos dicen algo el viernes de la otra semana.»",
+        "RIGHT_LABEL": "INGENIERÍA DE CALIDAD",
+        "RIGHT_TITLE": "La calidad es una propiedad",
+        "RIGHT_BODY": "El equipo entero es responsable y el ingeniero de calidad construye el sistema que verifica cada cambio automáticamente.",
+        "RIGHT_EXAMPLE": "«El pull request no se puede fusionar: la puerta de calidad está en rojo.»",
+        "LEFT_POINTS": [
+          { "text": "Se prueba al final, cuando corregir cuesta 10× o 100×" },
+          { "text": "QA es percibido como quien retrasa la entrega" },
+          { "text": "El conocimiento vive en las personas, no en el repositorio" },
+          { "text": "Cada versión repite el mismo trabajo manual" }
+        ],
+        "RIGHT_POINTS": [
+          { "text": "Se verifica en cada commit, cuando corregir es barato" },
+          { "text": "La puerta es automática: no hay que convencer a nadie" },
+          { "text": "El criterio de calidad está versionado junto al código" },
+          { "text": "El tester dedica su tiempo a explorar, no a repetir" }
+        ],
+        "RIGHT_TAGS": [
+          { "text": "Shift-left" },
+          { "text": "Shift-right" },
+          { "text": "DevTestOps" }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "La evolución del rol de QA",
+      "notes": "Recorrido de carrera, y conviene decirlo sin rodeos porque es lo que más les interesa. El tester manual ejecuta casos que otro diseñó; es la puerta de entrada y hoy es el escalón que más presión sufre, tanto de la automatización como de la IA. El automatizador escribe scripts: es donde termina la Unidad 3 y donde está la mayoría de las ofertas actuales en Chile. El SDET, Software Development Engineer in Test, ya es un perfil de desarrollo: construye frameworks, no casos, y su producto es la herramienta que usan los demás. El ingeniero de calidad diseña la estrategia completa, define las puertas y las métricas, y decide qué se prueba y qué no. Y el arquitecto de calidad opera a nivel de organización. Insiste en que cada escalón conserva lo anterior: nadie llega a SDET sin haber sabido diseñar un buen caso de prueba a mano.",
+      "slots": {
+        "TAG_LEFT": "CARRERA",
+        "TITLE": "La evolución del rol de QA",
+        "TAG_RIGHT": "05",
+        "LEAD": "Cada escalón conserva el anterior. Nadie llega a SDET sin saber diseñar a mano un buen caso de prueba.",
+        "COLS": "5",
+        "STEPS": [
+          { "n": "1", "phase": "Tester manual", "title": "Ejecuta casos", "desc": "Aplica casos que otro diseñó y reporta lo que encuentra. Puerta de entrada al oficio.", "output": "Reportes" },
+          { "n": "2", "phase": "Automatizador", "title": "Escribe scripts", "desc": "Traduce casos a código con Selenium, Playwright o Robot. Donde acabó la Unidad 3.", "output": "Suite" },
+          { "n": "3", "phase": "SDET", "title": "Construye el framework", "desc": "Ya es perfil de desarrollo: su producto es la herramienta que usan los demás, no el caso.", "output": "Framework" },
+          { "n": "4", "phase": "Quality Engineer", "title": "Diseña la estrategia", "desc": "Define puertas, métricas y riesgo. Decide qué se prueba, cuándo y qué se acepta no probar.", "output": "Estrategia" },
+          { "n": "5", "phase": "Quality Architect", "title": "Escala la organización", "desc": "Estándares, plataforma de pruebas y cultura de calidad en varios equipos a la vez.", "output": "Plataforma" }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "Shift-left y shift-right",
+      "notes": "El principio central de la unidad, y hay que explicarlo despacio porque el nombre engaña. Imagina el ciclo de vida como una línea horizontal: a la izquierda el requisito y el diseño, en el centro el desarrollo y las pruebas, a la derecha el despliegue y la operación. Shift-left significa mover la verificación hacia el principio: revisar el requisito antes de que se programe, ejecutar análisis estático al escribir, correr unitarias en el commit. Shift-right significa aceptar algo incómodo: por muchas pruebas que hagas, el entorno real siempre tendrá condiciones que no reprodujiste, así que también hay que observar y medir en producción con feature flags, despliegues canario y monitorización. La confusión típica es creer que son alternativas. No lo son: son los dos extremos de la misma cuerda, y hay que tirar de los dos. Un equipo que solo hace shift-left despliega a ciegas; uno que solo hace shift-right convierte a sus usuarios en el equipo de pruebas.",
+      "slots": {
+        "TAG_LEFT": "PRINCIPIO",
+        "TITLE": "Shift-left y shift-right",
+        "TAG_RIGHT": "06",
+        "GHOST": "⇄",
+        "KICKER": "Los dos extremos de la misma cuerda",
+        "PRINCIPLE": "No se elige entre probar antes o observar después: hay que tirar de los dos extremos a la vez.",
+        "PRINCIPLE_BODY": "Shift-left mueve la verificación hacia el requisito y el commit, donde corregir es barato. Shift-right acepta que ningún entorno de pruebas reproduce la realidad, y lleva la medición a producción con banderas, despliegues graduales y observabilidad. Quien solo hace shift-left despliega a ciegas; quien solo hace shift-right convierte a sus usuarios en su equipo de pruebas.",
+        "LIST_TITLE": "Cómo se ejerce cada extremo",
+        "FACTORS": [
+          { "name": "Antes de programar", "text": "Revisar el requisito y los criterios de aceptación: el defecto más barato es el que no se escribe.", "color": "var(--a1)" },
+          { "name": "Al escribir código", "text": "Análisis estático, linter y unitarias en la máquina de quien programa, en segundos.", "color": "var(--a2)" },
+          { "name": "Al integrar", "text": "Puertas automáticas en el pull request: sin verde no hay fusión ni discusión.", "color": "var(--a3)" },
+          { "name": "Ya en producción", "text": "Banderas, canario, trazas y alertas por SLO: la verificación no termina al desplegar.", "color": "var(--ok)" }
+        ],
+        "EXAMPLES": [
+          { "tag": "Solo shift-left", "value": "0", "label": "visibilidad en producción", "desc": "Suite verde y un incidente que nadie vio venir.", "color": "var(--warn)" },
+          { "tag": "Solo shift-right", "value": "100", "label": "% del riesgo en el usuario", "desc": "Tus clientes son tu entorno de pruebas.", "color": "var(--err)" }
+        ]
+      }
+    },
+    {
+      "archetype": "metrics",
+      "title": "Las cinco métricas DORA",
+      "notes": "Dato importante y reciente: DORA, el programa de investigación de Google Cloud, trabajó durante años con cuatro métricas clave y hoy son cinco. Cambió una y añadió otra. El tiempo de recuperación ya no se llama MTTR sino tiempo de recuperación de un despliegue fallido, que es más preciso porque mide solo lo que se rompió al desplegar. Y se sumó la tasa de retrabajo de despliegue: despliegues no planificados que ocurren por un incidente en producción. Las cinco se agrupan en dos familias: rendimiento, que son frecuencia y tiempo de entrega, e inestabilidad, que son tasa de fallo y retrabajo. El hallazgo que hay que subrayar, porque es contraintuitivo: velocidad y estabilidad no son un intercambio. Los equipos que despliegan más a menudo también fallan menos, porque despliegan cambios más pequeños. Advierte del uso perverso: en cuanto una métrica se convierte en objetivo, deja de ser una buena métrica, y los equipos empiezan a inflar los números.",
+      "slots": {
+        "TAG_LEFT": "CIFRAS",
+        "TITLE": "Las cinco métricas DORA",
+        "TAG_RIGHT": "07",
+        "LEAD": "Eran cuatro y hoy son cinco. Miden el sistema de entrega completo, no el trabajo de una persona.",
+        "COLS": "5",
+        "SOURCE": "Fuente: dora.dev · guía de métricas de rendimiento de entrega de software",
+        "METRICS": [
+          { "label": "Frecuencia de despliegue", "value": "1", "unit": "/día", "desc": "Cuántas veces se lleva un cambio a producción.", "pct": "85%" },
+          { "label": "Tiempo de entrega", "value": "<1", "unit": "día", "desc": "Del commit a estar disponible para el usuario.", "pct": "75%" },
+          { "label": "Tasa de fallo del cambio", "value": "<5", "unit": "%", "desc": "Despliegues que exigen intervención inmediata.", "pct": "60%" },
+          { "label": "Recuperación", "value": "<1", "unit": "h", "desc": "Cuánto se tarda en recuperar un despliegue fallido.", "pct": "70%" },
+          { "label": "Retrabajo de despliegue", "value": "<5", "unit": "%", "desc": "Despliegues no planificados por un incidente.", "pct": "55%" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 1",
+      "notes": "Cierre del primer bloque. La respuesta correcta es la C. Es el hallazgo más repetido y más ignorado de la investigación DORA: velocidad y estabilidad se mueven juntas, no en direcciones opuestas. El mecanismo es sencillo y conviene explicarlo: quien despliega a diario despliega cambios pequeños, y un cambio pequeño es más fácil de revisar, de probar y de revertir. Quien despliega una vez al trimestre acumula tres meses de cambios en una sola noche, y cuando algo falla nadie sabe cuál de los doscientos cambios fue.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 1",
+        "TAG_RIGHT": "08",
+        "BADGE": "PREGUNTA 1",
+        "QUESTION": "Según la investigación DORA, ¿qué relación hay entre velocidad y estabilidad?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Quien despliega a diario despliega cambios pequeños, fáciles de revisar y de revertir. Quien despliega una vez al trimestre acumula doscientos cambios en una noche, y cuando algo falla nadie sabe cuál fue.",
+        "OPTIONS": [
+          { "key": "A", "text": "Desplegar más rápido siempre aumenta los fallos", "correct": "" },
+          { "key": "B", "text": "Son independientes: no hay relación medible entre ambas", "correct": "" },
+          { "key": "C", "text": "Van juntas: los equipos que despliegan más a menudo también fallan menos", "correct": "true" },
+          { "key": "D", "text": "La estabilidad solo mejora congelando los despliegues", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 2 · GitFlow y GitHub Actions",
+      "notes": "El bloque más práctico de la unidad y el que sostiene el proyecto final. Aviso al aula: hasta ahora ejecutaban las pruebas a mano en su portátil. A partir de aquí las pruebas se ejecutan solas, en un servidor, cada vez que alguien propone un cambio. Ese es el salto real. Y no se puede entender el pipeline sin entender antes la estrategia de ramas, porque el pipeline se dispara por eventos de Git: un push a una rama, la apertura de un pull request, la creación de una etiqueta. Estrategia de ramas y automatización son la misma conversación.",
+      "slots": {
+        "PART_LABEL": "PARTE 02",
+        "TITLE": "GitFlow y GitHub Actions",
+        "SUBTITLE": "La estrategia de ramas y el pipeline son la misma conversación",
+        "AGENDA": [
+          { "label": "01", "text": "GitFlow: qué rama significa qué" },
+          { "label": "02", "text": "Qué prueba se ejecuta en qué evento" },
+          { "label": "03", "text": "Workflows, puertas de calidad y protección de ramas" }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "title": "GitFlow · el flujo de ramas",
+      "notes": "Recorre el diagrama. GitFlow, propuesto por Vincent Driessen en 2010, define cinco tipos de rama con significados distintos. Main contiene siempre lo que está en producción y cada punto de esa rama es una versión etiquetada. Develop es la rama de integración: acumula lo que irá en la próxima entrega. Las ramas feature salen de develop, viven lo que dura una historia de usuario y vuelven a develop mediante pull request. Cuando develop tiene suficiente valor se abre una rama release, que es donde se estabiliza: ahí solo entran correcciones, nunca funcionalidad nueva, y es la ventana donde el equipo de calidad hace la regresión completa. Al terminar, release se fusiona a main y también de vuelta a develop, y ese doble merge es el paso que más se olvida. Y hotfix es la excepción: sale directamente de main para un fallo crítico en producción y también vuelve a los dos sitios. Para calidad, lo importante es que cada rama tiene un nivel de exigencia distinto, y eso es exactamente lo que vamos a automatizar.",
+      "slots": {
+        "TAG_LEFT": "ESTRATEGIA DE RAMAS",
+        "TITLE": "GitFlow · el flujo de ramas",
+        "TAG_RIGHT": "10",
+        "SPLIT": "1.25fr 1fr",
+        "DIAGRAM": "flowchart TD\n  F[feature/*] -->|pull request| D[develop]\n  D -->|abrir entrega| R[release/x.y]\n  R -->|solo correcciones| R\n  R -->|merge + tag| M[main]\n  R -->|merge de vuelta| D\n  M -->|fallo crítico| H[hotfix/*]\n  H --> M\n  H --> D",
+        "SIDE_TITLE": "Qué significa cada rama",
+        "LEAD": "Cada rama tiene un nivel de exigencia distinto. Eso es justamente lo que vamos a automatizar en el pipeline.",
+        "NOTE_LABEL": "El paso que más se olvida",
+        "NOTE": "Cuando release o hotfix se fusionan a main, hay que fusionarlos también de vuelta a develop. Si no, la corrección desaparece en la siguiente entrega y el defecto reaparece.",
+        "STEPS": [
+          { "n": "1", "name": "main", "text": "Lo que está en producción ahora mismo. Cada punto es una versión etiquetada." },
+          { "n": "2", "name": "develop", "text": "Rama de integración: acumula lo que irá en la próxima entrega." },
+          { "n": "3", "name": "feature/*", "text": "Una historia de usuario. Nace de develop y vuelve por pull request." },
+          { "n": "4", "name": "release/*", "text": "Ventana de estabilización: solo correcciones y la regresión completa." },
+          { "n": "5", "name": "hotfix/*", "text": "Sale de main para un fallo crítico y vuelve a main y a develop." }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "title": "GitFlow frente a Trunk-Based Development",
+      "notes": "Contexto honesto que hay que dar, porque si buscan en internet encontrarán discusión. GitFlow nació para software con versiones: aplicaciones de escritorio, entregas trimestrales, varias versiones soportadas a la vez. Es explícito y ordenado, y sigue siendo lo que verán en la mayoría de las empresas chilenas y en el sector público. Pero tiene un coste: las ramas largas divergen y el merge se vuelve caro, y por eso la investigación DORA asocia el desarrollo basado en tronco con mejor rendimiento de entrega. Trunk-based lleva todo a una sola rama con cambios pequeños y diarios, y esconde lo que no está listo detrás de feature flags. La conclusión para el aula no es «GitFlow está obsoleto», es esta: cuanto más larga viva una rama, más caro es integrarla y más tarde se detecta el conflicto. Si usas GitFlow, que las feature vivan días, no semanas.",
+      "slots": {
+        "TAG_LEFT": "CONTRASTE",
+        "TITLE": "GitFlow frente a Trunk-Based",
+        "TAG_RIGHT": "11",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "GITFLOW",
+        "LEFT_TITLE": "Software con versiones",
+        "LEFT_BODY": "Ramas con significado explícito y una ventana de estabilización antes de cada entrega. Ordenado y fácil de auditar.",
+        "LEFT_EXAMPLE": "Entregas trimestrales, varias versiones soportadas, sector público y banca.",
+        "RIGHT_LABEL": "TRUNK-BASED",
+        "RIGHT_TITLE": "Entrega continua",
+        "RIGHT_BODY": "Una rama principal, cambios pequeños que se integran a diario y funcionalidad incompleta oculta tras banderas.",
+        "RIGHT_EXAMPLE": "Producto web que despliega varias veces al día.",
+        "LEFT_POINTS": [
+          { "text": "Roles de rama explícitos y trazables" },
+          { "text": "Ventana clara para la regresión completa" },
+          { "text": "Ramas largas que divergen y encarecen el merge" },
+          { "text": "El conflicto se descubre tarde, al integrar" }
+        ],
+        "RIGHT_POINTS": [
+          { "text": "Integración diaria: conflictos pequeños y frecuentes" },
+          { "text": "Mejores métricas DORA de entrega" },
+          { "text": "Exige feature flags y una suite muy fiable" },
+          { "text": "Sin disciplina, rompes la rama de todos" }
+        ],
+        "RIGHT_TAGS": [
+          { "text": "Feature flags" },
+          { "text": "CI real" }
+        ]
+      }
+    },
+    {
+      "archetype": "feature-matrix",
+      "title": "Qué prueba se ejecuta en qué evento",
+      "notes": "Esta es la tabla que hay que llevarse a cualquier trabajo, porque resuelve la pregunta que todo el mundo hace mal: «¿ejecutamos todo en cada commit?». No. Cada evento tiene un presupuesto de tiempo distinto. En el push a una rama feature buscas segundos: linter, análisis estático y unitarias, para que quien programa tenga respuesta antes de cambiar de tarea. En el pull request a develop puedes permitirte minutos: añades integración, contratos y cobertura, y aquí es donde la puerta bloquea la fusión. En la rama release ya te puedes permitir la regresión completa, extremo a extremo, accesibilidad y carga, porque es una vez por entrega. Y en producción solo humo, que verifica que el despliegue quedó vivo. La regla general: cuanto más frecuente es el evento, más rápida debe ser la comprobación. Si las pruebas del pull request tardan cuarenta minutos, la gente dejará de abrir pull requests pequeños, y habrás empeorado el proceso creyendo que lo mejorabas.",
+      "slots": {
+        "TAG_LEFT": "DISEÑO DEL PIPELINE",
+        "TITLE": "Qué se ejecuta en qué evento",
+        "TAG_RIGHT": "12",
+        "LEAD": "Cada evento tiene un presupuesto de tiempo distinto. Cuanto más frecuente es el disparo, más rápida debe ser la comprobación.",
+        "HEADERS": "<th>Comprobación</th><th>push feature</th><th class=\"best\">PR → develop</th><th>release/*</th><th>tag → main</th>",
+        "NOTE_LABEL": "La regla que evita el desastre",
+        "NOTE": "Si el pull request tarda 40 minutos, la gente dejará de abrir pull requests pequeños. Presupuesto sano: menos de 2 minutos en feature y menos de 10 en el PR.",
+        "ROWS": [
+          { "cells": "<td>Linter y formato</td><td><span class=\"mk yes\">✓</span></td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Pruebas unitarias</td><td><span class=\"mk yes\">✓</span></td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Integración y contratos</td><td><span class=\"mk no\">✗</span></td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Cobertura y puerta de calidad</td><td><span class=\"mk no\">✗</span></td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Extremo a extremo completo</td><td><span class=\"mk no\">✗</span></td><td class=\"best\"><span class=\"mk part\">~</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Seguridad, accesibilidad y carga</td><td><span class=\"mk no\">✗</span></td><td class=\"best\"><span class=\"mk part\">~</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk no\">✗</span></td>" },
+          { "cells": "<td>Humo tras desplegar</td><td><span class=\"mk no\">✗</span></td><td class=\"best\"><span class=\"mk no\">✗</span></td><td><span class=\"mk yes\">✓</span></td><td><span class=\"mk yes\">✓</span></td>" },
+          { "cells": "<td>Presupuesto de tiempo</td><td class=\"best\">&lt; 2 min</td><td class=\"best\">&lt; 10 min</td><td>&lt; 60 min</td><td>&lt; 5 min</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "GitHub Actions · el primer workflow",
+      "notes": "Demo del bloque, primer paso. Explica el vocabulario mientras recorres el archivo, porque son cuatro palabras y con ellas se entiende todo. Un workflow es un archivo YAML que vive en .github/workflows y se activa por un evento. Un job es un conjunto de pasos que se ejecutan en la misma máquina virtual, y los jobs corren en paralelo salvo que declares dependencias. Un step es un comando o una acción reutilizable de terceros. Y un runner es la máquina que lo ejecuta, gratis para repositorios públicos. Detente en dos puntos. Primero, la caché de pip: sin ella cada ejecución vuelve a descargar todas las dependencias y el pipeline tarda el triple. Segundo, if: always() en la subida del informe: sin esa condición, cuando el test falla el paso de subir el reporte no se ejecuta, y te quedas sin la evidencia justo el día que la necesitas. Ese es el error de principiante número uno en Actions.",
+      "slots": {
+        "TAG_LEFT": "DEMO · GITHUB ACTIONS",
+        "TITLE": "El primer workflow",
+        "TAG_RIGHT": "13",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Un archivo YAML en .github/workflows y ya tienes un servidor ejecutando tus pruebas en cada cambio, gratis.",
+        "CALLOUT_LABEL": "El error número uno",
+        "CALLOUT": "Sin if: always() en la subida del informe, cuando el test falla el reporte no se sube. Te quedas sin evidencia justo el día que la necesitas.",
+        "FILENAME": ".github/workflows/pruebas.yml",
+        "CODE": "name: Pruebas\n\n<span class='c-cm'># Cuándo se dispara</span>\non:\n  push:\n    branches: [ <span class='c-str'>'feature/**'</span> ]\n  pull_request:\n    branches: [ develop, main ]\n\njobs:\n  unitarias:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-python@v5\n        with:\n          python-version: <span class='c-str'>'3.12'</span>\n          cache: <span class='c-str'>'pip'</span>   <span class='c-cm'># sin esto tarda el triple</span>\n\n      - run: pip install -r requirements.txt\n      - run: pytest -v --junitxml=resultados.xml\n\n      - uses: actions/upload-artifact@v4\n        <span class='c-kw'>if</span>: always()   <span class='c-cm'># sube el informe aunque falle</span>\n        with:\n          name: informe-pruebas\n          path: resultados.xml",
+        "STEPS": [
+          { "n": "1", "text": "workflow: el archivo YAML completo. Vive en .github/workflows y se versiona con el código." },
+          { "n": "2", "text": "on: el evento que lo dispara. Aquí, cualquier push a una rama feature y todo pull request a develop o main." },
+          { "n": "3", "text": "job: pasos que comparten máquina. Varios jobs corren en paralelo salvo que declares needs." },
+          { "n": "4", "text": "runner: la máquina virtual. ubuntu-latest es gratis en repositorios públicos." },
+          { "n": "5", "text": "step: un comando (run) o una acción reutilizable (uses). Fija siempre la versión: @v4, nunca @main." }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "GitHub Actions · el workflow completo con puertas",
+      "notes": "Segundo paso de la demo: el workflow serio, el que se parece a uno de producción. Cuatro cosas nuevas que explicar. La matriz ejecuta el mismo job varias veces con distintas combinaciones, aquí tres versiones de Python, y fail-fast en falso evita que el fallo de una combinación cancele las demás, que es lo que quieres para poder comparar. Services levanta contenedores auxiliares, aquí una base de datos PostgreSQL real, y esto es clave: las pruebas de integración necesitan dependencias reales, no simuladas. La dependencia needs encadena jobs: el extremo a extremo no arranca si las unitarias fallaron, así no gastas quince minutos de runner para nada. Y los secrets: nunca, jamás, una credencial escrita en el YAML, porque el repositorio es público o acabará siéndolo. Termina señalando el job de puerta: comprueba la cobertura y termina con exit 1, y ese código de salida es lo que GitHub interpreta para marcar el check en rojo.",
+      "slots": {
+        "TAG_LEFT": "DEMO · GITHUB ACTIONS",
+        "TITLE": "Workflow completo con puertas",
+        "TAG_RIGHT": "14",
+        "KICKER": "Matriz, servicios, dependencias y puerta de calidad",
+        "CODE_TITLE": ".github/workflows/calidad.yml",
+        "CODE": "jobs:\n  unitarias:\n    strategy:\n      fail-fast: false\n      matrix:\n        python: [<span class='c-str'>'3.10'</span>, <span class='c-str'>'3.11'</span>, <span class='c-str'>'3.12'</span>]\n    runs-on: ubuntu-latest\n    steps:\n      - run: pytest --cov=app --cov-report=xml\n\n  integracion:\n    needs: unitarias        <span class='c-cm'># no arranca si lo anterior falló</span>\n    runs-on: ubuntu-latest\n    services:\n      db:\n        image: postgres:16   <span class='c-cm'># dependencia real, no simulada</span>\n        env:\n          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}\n        ports: [<span class='c-str'>'5432:5432'</span>]\n    steps:\n      - run: pytest tests/integracion -v\n\n  puerta_de_calidad:\n    needs: [unitarias, integracion]\n    steps:\n      - run: |\n          COB=$(python -c <span class='c-str'>\"...\"</span>)\n          <span class='c-kw'>if</span> (( COB &lt; <span class='c-num'>80</span> )); <span class='c-kw'>then</span> exit <span class='c-num'>1</span>; <span class='c-kw'>fi</span>",
+        "PANEL_TITLE": "Qué aporta cada pieza",
+        "WHY_TITLE": "Por qué la puerta termina con exit 1",
+        "WHY": "GitHub no entiende de cobertura: entiende de códigos de salida. Un exit distinto de cero pone el check en rojo, y la regla de protección de rama impide fusionar. Ahí es donde la calidad deja de depender de convencer a alguien.",
+        "CRITERIA": [
+          { "letter": "M", "name": "matrix · el mismo job en varias versiones", "meta": "Compatibilidad", "highlight": "" },
+          { "letter": "F", "name": "fail-fast: false · no canceles las demás", "meta": "Diagnóstico", "highlight": "true" },
+          { "letter": "S", "name": "services · base de datos real en contenedor", "meta": "Integración", "highlight": "true" },
+          { "letter": "N", "name": "needs · encadena y ahorra minutos de runner", "meta": "Coste", "highlight": "" },
+          { "letter": "K", "name": "secrets · jamás una credencial en el YAML", "meta": "Seguridad", "highlight": "true" },
+          { "letter": "E", "name": "exit 1 · el código que pone el check en rojo", "meta": "La puerta", "highlight": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "GitHub Actions · leer la ejecución",
+      "notes": "Tercer paso: dónde se mira el resultado, porque de nada sirve tener el pipeline si nadie sabe interpretarlo. Recorre la pestaña Actions. Cada ejecución es un run con su número; dentro están los jobs, y dentro de cada job el registro de cada paso, desplegable. Las anotaciones son lo más útil y lo menos conocido: GitHub pinta el error directamente sobre la línea del archivo en la pestaña Files changed del pull request, así que quien revisa ve el fallo sin salir del navegador. Los artefactos son los archivos que subiste, y caducan a los noventa días por defecto. El resumen del job permite escribir markdown propio con $GITHUB_STEP_SUMMARY, y es donde conviene poner la tabla de resultados para no obligar a nadie a leer el log. Y los checks son los que la regla de protección mira para permitir o no la fusión. Menciona también los minutos: son gratis en repositorios públicos pero se pagan en los privados, y una suite mal diseñada puede costar dinero de verdad.",
+      "slots": {
+        "TAG_LEFT": "DEMO · GITHUB ACTIONS",
+        "TITLE": "Leer la ejecución del workflow",
+        "TAG_RIGHT": "15",
+        "SPEC_TITLE": "Pestaña Actions · run #128 · PR «feature/ordenar-tareas» → develop",
+        "FIELDS": [
+          { "key": "Run", "value": "Una ejecución completa del workflow, con su número y el commit que la disparó", "highlight": "" },
+          { "key": "Jobs", "value": "unitarias (3 en matriz) · integracion · puerta_de_calidad", "highlight": "" },
+          { "key": "Anotaciones", "value": "El error aparece sobre la línea exacta en Files changed del pull request", "highlight": "true" },
+          { "key": "Artefactos", "value": "informe-pruebas.zip · caducan a los 90 días por defecto", "highlight": "" },
+          { "key": "Resumen del job", "value": "echo '| Caso | Estado |' >> $GITHUB_STEP_SUMMARY  ·  markdown propio", "highlight": "true" },
+          { "key": "Checks", "value": "Lo que mira la regla de protección para permitir o bloquear la fusión", "highlight": "true" },
+          { "key": "Re-run failed jobs", "value": "Repite solo los jobs en rojo, sin volver a ejecutar los verdes", "highlight": "" },
+          { "key": "Minutos", "value": "Gratis en repositorios públicos; en privados se facturan por minuto de runner", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Las anotaciones ahorran el viaje", "text": "Quien revisa el pull request ve el fallo sobre la línea, sin abrir el log ni descargar nada. Es la diferencia entre un pipeline que se usa y uno que se ignora." },
+          { "n": "2", "title": "Escribe tu propio resumen", "text": "$GITHUB_STEP_SUMMARY acepta markdown. Pon ahí la tabla de resultados y nadie tendrá que bucear en 4.000 líneas de log." },
+          { "n": "3", "title": "Los minutos cuestan", "text": "Una suite mal diseñada que corre entera en cada push puede costar dinero real. Por eso la tabla de qué se ejecuta en qué evento no es teoría." }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Protección de ramas y errores típicos del pipeline",
+      "notes": "Cierre práctico del bloque. El primer aviso es el más importante de toda la unidad: un pipeline sin regla de protección de rama es decorativo. Si alguien puede fusionar con el check en rojo, el check no significa nada. La regla se configura en Settings, Branches, y se marca «Require status checks to pass before merging». Sin eso, todo lo anterior es teatro. El segundo aviso, sobre pruebas inestables, es el que mata pipelines en la vida real: una prueba que falla una de cada diez veces enseña al equipo a pulsar «re-run» sin mirar, y a partir de ese momento el rojo dejó de significar nada. Se pone en cuarentena y se arregla, no se reintenta. Los otros tres son de higiene: fijar versiones de acciones, no meter secretos, y no ejecutar el pipeline entero en cada push.",
+      "slots": {
+        "TAG_LEFT": "GOBIERNO",
+        "TITLE": "Protección de ramas y errores típicos",
+        "TAG_RIGHT": "16",
+        "LEAD": "Cinco reglas que separan un pipeline que gobierna la calidad de uno que solo gasta minutos de runner.",
+        "CALLOUTS": [
+          { "kind": "danger", "icon": "inrunzby", "title": "Sin protección de rama, el pipeline es decorativo", "text": "Settings → Branches → «Require status checks to pass before merging». Si se puede fusionar en rojo, el rojo no significa nada y todo lo demás es teatro." },
+          { "kind": "warn", "icon": "usownftb", "title": "Una prueba inestable envenena todo el pipeline", "text": "Si falla una de cada diez veces, el equipo aprende a pulsar «re-run» sin mirar. Cuarentena y arreglo, nunca reintento automático." },
+          { "kind": "tip", "icon": "xtzvywzp", "title": "Fija la versión de cada acción", "text": "actions/checkout@v4, nunca @main. Una acción de terceros que cambia bajo tus pies puede romper el pipeline o, peor, filtrar secretos." },
+          { "kind": "info", "icon": "qhgmphtg", "title": "Cancela ejecuciones obsoletas", "text": "concurrency con cancel-in-progress: true detiene la ejecución anterior cuando llega un push nuevo al mismo PR. Ahorra minutos y ruido." },
+          { "kind": "note", "icon": "msoeawqm", "title": "Exige revisión humana además del verde", "text": "El pipeline comprueba que funciona, no que esté bien diseñado. Una aprobación de otra persona sigue siendo obligatoria." }
+        ]
+      }
+    },
+    {
+      "archetype": "roadmap",
+      "title": "Implantar el pipeline por fases",
+      "notes": "Cómo se implanta esto en un equipo que hoy no tiene nada, que es la situación real en la que se van a encontrar. No se llega con el YAML de sesenta líneas el primer día: se llega con uno de diez que solo ejecuta el linter, y se deja que el equipo se acostumbre a ver el check verde. En la segunda fase se añaden las unitarias y, solo entonces, se activa la protección de rama, porque activar la puerta antes de que la suite sea fiable genera rechazo inmediato. En la tercera se añade la cobertura, la integración con servicios y los artefactos. Y en la cuarta lo caro: extremo a extremo en release, seguridad y despliegue automático. El error clásico es intentar la fase 4 el primer día, y el resultado es siempre el mismo: alguien desactiva el workflow «temporalmente» y nunca se vuelve a activar.",
+      "slots": {
+        "TAG_LEFT": "PLAN",
+        "TITLE": "Implantar el pipeline por fases",
+        "TAG_RIGHT": "17",
+        "LEAD": "Nadie llega el primer día con el YAML de sesenta líneas. Se empieza con diez y se gana confianza antes de cerrar la puerta.",
+        "COLS": "4",
+        "LANES": [
+          { "phase": "Fase 1 · Visibilidad", "when": "Semana 1", "color": "var(--a1)", "items": "Workflow con linter y formato|Se dispara en cada pull request|Todavía sin bloquear nada|El equipo se acostumbra al check" },
+          { "phase": "Fase 2 · La puerta", "when": "Semanas 2-3", "color": "var(--a2)", "items": "Unitarias en el pipeline|Activar protección de rama|Convención de nombres de rama|Prohibido push directo a develop" },
+          { "phase": "Fase 3 · Profundidad", "when": "Mes 2", "color": "var(--a3)", "items": "Cobertura con umbral mínimo|Integración con servicios|Artefactos y resumen del job|Cuarentena de inestables" },
+          { "phase": "Fase 4 · Entrega", "when": "Mes 3+", "color": "var(--ok)", "items": "Extremo a extremo en release|Seguridad y accesibilidad|Despliegue automático por etiqueta|Humo tras desplegar" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 2",
+      "notes": "Cierre del bloque de CI/CD. La respuesta correcta es la B. Es la confusión más frecuente al empezar con Actions: se cree que tener el workflow ya impide fusionar código roto. No lo impide. El workflow solo informa; quien bloquea es la regla de protección de rama configurada en el repositorio. Son dos cosas distintas y hay que configurar las dos. Si el grupo duda, vuelve a la diapositiva de gobierno y muestra el primer aviso.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 2",
+        "TAG_RIGHT": "18",
+        "BADGE": "PREGUNTA 2",
+        "QUESTION": "Tienes un workflow que ejecuta las pruebas en cada pull request. ¿Basta para impedir que se fusione código roto?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "El workflow solo informa: pinta el check en verde o en rojo. Quien bloquea la fusión es la regla de protección de rama del repositorio. Son dos configuraciones distintas y hay que activar las dos.",
+        "OPTIONS": [
+          { "key": "A", "text": "Sí: si el workflow falla, GitHub bloquea la fusión automáticamente", "correct": "" },
+          { "key": "B", "text": "No: hace falta además una regla de protección que exija el check en verde", "correct": "true" },
+          { "key": "C", "text": "Sí, siempre que el workflow termine con exit 1", "correct": "" },
+          { "key": "D", "text": "No, porque Actions no puede leer el resultado de las pruebas", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 3 · Pruebas que prueban a las pruebas",
+      "notes": "Bloque de técnicas avanzadas. Plantea la pregunta incómoda que abre el bloque: tu suite está verde, tienes 85% de cobertura, ¿y qué sabes con eso? Casi nada. La cobertura mide qué líneas se ejecutaron, no si se comprobó algo sobre ellas: un test sin una sola aserción da cobertura completa. Este bloque presenta tres técnicas que auditan la calidad de la propia suite en vez de la del producto, y son exactamente las que separan un currículum de otro porque casi nadie las conoce.",
+      "slots": {
+        "PART_LABEL": "PARTE 03",
+        "TITLE": "Pruebas que prueban a las pruebas",
+        "SUBTITLE": "Tu suite está verde y tienes 85% de cobertura. ¿Y qué sabes con eso?",
+        "AGENDA": [
+          { "label": "01", "text": "Pruebas de mutación: quién vigila al vigilante" },
+          { "label": "02", "text": "Pruebas basadas en propiedades" },
+          { "label": "03", "text": "Contratos entre servicios con Pact" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Cuatro técnicas que casi nadie usa",
+      "notes": "Panorama del bloque. La mutación audita la suite introduciendo fallos a propósito. Las propiedades cambian la pregunta: en vez de escribir veinte casos concretos, declaras una regla que debe cumplirse siempre y la herramienta busca el contraejemplo. Los contratos resuelven el problema real de los microservicios: probar la integración sin levantar los quince servicios. Y el fuzzing lanza entradas basura para encontrar el caso que nadie imaginó, y es de donde salen la mayoría de las vulnerabilidades de desbordamiento. Todas comparten la misma idea: dejar de escribir casos uno a uno y empezar a generar la exploración automáticamente.",
+      "slots": {
+        "TAG_LEFT": "PANORAMA",
+        "TITLE": "Cuatro técnicas que casi nadie usa",
+        "TAG_RIGHT": "20",
+        "COLS": "4",
+        "CARDS": [
+          { "badge": "01", "title": "Mutación", "body": "Introduce fallos a propósito en el código y comprueba si tu suite los detecta. Audita las pruebas, no el producto.", "note_label": "Responde a", "note": "¿Mis tests sirven para algo?" },
+          { "badge": "02", "title": "Propiedades", "body": "En vez de 20 casos concretos, declaras una regla que siempre debe cumplirse y la herramienta busca el contraejemplo.", "note_label": "Responde a", "note": "¿Qué caso no se me ocurrió?" },
+          { "badge": "03", "title": "Contratos", "body": "Verifica que dos servicios siguen entendiéndose sin necesidad de levantar los quince del sistema completo.", "note_label": "Responde a", "note": "¿Rompí a quien me consume?" },
+          { "badge": "04", "title": "Fuzzing", "body": "Lanza entradas malformadas y aleatorias buscando el caso que hace explotar el sistema.", "note_label": "Responde a", "note": "¿Qué pasa con basura?" }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Pruebas de mutación · instalación y ejecución",
+      "notes": "Demo de mutación. La idea, propuesta por DeMillo, Lipton y Sayward en 1978, es tan sencilla que resulta desconcertante: si modifico el código a propósito y tus pruebas siguen en verde, tus pruebas no valen. La herramienta genera mutantes cambiando operadores, un mayor por un mayor o igual, un más por un menos, un true por un false. Si al menos una prueba falla con ese mutante, el mutante está «matado» y tu suite protege esa línea. Si ninguna prueba falla, el mutante «sobrevive» y acabas de descubrir un agujero que la cobertura no veía. El indicador es la puntuación de mutación: mutantes matados dividido entre el total. Aterriza la comparación: una función con 100% de cobertura y 40% de mutación significa que ejecutas todo el código pero apenas compruebas nada. Advierte del coste: la mutación ejecuta la suite una vez por mutante, así que es lenta y no se pone en cada pull request, se ejecuta de noche o en la rama release.",
+      "slots": {
+        "TAG_LEFT": "DEMO · MUTACIÓN",
+        "TITLE": "Instalación y ejecución",
+        "TAG_RIGHT": "21",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "Si modifico tu código a propósito y tus pruebas siguen en verde, tus pruebas no valen. Eso es todo el concepto.",
+        "CALLOUT_LABEL": "Cuándo ejecutarla",
+        "CALLOUT": "La mutación corre la suite una vez por mutante: es lenta. Nunca en el pull request. De noche, o en la rama release, sobre los módulos críticos.",
+        "FILENAME": "terminal",
+        "CODE": "<span class='c-cm'># Python</span>\npip install mutmut\nmutmut run --paths-to-mutate app/tareas.py\nmutmut results\nmutmut show <span class='c-num'>7</span>        <span class='c-cm'># ver el mutante nº 7</span>\n\n<span class='c-cm'># JavaScript / TypeScript</span>\nnpm install --save-dev @stryker-mutator/core\nnpx stryker run\n\n<span class='c-cm'>// Código original</span>\n<span class='c-kw'>def</span> <span class='c-fn'>es_prioritaria</span>(tarea):\n    <span class='c-kw'>return</span> tarea.urgencia &gt; <span class='c-num'>7</span>\n\n<span class='c-cm'># Mutante 1: &gt; se convierte en &gt;=</span>\n<span class='c-cm'># Mutante 2: 7 se convierte en 8</span>\n<span class='c-cm'># Mutante 3: return se convierte en return False</span>\n\n<span class='c-cm'># Si ninguna prueba falla con el mutante 1,</span>\n<span class='c-cm'># nadie está probando el valor límite 7.</span>",
+        "STEPS": [
+          { "n": "1", "text": "La herramienta genera mutantes: cambia > por >=, + por -, true por false, borra una línea." },
+          { "n": "2", "text": "Ejecuta tu suite contra cada mutante, uno a uno." },
+          { "n": "3", "text": "Si alguna prueba falla, el mutante está «matado»: esa línea sí está protegida." },
+          { "n": "4", "text": "Si ninguna falla, el mutante «sobrevive» y acabas de encontrar un agujero real." },
+          { "n": "5", "text": "Puntuación de mutación = matados / total. Es la métrica honesta que la cobertura no da." }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Mutación · leer el informe y actuar",
+      "notes": "Lectura del informe, que es donde está el valor didáctico. Recorre los estados. Matado es lo que quieres. Superviviente es el hallazgo: hay que ir a verlo con mutmut show y preguntarse qué prueba habría que escribir para matarlo. Tiempo agotado normalmente significa que el mutante creó un bucle infinito, y cuenta como matado porque la suite sí notó la diferencia. Sospechoso es el que tardó mucho más de lo normal. Y el problema clásico de la técnica: los mutantes equivalentes, cambios que no alteran el comportamiento observable y que por tanto es imposible matar; hay que revisarlos a mano y silenciarlos. Insiste en la comparación de la última fila, que es la moraleja completa del bloque: 92% de cobertura con 41% de mutación describe una suite que ejecuta casi todo el código y comprueba casi nada.",
+      "slots": {
+        "TAG_LEFT": "DEMO · MUTACIÓN",
+        "TITLE": "Leer el informe y actuar",
+        "TAG_RIGHT": "22",
+        "SPEC_TITLE": "$ mutmut results  ·  módulo app/tareas.py",
+        "FIELDS": [
+          { "key": "🎉 Matados", "value": "84 mutantes — alguna prueba falló al introducirlos. Esa línea sí está protegida.", "highlight": "" },
+          { "key": "🙁 Supervivientes", "value": "31 mutantes — ninguna prueba los notó. Aquí está el trabajo pendiente.", "highlight": "true" },
+          { "key": "⏰ Tiempo agotado", "value": "4 — el mutante causó un bucle infinito. Cuenta como matado.", "highlight": "" },
+          { "key": "🤔 Sospechosos", "value": "2 — tardaron mucho más de lo normal; revísalos a mano.", "highlight": "" },
+          { "key": "Puntuación de mutación", "value": "84 / 121 = 69%  ·  objetivo razonable: > 75% en módulos críticos", "highlight": "true" },
+          { "key": "Inspeccionar uno", "value": "mutmut show 7 — muestra el diff exacto del mutante que sobrevivió", "highlight": "" },
+          { "key": "Comparar con cobertura", "value": "Cobertura 92%  vs  mutación 41% = ejecutas casi todo y compruebas casi nada", "highlight": "true" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Un superviviente es una prueba que falta", "text": "No es un defecto del producto: es un hueco en tu suite. La acción concreta es escribir el test que mataría a ese mutante." },
+          { "n": "2", "title": "Cuidado con los equivalentes", "text": "Algunos mutantes no cambian el comportamiento observable y es imposible matarlos. Revísalos y silénciaslos, o perseguirás un 100% inalcanzable." },
+          { "n": "3", "title": "No la apliques a todo el proyecto", "text": "Es cara. Elige los tres o cuatro módulos donde un fallo duele de verdad: pagos, permisos, cálculo. El resto no compensa." }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Pruebas basadas en propiedades",
+      "notes": "Demo de property-based testing. El cambio mental es grande y hay que explicarlo despacio. Hasta ahora escribían casos: para esta entrada, este resultado. Aquí se escribe una propiedad: una afirmación que debe cumplirse para cualquier entrada válida. La herramienta genera cientos de entradas, incluidas las raras que nadie escribiría a mano —cadenas vacías, unicode, números enormes, listas de un solo elemento— y busca activamente el contraejemplo. Y cuando lo encuentra hace lo más útil de toda la técnica: la reducción, el shrinking. Si falla con una lista de 400 elementos, Hypothesis va recortando hasta darte el caso mínimo que reproduce el fallo, normalmente una lista de dos elementos. Eso es un reporte de defecto ya escrito. Las tres propiedades del panel son las clásicas y con ellas se cubre casi todo: ida y vuelta, invariante y comparación con una implementación de referencia.",
+      "slots": {
+        "TAG_LEFT": "DEMO · PROPIEDADES",
+        "TITLE": "De casos concretos a reglas generales",
+        "TAG_RIGHT": "23",
+        "KICKER": "Hypothesis (Python) · fast-check (JS)",
+        "CODE_TITLE": "tests/test_propiedades.py",
+        "CODE": "<span class='c-kw'>from</span> hypothesis <span class='c-kw'>import</span> given, strategies <span class='c-kw'>as</span> st\n\n<span class='c-cm'># Propiedad 1 · ida y vuelta</span>\n@given(st.text())\n<span class='c-kw'>def</span> <span class='c-fn'>test_serializar_y_leer_devuelve_lo_mismo</span>(titulo):\n    <span class='c-kw'>assert</span> leer(serializar(titulo)) == titulo\n\n<span class='c-cm'># Propiedad 2 · invariante</span>\n@given(st.lists(st.integers()))\n<span class='c-kw'>def</span> <span class='c-fn'>test_ordenar_conserva_los_elementos</span>(tareas):\n    <span class='c-kw'>assert</span> sorted(ordenar(tareas)) == sorted(tareas)\n\n<span class='c-cm'># $ pytest -q</span>\n<span class='c-cm'># Falsifying example: tareas=[0, -1]</span>\n<span class='c-cm'># ↑ Hypothesis redujo un fallo de 400 elementos a 2</span>",
+        "PANEL_TITLE": "Las tres propiedades clásicas",
+        "WHY_TITLE": "Por qué la reducción lo cambia todo",
+        "WHY": "Cuando falla, Hypothesis no te da la lista de 400 elementos con la que falló: la recorta hasta el caso mínimo que reproduce el problema. Ese contraejemplo mínimo es, literalmente, un reporte de defecto ya escrito.",
+        "CRITERIA": [
+          { "letter": "1", "name": "Ida y vuelta · leer(escribir(x)) == x", "meta": "Serialización", "highlight": "true" },
+          { "letter": "2", "name": "Invariante · algo que nunca cambia", "meta": "Ordenar, filtrar", "highlight": "true" },
+          { "letter": "3", "name": "Referencia · compara con una versión lenta pero correcta", "meta": "Optimizaciones", "highlight": "" },
+          { "letter": "4", "name": "st.text() incluye unicode, vacíos y emojis", "meta": "Lo que no escribirías", "highlight": "" },
+          { "letter": "5", "name": "El contraejemplo se guarda y se reejecuta siempre", "meta": "Sin regresión", "highlight": "" },
+          { "letter": "6", "name": "No sustituye a los casos concretos: los complementa", "meta": "Convivencia", "highlight": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Contract testing con Pact · el consumidor",
+      "notes": "Demo de contratos, la técnica más valiosa del bloque para quien trabaje con microservicios. Plantea el problema primero: tienes quince servicios y quieres saber si el cambio que hiciste rompe a alguien. La opción ingenua es levantar los quince y probar de extremo a extremo, y eso es lento, frágil y carísimo de mantener. Pact propone otra cosa: cada consumidor declara qué espera exactamente del proveedor, y esa expectativa se guarda en un archivo, el pacto. El consumidor prueba contra un servidor simulado que Pact levanta y que responde según el contrato. Después, y esto es lo esencial, el proveedor descarga ese contrato y verifica que su implementación real lo cumple. Nunca hay que levantar los dos a la vez. Subraya el vocabulario: consumidor y proveedor, no cliente y servidor, porque en colas de mensajes esos términos no encajan.",
+      "slots": {
+        "TAG_LEFT": "DEMO · CONTRATOS",
+        "TITLE": "Pact · el lado del consumidor",
+        "TAG_RIGHT": "24",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "Probar la integración de quince microservicios sin levantar ni uno solo de ellos. Ese es el truco.",
+        "CALLOUT_LABEL": "La metáfora de Pact",
+        "CALLOUT": "¿Le prendes fuego a tu casa para probar el detector de humo? No: pulsas el botón de prueba. Pact es ese botón para tus integraciones.",
+        "FILENAME": "tests/test_contrato_tareas.py",
+        "CODE": "<span class='c-kw'>from</span> pact <span class='c-kw'>import</span> Consumer, Provider\n\npact = Consumer(<span class='c-str'>'WebTareas'</span>).has_pact_with(Provider(<span class='c-str'>'ApiTareas'</span>))\n\n<span class='c-kw'>def</span> <span class='c-fn'>test_obtener_tarea</span>():\n    esperado = {<span class='c-str'>'id'</span>: <span class='c-num'>1</span>, <span class='c-str'>'titulo'</span>: <span class='c-str'>'Comprar leche'</span>,\n                <span class='c-str'>'completada'</span>: <span class='c-kw'>False</span>}\n\n    (pact\n     .given(<span class='c-str'>'existe la tarea 1'</span>)\n     .upon_receiving(<span class='c-str'>'una petición de la tarea 1'</span>)\n     .with_request(<span class='c-str'>'GET'</span>, <span class='c-str'>'/tareas/1'</span>)\n     .will_respond_with(<span class='c-num'>200</span>, body=esperado))\n\n    <span class='c-kw'>with</span> pact:\n        resultado = ClienteTareas(pact.uri).obtener(<span class='c-num'>1</span>)\n\n    <span class='c-kw'>assert</span> resultado.titulo == <span class='c-str'>'Comprar leche'</span>\n\n<span class='c-cm'># Genera: pacts/webtareas-apitareas.json</span>",
+        "STEPS": [
+          { "n": "1", "text": "El consumidor declara qué espera: esta petición debe devolver esta respuesta." },
+          { "n": "2", "text": "Pact levanta un servidor simulado que responde según esa expectativa." },
+          { "n": "3", "text": "Tu código real se prueba contra ese simulado, sin la API verdadera." },
+          { "n": "4", "text": "El resultado se guarda en un archivo JSON: eso es el pacto." },
+          { "n": "5", "text": "El proveedor descarga ese pacto y verifica que su implementación real lo cumple." }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "Contratos · el broker y can-i-deploy",
+      "notes": "La pieza que convierte a Pact en algo operativo. El broker es un servidor donde se publican los contratos con la versión y la etiqueta de cada servicio, y donde ambos lados consultan. Lo verdaderamente potente es el comando can-i-deploy: antes de desplegar, pregunta al broker si la versión que quieres subir es compatible con todo lo que hay actualmente en producción. Si algún consumidor todavía usa un campo que tú eliminaste, el comando devuelve código de salida distinto de cero y el pipeline se detiene. Eso es exactamente lo que se conecta con la Parte 2: es una puerta de calidad más, y quizá la más útil en una arquitectura de servicios. Recorre la tabla y detente en la fila de la matriz de verificación: quién ha verificado qué versión de quién.",
+      "slots": {
+        "TAG_LEFT": "DEMO · CONTRATOS",
+        "TITLE": "El broker y can-i-deploy",
+        "TAG_RIGHT": "25",
+        "LEAD": "El broker guarda los contratos; can-i-deploy es la puerta que impide desplegar algo que rompería a otro equipo.",
+        "HEADERS": "<th>Pieza</th><th>Comando o acción</th><th>Qué resuelve</th>",
+        "NOTE_LABEL": "La conexión con la Parte 2",
+        "NOTE": "can-i-deploy devuelve un código de salida distinto de cero si la combinación es incompatible. En GitHub Actions eso pone el check en rojo y la protección de rama impide desplegar.",
+        "ROWS": [
+          { "cells": "<td>Broker</td><td>docker run pactfoundation/pact-broker</td><td>Servidor donde viven los contratos, versionados y etiquetados</td>" },
+          { "cells": "<td>Publicar</td><td>pact-broker publish ./pacts --consumer-app-version=$SHA</td><td>El consumidor sube lo que espera, atado al commit exacto</td>" },
+          { "cells": "<td>Verificar</td><td>pytest tests/proveedor --pact-url=...</td><td>El proveedor comprueba que su código real cumple el contrato</td>" },
+          { "cells": "<td>Matriz</td><td>Vista web del broker</td><td>Quién ha verificado qué versión de quién, de un vistazo</td>" },
+          { "cells": "<td>Puerta</td><td>pact-broker can-i-deploy --to-environment production</td><td>¿Es seguro desplegar esta versión con lo que hay hoy en producción?</td>" },
+          { "cells": "<td>Webhook</td><td>Disparo automático al publicar un pacto</td><td>Si el consumidor cambia, el proveedor se entera solo</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 3",
+      "notes": "Cierre del bloque avanzado. La respuesta correcta es la D. Es la idea que hay que dejar clavada de toda la parte 3: la cobertura mide ejecución, la mutación mide verificación. Un test sin ninguna aserción produce cobertura del 100% sobre las líneas que recorre y puntuación de mutación cero. Si alguien elige la A, muestra ese ejemplo: una función llamada desde un test que no comprueba nada.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 3",
+        "TAG_RIGHT": "26",
+        "BADGE": "PREGUNTA 3",
+        "QUESTION": "Un módulo tiene 92% de cobertura y 41% de puntuación de mutación. ¿Qué significa?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "La cobertura mide qué líneas se ejecutaron; la mutación, si alguien comprobó algo sobre ellas. Un test sin ninguna aserción da cobertura completa y puntuación de mutación cero. Ejecutas casi todo el código y verificas menos de la mitad.",
+        "OPTIONS": [
+          { "key": "A", "text": "Que la herramienta de mutación está mal configurada", "correct": "" },
+          { "key": "B", "text": "Que hay muchos defectos en el código de producción", "correct": "" },
+          { "key": "C", "text": "Que faltan pruebas de integración en ese módulo", "correct": "" },
+          { "key": "D", "text": "Que se ejecuta casi todo el código pero se comprueba menos de la mitad", "correct": "true" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 4 · La calidad que nadie prueba",
+      "notes": "Bloque de calidad no funcional. Abre con la pregunta: cuando decimos que una funcionalidad «está probada», ¿qué probamos realmente? Casi siempre solo que hace lo que dice. Pero un formulario puede funcionar perfectamente y ser inaccesible para una persona ciega, filtrar datos por una inyección, romperse visualmente en móvil o caerse cuando el servicio del que depende tarda tres segundos. Nada de eso lo detecta una prueba funcional. Este bloque es el que más impacto legal y reputacional tiene, y en Chile además tiene marco normativo: la Ley 20.422 y el decreto de accesibilidad web del sector público.",
+      "slots": {
+        "PART_LABEL": "PARTE 04",
+        "TITLE": "La calidad que nadie prueba",
+        "SUBTITLE": "Funciona, sí. ¿Pero es seguro, accesible, resistente y se ve bien?",
+        "AGENDA": [
+          { "label": "01", "text": "Seguridad: OWASP Top 10 2025 en el pipeline" },
+          { "label": "02", "text": "Accesibilidad automatizada y regresión visual" },
+          { "label": "03", "text": "Resiliencia: qué pasa cuando la dependencia falla" }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "OWASP Top 10 · edición 2025",
+      "notes": "Dato importante y muy reciente: la lista vigente es la de 2025, no la de 2021 que aparece en casi todos los cursos. Hay tres cambios que conviene destacar. Primero, el control de acceso roto sigue en el número uno, y es el fallo más fácil de probar desde QA: intenta acceder al recurso de otro usuario cambiando el identificador en la URL. Segundo, entra en tercer lugar una categoría nueva y muy actual, los fallos de la cadena de suministro de software: ya no basta con que tu código sea seguro, tienes que responder por las dependencias que instalas, y ahí es donde entran las herramientas de análisis de composición. Tercero, aparece en el décimo puesto el manejo incorrecto de condiciones excepcionales, que conecta directamente con el caso Ariane 5 que vimos en la Unidad 3: una excepción no gestionada. Aclara que estas categorías no son vulnerabilidades concretas sino familias de riesgo, y que el trabajo de QA es saber qué prueba corresponde a cada familia.",
+      "slots": {
+        "TAG_LEFT": "SEGURIDAD",
+        "TITLE": "OWASP Top 10 · edición 2025",
+        "TAG_RIGHT": "28",
+        "LEAD": "La lista vigente es la de 2025, no la de 2021 que sigue circulando en la mayoría de los cursos.",
+        "HEADERS": "<th>#</th><th>Categoría 2025</th><th>Cómo se prueba desde QA</th>",
+        "NOTE_LABEL": "Novedades de esta edición",
+        "NOTE": "Entra la cadena de suministro de software en el puesto 3: ya no basta con que tu código sea seguro, respondes por lo que instalas. Y aparece el manejo de condiciones excepcionales, la familia del fallo de Ariane 5.",
+        "ROWS": [
+          { "cells": "<td>A01</td><td>Control de acceso roto</td><td>Cambia el id en la URL e intenta ver el recurso de otro usuario</td>" },
+          { "cells": "<td>A02</td><td>Configuración de seguridad incorrecta</td><td>Cabeceras, puertos abiertos, mensajes de error con traza completa</td>" },
+          { "cells": "<td>A03</td><td>Fallos en la cadena de suministro</td><td>Análisis de dependencias y firma de artefactos (Trivy, SBOM)</td>" },
+          { "cells": "<td>A04</td><td>Fallos criptográficos</td><td>Datos sensibles en claro, TLS mal configurado, hash débil</td>" },
+          { "cells": "<td>A05</td><td>Inyección</td><td>Entradas malformadas en formularios, parámetros y cabeceras</td>" },
+          { "cells": "<td>A06</td><td>Diseño inseguro</td><td>Modelado de amenazas en la revisión del requisito, antes de programar</td>" },
+          { "cells": "<td>A07</td><td>Fallos de autenticación</td><td>Fuerza bruta, sesión que no expira, recuperación de contraseña débil</td>" },
+          { "cells": "<td>A09</td><td>Fallos de registro y alerta</td><td>Provoca un incidente y comprueba si alguien se entera</td>" },
+          { "cells": "<td>A10</td><td>Manejo de condiciones excepcionales</td><td>Entradas límite y fallos de dependencia: ¿excepción no gestionada?</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Seguridad en el pipeline · SAST y SCA",
+      "notes": "Demo de seguridad, primera mitad. Explica las tres siglas porque se confunden siempre. SAST es análisis estático: lee tu código fuente sin ejecutarlo y busca patrones peligrosos, como concatenar una variable dentro de una consulta SQL. SCA es análisis de composición: no mira tu código sino tus dependencias, y las compara con bases de datos de vulnerabilidades conocidas; esto es lo que ataca directamente la categoría A03 de la lista nueva. DAST, que veremos en la siguiente, ataca la aplicación en marcha. La regla práctica: SAST y SCA son rápidos y van en el pull request; DAST es lento y va en la rama release. Detente en dos detalles del YAML. El primero: --severity-threshold=high, porque si fallas el pipeline con cualquier hallazgo informativo el equipo lo desactivará en una semana. El segundo: permissions con security-events write, que es lo que permite que los hallazgos aparezcan en la pestaña Security del repositorio en lugar de perderse en el log.",
+      "slots": {
+        "TAG_LEFT": "DEMO · SEGURIDAD",
+        "TITLE": "SAST y SCA en el pipeline",
+        "TAG_RIGHT": "29",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "SAST lee tu código. SCA lee tus dependencias. Los dos son rápidos, así que van en el pull request.",
+        "CALLOUT_LABEL": "El umbral importa",
+        "CALLOUT": "Si el pipeline falla con cualquier hallazgo informativo, el equipo lo desactivará en una semana. Bloquea solo en alta y crítica; el resto, a informe.",
+        "FILENAME": ".github/workflows/seguridad.yml",
+        "CODE": "name: Seguridad\non: [pull_request]\n\npermissions:\n  contents: read\n  security-events: write   <span class='c-cm'># pestaña Security del repo</span>\n\njobs:\n  sast:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      <span class='c-cm'># Análisis estático del código propio</span>\n      - uses: semgrep/semgrep-action@v1\n        with:\n          config: <span class='c-str'>'p/owasp-top-ten'</span>\n\n  dependencias:\n    runs-on: ubuntu-latest\n    steps:\n      <span class='c-cm'># Vulnerabilidades conocidas en lo que instalas</span>\n      - uses: aquasecurity/trivy-action@master\n        with:\n          scan-type: <span class='c-str'>'fs'</span>\n          severity: <span class='c-str'>'HIGH,CRITICAL'</span>\n          exit-code: <span class='c-str'>'1'</span>       <span class='c-cm'># bloquea el PR</span>\n          format: <span class='c-str'>'sarif'</span>\n          output: <span class='c-str'>'trivy.sarif'</span>",
+        "STEPS": [
+          { "n": "1", "text": "SAST · lee el código fuente sin ejecutarlo y busca patrones peligrosos, como SQL concatenado." },
+          { "n": "2", "text": "SCA · no mira tu código: revisa tus dependencias contra bases de vulnerabilidades conocidas." },
+          { "n": "3", "text": "Esto es lo que ataca la categoría A03 de OWASP 2025, la cadena de suministro." },
+          { "n": "4", "text": "El formato SARIF es el estándar: GitHub lo entiende y pinta los hallazgos sobre el código." },
+          { "n": "5", "text": "exit-code 1 convierte el hallazgo en una puerta que bloquea la fusión." }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Seguridad · DAST con OWASP ZAP",
+      "notes": "Segunda mitad de seguridad. DAST ataca la aplicación ya desplegada, sin ver el código: hace lo que haría un atacante. ZAP es la herramienta libre de referencia y tiene dos modos que hay que distinguir bien. El escaneo baseline es pasivo: navega y observa las respuestas, tarda un par de minutos y es seguro. El escaneo full es activo: envía cargas maliciosas de verdad, tarda mucho más y puede crear registros basura o incluso borrar datos. De ahí el aviso más importante de toda la unidad, y hay que decirlo mirando a la clase: ejecutar un escaneo activo contra un sistema que no es tuyo, o sin autorización escrita, es un delito. No una mala práctica: un delito. Solo contra tu propio entorno de pruebas y con permiso documentado. Menciona que ZAP genera un informe HTML con cada alerta, su nivel de riesgo, la evidencia y la referencia a la categoría OWASP, y que ese informe es el artefacto que se sube al pipeline.",
+      "slots": {
+        "TAG_LEFT": "DEMO · SEGURIDAD",
+        "TITLE": "DAST con OWASP ZAP",
+        "TAG_RIGHT": "30",
+        "KICKER": "Atacar la aplicación en marcha, sin ver el código",
+        "CODE_TITLE": ".github/workflows/dast.yml · solo en release",
+        "CODE": "on:\n  push:\n    branches: [ <span class='c-str'>'release/**'</span> ]   <span class='c-cm'># lento: nunca en cada PR</span>\n\njobs:\n  zap:\n    runs-on: ubuntu-latest\n    steps:\n      <span class='c-cm'># Pasivo: navega y observa. ~2 min, seguro.</span>\n      - uses: zaproxy/action-baseline@v0.12.0\n        with:\n          target: <span class='c-str'>'https://staging.miapp.cl'</span>\n          rules_file_name: <span class='c-str'>'.zap/reglas.tsv'</span>\n\n      <span class='c-cm'># Activo: envía cargas reales. Lento y destructivo.</span>\n      <span class='c-cm'># - uses: zaproxy/action-full-scan@v0.10.0</span>\n\n      - uses: actions/upload-artifact@v4\n        <span class='c-kw'>if</span>: always()\n        with:\n          name: informe-zap\n          path: report_html.html",
+        "PANEL_TITLE": "Qué hay que tener claro",
+        "WHY_TITLE": "Aviso legal, no consejo",
+        "WHY": "Ejecutar un escaneo activo contra un sistema que no es tuyo, o sin autorización escrita del dueño, es un delito. No una mala práctica: un delito. Solo contra tu propio entorno de pruebas y con permiso documentado.",
+        "CRITERIA": [
+          { "letter": "A", "name": "Autorización escrita antes de cualquier escaneo", "meta": "Obligatorio", "highlight": "true" },
+          { "letter": "B", "name": "Baseline es pasivo: navega y observa", "meta": "~2 min", "highlight": "" },
+          { "letter": "C", "name": "Full scan es activo: puede borrar datos", "meta": "Solo en pruebas", "highlight": "true" },
+          { "letter": "D", "name": "Nunca contra producción", "meta": "Regla dura", "highlight": "true" },
+          { "letter": "E", "name": "Falsos positivos: se silencian en reglas.tsv", "meta": "Mantenimiento", "highlight": "" },
+          { "letter": "F", "name": "El informe cita la categoría OWASP de cada alerta", "meta": "Trazabilidad", "highlight": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Accesibilidad automatizada con axe-core",
+      "notes": "Demo de accesibilidad, y conviene empezar por el porqué. En Chile la Ley 20.422 y la normativa de accesibilidad web obligan a los sitios del Estado, y en el sector privado es cada vez más una exigencia contractual. Pero más allá de la norma: una de cada seis personas en el mundo tiene alguna discapacidad, y un formulario sin etiquetas es sencillamente inutilizable con lector de pantalla. La herramienta estándar es axe-core, de Deque, y se integra con Playwright en cinco líneas. Ahora el dato honesto y que hay que decir siempre, porque si no se genera una falsa sensación de cumplimiento: la automatización detecta entre el 30 y el 40 por ciento de los problemas de accesibilidad. Contraste, etiquetas ausentes y atributos ARIA mal puestos los pilla; si el orden de tabulación tiene sentido, si el texto alternativo describe realmente la imagen o si el flujo es navegable solo con teclado, eso requiere una persona. La automatización es el suelo, no el techo.",
+      "slots": {
+        "TAG_LEFT": "DEMO · ACCESIBILIDAD",
+        "TITLE": "Accesibilidad automatizada con axe-core",
+        "TAG_RIGHT": "31",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "Cinco líneas sobre Playwright y cada página del flujo queda auditada contra las reglas WCAG en cada pull request.",
+        "CALLOUT_LABEL": "El dato honesto",
+        "CALLOUT": "La automatización detecta entre el 30% y el 40% de los problemas de accesibilidad. El resto exige una persona con un lector de pantalla. Es el suelo, no el techo.",
+        "FILENAME": "tests/test_accesibilidad.spec.ts",
+        "CODE": "<span class='c-kw'>import</span> { test, expect } <span class='c-kw'>from</span> <span class='c-str'>'@playwright/test'</span>;\n<span class='c-kw'>import</span> AxeBuilder <span class='c-kw'>from</span> <span class='c-str'>'@axe-core/playwright'</span>;\n\ntest(<span class='c-str'>'la lista de tareas no tiene fallos WCAG AA'</span>, <span class='c-kw'>async</span> ({ page }) =&gt; {\n  <span class='c-kw'>await</span> page.goto(<span class='c-str'>'/tareas'</span>);\n\n  <span class='c-kw'>const</span> r = <span class='c-kw'>await new</span> AxeBuilder({ page })\n    .withTags([<span class='c-str'>'wcag2a'</span>, <span class='c-str'>'wcag2aa'</span>])\n    .analyze();\n\n  expect(r.violations).toEqual([]);\n});\n\n<span class='c-cm'>// Salida típica de una violación:</span>\n<span class='c-cm'>//   id: 'label'  impact: 'critical'</span>\n<span class='c-cm'>//   El campo #titulo no tiene etiqueta asociada</span>\n<span class='c-cm'>//   → invisible para un lector de pantalla</span>",
+        "STEPS": [
+          { "n": "1", "text": "Marco legal en Chile: Ley 20.422 y normativa de accesibilidad web para el Estado." },
+          { "n": "2", "text": "Una de cada seis personas tiene alguna discapacidad. Un campo sin etiqueta es inutilizable con lector de pantalla." },
+          { "n": "3", "text": "withTags filtra el nivel exigido: wcag2aa es el estándar habitual en contratos." },
+          { "n": "4", "text": "Cada violación trae id, impacto, el selector culpable y cómo corregirlo." },
+          { "n": "5", "text": "Lo que la máquina no ve: orden de tabulación, calidad del texto alternativo, navegación completa por teclado." }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Regresión visual y pruebas de resiliencia",
+      "notes": "Dos técnicas juntas por economía de tiempo, pero las dos importantes. La regresión visual compara una captura contra una imagen de referencia guardada en el repositorio: detecta lo que ninguna aserción detecta, como un botón que se salió del contenedor tras un cambio de CSS. La clave para que no sea un infierno de falsos positivos es enmascarar las zonas que cambian solas, fechas, avatares, publicidad, y fijar el viewport y desactivar animaciones. La resiliencia es la otra mitad: qué le pasa a tu aplicación cuando la dependencia de la que vive tarda tres segundos, devuelve un 500 o simplemente no responde. Toxiproxy es la forma más sencilla de provocarlo: se pone en medio de la conexión y le añades latencia o cortas el flujo a voluntad. Insiste en el último punto: casi ningún equipo prueba esto, y casi todos los incidentes graves de producción empiezan exactamente así, con una dependencia lenta y un tiempo de espera mal configurado.",
+      "slots": {
+        "TAG_LEFT": "VISUAL Y RESILIENCIA",
+        "TITLE": "Lo que se ve y lo que aguanta",
+        "TAG_RIGHT": "32",
+        "SPEC_TITLE": "Playwright toHaveScreenshot()  ·  Toxiproxy para inyectar fallos",
+        "FIELDS": [
+          { "key": "Regresión visual", "value": "await expect(page).toHaveScreenshot('lista.png', { maxDiffPixelRatio: 0.01 })", "highlight": "true" },
+          { "key": "Primera ejecución", "value": "Crea la imagen de referencia. Se versiona en el repositorio junto al test.", "highlight": "" },
+          { "key": "Evitar falsos positivos", "value": "mask: [page.locator('.fecha')] · animations: 'disabled' · viewport fijo", "highlight": "true" },
+          { "key": "Actualizar referencia", "value": "npx playwright test --update-snapshots, solo si el cambio es intencionado", "highlight": "" },
+          { "key": "Inyectar latencia", "value": "toxiproxy-cli toxic add api -t latency -a latency=3000", "highlight": "true" },
+          { "key": "Cortar la dependencia", "value": "toxiproxy-cli toggle api — la conexión desaparece a media petición", "highlight": "" },
+          { "key": "Qué debe ocurrir", "value": "Tiempo de espera acotado, reintento con espera creciente y mensaje claro al usuario", "highlight": "" },
+          { "key": "Qué NO debe ocurrir", "value": "Pantalla en blanco, traza del error visible o la petición colgada para siempre", "highlight": "true" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Lo visual detecta lo que ninguna aserción ve", "text": "Un botón que se salió del contenedor tras tocar el CSS pasa todas las pruebas funcionales: el clic sigue funcionando aunque el botón esté fuera de la pantalla." },
+          { "n": "2", "title": "Sin enmascarar es un infierno", "text": "Una fecha o un avatar que cambia hace fallar la comparación cada día. Se enmascaran esas zonas o el equipo abandonará la técnica en dos semanas." },
+          { "n": "3", "title": "Casi nadie prueba la resiliencia", "text": "Y casi todos los incidentes graves empiezan igual: una dependencia lenta y un tiempo de espera mal configurado que agota el pool de conexiones." }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 4",
+      "notes": "Cierre del bloque no funcional. La respuesta correcta es la B. Es la confusión más peligrosa del bloque porque genera falso cumplimiento: un equipo pasa axe en verde, declara el sitio accesible y firma un contrato. La automatización cubre entre el 30 y el 40 por ciento. Todo lo que requiere juicio —si el texto alternativo describe la imagen, si el orden de tabulación es lógico, si el flujo completo se puede hacer sin ratón— necesita una persona. Aprovecha para recordar que lo mismo aplica a seguridad: pasar ZAP no significa que la aplicación sea segura.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 4",
+        "TAG_RIGHT": "33",
+        "BADGE": "PREGUNTA 4",
+        "QUESTION": "Tu pipeline pasa axe-core en verde en todas las páginas. ¿Puedes declarar el sitio accesible?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "La automatización detecta entre el 30% y el 40% de los problemas. Si el texto alternativo describe realmente la imagen, si el orden de tabulación es lógico o si el flujo se completa sin ratón, eso lo juzga una persona. Declarar accesible con solo axe en verde es falso cumplimiento.",
+        "OPTIONS": [
+          { "key": "A", "text": "Sí, axe implementa el estándar WCAG completo", "correct": "" },
+          { "key": "B", "text": "No: la automatización cubre entre el 30% y el 40%; el resto exige juicio humano", "correct": "true" },
+          { "key": "C", "text": "Sí, siempre que se hayan activado las etiquetas wcag2aa", "correct": "" },
+          { "key": "D", "text": "No, porque axe solo funciona sobre HTML estático", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 5 · Shift-right: la calidad en producción",
+      "notes": "Bloque de shift-right, y conviene abrirlo desmontando un tabú. Durante toda la carrera se les ha dicho «no se prueba en producción». Matiza: no se prueba a ciegas en producción. Pero producción es el único lugar donde existen los datos reales, el tráfico real y las condiciones reales, y ningún entorno de staging reproduce eso. La pregunta madura no es si probar en producción, sino cómo hacerlo sin que el usuario pague el precio. La respuesta son tres herramientas: banderas de funcionalidad para desacoplar el despliegue de la activación, despliegues graduales para limitar el radio de daño, y observabilidad para enterarte antes que el cliente.",
+      "slots": {
+        "PART_LABEL": "PARTE 05",
+        "TITLE": "Shift-right: la calidad en producción",
+        "SUBTITLE": "No es «probar en producción». Es dejar de hacerlo a ciegas",
+        "AGENDA": [
+          { "label": "01", "text": "Observabilidad: registros, métricas y trazas" },
+          { "label": "02", "text": "Banderas, canario y despliegue sin miedo" },
+          { "label": "03", "text": "SLI, SLO y presupuesto de error" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Los tres pilares de la observabilidad",
+      "notes": "Vocabulario del bloque. Distingue con cuidado monitorización de observabilidad, porque se usan como sinónimos y no lo son: monitorizar es vigilar preguntas que ya sabías hacer —la CPU, la memoria—, observar es poder responder preguntas nuevas sobre lo que está pasando sin desplegar código adicional. Los registros son eventos con detalle, caros de almacenar y difíciles de agregar. Las métricas son números agregados en el tiempo, baratísimos, pero pierden el detalle del caso individual. Las trazas son la joya en arquitecturas distribuidas: siguen una petición concreta a través de todos los servicios y te dicen exactamente en cuál se fueron los dos segundos. Y OpenTelemetry es el estándar abierto que permite instrumentar una vez y enviar a cualquier destino, evitando quedar atado a un proveedor.",
+      "slots": {
+        "TAG_LEFT": "VOCABULARIO",
+        "TITLE": "Los tres pilares de la observabilidad",
+        "TAG_RIGHT": "35",
+        "COLS": "4",
+        "CARDS": [
+          { "badge": "01", "title": "Registros", "body": "Eventos con todo el detalle de lo que ocurrió. Imprescindibles para reconstruir un incidente concreto.", "note_label": "Coste", "note": "Caros de almacenar y difíciles de agregar." },
+          { "badge": "02", "title": "Métricas", "body": "Números agregados en el tiempo: peticiones por segundo, latencia, errores. La base de las alertas.", "note_label": "Coste", "note": "Baratísimas, pero pierden el caso individual." },
+          { "badge": "03", "title": "Trazas", "body": "El recorrido de una petición concreta a través de todos los servicios, con el tiempo de cada salto.", "note_label": "Coste", "note": "La joya en sistemas distribuidos." },
+          { "badge": "04", "title": "OpenTelemetry", "body": "El estándar abierto para generar las tres cosas. Instrumentas una vez y envías a cualquier destino.", "note_label": "Coste", "note": "Evita quedar atado a un proveedor." }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "title": "Desplegar sin miedo · banderas y canario",
+      "notes": "Recorre el diagrama y explica la idea central, que es la que más cuesta entender y la que más cambia la forma de trabajar: desplegar y activar dejan de ser lo mismo. El código nuevo llega a producción apagado detrás de una bandera; nadie lo ve. Después se enciende para el equipo interno, luego para un pequeño porcentaje de usuarios reales, se observan las métricas comparándolas con el grupo de control, y solo entonces se abre a todos. Si algo va mal, no hay que revertir un despliegue ni desplegar de urgencia: se apaga la bandera y el efecto es inmediato. Menciona la diferencia con el despliegue azul-verde, donde se mantienen dos entornos completos y se conmuta el tráfico de golpe: más simple pero más caro y con menos granularidad. Y cierra con el matiz de calidad: en este modelo el papel del tester se desplaza de «aprobar antes» a «definir qué métricas observar durante el canario y con qué umbral se aborta».",
+      "slots": {
+        "TAG_LEFT": "DESPLIEGUE",
+        "TITLE": "Desplegar sin miedo",
+        "TAG_RIGHT": "36",
+        "SPLIT": "1.2fr 1fr",
+        "DIAGRAM": "flowchart TD\n  A[Desplegar con bandera apagada] --> B[Canario: 5% de usuarios]\n  B --> C{¿Métricas sanas?}\n  C -->|No| D[Apagar la bandera]\n  C -->|Sí| E[Ampliar y retirar bandera]\n  D --> A",
+        "SIDE_TITLE": "Desplegar ≠ activar",
+        "LEAD": "El código llega a producción apagado. Encenderlo es otra decisión, reversible en segundos y sin desplegar nada.",
+        "NOTE_LABEL": "El nuevo papel del tester",
+        "NOTE": "Ya no apruebas antes del despliegue: defines qué métricas se observan durante el canario y con qué umbral se aborta automáticamente. Es una decisión de calidad, no de operaciones.",
+        "STEPS": [
+          { "n": "1", "name": "Bandera apagada", "text": "El código convive en producción con el antiguo, pero nadie lo ejecuta todavía." },
+          { "n": "2", "name": "Interno", "text": "Se enciende solo para el equipo: prueba con datos reales y riesgo cero." },
+          { "n": "3", "name": "Canario", "text": "Un 5% de usuarios reales. Se comparan sus métricas con las del grupo de control." },
+          { "n": "4", "name": "Reversión", "text": "Apagar la bandera es instantáneo. No hay que revertir ni desplegar de urgencia." },
+          { "n": "5", "name": "Limpieza", "text": "Al 100%, se retira la bandera del código. Una bandera olvidada es deuda técnica." }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Instrumentar con OpenTelemetry",
+      "notes": "Demo de observabilidad. Lo primero que hay que decir: la instrumentación automática cubre la mayoría del trabajo. Una sola línea en el arranque y ya tienes trazas de todas las peticiones HTTP entrantes, las salientes y las consultas a base de datos, sin tocar la lógica. Lo que sí hay que añadir a mano son los atributos de negocio, y ahí está el aporte del ingeniero de calidad: un tramo que dice «se procesó un pago» sin decir de qué importe, de qué comercio ni con qué medio, sirve para muy poco cuando estás en mitad de un incidente a las tres de la mañana. Advierte de dos cosas. Primera, nunca metas datos personales ni credenciales en los atributos: las trazas se almacenan, se comparten y a menudo salen de tu infraestructura. Segunda, el muestreo: en producción con volumen alto no se guardan todas las trazas, se guarda un porcentaje, pero conviene configurar el muestreo para conservar siempre las peticiones con error.",
+      "slots": {
+        "TAG_LEFT": "DEMO · OBSERVABILIDAD",
+        "TITLE": "Instrumentar con OpenTelemetry",
+        "TAG_RIGHT": "37",
+        "SPLIT": "1fr 1.25fr",
+        "LEAD": "La instrumentación automática te da el 80% en una línea. El 20% que importa son los atributos de negocio.",
+        "CALLOUT_LABEL": "Nunca en un atributo",
+        "CALLOUT": "Ni datos personales ni credenciales. Las trazas se almacenan, se comparten y a menudo salen de tu infraestructura hacia un proveedor externo.",
+        "FILENAME": "terminal · app/pagos.py",
+        "CODE": "<span class='c-cm'># 1 · Instalación</span>\npip install opentelemetry-distro opentelemetry-exporter-otlp\nopentelemetry-bootstrap --action=install\n\n<span class='c-cm'># 2 · Arranque instrumentado: sin tocar tu código</span>\nopentelemetry-instrument \\\n  --service_name tareas-api \\\n  --exporter_otlp_endpoint http://colector:4317 \\\n  python app.py\n\n<span class='c-cm'># 3 · Atributos de negocio: esto sí lo añades tú</span>\n<span class='c-kw'>from</span> opentelemetry <span class='c-kw'>import</span> trace\ntracer = trace.get_tracer(__name__)\n\n<span class='c-kw'>with</span> tracer.start_as_current_span(<span class='c-str'>\"procesar_pago\"</span>) <span class='c-kw'>as</span> s:\n    s.set_attribute(<span class='c-str'>\"pago.medio\"</span>, medio)\n    s.set_attribute(<span class='c-str'>\"pago.monto_clp\"</span>, monto)\n    s.set_attribute(<span class='c-str'>\"comercio.id\"</span>, comercio_id)\n    <span class='c-cm'># NUNCA: rut, tarjeta, token, correo</span>",
+        "STEPS": [
+          { "n": "1", "text": "La instrumentación automática cubre HTTP entrante y saliente y las consultas a base de datos sin tocar la lógica." },
+          { "n": "2", "text": "Un tramo (span) es una operación con su duración; el conjunto de tramos de una petición es la traza." },
+          { "n": "3", "text": "Los atributos de negocio son el aporte de calidad: sin ellos la traza dice «tardó 2s» y nada más." },
+          { "n": "4", "text": "El identificador de traza se propaga entre servicios: sigues una petición por todo el sistema." },
+          { "n": "5", "text": "Muestreo: en alto volumen no se guardan todas, pero configura conservar siempre las que tienen error." }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "SLI, SLO y presupuesto de error",
+      "notes": "El concepto más potente del bloque, y el que más cambia las conversaciones en una empresa. El indicador, el SLI, es lo que mides: por ejemplo el porcentaje de peticiones que responden bien y en menos de 300 milisegundos. El objetivo, el SLO, es la meta que te comprometes a cumplir, por ejemplo el 99,9% en un trimestre. Y el presupuesto de error es lo que sobra: si te comprometes al 99,9%, tienes un 0,1% de fallo permitido, que en un trimestre son unos 43 minutos de caída. Esa cifra es un presupuesto real: puedes gastarlo desplegando rápido y experimentando. La regla que lo hace funcionar es la que hay que subrayar: mientras quede presupuesto, el equipo despliega libremente; cuando se agota, se congelan las funcionalidades nuevas y todo el esfuerzo va a fiabilidad hasta que se recupere. Explica por qué esto es tan valioso: convierte la discusión eterna entre «hay que ir más rápido» y «hay que ser más estables» en una regla aritmética que nadie tiene que negociar. Y menciona el matiz contraintuitivo: un objetivo del 100% es un error de diseño, porque elimina el presupuesto y con él toda posibilidad de cambiar nada.",
+      "slots": {
+        "TAG_LEFT": "PRINCIPIO",
+        "TITLE": "SLI, SLO y presupuesto de error",
+        "TAG_RIGHT": "38",
+        "GHOST": "99.9",
+        "KICKER": "La regla que acaba con la discusión",
+        "PRINCIPLE": "Lo que no gastas en fallos, lo puedes gastar en desplegar rápido.",
+        "PRINCIPLE_BODY": "Comprometerse al 99,9% trimestral deja un 0,1% de fallo permitido: unos 43 minutos. Eso no es una tolerancia vergonzante, es un presupuesto que el equipo puede gastar experimentando. Mientras quede, se despliega libremente; cuando se agota, se congela lo nuevo y todo va a fiabilidad. La discusión entre velocidad y estabilidad deja de ser una opinión y pasa a ser aritmética.",
+        "LIST_TITLE": "Cómo se construye",
+        "FACTORS": [
+          { "name": "SLI · el indicador", "text": "Lo que mides: % de peticiones correctas y bajo 300 ms. Debe reflejar lo que el usuario siente.", "color": "var(--a1)" },
+          { "name": "SLO · el objetivo", "text": "La meta comprometida: 99,9% en el trimestre. Interno y realista, no aspiracional.", "color": "var(--a2)" },
+          { "name": "Presupuesto", "text": "Lo que sobra: 0,1% ≈ 43 minutos por trimestre. Es tuyo, gástalo con criterio.", "color": "var(--a3)" },
+          { "name": "SLA · el contrato", "text": "La promesa con penalización legal al cliente. Siempre más laxa que tu SLO interno.", "color": "var(--ok)" }
+        ],
+        "EXAMPLES": [
+          { "tag": "Queda presupuesto", "value": "62", "label": "% disponible", "desc": "Se despliega, se experimenta y se asume riesgo.", "color": "var(--ok)" },
+          { "tag": "Presupuesto agotado", "value": "0", "label": "% disponible", "desc": "Se congela lo nuevo: todo el esfuerzo va a fiabilidad.", "color": "var(--err)" }
+        ]
+      }
+    },
+    {
+      "archetype": "gauges",
+      "title": "Cuadro de mando de SLO",
+      "notes": "El cuadro que un ingeniero de calidad revisa cada semana. Cuatro objetivos y su cumplimiento real en el trimestre. Recorre cada anillo y explica qué decisión implica. Disponibilidad y latencia van bien. La tasa de éxito del pago está en el límite, y ese es el que hay que vigilar porque es el que toca directamente el ingreso. Y el presupuesto de error consumido está al 78%, con el trimestre a medias: si sigue ese ritmo se agota antes de terminar, así que la conversación de esta semana es qué se congela. Insiste en lo que hace distinto a este cuadro frente a un panel de monitorización clásico: aquí no se mira CPU ni memoria, se mira lo que el usuario experimenta. La CPU al 90% no es un problema si el usuario no lo nota; la latencia por encima del objetivo sí lo es aunque la CPU esté al 20%.",
+      "slots": {
+        "TAG_LEFT": "CUADRO DE MANDO",
+        "TITLE": "Cumplimiento de SLO del trimestre",
+        "TAG_RIGHT": "39",
+        "LEAD": "Aquí no se mira CPU ni memoria: se mira lo que el usuario experimenta. Es la diferencia entre monitorizar y observar.",
+        "COLS": "4",
+        "READ_LABEL": "Decisión de la semana",
+        "READ": "El presupuesto de error va al 78% consumido con el trimestre a la mitad. Si sigue ese ritmo se agota antes de terminar: toca decidir qué funcionalidad se congela para recuperar fiabilidad.",
+        "SOURCE": "Panel de SLO · corte semanal · servicio tareas-api",
+        "GAUGES": [
+          { "label": "Disponibilidad", "value": "99.94", "goal": "SLO 99.90", "desc": "Peticiones respondidas sin error de servidor.", "tone": "ok" },
+          { "label": "Latencia p95", "value": "97", "goal": "SLO 95", "desc": "Porcentaje de peticiones bajo 300 ms.", "tone": "ok" },
+          { "label": "Éxito del pago", "value": "99.1", "goal": "SLO 99.0", "desc": "Transacciones completadas al primer intento.", "tone": "" },
+          { "label": "Presupuesto consumido", "value": "78", "goal": "límite 50 a mitad", "desc": "Del error permitido del trimestre. Va adelantado.", "tone": "warn" }
+        ]
+      }
+    },
+    {
+      "archetype": "trend",
+      "title": "El consumo del presupuesto de error",
+      "notes": "La lectura temporal del presupuesto, que es la que permite anticiparse en lugar de reaccionar. La línea sube cuando hay incidentes y se mantiene plana cuando todo va bien. Recorre los hitos: las primeras seis semanas el consumo es lento y sano; en la semana 7 hay un salto, que corresponde a un despliegue con un fallo que tardó cuarenta minutos en detectarse, y ahí es donde se ve el valor de la métrica de recuperación de DORA; en la semana 9 otro salto por una dependencia externa caída. La proyección es lo importante: al ritmo actual el presupuesto se agota en la semana 11 de un trimestre de 13. Eso da dos semanas de margen para actuar, y actuar significa congelar funcionalidad, no esperar a que se agote. Cierra con la idea que resume el bloque: esta gráfica se mira antes de que ocurra el problema, no después.",
+      "slots": {
+        "TAG_LEFT": "CUADRO DE MANDO",
+        "TITLE": "Consumo del presupuesto de error",
+        "TAG_RIGHT": "40",
+        "SPLIT": "1.25fr 1fr",
+        "LEAD": "Sube con cada incidente y se mantiene plana cuando todo va bien. Lo valioso no es el valor de hoy: es la pendiente.",
+        "SIDE_TITLE": "Qué cuenta la pendiente",
+        "DELTA_LABEL": "Proyección",
+        "DELTA": "Semana 11",
+        "DELTA_NOTE": "Al ritmo actual el presupuesto se agota dos semanas antes de terminar el trimestre. Hay margen para actuar, pero hay que hacerlo ahora.",
+        "SOURCE": "Presupuesto de error acumulado · SLO 99,9% trimestral",
+        "SERIES": [
+          { "when": "S1", "value": "4" },
+          { "when": "S2", "value": "9" },
+          { "when": "S3", "value": "13" },
+          { "when": "S4", "value": "18" },
+          { "when": "S5", "value": "24" },
+          { "when": "S6", "value": "29" },
+          { "when": "S7", "value": "52" },
+          { "when": "S8", "value": "58" },
+          { "when": "S9", "value": "74" },
+          { "when": "S10", "value": "78" }
+        ],
+        "MILESTONES": [
+          { "when": "S1 – S6", "title": "Consumo sano", "text": "Unos cinco puntos por semana. A ese ritmo el trimestre termina con margen de sobra." },
+          { "when": "S7", "title": "Despliegue fallido", "text": "Salto de 23 puntos: el fallo tardó 40 minutos en detectarse. Aquí se ve el valor de la métrica de recuperación." },
+          { "when": "S9", "title": "Dependencia caída", "text": "Un proveedor externo se cayó 25 minutos. No era culpa nuestra, pero el usuario lo sufrió igual." },
+          { "when": "S10 → S11", "title": "Decisión", "text": "Congelar funcionalidad nueva ahora, o llegar a la semana 13 sin presupuesto y con la entrega comprometida." }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Bloque 5",
+      "notes": "Cierre del bloque de shift-right. La respuesta correcta es la C. Es el concepto más contraintuitivo de la unidad: un objetivo del 100% no es ambición, es un error de diseño. Sin presupuesto de error no puedes desplegar nada, porque cualquier cambio implica algún riesgo, y el resultado práctico es un equipo paralizado que además incumple su objetivo el primer día. Explica también por qué el SLO interno siempre es más estricto que el SLA firmado: para tener margen de reacción antes de incumplir el contrato.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación del bloque 5",
+        "TAG_RIGHT": "41",
+        "BADGE": "PREGUNTA 5",
+        "QUESTION": "¿Por qué fijar un SLO de disponibilidad del 100% es una mala decisión?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Sin presupuesto de error no puedes desplegar nada, porque todo cambio implica riesgo. El equipo queda paralizado y además incumple su objetivo el primer día. El SLO se fija por debajo a propósito, para tener margen con el que trabajar.",
+        "OPTIONS": [
+          { "key": "A", "text": "Porque técnicamente es imposible medir el 100%", "correct": "" },
+          { "key": "B", "text": "Porque el SLA firmado con el cliente nunca lo permite", "correct": "" },
+          { "key": "C", "text": "Porque deja el presupuesto de error en cero y paraliza cualquier cambio", "correct": "true" },
+          { "key": "D", "text": "Porque las herramientas de observabilidad no llegan a esa precisión", "correct": "" }
+        ]
+      }
+    },
+
+    {
+      "archetype": "section",
+      "title": "Parte 6 · IA, métricas y tu carrera",
+      "notes": "Bloque de cierre de la unidad y de la asignatura. Tres conversaciones: qué hace y qué no hace la inteligencia artificial en testing, qué métricas de calidad debe llevar un ingeniero, y cómo se construye la carrera desde donde están hoy. Es el bloque más personal y conviene darle tiempo para preguntas, porque es donde suelen aparecer las dudas reales sobre el futuro del oficio.",
+      "slots": {
+        "PART_LABEL": "PARTE 06",
+        "TITLE": "IA, métricas y tu carrera",
+        "SUBTITLE": "Qué hace la IA, qué mide un ingeniero de calidad y hacia dónde vas tú",
+        "AGENDA": [
+          { "label": "01", "text": "Dónde ayuda la IA y dónde estorba" },
+          { "label": "02", "text": "Las métricas que sí dicen algo" },
+          { "label": "03", "text": "Ruta profesional y certificaciones" }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "IA en testing · dónde ayuda y dónde estorba",
+      "notes": "La conversación que todos esperan. Sé directo: la inteligencia artificial es excelente generando el borrador de un caso, redactando datos de prueba variados, explicando un fallo del pipeline o traduciendo un criterio de aceptación a Gherkin. Es un acelerador enorme del trabajo mecánico. Y es pésima decidiendo qué merece la pena probar, porque eso exige conocer el negocio, el riesgo y el contexto, cosas que no están en el código. El riesgo real, y hay que nombrarlo, es la falsa confianza: un modelo genera veinte pruebas que pasan todas, el equipo siente que hay cobertura y en realidad esas pruebas verifican lo trivial y ninguna toca el caso límite que importa. Y el peor antipatrón de todos: pedirle al modelo que arregle un test que falla. El test no está fallando por gusto; está avisando de algo. Un modelo que ajusta la aserción hasta que pase acaba de borrar el defecto en lugar de encontrarlo. La regla que se llevan: la IA propone, la persona decide, y la persona firma.",
+      "slots": {
+        "TAG_LEFT": "IA EN TESTING",
+        "TITLE": "Dónde ayuda y dónde estorba",
+        "TAG_RIGHT": "43",
+        "BAD_TITLE": "Así no",
+        "BAD_SNIPPET": "«Este test falla, arréglalo»\n\n→ El modelo ajusta la aserción\n  hasta que pase.\n→ El defecto sigue ahí.\n→ Acabas de borrar la alarma.",
+        "GOOD_TITLE": "Así sí",
+        "GOOD_SNIPPET": "«Este test falla. Explícame\nqué comprueba y qué pudo\ncambiar en el código.»\n\n→ El modelo investiga.\n→ Tú decides si es defecto\n  o si el test quedó obsoleto.",
+        "WHY_LABEL": "La regla",
+        "WHY": "La IA propone, la persona decide y la persona firma. Un modelo no sabe qué merece la pena probar porque eso depende del negocio y del riesgo, y ninguna de las dos cosas está en el código.",
+        "BAD_POINTS": [
+          { "text": "Pedirle que arregle un test rojo: borra la alarma, no el defecto" },
+          { "text": "Aceptar 20 pruebas generadas sin revisar qué comprueban" },
+          { "text": "Creer que «todo verde» generado por IA es cobertura real" },
+          { "text": "Pegarle código propietario o datos de clientes en el prompt" },
+          { "text": "Delegar la decisión de qué probar y qué no" }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Borrador del caso a partir del criterio de aceptación" },
+          { "text": "Generar datos de prueba variados y realistas" },
+          { "text": "Explicar por qué falló el pipeline y proponer hipótesis" },
+          { "text": "Traducir un requisito a Gherkin y detectar ambigüedades" },
+          { "text": "Revisar tu propio código de pruebas y sugerir casos que faltan" }
+        ]
+      }
+    },
+    {
+      "archetype": "chart-split",
+      "title": "Las métricas que sí dicen algo",
+      "notes": "Cierre de la parte de métricas. La barra más importante es la primera: la tasa de escape, es decir, qué porcentaje de los defectos llegó al usuario en lugar de detectarse antes. Es la métrica más honesta que existe sobre el trabajo de un equipo de calidad, y casi nadie la mide. Recorre las demás: la tasa de pruebas inestables mide la salud de la suite y por encima del 5% el equipo empieza a desconfiar del rojo; la puntuación de mutación mide si las pruebas verifican algo; la duración del pipeline mide si el sistema estorba o ayuda; y la cobertura va al final a propósito, para dejar claro que es la que más se presume y la que menos dice. Advierte una vez más de la ley de Goodhart: en cuanto una métrica se convierte en objetivo, deja de ser buena métrica. Si exiges 90% de cobertura, tendrás 90% de cobertura y ni un defecto menos.",
+      "slots": {
+        "TAG_LEFT": "MÉTRICAS",
+        "TITLE": "Lo que un ingeniero de calidad mide",
+        "TAG_RIGHT": "44",
+        "SPLIT": "1.15fr 1fr",
+        "LEAD": "Ordenadas por lo que realmente dicen. La cobertura va la última a propósito: es la que más se presume y la que menos informa.",
+        "TABLE_TITLE": "Cómo se lee cada una",
+        "HEADERS": "<th>Métrica</th><th>Valor</th><th>Objetivo</th>",
+        "INSIGHT_TITLE": "La advertencia de Goodhart",
+        "INSIGHT": "En cuanto una métrica se convierte en objetivo, deja de ser una buena métrica. Si exiges 90% de cobertura tendrás 90% de cobertura y ni un defecto menos, porque el equipo escribirá tests sin aserciones para llegar al número.",
+        "SOURCE": "Cuadro de calidad · cierre de trimestre",
+        "BARS": [
+          { "label": "Tasa de escape", "value": "6", "unit": "%", "tone": "ok" },
+          { "label": "Pruebas inestables", "value": "3", "unit": "%", "tone": "ok" },
+          { "label": "Puntuación de mutación", "value": "69", "unit": "%", "tone": "" },
+          { "label": "Duración del pipeline", "value": "11", "unit": "min", "tone": "alt" },
+          { "label": "Cobertura", "value": "84", "unit": "%", "tone": "mute" }
+        ],
+        "ROWS": [
+          { "cells": "<td>Tasa de escape</td><td>6%</td><td>&lt; 10% · la más honesta</td>" },
+          { "cells": "<td>Pruebas inestables</td><td>3%</td><td>&lt; 5% · salud de la suite</td>" },
+          { "cells": "<td>Puntuación de mutación</td><td>69%</td><td>&gt; 75% en críticos</td>" },
+          { "cells": "<td>Duración del pipeline</td><td>11 min</td><td>&lt; 10 min en el PR</td>" },
+          { "cells": "<td>Cobertura</td><td>84%</td><td>Contexto, nunca objetivo</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "roadmap",
+      "title": "Tu ruta desde aquí",
+      "notes": "Plan de carrera concreto, y conviene aterrizarlo al mercado chileno para que no suene abstracto. Los primeros seis meses: dominar lo de la Unidad 3 y montar un repositorio público con pipeline propio, porque en una entrevista un repositorio con GitHub Actions verde vale más que cualquier frase del currículum. El primer año: profundizar en un lenguaje de verdad, aprender API y base de datos, y sacar el ISTQB Foundation, que es la certificación que más piden los anuncios en Chile. El segundo año: construir framework, no casos, que es el salto a SDET, y meterse en contenedores y nube. Y a partir del tercero: estrategia, riesgo, mentoría y métricas. Una recomendación práctica que conviene subrayar: especializarse en un vertical, rendimiento, seguridad o accesibilidad, porque el generalista de automatización es un perfil cada vez más común y el especialista sigue siendo escaso.",
+      "slots": {
+        "TAG_LEFT": "CARRERA",
+        "TITLE": "Tu ruta desde aquí",
+        "TAG_RIGHT": "45",
+        "LEAD": "Concreto y aterrizado al mercado chileno. En una entrevista, un repositorio con el pipeline en verde vale más que cualquier frase del currículum.",
+        "COLS": "4",
+        "LANES": [
+          { "phase": "0 – 6 meses", "when": "Base sólida", "color": "var(--a1)", "items": "Dominar Selenium o Playwright|Repositorio público con Actions|Escribir buenos reportes de defecto|Git con soltura, no solo commit" },
+          { "phase": "6 – 12 meses", "when": "Profundidad", "color": "var(--a2)", "items": "Un lenguaje de verdad, no scripts|Pruebas de API y de base de datos|ISTQB Foundation|k6 y lectura de métricas" },
+          { "phase": "1 – 2 años", "when": "Salto a SDET", "color": "var(--a3)", "items": "Construir framework, no casos|Docker y contenedores|Contratos y mutación|Diseñar el pipeline completo" },
+          { "phase": "2 años +", "when": "Estrategia", "color": "var(--ok)", "items": "Estrategia de calidad y riesgo|Especialidad: carga, seguridad o accesibilidad|SLO y observabilidad|Mentoría del equipo" }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Proyecto final · tu pipeline de calidad",
+      "notes": "El entregable que cierra la asignatura y que integra las cuatro unidades. Es un proyecto individual sobre un repositorio propio, y lo importante es que quede público, porque sirve como portafolio en una entrevista. Los tres casos corresponden a los tres criterios de evaluación. El primero es la infraestructura: GitFlow real, con ramas de verdad y protección activada. El segundo es el pipeline con al menos tres puertas. El tercero es el que más pesa y el que distingue a quien entendió la unidad: el informe de decisiones, donde hay que justificar qué se probó, qué se decidió no probar y por qué. Recalca esa última parte: decidir qué no se prueba es una decisión de ingeniería, y saber justificarla con criterio de riesgo es exactamente lo que se espera de un ingeniero de calidad frente a un ejecutor de casos.",
+      "slots": {
+        "TAG_LEFT": "PROYECTO FINAL",
+        "TITLE": "Tu pipeline de calidad",
+        "TAG_RIGHT": "46",
+        "ICON": "kjkiqtxg",
+        "ACTIVITY_NAME": "Un repositorio propio con calidad automatizada de principio a fin",
+        "INSTRUCTIONS": "Individual, sobre un repositorio público que te sirva de portafolio. Integra las cuatro unidades: casos bien diseñados, automatización, pipeline con puertas y un informe que justifique tus decisiones de riesgo.",
+        "COLS": "3",
+        "META": [
+          { "label": "Individual" },
+          { "label": "Repositorio público" },
+          { "label": "Sirve de portafolio" }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "GitFlow real",
+            "desc": "main y develop, al menos dos ramas feature fusionadas por pull request y protección de rama activada.",
+            "challenge_label": "Evidencia",
+            "challenge": "Captura del intento de fusión bloqueado por el check en rojo."
+          },
+          {
+            "num": "02",
+            "title": "Pipeline con puertas",
+            "desc": "Tres puertas mínimo: linter, unitarias con umbral de cobertura y una técnica avanzada a tu elección.",
+            "challenge_label": "Evidencia",
+            "challenge": "El YAML versionado y un run con artefactos e informe."
+          },
+          {
+            "num": "03",
+            "title": "Informe de decisiones",
+            "desc": "Dos páginas: qué probaste, qué decidiste no probar y con qué criterio de riesgo lo justificas.",
+            "challenge_label": "Evidencia",
+            "challenge": "Decidir qué no se prueba también es ingeniería. Esto es lo que más pesa."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "title": "Documentación para seguir solo",
+      "notes": "Recursos de la unidad. El sitio de DORA es lectura obligatoria si quieren entender de dónde salen las métricas y por qué cambiaron de cuatro a cinco. La documentación de GitHub Actions es la referencia del proyecto final. La de Pact tiene una guía de cinco minutos que es la mejor forma de entender contratos. El Top 10 de OWASP en su edición 2025 está traducido al español. Y el libro de SRE de Google, que es gratuito en línea, es donde se explican los SLO y el presupuesto de error mejor que en ningún otro sitio. Recomiéndales empezar por ese último capítulo si solo tienen tiempo para una lectura.",
+      "slots": {
+        "TAG_LEFT": "MATERIAL",
+        "TITLE": "Para seguir por tu cuenta",
+        "TAG_RIGHT": "47",
+        "LIST_TITLE": "Fuentes primarias, no tutoriales de segunda mano",
+        "QR_LABEL": "AULA VIRTUAL",
+        "QR_DATA": "https%3A%2F%2Feva.ipss.cl",
+        "QR_ALT": "Código QR del aula virtual EVA IPSS",
+        "QR_CAPTION": "Guiones y plantillas de la Unidad 4",
+        "NEXT_LABEL": "Entrega",
+        "NEXT": "Repositorio público con GitFlow, pipeline con al menos tres puertas e informe de decisiones de riesgo.",
+        "RESOURCES": [
+          { "icon": "▤", "title": "DORA · métricas y capacidades", "desc": "De dónde salen las cinco métricas y por qué dejaron de ser cuatro.", "url": "dora.dev" },
+          { "icon": "▤", "title": "GitHub Actions · documentación", "desc": "Sintaxis de workflows, matrices, servicios y protección de ramas.", "url": "docs.github.com/actions" },
+          { "icon": "▤", "title": "Pact · guía de 5 minutos", "desc": "La forma más rápida de entender contract testing con código real.", "url": "docs.pact.io" },
+          { "icon": "▤", "title": "OWASP Top 10:2025", "desc": "La edición vigente, disponible en español. No uses la de 2021.", "url": "owasp.org/Top10/2025" },
+          { "icon": "▤", "title": "Google SRE Book", "desc": "SLO y presupuesto de error explicados mejor que en ningún otro sitio. Gratis.", "url": "sre.google/books" }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "title": "Cierre de la asignatura",
+      "notes": "Cierre de la unidad y de la asignatura completa. Haz el recorrido: la Unidad 1 enseñó qué es un defecto y qué niveles de prueba existen; la Unidad 2, a planificar y diseñar casos con historias de usuario, Gherkin y trazabilidad; la Unidad 3, a automatizar con cinco herramientas y a medir rendimiento; y esta, a construir el sistema que hace que todo eso ocurra solo. La frase con la que conviene terminar: nadie los va a contratar por saber hacer clic en un botón, pero tampoco solo por saber escribir un script, porque eso ya lo hace media industria. Los van a contratar por saber decidir qué merece la pena probar, con qué profundidad y con qué evidencia se cierra un defecto. Eso es criterio, y el criterio no lo automatiza nadie. Cierra recordando la entrega y agradeciendo el trimestre.",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "Cierre de la asignatura",
+        "TAG_RIGHT": "48",
+        "ICON": "wzwygmng",
+        "HERO_TITLE": "El criterio es lo único que no se automatiza",
+        "HERO_TEXT": "Escribir un script ya lo hace media industria, y la IA acelera la otra mitad. Lo que sigue siendo escaso es saber decidir qué merece la pena probar, con qué profundidad y con qué evidencia se cierra un defecto. Eso es lo que te van a comprar.",
+        "LEFT_PANEL_TITLE": "Lo que te llevas",
+        "RIGHT_PANEL_TITLE": "Qué hacer esta semana",
+        "NEXT_LABEL": "Entrega final",
+        "NEXT": "Repositorio con GitFlow, pipeline con puertas e informe de decisiones. Es tu portafolio: cuídalo como tal.",
+        "TAKEAWAYS": [
+          { "n": "1", "text": "Mientras probar sea una fase, será lo primero que se recorte cuando haya prisa." },
+          { "n": "2", "text": "Un pipeline sin protección de rama es decorativo: el rojo no bloquea nada." },
+          { "n": "3", "text": "La cobertura mide ejecución; la mutación mide verificación. No son lo mismo." },
+          { "n": "4", "text": "Velocidad y estabilidad van juntas: cambios pequeños fallan menos." },
+          { "n": "5", "text": "Sin presupuesto de error no se puede cambiar nada. El 100% paraliza." }
+        ],
+        "NEXT_STEPS": [
+          { "n": "1", "text": "Crea el repositorio público y activa la protección de develop hoy mismo." },
+          { "n": "2", "text": "Escribe el workflow de diez líneas con el linter antes de añadir nada más." },
+          { "n": "3", "text": "Ejecuta mutación sobre un módulo tuyo y mira cuántos mutantes sobreviven." },
+          { "n": "4", "text": "Define un SLI y un SLO para tu propio proyecto, aunque sea de juguete." }
+        ]
+      }
+    }
+  ]
+}

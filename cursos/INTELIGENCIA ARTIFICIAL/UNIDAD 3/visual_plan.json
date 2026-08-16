@@ -1,0 +1,2193 @@
+{
+  "pack": "xiaomi_orange",
+  "title": "Unidad 3 — Modelos de ML y Aplicaciones: Deep Learning, LSTM y Transformers",
+  "slides": [
+    {
+      "archetype": "cover",
+      "title": "Modelos de ML y Aplicaciones",
+      "notes": "Bienvenida a la Unidad 3, la última y la que más pesa: el 30% de la nota. Sitúa el recorrido: la Unidad 1 dio los fundamentos y la ética, la Unidad 2 los algoritmos clásicos de regresión y clasificación con scikit-learn, y aquí damos el salto al aprendizaje profundo con TensorFlow y Keras. La evaluación es la continuación directa de la anterior: con los datos que ya prepararon, ahora hay que implementar y comparar dos arquitecturas de redes neuronales, una LSTM y un Transformer básico. Avisa desde el primer minuto de dos cosas prácticas: todo se ejecuta en Google Colab y esta vez sí hay que activar la GPU, porque entrenar redes en CPU puede tardar veinte veces más.",
+      "slots": {
+        "EYEBROW": "UNIDAD 03 · INTELIGENCIA ARTIFICIAL · IPSS 2026",
+        "TITLE": "Deep learning, LSTM y Transformers",
+        "SUBTITLE": "Del scikit-learn de la unidad anterior a redes neuronales que entienden secuencias.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          {
+            "label": "Evaluación 30%",
+            "accent": "a1"
+          },
+          {
+            "label": "TensorFlow y Keras",
+            "accent": "a2"
+          },
+          {
+            "label": "Colab con GPU",
+            "accent": "a3"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "title": "Qué veremos en esta unidad",
+      "notes": "El mapa. Los dos primeros bloques cierran lo que quedaba de la preparación de datos y abren el aprendizaje profundo. Los bloques tres y cuatro son las dos arquitecturas que se piden en la evaluación, LSTM y Transformer, y son el corazón de la unidad. El quinto es procesamiento de lenguaje natural con NLTK, que es lo que hace falta si eligen la tarea del Quijote. Y el sexto es la evaluación. Recalca la relación con la unidad anterior: en CRISP-DM, la Evaluación 2 cubrió las fases 1 a 3 y esta cubre las fases 4 y 5, modelado y evaluación. La fase 6, despliegue, queda fuera del curso.",
+      "slots": {
+        "TAG_LEFT": "MAPA DE LA UNIDAD",
+        "TITLE": "Qué veremos",
+        "TAG_RIGHT": "02",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          {
+            "num": "01",
+            "icon": "◆",
+            "title": "Preparación",
+            "desc": "Limpieza, transformación y selección de características.",
+            "chips": "Fase 3"
+          },
+          {
+            "num": "02",
+            "icon": "◆",
+            "title": "Deep learning",
+            "desc": "TensorFlow, Keras y el entrenamiento de una red.",
+            "chips": "Fase 4"
+          },
+          {
+            "num": "03",
+            "icon": "◆",
+            "title": "LSTM",
+            "desc": "Redes recurrentes: memoria para secuencias.",
+            "chips": "Modelo 1"
+          },
+          {
+            "num": "04",
+            "icon": "◆",
+            "title": "Transformers",
+            "desc": "Atención: mirar toda la secuencia a la vez.",
+            "chips": "Modelo 2"
+          },
+          {
+            "num": "05",
+            "icon": "◆",
+            "title": "PLN con NLTK",
+            "desc": "Del texto crudo a secuencias que la red entiende.",
+            "chips": "Quijote"
+          },
+          {
+            "num": "06",
+            "icon": "◆",
+            "title": "Evaluación 3",
+            "desc": "Comparar, ajustar y documentar. 10 criterios.",
+            "chips": "30%"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Sesión 1 · Preparación avanzada de datos",
+      "notes": "Separador del primer bloque. Aquí se cierra la fase 3 de CRISP-DM con las tres técnicas que pide el temario: limpieza, transformación y selección. Justifica por qué se dedica una sesión entera a esto antes de tocar redes neuronales: una red profunda tiene millones de parámetros y encuentra patrones en cualquier cosa, incluido el ruido. Cuanto más potente es el modelo, más castigan los datos sucios, porque el modelo aprende la suciedad con la misma diligencia con la que aprendería el patrón real.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 01",
+        "TITLE": "Preparación avanzada de datos",
+        "SUBTITLE": "Cuanto más potente el modelo, más castigan los datos sucios",
+        "AGENDA": [
+          {
+            "label": "01",
+            "text": "Limpieza: faltantes, duplicados y atípicos"
+          },
+          {
+            "label": "02",
+            "text": "Transformación: escalado, codificación y sesgo"
+          },
+          {
+            "label": "03",
+            "text": "Selección de características: quitar para mejorar"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Las tres operaciones de la fase 3",
+      "notes": "El vocabulario del bloque, con la distinción que casi siempre se mezcla. Limpiar es arreglar lo que está mal: valores que faltan, filas repetidas, cifras imposibles como una edad de doscientos años. Transformar es cambiar la forma de lo que ya está bien, para que el modelo pueda usarlo: escalar, codificar categorías, corregir distribuciones muy sesgadas. Y seleccionar es decidir qué columnas se quedan fuera, que es la operación más contraintuitiva de las tres porque consiste en tirar información a propósito. Explica el porqué: cada columna irrelevante añade ruido, aumenta el riesgo de sobreajuste y hace el modelo más lento y más difícil de explicar. Menos columnas bien elegidas casi siempre gana.",
+      "slots": {
+        "TAG_LEFT": "VOCABULARIO",
+        "TITLE": "Limpiar, transformar, seleccionar",
+        "TAG_RIGHT": "04",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "01",
+            "title": "Limpieza",
+            "body": "Arreglar lo que está mal: valores que faltan, filas duplicadas, cifras imposibles como una edad de 200 años.",
+            "note_label": "Pregunta guía",
+            "note": "¿Este dato puede existir en el mundo real?"
+          },
+          {
+            "badge": "02",
+            "title": "Transformación",
+            "body": "Cambiar la forma de lo que ya está bien: escalar, codificar categorías, corregir distribuciones muy sesgadas.",
+            "note_label": "Pregunta guía",
+            "note": "¿El modelo puede usar esto tal como está?"
+          },
+          {
+            "badge": "03",
+            "title": "Selección",
+            "body": "Decidir qué columnas se quedan fuera. Tirar información a propósito, porque cada columna irrelevante añade ruido.",
+            "note_label": "Pregunta guía",
+            "note": "¿Esta columna aporta o solo estorba?"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Limpieza en la práctica",
+      "notes": "El código de limpieza con las decisiones que hay que justificar. Sobre los duplicados: parecen inofensivos y no lo son, porque duplican el peso de esos casos en el entrenamiento y sesgan el modelo hacia ellos. Sobre los faltantes, la decisión clave es entre eliminar la fila o rellenar el hueco, y depende de cuántos haya: si falta menos del cinco por ciento, eliminar es razonable; si falta el cuarenta por ciento de una columna, plantéate eliminar la columna entera. Y sobre los atípicos, insiste en el punto que más se equivoca: un valor atípico no siempre es un error. En detección de fraude, los atípicos son justamente lo que quieres detectar, así que borrarlos sería destruir la señal. Antes de eliminar cualquier atípico hay que preguntarse si es un error de captura o un caso raro pero real.",
+      "slots": {
+        "TAG_LEFT": "DEMO · LIMPIEZA",
+        "TITLE": "Limpieza en la práctica",
+        "TAG_RIGHT": "05",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Cada línea es una decisión que hay que poder justificar. Ninguna es automática.",
+        "CALLOUT_LABEL": "Antes de borrar un atípico",
+        "CALLOUT": "Pregúntate si es un error de captura o un caso raro pero real. En detección de fraude los atípicos SON la señal: borrarlos destruye el problema.",
+        "FILENAME": "limpieza.py · Colab",
+        "CODE": "<span class='c-cm'># 1 · Diagnóstico antes de tocar nada</span>\n<span class='c-fn'>print</span>(df.shape, df.duplicated().sum())\n<span class='c-fn'>print</span>(df.isnull().mean().sort_values(ascending=<span class='c-kw'>False</span>))\n\n<span class='c-cm'># 2 · Duplicados: inflan el peso de esos casos</span>\ndf = df.drop_duplicates()\n\n<span class='c-cm'># 3 · Faltantes: la decisión depende de cuántos hay</span>\ndf = df.drop(columns=[<span class='c-str'>\"col_con_60pct_vacio\"</span>])   <span class='c-cm'># muchos</span>\ndf[<span class='c-str'>\"edad\"</span>] = df[<span class='c-str'>\"edad\"</span>].fillna(df[<span class='c-str'>\"edad\"</span>].median())\n\n<span class='c-cm'># 4 · Valores imposibles ≠ valores atípicos</span>\ndf = df[df[<span class='c-str'>\"edad\"</span>].between(<span class='c-num'>0</span>, <span class='c-num'>120</span>)]        <span class='c-cm'># imposible</span>\n\n<span class='c-cm'># 5 · Atípicos por rango intercuartílico (IQR)</span>\nq1, q3 = df[<span class='c-str'>\"monto\"</span>].quantile([<span class='c-num'>0.25</span>, <span class='c-num'>0.75</span>])\niqr = q3 - q1\nsospechosos = df[(df[<span class='c-str'>\"monto\"</span>] &lt; q1 - <span class='c-num'>1.5</span>*iqr) |\n                 (df[<span class='c-str'>\"monto\"</span>] &gt; q3 + <span class='c-num'>1.5</span>*iqr)]\n<span class='c-fn'>print</span>(<span class='c-str'>f\"{len(sospechosos)} atípicos — míralos antes de decidir\"</span>)",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Diagnostica primero: cuántas filas, cuántos duplicados y qué porcentaje falta por columna."
+          },
+          {
+            "n": "2",
+            "text": "Los duplicados duplican el peso de esos casos y sesgan el modelo hacia ellos."
+          },
+          {
+            "n": "3",
+            "text": "Falta menos del 5%: elimina filas. Falta el 40% de una columna: plantéate eliminar la columna."
+          },
+          {
+            "n": "4",
+            "text": "Un valor imposible (edad 200) es un error. Se elimina sin dudar."
+          },
+          {
+            "n": "5",
+            "text": "Un valor atípico puede ser real. Míralo antes de borrarlo: quizá es justo lo que buscas."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Transformación de datos",
+      "notes": "El código de transformación, con dos técnicas nuevas respecto a la unidad anterior. La primera es la transformación logarítmica: cuando una variable tiene una distribución muy sesgada, como los ingresos o los precios, donde la mayoría de los valores son pequeños y unos pocos son enormes, aplicar logaritmo comprime la cola y hace que el modelo aprenda mejor. La segunda es la diferencia entre los dos escaladores, que conviene tener clara: StandardScaler deja media cero y desviación uno y es el que se usa por defecto, mientras que MinMaxScaler comprime al rango cero-uno y es el que hay que usar con redes neuronales y con imágenes. Y termina con el aviso más importante, que se evalúa: el escalador se ajusta solo con los datos de entrenamiento, con fit_transform, y sobre los de prueba se usa únicamente transform. Hacerlo al revés filtra información y se llama fuga de datos.",
+      "slots": {
+        "TAG_LEFT": "DEMO · TRANSFORMACIÓN",
+        "TITLE": "Transformación de datos",
+        "TAG_RIGHT": "06",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Cambiar la forma de los datos para que el modelo pueda aprovecharlos, sin cambiar lo que significan.",
+        "CALLOUT_LABEL": "El error que se evalúa",
+        "CALLOUT": "fit_transform SOLO en entrenamiento; transform en prueba. Al revés, el escalador aprende del conjunto de prueba y eso es fuga de datos.",
+        "FILENAME": "transformacion.py · Colab",
+        "CODE": "<span class='c-kw'>from</span> sklearn.preprocessing <span class='c-kw'>import</span> StandardScaler, MinMaxScaler\n\n<span class='c-cm'># 1 · Distribución muy sesgada → logaritmo</span>\n<span class='c-cm'># (ingresos, precios: muchos pequeños y pocos enormes)</span>\ndf[<span class='c-str'>\"ingreso_log\"</span>] = np.log1p(df[<span class='c-str'>\"ingreso\"</span>])\n\n<span class='c-cm'># 2 · Categorías sin orden → una columna por valor</span>\ndf = pd.get_dummies(df, columns=[<span class='c-str'>\"comuna\"</span>], drop_first=<span class='c-kw'>True</span>)\n\n<span class='c-cm'># 3 · Dos escaladores, dos usos distintos</span>\n<span class='c-cm'># StandardScaler → media 0, desv 1. Por defecto en ML clásico.</span>\n<span class='c-cm'># MinMaxScaler   → rango [0,1]. El de redes e imágenes.</span>\nesc = MinMaxScaler()\n\n<span class='c-cm'># 4 · fit SOLO con entrenamiento</span>\nX_ent_esc = esc.fit_transform(X_ent)   <span class='c-cm'># aprende y aplica</span>\nX_prb_esc = esc.transform(X_prb)       <span class='c-cm'># solo aplica</span>\n\n<span class='c-cm'># 5 · Imágenes: basta dividir entre 255</span>\nX_img = X_img.astype(<span class='c-str'>\"float32\"</span>) / <span class='c-num'>255.0</span>",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "log1p comprime la cola de las distribuciones sesgadas. Usa log1p y no log: soporta el valor cero."
+          },
+          {
+            "n": "2",
+            "text": "get_dummies para categorías sin orden natural, igual que en la unidad anterior."
+          },
+          {
+            "n": "3",
+            "text": "MinMaxScaler para redes neuronales: trabajan mucho mejor con entradas entre 0 y 1."
+          },
+          {
+            "n": "4",
+            "text": "fit_transform en entrenamiento, transform en prueba. Nunca al revés y nunca los dos juntos."
+          },
+          {
+            "n": "5",
+            "text": "Para imágenes no hace falta escalador: dividir entre 255 ya lleva los píxeles a [0,1]."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Selección de características",
+      "notes": "El tercer pilar de la fase 3 y el que menos se practica. Tres familias de métodos que conviene distinguir. Los de filtro miden la relación de cada variable con el objetivo mediante un estadístico y se quedan con las mejores; son rapidísimos y no dependen del modelo, pero miran cada variable por separado y se pierden las combinaciones. Los de envoltura prueban subconjuntos entrenando el modelo una y otra vez, como hace la eliminación recursiva; encuentran mejores conjuntos pero son caros. Y los embebidos aprovechan que el propio modelo ya calcula importancias durante el entrenamiento, como los árboles o Lasso, así que salen gratis. Cierra con el criterio práctico: si dos columnas están muy correlacionadas entre sí, están diciendo lo mismo, y conviene quedarse con una.",
+      "slots": {
+        "TAG_LEFT": "DEMO · SELECCIÓN",
+        "TITLE": "Selección de características",
+        "TAG_RIGHT": "07",
+        "KICKER": "Tres familias de métodos",
+        "CODE_TITLE": "seleccion.py · Colab",
+        "CODE": "<span class='c-cm'># FILTRO · rápido, independiente del modelo</span>\n<span class='c-kw'>from</span> sklearn.feature_selection <span class='c-kw'>import</span> SelectKBest, f_classif\n\nsel = SelectKBest(score_func=f_classif, k=<span class='c-num'>10</span>)\nX_top = sel.fit_transform(X, y)\n<span class='c-fn'>print</span>(X.columns[sel.get_support()])\n\n<span class='c-cm'># ENVOLTURA · entrena varias veces, más caro y mejor</span>\n<span class='c-kw'>from</span> sklearn.feature_selection <span class='c-kw'>import</span> RFE\n\nrfe = RFE(DecisionTreeClassifier(), n_features_to_select=<span class='c-num'>10</span>)\nrfe.fit(X, y)\n\n<span class='c-cm'># EMBEBIDO · el modelo ya lo calcula: sale gratis</span>\narbol = DecisionTreeClassifier().fit(X, y)\nimp = pd.Series(arbol.feature_importances_, index=X.columns)\n<span class='c-fn'>print</span>(imp.sort_values(ascending=<span class='c-kw'>False</span>).head(<span class='c-num'>10</span>))\n\n<span class='c-cm'># Columnas que dicen lo mismo: quédate con una</span>\n<span class='c-fn'>print</span>(X.corr().abs().unstack().sort_values(ascending=<span class='c-kw'>False</span>)[<span class='c-num'>10</span>:<span class='c-num'>20</span>])",
+        "PANEL_TITLE": "Cuándo usar cada familia",
+        "WHY_TITLE": "Por qué quitar columnas mejora el modelo",
+        "WHY": "Cada columna irrelevante es ruido que el modelo intentará explicar. Con menos variables hay menos riesgo de sobreajuste, el entrenamiento es más rápido y el resultado es más fácil de justificar ante alguien que no es técnico.",
+        "CRITERIA": [
+          {
+            "letter": "F",
+            "name": "Filtro · SelectKBest, chi², correlación",
+            "meta": "Rápido, primera pasada",
+            "highlight": "true"
+          },
+          {
+            "letter": "E",
+            "name": "Envoltura · RFE, búsqueda por subconjuntos",
+            "meta": "Caro, mejor resultado",
+            "highlight": ""
+          },
+          {
+            "letter": "B",
+            "name": "Embebido · feature_importances_, Lasso",
+            "meta": "Gratis, ya lo calculó",
+            "highlight": "true"
+          },
+          {
+            "letter": "C",
+            "name": "Correlación alta entre columnas: quédate con una",
+            "meta": "Redundancia",
+            "highlight": ""
+          },
+          {
+            "letter": "D",
+            "name": "El filtro mira cada variable por separado",
+            "meta": "Su limitación",
+            "highlight": ""
+          },
+          {
+            "letter": "V",
+            "name": "Selecciona SOLO con datos de entrenamiento",
+            "meta": "Fuga de datos",
+            "highlight": "true"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Sesión 1",
+      "notes": "Cierre de la primera sesión. La respuesta correcta es la C. Es la fuga de datos aplicada a la selección de características, y es más sutil que la del escalado porque parece inofensiva: si eliges las diez mejores columnas usando todo el conjunto, esa elección ya incorpora información del conjunto de prueba, y por tanto tu evaluación posterior está contaminada. El resultado es un modelo que parece mejor de lo que es. La solución es la misma que con el escalado: seleccionar dentro del Pipeline, o al menos únicamente con los datos de entrenamiento.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de la sesión 1",
+        "TAG_RIGHT": "08",
+        "BADGE": "PREGUNTA 1",
+        "QUESTION": "Aplicas SelectKBest sobre TODO el conjunto y luego divides en entrenamiento y prueba. ¿Qué ocurre?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "La elección de las mejores columnas ya usó información del conjunto de prueba, así que tu evaluación posterior está contaminada y el modelo parecerá mejor de lo que es. Se llama fuga de datos. La solución: seleccionar dentro del Pipeline o solo con entrenamiento.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Nada: seleccionar columnas no afecta a la evaluación",
+            "correct": ""
+          },
+          {
+            "key": "B",
+            "text": "El modelo entrenará más lento de lo necesario",
+            "correct": ""
+          },
+          {
+            "key": "C",
+            "text": "Fuga de datos: la selección ya vio el conjunto de prueba",
+            "correct": "true"
+          },
+          {
+            "key": "D",
+            "text": "Se pierden las variables categóricas al filtrar",
+            "correct": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Sesión 2 · Deep learning con TensorFlow y Keras",
+      "notes": "Separador del bloque de aprendizaje profundo. Aclara la relación entre los dos nombres, porque confunde: TensorFlow es la librería de cálculo de Google, la que hace las operaciones con matrices y las derivadas; Keras es la interfaz amigable que va encima y con la que se escribe realmente. Desde TensorFlow 2, Keras viene incluido. Y el cambio de mentalidad respecto a la unidad anterior: con scikit-learn elegías un modelo ya hecho de un catálogo; aquí construyes la arquitectura capa por capa. Ganas potencia y flexibilidad, y pierdes la interpretabilidad casi por completo.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 02",
+        "TITLE": "Deep learning con TensorFlow y Keras",
+        "SUBTITLE": "Ya no eliges un modelo del catálogo: lo construyes capa por capa",
+        "AGENDA": [
+          {
+            "label": "01",
+            "text": "Cuándo compensa una red y cuándo no"
+          },
+          {
+            "label": "02",
+            "text": "Anatomía de un modelo en Keras"
+          },
+          {
+            "label": "03",
+            "text": "Colab con GPU y lectura de las curvas"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "title": "ML clásico frente a deep learning",
+      "notes": "La comparación que evita la decisión equivocada más cara del curso. La idea que hay que dejar clara: el aprendizaje profundo no es la versión mejorada del aprendizaje automático, es la herramienta para otro tipo de problema. Con datos tabulares de unos miles de filas, un árbol de gradiente o incluso una regresión ganan casi siempre a una red neuronal, entrenan en segundos y además se pueden explicar. El aprendizaje profundo gana cuando los datos son crudos y de alta dimensión —imágenes, audio, texto, secuencias— porque ahí la red construye sola las características que un humano tardaría meses en diseñar. La regla práctica: si tus datos caben cómodamente en una hoja de cálculo, probablemente no necesitas una red.",
+      "slots": {
+        "TAG_LEFT": "CONTRASTE",
+        "TITLE": "¿Cuándo compensa una red?",
+        "TAG_RIGHT": "10",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "ML CLÁSICO",
+        "LEFT_TITLE": "Datos tabulares",
+        "LEFT_BODY": "Con unos miles de filas y columnas con significado, un árbol o una regresión ganan casi siempre. Y entrenan en segundos.",
+        "LEFT_EXAMPLE": "Predecir el precio de una casa con 12 columnas.",
+        "RIGHT_LABEL": "DEEP LEARNING",
+        "RIGHT_TITLE": "Datos crudos",
+        "RIGHT_BODY": "Imágenes, audio, texto y secuencias. La red construye sola las características que un humano tardaría meses en diseñar.",
+        "RIGHT_EXAMPLE": "Reconocer un personaje de Los Simpson en una foto.",
+        "LEFT_POINTS": [
+          {
+            "text": "Funciona bien con pocos datos"
+          },
+          {
+            "text": "Entrena en segundos, en cualquier portátil"
+          },
+          {
+            "text": "Se puede explicar: coeficientes o importancias"
+          },
+          {
+            "text": "Tú diseñas las características a mano"
+          }
+        ],
+        "RIGHT_POINTS": [
+          {
+            "text": "Necesita muchos datos para brillar"
+          },
+          {
+            "text": "Entrenar puede tardar horas: pide GPU"
+          },
+          {
+            "text": "Caja negra: casi imposible de explicar"
+          },
+          {
+            "text": "La red descubre sola las características"
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "Imágenes"
+          },
+          {
+            "text": "Texto"
+          },
+          {
+            "text": "Secuencias"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Anatomía de un modelo en Keras",
+      "notes": "Las piezas de una red, y conviene recorrerlas en el orden en que se escriben porque ese orden es el del código base de la evaluación. Sequential es la forma más simple: una pila de capas donde cada una alimenta a la siguiente. Input declara la forma de los datos de entrada y es la fuente número uno de errores al empezar. Dense es la capa clásica totalmente conectada. Dropout apaga aleatoriamente un porcentaje de neuronas en cada paso de entrenamiento y es la herramienta principal contra el sobreajuste en redes. La activación de la última capa determina el tipo de problema, y esto se evalúa: softmax para clasificación multiclase, sigmoid para binaria, y ninguna activación para regresión. Compile define cómo aprende: optimizador, función de pérdida y métricas. Y fit entrena. Detente en la pareja pérdida-activación: son inseparables y equivocarse ahí produce un modelo que entrena sin dar error pero no aprende nada.",
+      "slots": {
+        "TAG_LEFT": "ESTRUCTURA",
+        "TITLE": "Anatomía de un modelo en Keras",
+        "TAG_RIGHT": "11",
+        "SPEC_TITLE": "Las piezas, en el mismo orden en que se escriben",
+        "FIELDS": [
+          {
+            "key": "Sequential",
+            "value": "Una pila de capas: cada una alimenta a la siguiente. La forma más simple de construir.",
+            "highlight": ""
+          },
+          {
+            "key": "Input(shape=…)",
+            "value": "Declara la forma de los datos de entrada. Fuente nº1 de errores al empezar.",
+            "highlight": "true"
+          },
+          {
+            "key": "Dense(n, activation)",
+            "value": "Capa totalmente conectada: n neuronas conectadas a todas las de la capa anterior.",
+            "highlight": ""
+          },
+          {
+            "key": "Dropout(0.5)",
+            "value": "Apaga al azar el 50% de las neuronas en cada paso. La defensa nº1 contra el sobreajuste.",
+            "highlight": "true"
+          },
+          {
+            "key": "Última capa",
+            "value": "softmax = multiclase · sigmoid = binaria · sin activación = regresión",
+            "highlight": "true"
+          },
+          {
+            "key": "compile(loss=…)",
+            "value": "categorical_crossentropy con softmax · binary_crossentropy con sigmoid · mse en regresión",
+            "highlight": "true"
+          },
+          {
+            "key": "fit(epochs, batch_size)",
+            "value": "Entrena. Una epoch es una vuelta completa a todos los datos.",
+            "highlight": ""
+          },
+          {
+            "key": "summary()",
+            "value": "Imprime la arquitectura y cuántos parámetros va a entrenar. Míralo siempre.",
+            "highlight": ""
+          }
+        ],
+        "NOTES": [
+          {
+            "n": "1",
+            "title": "Activación y pérdida son inseparables",
+            "text": "softmax va con categorical_crossentropy. Emparejarlas mal produce un modelo que entrena sin error visible y no aprende nada."
+          },
+          {
+            "n": "2",
+            "title": "summary() antes de entrenar",
+            "text": "Si el número de parámetros es absurdamente grande para tus datos, ya sabes que vas a sobreajustar. Se ve antes de perder media hora."
+          },
+          {
+            "n": "3",
+            "title": "Dropout solo actúa al entrenar",
+            "text": "Durante la predicción se desactiva solo. Por eso el accuracy de entrenamiento puede ser menor que el de validación al principio."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Tu primera red en Keras",
+      "notes": "El código completo de una red densa, con el conjunto de dígitos escritos a mano para que nadie tenga que descargar nada. Recórrelo en tres partes. La arquitectura: Flatten convierte la imagen de veintiocho por veintiocho en una fila de setecientos ochenta y cuatro números, después dos capas densas con activación relu y una capa de salida con diez neuronas y softmax porque hay diez dígitos. La compilación: adam es el optimizador por defecto y funciona bien casi siempre; la pérdida es sparse_categorical_crossentropy porque las etiquetas son números enteros y no vectores uno-en-caliente, y esa es una distinción que confunde mucho. Y el entrenamiento con validation_split, que aparta automáticamente el veinte por ciento del entrenamiento para vigilar el sobreajuste en tiempo real. Insiste en que ese conjunto de validación no es el de prueba: son tres conjuntos distintos y cada uno tiene su función.",
+      "slots": {
+        "TAG_LEFT": "DEMO · KERAS",
+        "TITLE": "Tu primera red en Keras",
+        "TAG_RIGHT": "12",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Una red densa completa. Tres conjuntos distintos: entrenamiento, validación y prueba, cada uno con su función.",
+        "CALLOUT_LABEL": "Las dos pérdidas que se confunden",
+        "CALLOUT": "sparse_categorical_crossentropy si tus etiquetas son enteros (3). categorical_crossentropy si son vectores one-hot ([0,0,0,1,…]).",
+        "FILENAME": "primera_red.py · Colab",
+        "CODE": "<span class='c-kw'>import</span> tensorflow <span class='c-kw'>as</span> tf\n<span class='c-kw'>from</span> tensorflow.keras <span class='c-kw'>import</span> layers\n\n(X_ent, y_ent), (X_prb, y_prb) = tf.keras.datasets.mnist.load_data()\nX_ent, X_prb = X_ent / <span class='c-num'>255.0</span>, X_prb / <span class='c-num'>255.0</span>\n\n<span class='c-cm'># 1 · Arquitectura</span>\nmodelo = tf.keras.Sequential([\n    layers.Input(shape=(<span class='c-num'>28</span>, <span class='c-num'>28</span>)),\n    layers.Flatten(),                       <span class='c-cm'># 28×28 → 784</span>\n    layers.Dense(<span class='c-num'>128</span>, activation=<span class='c-str'>\"relu\"</span>),\n    layers.Dropout(<span class='c-num'>0.3</span>),                   <span class='c-cm'># anti-sobreajuste</span>\n    layers.Dense(<span class='c-num'>10</span>,  activation=<span class='c-str'>\"softmax\"</span>) <span class='c-cm'># 10 dígitos</span>\n])\nmodelo.summary()\n\n<span class='c-cm'># 2 · Cómo aprende</span>\nmodelo.compile(optimizer=<span class='c-str'>\"adam\"</span>,\n               loss=<span class='c-str'>\"sparse_categorical_crossentropy\"</span>,\n               metrics=[<span class='c-str'>\"accuracy\"</span>])\n\n<span class='c-cm'># 3 · Entrenar vigilando el sobreajuste</span>\nhist = modelo.fit(X_ent, y_ent, epochs=<span class='c-num'>10</span>, batch_size=<span class='c-num'>32</span>,\n                  validation_split=<span class='c-num'>0.2</span>)",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Flatten aplana la imagen: 28×28 se convierte en una fila de 784 números."
+          },
+          {
+            "n": "2",
+            "text": "relu es la activación estándar en capas ocultas: rápida y evita que el gradiente se desvanezca."
+          },
+          {
+            "n": "3",
+            "text": "Dropout(0.3) apaga el 30% de las neuronas en cada paso. Solo durante el entrenamiento."
+          },
+          {
+            "n": "4",
+            "text": "validation_split=0.2 aparta un 20% del entrenamiento para vigilar. NO es el conjunto de prueba."
+          },
+          {
+            "n": "5",
+            "text": "batch_size=32: el modelo actualiza sus pesos cada 32 ejemplos, no después de ver todos."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Colab con GPU · esta vez sí hace falta",
+      "notes": "El paso técnico que hay que hacer antes de entrenar cualquier red, y que si se olvida cuesta horas. En la unidad anterior no importaba porque scikit-learn entrena en segundos; aquí una LSTM sobre texto puede tardar veinte veces más en procesador que en tarjeta gráfica. Recorre los campos: primero cómo se activa, entorno de ejecución, cambiar tipo de entorno, T4 GPU; después cómo se comprueba que de verdad está activa, porque activarla en el menú y no reiniciar es un clásico. Detente en las limitaciones de la versión gratuita, que hay que conocer para planificar: hay un límite diario de uso, la sesión se corta a las doce horas y a los noventa minutos de inactividad. De ahí las dos recomendaciones prácticas: guardar el modelo entrenado en Drive para no repetir el entrenamiento, y no dejar el entrenamiento largo para la última noche.",
+      "slots": {
+        "TAG_LEFT": "ENTORNO",
+        "TITLE": "Colab con GPU",
+        "TAG_RIGHT": "13",
+        "SPEC_TITLE": "Sin esto, entrenar tu LSTM puede tardar 20 veces más",
+        "FIELDS": [
+          {
+            "key": "Activarla",
+            "value": "Entorno de ejecución → Cambiar tipo de entorno → Acelerador por hardware: T4 GPU",
+            "highlight": "true"
+          },
+          {
+            "key": "Comprobar que está",
+            "value": "print(tf.config.list_physical_devices('GPU')) — si sale lista vacía, no está activa",
+            "highlight": "true"
+          },
+          {
+            "key": "Error clásico",
+            "value": "Activarla en el menú y no reiniciar el entorno. Hay que reiniciar.",
+            "highlight": ""
+          },
+          {
+            "key": "Límite de sesión",
+            "value": "12 horas máximo · se corta a los 90 min de inactividad · hay cuota diaria",
+            "highlight": "true"
+          },
+          {
+            "key": "Guardar el modelo",
+            "value": "modelo.save('/content/drive/MyDrive/modelo.keras') tras montar el Drive",
+            "highlight": ""
+          },
+          {
+            "key": "Recargarlo después",
+            "value": "tf.keras.models.load_model('...') — evita reentrenar en cada sesión",
+            "highlight": ""
+          },
+          {
+            "key": "Ver el consumo",
+            "value": "!nvidia-smi muestra qué tarjeta te tocó y cuánta memoria queda libre",
+            "highlight": ""
+          },
+          {
+            "key": "Planifica",
+            "value": "No dejes el entrenamiento largo para la última noche: la cuota diaria existe.",
+            "highlight": "true"
+          }
+        ],
+        "NOTES": [
+          {
+            "n": "1",
+            "title": "Guarda el modelo, no solo el cuaderno",
+            "text": "Si la sesión se corta, el código sigue en tu Drive pero el modelo entrenado se pierde. Guardarlo tras entrenar te ahorra repetir horas."
+          },
+          {
+            "n": "2",
+            "title": "La cuota es real",
+            "text": "La versión gratuita limita el uso diario de GPU. Si abusas, te la retiran unas horas. Entrena con pocas epochs mientras depuras y sube al final."
+          },
+          {
+            "n": "3",
+            "title": "Si no hay GPU disponible",
+            "text": "Reduce el tamaño del conjunto o el número de epochs para depurar. Deja la ejecución completa para cuando el código ya funcione."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Callbacks · que el entrenamiento se cuide solo",
+      "notes": "Las herramientas que convierten un entrenamiento ingenuo en uno profesional, y las tres aparecen en la rúbrica indirectamente a través del criterio de proceso de entrenamiento robusto. EarlyStopping detiene el entrenamiento cuando la pérdida de validación deja de mejorar durante un número de epochs, así que puedes poner cien epochs sin miedo: parará cuando toque. El parámetro restore_best_weights es el que casi nadie pone y el más importante: sin él te quedas con los pesos de la última epoch, que suele ser peor que la mejor. ModelCheckpoint guarda automáticamente el mejor modelo a disco. Y ReduceLROnPlateau baja la tasa de aprendizaje cuando el progreso se estanca, lo que permite afinar al final del entrenamiento. Menciona que estos tres son material directo para la sección de fine-tuning de la evaluación.",
+      "slots": {
+        "TAG_LEFT": "DEMO · KERAS",
+        "TITLE": "Callbacks",
+        "TAG_RIGHT": "14",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Con estos tres puedes poner 100 epochs sin miedo: el entrenamiento se detiene y se guarda solo.",
+        "CALLOUT_LABEL": "El parámetro que casi nadie pone",
+        "CALLOUT": "restore_best_weights=True. Sin él te quedas con los pesos de la ÚLTIMA epoch, que suele ser peor que la mejor que llegaste a alcanzar.",
+        "FILENAME": "callbacks.py · Colab",
+        "CODE": "<span class='c-kw'>from</span> tensorflow.keras.callbacks <span class='c-kw'>import</span> (\n    EarlyStopping, ModelCheckpoint, ReduceLROnPlateau)\n\ncallbacks = [\n    <span class='c-cm'># Para cuando val_loss deja de mejorar 3 epochs seguidas</span>\n    EarlyStopping(monitor=<span class='c-str'>\"val_loss\"</span>, patience=<span class='c-num'>3</span>,\n                  restore_best_weights=<span class='c-kw'>True</span>),\n\n    <span class='c-cm'># Guarda a disco el mejor modelo visto</span>\n    ModelCheckpoint(<span class='c-str'>\"mejor_modelo.keras\"</span>,\n                    monitor=<span class='c-str'>\"val_accuracy\"</span>, save_best_only=<span class='c-kw'>True</span>),\n\n    <span class='c-cm'># Baja la tasa de aprendizaje si se estanca</span>\n    ReduceLROnPlateau(monitor=<span class='c-str'>\"val_loss\"</span>, factor=<span class='c-num'>0.5</span>,\n                      patience=<span class='c-num'>2</span>, min_lr=<span class='c-num'>1e-5</span>),\n]\n\nhist = modelo.fit(X_ent, y_ent,\n                  epochs=<span class='c-num'>100</span>,          <span class='c-cm'># sin miedo: parará solo</span>\n                  validation_data=(X_val, y_val),\n                  callbacks=callbacks)",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "EarlyStopping vigila val_loss: si no mejora en 3 epochs (patience), detiene el entrenamiento."
+          },
+          {
+            "n": "2",
+            "text": "restore_best_weights devuelve el modelo a su mejor momento, no al último."
+          },
+          {
+            "n": "3",
+            "text": "ModelCheckpoint escribe a disco cada vez que bate su récord. Sobrevive a un corte de sesión."
+          },
+          {
+            "n": "4",
+            "text": "ReduceLROnPlateau baja la tasa de aprendizaje a la mitad cuando se estanca: permite afinar al final."
+          },
+          {
+            "n": "5",
+            "text": "Los tres son material directo para tu sección de fine-tuning: son experimentos documentables."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "trend",
+      "title": "Leer las curvas de entrenamiento",
+      "notes": "La habilidad diagnóstica más valiosa del bloque y un criterio explícito de la rúbrica. La gráfica muestra la pérdida de validación a lo largo de las epochs. Recorre los hitos. Al principio ambas curvas bajan juntas y eso es señal de que el modelo está aprendiendo de verdad. Alrededor de la epoch ocho la de validación toca su mínimo: ese es el momento óptimo del modelo y es exactamente donde EarlyStopping lo habría detenido. A partir de ahí la de entrenamiento sigue bajando pero la de validación empieza a subir, y esa divergencia es la firma visual del sobreajuste: el modelo continúa mejorando en lo que ya vio y empeora en lo que no. Explica también qué significa cada patrón anómalo: si ninguna de las dos baja, hay subajuste o la tasa de aprendizaje está mal; si la curva sube y baja violentamente, la tasa es demasiado alta o el lote demasiado pequeño.",
+      "slots": {
+        "TAG_LEFT": "DIAGNÓSTICO",
+        "TITLE": "Leer las curvas de entrenamiento",
+        "TAG_RIGHT": "15",
+        "SPLIT": "1.25fr 1fr",
+        "LEAD": "Pérdida de validación por epoch. El punto donde deja de bajar es el momento óptimo del modelo.",
+        "SIDE_TITLE": "Qué te dice la forma",
+        "DELTA_LABEL": "Punto óptimo",
+        "DELTA": "epoch 8",
+        "DELTA_NOTE": "Ahí la pérdida de validación toca su mínimo. Entrenar más allá solo mejora la memorización, no el aprendizaje.",
+        "SOURCE": "val_loss por epoch · el criterio 7 de la rúbrica pide estas curvas interpretadas",
+        "SERIES": [
+          {
+            "when": "e1",
+            "value": "2.30"
+          },
+          {
+            "when": "e2",
+            "value": "1.42"
+          },
+          {
+            "when": "e3",
+            "value": "0.95"
+          },
+          {
+            "when": "e4",
+            "value": "0.71"
+          },
+          {
+            "when": "e5",
+            "value": "0.58"
+          },
+          {
+            "when": "e6",
+            "value": "0.49"
+          },
+          {
+            "when": "e7",
+            "value": "0.44"
+          },
+          {
+            "when": "e8",
+            "value": "0.41"
+          },
+          {
+            "when": "e9",
+            "value": "0.46"
+          },
+          {
+            "when": "e10",
+            "value": "0.54"
+          },
+          {
+            "when": "e11",
+            "value": "0.63"
+          },
+          {
+            "when": "e12",
+            "value": "0.75"
+          }
+        ],
+        "MILESTONES": [
+          {
+            "when": "e1 – e6",
+            "title": "Aprende de verdad",
+            "text": "Entrenamiento y validación bajan juntas. El modelo está encontrando el patrón general."
+          },
+          {
+            "when": "e8",
+            "title": "El mínimo",
+            "text": "La validación toca fondo. Es el mejor modelo que vas a conseguir con esta configuración."
+          },
+          {
+            "when": "e9 → e12",
+            "title": "Sobreajuste",
+            "text": "El entrenamiento sigue bajando y la validación sube. Firma visual inconfundible: está memorizando."
+          },
+          {
+            "when": "Si nada baja",
+            "title": "Otros diagnósticos",
+            "text": "Ninguna curva baja: subajuste o tasa mal puesta. Curva en zigzag violento: tasa demasiado alta o lote muy pequeño."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Sesión 2",
+      "notes": "Cierre del bloque de deep learning. La respuesta correcta es la B. Es el diagnóstico visual que hay que reconocer al instante y que la rúbrica pide interpretar en el criterio siete. Cuando la pérdida de entrenamiento sigue bajando y la de validación empieza a subir, el modelo ha dejado de generalizar y está memorizando. La solución más directa es EarlyStopping con restore_best_weights, y las complementarias son más dropout, menos capas o más datos. Si alguien elige la D, aclara que subir las epochs es justo lo contrario de lo que hay que hacer.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de la sesión 2",
+        "TAG_RIGHT": "16",
+        "BADGE": "PREGUNTA 2",
+        "QUESTION": "La pérdida de entrenamiento baja pero la de validación lleva 4 epochs subiendo. ¿Qué haces?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "Esa divergencia es la firma del sobreajuste: el modelo mejora en lo que ya vio y empeora en lo que no. La solución directa es EarlyStopping con restore_best_weights, que recupera el modelo en su mejor momento. Complementarias: más dropout, menos capas, más datos.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Nada: mientras el entrenamiento mejore, el modelo mejora",
+            "correct": ""
+          },
+          {
+            "key": "B",
+            "text": "Detener y recuperar los pesos de la mejor epoch",
+            "correct": "true"
+          },
+          {
+            "key": "C",
+            "text": "Bajar el dropout para que la red aprenda más rápido",
+            "correct": ""
+          },
+          {
+            "key": "D",
+            "text": "Subir las epochs para que la validación se recupere",
+            "correct": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Sesión 2b · Cómo aprende de verdad una red",
+      "notes": "Bloque nuevo, y el más abstracto de la unidad, así que conviene avisarlo: durante los próximos veinte minutos no vamos a ver una sola fórmula. Todo lo que hace una red al entrenar se puede entender con una imagen: alguien bajando una montaña con niebla. Este bloque explica qué es realmente el optimizador que ponen en compile sin pensar, qué significa la tasa de aprendizaje y por qué existen Adam, RMSprop y compañía. Y es directamente el material de la sección de fine-tuning de la evaluación, porque los experimentos que se piden ahí son justamente cambiar estas cosas.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 02b",
+        "TITLE": "Cómo aprende de verdad una red",
+        "SUBTITLE": "Veinte minutos sin una sola fórmula: todo es bajar una montaña con niebla",
+        "AGENDA": [
+          {
+            "label": "01",
+            "text": "Descenso de gradiente: la montaña con niebla"
+          },
+          {
+            "label": "02",
+            "text": "Tasa de aprendizaje, inercia y optimizadores"
+          },
+          {
+            "label": "03",
+            "text": "Lote y épocas: cuántos datos y cuántas vueltas"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "Descenso de gradiente · bajar la montaña con niebla",
+      "notes": "La analogía madre de todo el bloque, y conviene contarla despacio porque de ella cuelga el resto. Imagina que estás en una montaña, de noche y con niebla espesa, y quieres llegar al valle. No ves nada más allá de tus pies. ¿Qué haces? Palpas el suelo alrededor, notas hacia dónde baja la pendiente y das un paso en esa dirección. Repites. Eso es exactamente el descenso de gradiente, y no hay nada más. Ahora traduce cada elemento: la montaña es la función de pérdida, la altura a la que estás es cuánto se equivoca tu modelo, el valle es el punto donde se equivoca lo mínimo posible, la pendiente que palpas con el pie es el gradiente, y el tamaño de tu paso es la tasa de aprendizaje. Cuando en el código escriben optimizer igual a adam, están eligiendo la estrategia con la que ese caminante decide sus pasos. Cierra con el matiz honesto: la montaña real no tiene un solo valle, tiene muchos, y por eso a veces el caminante se queda en un hoyo pequeño creyendo que llegó al fondo.",
+      "slots": {
+        "TAG_LEFT": "LA ANALOGÍA MADRE",
+        "TITLE": "Bajar la montaña con niebla",
+        "TAG_RIGHT": "18",
+        "GHOST": "↓",
+        "KICKER": "Esto es todo el entrenamiento",
+        "PRINCIPLE": "Estás en una montaña, de noche y con niebla. Palpas la pendiente con el pie y das un paso hacia abajo. Repites.",
+        "PRINCIPLE_BODY": "No hay nada más. Eso es el descenso de gradiente y es literalmente lo que hace tu red millones de veces mientras entrena. Cuando escribes optimizer='adam' en compile, lo que estás eligiendo es la estrategia con la que ese caminante decide hacia dónde y cuánto avanza en cada paso.",
+        "LIST_TITLE": "La traducción, término a término",
+        "FACTORS": [
+          {
+            "name": "La montaña",
+            "text": "La función de pérdida. Cada punto del terreno es una combinación posible de los pesos de tu red.",
+            "color": "var(--a1)"
+          },
+          {
+            "name": "Tu altura",
+            "text": "Cuánto se equivoca el modelo ahora mismo. Cuanto más arriba, peor lo hace.",
+            "color": "var(--a2)"
+          },
+          {
+            "name": "La pendiente",
+            "text": "El gradiente: hacia dónde baja el terreno. Es lo único que el modelo puede «ver».",
+            "color": "var(--a3)"
+          },
+          {
+            "name": "El tamaño del paso",
+            "text": "La tasa de aprendizaje. El número que más afecta al resultado de todo el entrenamiento.",
+            "color": "var(--ok)"
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "El valle",
+            "value": "min",
+            "label": "pérdida mínima",
+            "desc": "Donde el modelo se equivoca lo menos posible. El objetivo.",
+            "color": "var(--ok)"
+          },
+          {
+            "tag": "Un hoyo cualquiera",
+            "value": "≠",
+            "label": "mínimo local",
+            "desc": "Un pozo pequeño donde el caminante cree que ya llegó.",
+            "color": "var(--warn)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "La tasa de aprendizaje · el tamaño del paso",
+      "notes": "El hiperparámetro más importante de todos, explicado con el mismo caminante. Si da pasitos de hormiga, va en la dirección correcta pero tardará una eternidad en llegar al valle, y probablemente se le acabe el tiempo —las épocas— a mitad de camino. Si da zancadas de gigante, cada paso lo lanza al otro lado del valle sin llegar nunca al fondo, y verán la pérdida rebotando arriba y abajo sin bajar; en casos extremos las zancadas lo sacan disparado montaña arriba y la pérdida se va a infinito, que es cuando aparece el temido «nan» en la consola. El paso adecuado baja rápido al principio y afina al final. Y da el valor práctico que buscarán: 0.001 es el que trae Adam por defecto y funciona bien en la mayoría de los casos; si van a experimentar, muévanlo por factores de diez, no de dos.",
+      "slots": {
+        "TAG_LEFT": "HIPERPARÁMETRO Nº1",
+        "TITLE": "La tasa de aprendizaje",
+        "TAG_RIGHT": "19",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "🐜",
+            "title": "Pasos de hormiga",
+            "body": "Va en la dirección correcta, pero tardará una eternidad. Se le acabarán las épocas a mitad de la ladera.",
+            "note_label": "Lo ves así",
+            "note": "La pérdida baja, pero lentísimo. lr = 0.00001"
+          },
+          {
+            "badge": "🚶",
+            "title": "Paso adecuado",
+            "body": "Baja rápido al principio, cuando la pendiente es fuerte, y afina cuando se acerca al fondo del valle.",
+            "note_label": "Lo ves así",
+            "note": "Curva que baja y se aplana. lr = 0.001"
+          },
+          {
+            "badge": "🦖",
+            "title": "Zancadas de gigante",
+            "body": "Cada paso lo lanza al otro lado del valle. Nunca llega al fondo, y a veces sale disparado montaña arriba.",
+            "note_label": "Lo ves así",
+            "note": "Pérdida en zigzag, o «nan». lr = 0.5"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "title": "Inercia · la pelota que rueda",
+      "notes": "El siguiente concepto y otra imagen sencilla. Hasta ahora el caminante decide cada paso mirando solo la pendiente que tiene bajo los pies, sin recordar nada. Eso tiene dos problemas: si encuentra un hoyo pequeño se queda ahí, porque a su alrededor todo sube; y si el terreno es un valle estrecho y alargado, rebota de pared a pared avanzando poquísimo. La solución es dejar de caminar y empezar a rodar: una pelota que baja acumula inercia, y esa inercia le permite atravesar los baches pequeños y mantener la dirección buena en lugar de rebotar. Eso es el momento, o momentum. El valor típico es 0.9, que significa que el noventa por ciento de la velocidad anterior se conserva. Y menciona la variante de Nesterov con su imagen propia: la pelota mira primero dónde va a caer y corrige antes de llegar, en lugar de corregir después; frena mejor al acercarse al fondo.",
+      "slots": {
+        "TAG_LEFT": "MOMENTUM",
+        "TITLE": "Caminar o rodar",
+        "TAG_RIGHT": "20",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "SIN INERCIA",
+        "LEFT_TITLE": "Un caminante sin memoria",
+        "LEFT_BODY": "Cada paso lo decide mirando solo la pendiente bajo sus pies. No recuerda de dónde venía.",
+        "LEFT_EXAMPLE": "Si cae en un hoyo pequeño, se queda: alrededor todo sube.",
+        "RIGHT_LABEL": "CON INERCIA",
+        "RIGHT_TITLE": "Una pelota que rueda",
+        "RIGHT_BODY": "Acumula velocidad en la dirección que venía funcionando. La inercia la saca de los baches.",
+        "RIGHT_EXAMPLE": "momentum=0.9 conserva el 90% de la velocidad anterior.",
+        "LEFT_POINTS": [
+          {
+            "text": "Se queda atrapado en cualquier hoyo pequeño"
+          },
+          {
+            "text": "En valles estrechos rebota de pared a pared"
+          },
+          {
+            "text": "Avanza poco aunque dé muchos pasos"
+          },
+          {
+            "text": "Es el SGD puro, sin más"
+          }
+        ],
+        "RIGHT_POINTS": [
+          {
+            "text": "Atraviesa los baches sin detenerse"
+          },
+          {
+            "text": "Mantiene la dirección buena y deja de rebotar"
+          },
+          {
+            "text": "Llega antes y a un punto mejor"
+          },
+          {
+            "text": "Nesterov: además mira dónde va a caer y frena antes"
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "momentum=0.9"
+          },
+          {
+            "text": "nesterov=True"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "Los optimizadores, en cristiano",
+      "notes": "La tabla que ordena todos los nombres que van a encontrar. Recórrela como una historia de mejoras sucesivas, porque eso es exactamente lo que es. SGD es el caminante básico. Momentum le añade inercia. Nesterov le añade previsión. Adagrad introduce una idea nueva y potente: en vez de usar el mismo tamaño de paso en todas las direcciones, usa pasos cortos donde el terreno cambia mucho y largos donde es plano, como cuando caminas por terreno irregular y acortas la zancada en las piedras; su problema es que el paso se le va encogiendo hasta detenerse. RMSprop arregla justamente eso olvidando el pasado lejano. Y Adam es la combinación de las dos buenas ideas: la inercia del momentum más el paso adaptativo de RMSprop, y por eso es el que casi todo el mundo usa por defecto. Termina con el consejo práctico: empiecen con Adam, y si van a experimentar para la evaluación, comparen Adam contra SGD con momentum, que es la comparación clásica y da material para escribir.",
+      "slots": {
+        "TAG_LEFT": "OPTIMIZADORES",
+        "TITLE": "Los optimizadores, en cristiano",
+        "TAG_RIGHT": "21",
+        "LEAD": "Léelo como una historia de mejoras sucesivas: cada uno arregla el problema del anterior.",
+        "HEADERS": "<th>Nombre</th><th>Qué añade, en una frase</th><th>Su punto débil</th>",
+        "NOTE_LABEL": "Qué usar",
+        "NOTE": "Empieza siempre con Adam. Para la evaluación, la comparación clásica que da material para escribir es Adam contra SGD con momentum.",
+        "ROWS": [
+          {
+            "cells": "<td>SGD</td><td>El caminante básico: mira la pendiente y da un paso</td><td>Lento y se queda en cualquier hoyo</td>"
+          },
+          {
+            "cells": "<td>+ Momentum</td><td>Le da inercia: ahora rueda en vez de caminar</td><td>Puede pasarse de largo el valle</td>"
+          },
+          {
+            "cells": "<td>+ Nesterov</td><td>Mira dónde va a caer y frena antes de llegar</td><td>Un poco más de cálculo</td>"
+          },
+          {
+            "cells": "<td>Adagrad</td><td>Paso corto donde el terreno cambia, largo donde es plano</td><td>El paso se encoge hasta pararse</td>"
+          },
+          {
+            "cells": "<td>RMSprop</td><td>Igual que Adagrad, pero olvidando el pasado lejano</td><td>No tiene inercia</td>"
+          },
+          {
+            "cells": "<td>Adam</td><td>Las dos buenas ideas juntas: inercia + paso adaptativo</td><td>Casi ninguno: por eso es el estándar</td>"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Probar optimizadores y tasas en Keras",
+      "notes": "El código que convierte todo lo anterior en un experimento ejecutable, y que es directamente la sección de fine-tuning de la evaluación. El patrón es el mismo que ya usaron en la Unidad 2 para comparar modelos: un diccionario de candidatos y un bucle que los entrena todos sobre exactamente los mismos datos. Señala dos detalles. Primero, que hay que reconstruir el modelo dentro del bucle: si reutilizan el mismo objeto, la segunda vuelta empieza con los pesos ya entrenados de la primera y la comparación no vale nada; es el error silencioso más frecuente al comparar optimizadores. Segundo, el ReduceLROnPlateau que ya vieron: es la versión automática de dar zancadas al principio y pasitos al final, que es exactamente lo que uno haría bajando la montaña.",
+      "slots": {
+        "TAG_LEFT": "DEMO · EXPERIMENTOS",
+        "TITLE": "Probar optimizadores y tasas",
+        "TAG_RIGHT": "22",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "El mismo patrón de la Unidad 2: un diccionario de candidatos y un bucle. Esto ES tu sección de fine-tuning.",
+        "CALLOUT_LABEL": "El error silencioso",
+        "CALLOUT": "Reconstruye el modelo DENTRO del bucle. Si reutilizas el mismo objeto, la segunda vuelta arranca con los pesos ya entrenados de la primera y la comparación no vale nada.",
+        "FILENAME": "experimentos.py · Colab",
+        "CODE": "<span class='c-kw'>from</span> tensorflow.keras.optimizers <span class='c-kw'>import</span> Adam, SGD, RMSprop\n\ncandidatos = {\n    <span class='c-str'>\"Adam lr=0.001\"</span> : Adam(learning_rate=<span class='c-num'>0.001</span>),\n    <span class='c-str'>\"Adam lr=0.0001\"</span>: Adam(learning_rate=<span class='c-num'>0.0001</span>),\n    <span class='c-str'>\"SGD + inercia\"</span> : SGD(learning_rate=<span class='c-num'>0.01</span>, momentum=<span class='c-num'>0.9</span>),\n    <span class='c-str'>\"SGD + Nesterov\"</span>: SGD(learning_rate=<span class='c-num'>0.01</span>, momentum=<span class='c-num'>0.9</span>,\n                            nesterov=<span class='c-kw'>True</span>),\n    <span class='c-str'>\"RMSprop\"</span>       : RMSprop(learning_rate=<span class='c-num'>0.001</span>),\n}\n\nhistorial = {}\n<span class='c-kw'>for</span> nombre, opt <span class='c-kw'>in</span> candidatos.items():\n    modelo = crear_modelo()      <span class='c-cm'># ← NUEVO en cada vuelta</span>\n    modelo.compile(optimizer=opt, loss=<span class='c-str'>\"...\"</span>,\n                   metrics=[<span class='c-str'>\"accuracy\"</span>])\n    historial[nombre] = modelo.fit(X_ent, y_ent, epochs=<span class='c-num'>15</span>,\n                                   validation_data=(X_val, y_val),\n                                   verbose=<span class='c-num'>0</span>)\n\n<span class='c-cm'># Dibujar las 5 curvas juntas: eso es tu evidencia</span>\n<span class='c-kw'>for</span> n, h <span class='c-kw'>in</span> historial.items():\n    plt.plot(h.history[<span class='c-str'>\"val_loss\"</span>], label=n)\nplt.legend(); plt.show()",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Un diccionario de candidatos, igual que cuando comparabas modelos en la Unidad 2."
+          },
+          {
+            "n": "2",
+            "text": "crear_modelo() dentro del bucle: cada candidato arranca desde cero, sin pesos heredados."
+          },
+          {
+            "n": "3",
+            "text": "Mismos datos, mismas epochs para todos. Si no, la comparación no es justa."
+          },
+          {
+            "n": "4",
+            "text": "verbose=0 evita 15 × 5 líneas de log inundando la salida del cuaderno."
+          },
+          {
+            "n": "5",
+            "text": "Las cinco curvas de val_loss en un solo gráfico: esa imagen es la evidencia del criterio 6."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Lote y épocas · cuántos datos y cuántas vueltas",
+      "notes": "Los dos parámetros que quedan por explicar, con analogías igual de sencillas. El tamaño de lote es cuántos ejemplos mira el modelo antes de corregir sus pesos, y la imagen que funciona es la de pedir opinión: si preguntas a una sola persona decides rápido pero de forma errática, si preguntas a los cinco mil tardas muchísimo en cada decisión aunque aciertes más, y treinta y dos es el equilibrio habitual. La época es cuántas veces relees el libro completo antes del examen: pocas y no te enteras, demasiadas y te aprendes las erratas de memoria, que es sobreajuste. Añade el aviso de memoria, muy práctico en Colab: subir el tamaño de lote acelera pero consume más memoria de la tarjeta gráfica, y cuando aparece el error de memoria agotada, bajarlo es lo primero que hay que probar. Y el aviso final sobre el barajado, que casi nadie conoce y que puede arruinar un entrenamiento entero.",
+      "slots": {
+        "TAG_LEFT": "LOS DOS QUE FALTAN",
+        "TITLE": "Lote y épocas",
+        "TAG_RIGHT": "23",
+        "LEAD": "Los dos números que siempre escribes en fit() sin pensar demasiado. Estas son sus analogías.",
+        "CALLOUTS": [
+          {
+            "kind": "info",
+            "icon": "qhgmphtg",
+            "title": "batch_size · a cuánta gente le preguntas",
+            "text": "Cuántos ejemplos mira antes de corregirse. A 1 persona: decides rápido pero errático. A los 5.000: certero pero lentísimo. 32 es el equilibrio de siempre."
+          },
+          {
+            "kind": "tip",
+            "icon": "xtzvywzp",
+            "title": "epochs · cuántas veces relees el libro",
+            "text": "Pocas y no te enteras; demasiadas y te aprendes las erratas de memoria. Por eso pones muchas y dejas que EarlyStopping decida cuándo parar."
+          },
+          {
+            "kind": "warn",
+            "icon": "usownftb",
+            "title": "Si Colab dice «out of memory»",
+            "text": "Baja el batch_size a la mitad: es lo primero que hay que probar. Lotes grandes van más rápido pero no caben en la memoria de la tarjeta."
+          },
+          {
+            "kind": "note",
+            "icon": "msoeawqm",
+            "title": "Baraja los datos",
+            "text": "Si tu conjunto viene ordenado por clase, un lote entero puede ser de una sola clase y el modelo aprende a trompicones. shuffle=True viene activado por defecto: no lo desactives."
+          },
+          {
+            "kind": "danger",
+            "icon": "inrunzby",
+            "title": "Lote y tasa van de la mano",
+            "text": "Si multiplicas por 4 el tamaño del lote, normalmente hay que subir también la tasa de aprendizaje. Cambiar uno solo y no entender el resultado es un clásico."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "Transfer learning · contratar a alguien que ya sabe",
+      "notes": "El concepto más rentable de todo el bloque y una de las técnicas que más nota puede dar en la evaluación. La analogía: necesitas un cocinero para tu restaurante de comida chilena. Tienes dos opciones. Una, contratar a alguien que nunca ha pisado una cocina y enseñarle todo desde cero: a sujetar el cuchillo, a controlar el fuego, a distinguir los ingredientes; tardarás años. Dos, contratar a un cocinero con quince años de experiencia en cocina francesa y enseñarle tu carta: sujetar el cuchillo y controlar el fuego ya lo sabe, solo tiene que aprender tus platos, y en dos semanas está listo. Eso es transfer learning. Un modelo entrenado con millones de imágenes ya sabe detectar bordes, texturas y formas; esas primeras capas sirven para cualquier problema de visión. Lo único que hay que reentrenar son las últimas, las que deciden qué es cada cosa. Da el dato que lo hace irresistible: con transfer learning se consiguen buenos resultados con cientos de imágenes en lugar de millones, y en minutos en lugar de días.",
+      "slots": {
+        "TAG_LEFT": "LA TÉCNICA MÁS RENTABLE",
+        "TITLE": "Contratar a alguien que ya sabe",
+        "TAG_RIGHT": "24",
+        "GHOST": "♻",
+        "KICKER": "Transfer learning",
+        "PRINCIPLE": "Nadie entrena una red desde cero. Se parte de una que ya aprendió y se le enseña solo lo tuyo.",
+        "PRINCIPLE_BODY": "Necesitas un cocinero. Puedes contratar a alguien que nunca pisó una cocina y enseñarle desde cómo sujetar el cuchillo —tardarás años—, o contratar a un chef con quince años de experiencia y enseñarle tu carta: en dos semanas está listo. Un modelo entrenado con millones de imágenes ya sabe detectar bordes, texturas y formas. Eso sirve para cualquier problema de visión.",
+        "LIST_TITLE": "Cómo se hace, en tres pasos",
+        "FACTORS": [
+          {
+            "name": "1 · Traer al chef",
+            "text": "Cargar un modelo preentrenado (MobileNet, ResNet, BERT) con sus pesos ya aprendidos.",
+            "color": "var(--a1)"
+          },
+          {
+            "name": "2 · Congelar lo básico",
+            "text": "Bloquear las primeras capas: sujetar el cuchillo ya lo sabe y no queremos que lo desaprenda.",
+            "color": "var(--a2)"
+          },
+          {
+            "name": "3 · Cambiar la carta",
+            "text": "Sustituir la última capa por una con TUS clases y entrenar solo esa.",
+            "color": "var(--a3)"
+          },
+          {
+            "name": "4 · Afinar (fine-tuning)",
+            "text": "Descongelar las últimas capas y reentrenar con una tasa MUY baja para no borrar lo aprendido.",
+            "color": "var(--ok)"
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "Desde cero",
+            "value": "1M",
+            "label": "imágenes y días",
+            "desc": "Lo que hace falta para entrenar una red potente desde la nada.",
+            "color": "var(--err)"
+          },
+          {
+            "tag": "Con transfer",
+            "value": "500",
+            "label": "imágenes y minutos",
+            "desc": "Resultados buenos con lo que cabe en una carpeta.",
+            "color": "var(--ok)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Fine-tuning · congelar y descongelar capas",
+      "notes": "El código de la técnica anterior. Recorre las dos fases, porque hacerlo en un solo paso es el error clásico. Fase uno: se carga el modelo base sin su última capa —eso es include_top igual a falso—, se congela entero, y se entrena solo la cabeza nueva con una tasa normal; en esta fase la cabeza aprende a interpretar lo que el modelo base ya sabe extraer. Fase dos, el fine-tuning propiamente dicho: se descongelan las últimas capas del modelo base y se reentrena todo junto, pero con una tasa de aprendizaje diez o cien veces menor. Y aquí está el porqué que hay que subrayar, con la analogía: si le pones al chef experimentado una tasa alta, las primeras correcciones son tan bruscas que le hacen olvidar cómo sujetar el cuchillo. Con tasa baja, ajusta sin destruir. Saltarse la fase uno y descongelar desde el principio produce exactamente ese desastre, y tiene nombre: olvido catastrófico.",
+      "slots": {
+        "TAG_LEFT": "DEMO · FINE-TUNING",
+        "TITLE": "Congelar y descongelar",
+        "TAG_RIGHT": "25",
+        "KICKER": "Dos fases · hacerlo en una sola es el error clásico",
+        "CODE_TITLE": "transfer_learning.py · Colab",
+        "CODE": "base = tf.keras.applications.MobileNetV2(\n    input_shape=(<span class='c-num'>224</span>, <span class='c-num'>224</span>, <span class='c-num'>3</span>), include_top=<span class='c-kw'>False</span>,   <span class='c-cm'># sin su última capa</span>\n    weights=<span class='c-str'>\"imagenet\"</span>)                             <span class='c-cm'># con lo que ya aprendió</span>\n\n<span class='c-cm'># ── FASE 1 - el chef no toca nada, solo aprende la carta nueva ──</span>\nbase.trainable = <span class='c-kw'>False</span>\nmodelo = tf.keras.Sequential([\n    base,\n    layers.GlobalAveragePooling2D(),\n    layers.Dropout(<span class='c-num'>0.3</span>),\n    layers.Dense(N_CLASES, activation=<span class='c-str'>\"softmax\"</span>)    <span class='c-cm'># TUS clases</span>\n])\nmodelo.compile(optimizer=Adam(<span class='c-num'>1e-3</span>), loss=<span class='c-str'>\"...\"</span>)\nmodelo.fit(X_ent, y_ent, epochs=<span class='c-num'>10</span>)\n\n<span class='c-cm'># ── FASE 2 - afinar con tasa MUY baja ──</span>\nbase.trainable = <span class='c-kw'>True</span>\n<span class='c-kw'>for</span> capa <span class='c-kw'>in</span> base.layers[:-<span class='c-num'>30</span>]: capa.trainable = <span class='c-kw'>False</span>   <span class='c-cm'># solo las 30 últimas</span>\nmodelo.compile(optimizer=Adam(<span class='c-num'>1e-5</span>), loss=<span class='c-str'>\"...\"</span>)        <span class='c-cm'># 100× menor</span>\nmodelo.fit(X_ent, y_ent, epochs=<span class='c-num'>5</span>)",
+        "PANEL_TITLE": "Las reglas de las dos fases",
+        "WHY_TITLE": "Por qué la tasa baja en la fase 2",
+        "WHY": "Si le pones tasa alta al chef experimentado, las primeras correcciones son tan bruscas que le hacen olvidar cómo sujetar el cuchillo. Tiene nombre técnico: olvido catastrófico. Con tasa 100 veces menor, ajusta sin destruir lo que ya sabía.",
+        "CRITERIA": [
+          {
+            "letter": "A",
+            "name": "include_top=False quita la cabeza original",
+            "meta": "Fase 1",
+            "highlight": ""
+          },
+          {
+            "letter": "B",
+            "name": "Congelar TODO antes de entrenar la cabeza nueva",
+            "meta": "Fase 1",
+            "highlight": "true"
+          },
+          {
+            "letter": "C",
+            "name": "Descongelar solo las últimas capas",
+            "meta": "Fase 2",
+            "highlight": ""
+          },
+          {
+            "letter": "D",
+            "name": "Tasa 10 o 100 veces menor al descongelar",
+            "meta": "Obligatorio",
+            "highlight": "true"
+          },
+          {
+            "letter": "E",
+            "name": "Recompilar tras cambiar trainable",
+            "meta": "Se olvida siempre",
+            "highlight": "true"
+          },
+          {
+            "letter": "F",
+            "name": "Descongelar desde el inicio = olvido catastrófico",
+            "meta": "El error clásico",
+            "highlight": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Data augmentation · el mismo plato, otra foto",
+      "notes": "La última técnica del bloque, y la que resuelve el problema más común en proyectos de aula: pocos datos. La analogía: si quieres que alguien aprenda a reconocer una empanada, no le enseñas una única foto perfecta desde arriba; le enseñas la misma empanada de lado, girada, con luz de tarde, un poco recortada. Es el mismo plato, pero ahora sabrá reconocerlo en cualquier situación. Eso es la aumentación de datos: generar variaciones de tus imágenes para multiplicar artificialmente el conjunto. Explica el detalle que casi nadie menciona y que es importante: las capas de aumentación de Keras solo actúan durante el entrenamiento y se desactivan solas al predecir, igual que el dropout, así que no hay que hacer nada especial. Y el aviso de sentido común: las transformaciones deben tener sentido para tu problema; voltear una foto de un gato en horizontal está bien porque un gato al revés sigue siendo un gato, pero voltear un dígito manuscrito convierte un 2 en algo que no existe.",
+      "slots": {
+        "TAG_LEFT": "DEMO · MÁS DATOS GRATIS",
+        "TITLE": "El mismo plato, otra foto",
+        "TAG_RIGHT": "26",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Para reconocer una empanada no basta una foto perfecta desde arriba: hace falta verla de lado, girada y con otra luz.",
+        "CALLOUT_LABEL": "Que tenga sentido",
+        "CALLOUT": "Voltear un gato en horizontal está bien: sigue siendo un gato. Voltear un dígito manuscrito convierte un 2 en algo que no existe y le enseñas basura al modelo.",
+        "FILENAME": "aumentacion.py · Colab",
+        "CODE": "<span class='c-cm'># Capas de aumentación: solo actúan al ENTRENAR</span>\naumentacion = tf.keras.Sequential([\n    layers.RandomFlip(<span class='c-str'>\"horizontal\"</span>),      <span class='c-cm'># espejo</span>\n    layers.RandomRotation(<span class='c-num'>0.1</span>),         <span class='c-cm'># ±10% de giro</span>\n    layers.RandomZoom(<span class='c-num'>0.1</span>),             <span class='c-cm'># acercar/alejar</span>\n    layers.RandomContrast(<span class='c-num'>0.2</span>),         <span class='c-cm'># otra luz</span>\n])\n\n<span class='c-cm'># Se enchufa como una capa más, al principio</span>\nmodelo = tf.keras.Sequential([\n    layers.Input(shape=(<span class='c-num'>224</span>, <span class='c-num'>224</span>, <span class='c-num'>3</span>)),\n    aumentacion,                        <span class='c-cm'># ← aquí</span>\n    base,\n    layers.GlobalAveragePooling2D(),\n    layers.Dense(N_CLASES, activation=<span class='c-str'>\"softmax\"</span>)\n])\n\n<span class='c-cm'># Ver qué le estás dando de comer al modelo</span>\nplt.figure(figsize=(<span class='c-num'>8</span>, <span class='c-num'>8</span>))\n<span class='c-kw'>for</span> i <span class='c-kw'>in</span> <span class='c-fn'>range</span>(<span class='c-num'>9</span>):\n    plt.subplot(<span class='c-num'>3</span>, <span class='c-num'>3</span>, i+<span class='c-num'>1</span>)\n    plt.imshow(aumentacion(imagen[<span class='c-kw'>None</span>], training=<span class='c-kw'>True</span>)[<span class='c-num'>0</span>])\n    plt.axis(<span class='c-str'>\"off\"</span>)",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Cada época el modelo ve una versión ligeramente distinta de la misma imagen."
+          },
+          {
+            "n": "2",
+            "text": "No se crean archivos nuevos: la transformación ocurre al vuelo, en memoria."
+          },
+          {
+            "n": "3",
+            "text": "Se enchufa como una capa más, al principio del modelo. Nada más que hacer."
+          },
+          {
+            "n": "4",
+            "text": "Al predecir se desactiva sola, igual que el dropout. No hay que tocar nada."
+          },
+          {
+            "n": "5",
+            "text": "Dibuja siempre 9 ejemplos aumentados: si se ven raros, le estás enseñando basura."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Sesión 2b",
+      "notes": "Cierre del bloque de optimización. La respuesta correcta es la B. Es la analogía completa del bloque puesta a prueba: una pérdida que rebota arriba y abajo sin bajar es el caminante dando zancadas que lo lanzan de un lado al otro del valle. La solución es bajar la tasa de aprendizaje, normalmente dividiéndola por diez. Si alguien elige la A, aclara que subirla empeoraría el problema; y si elige la C, que más épocas no arreglan un paso mal calibrado, solo alargan el zigzag.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de la sesión 2b",
+        "TAG_RIGHT": "27",
+        "BADGE": "PREGUNTA 3",
+        "QUESTION": "Tu pérdida sube y baja en zigzag sin llegar a bajar. En la analogía de la montaña, ¿qué ocurre?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "El caminante da zancadas tan grandes que cada paso lo lanza al otro lado del valle, sin llegar nunca al fondo. La solución es bajar la tasa de aprendizaje, normalmente dividiéndola por diez. Más épocas solo alargarían el zigzag.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Los pasos son demasiado cortos: hay que subir la tasa",
+            "correct": ""
+          },
+          {
+            "key": "B",
+            "text": "Los pasos son demasiado largos: cruza el valle en cada uno",
+            "correct": "true"
+          },
+          {
+            "key": "C",
+            "text": "Faltan épocas: hay que dejarlo entrenar más tiempo",
+            "correct": ""
+          },
+          {
+            "key": "D",
+            "text": "El modelo memorizó los datos de entrenamiento",
+            "correct": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Sesión 3 · Redes recurrentes y LSTM",
+      "notes": "Separador del primer modelo de la evaluación. Plantea el problema que resuelven: la red densa de la sesión anterior trata cada entrada como un conjunto de números sin orden, y para una imagen de un dígito eso funciona, pero para una frase no. «El perro mordió al niño» y «el niño mordió al perro» tienen exactamente las mismas palabras y significan cosas opuestas. Una red densa no puede distinguirlas porque no tiene noción de orden ni de memoria. Las redes recurrentes sí: procesan la secuencia paso a paso arrastrando un estado interno, y la LSTM es la variante que resolvió el problema de memoria a largo plazo.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 03",
+        "TITLE": "Redes recurrentes y LSTM",
+        "SUBTITLE": "«El perro mordió al niño» y «el niño mordió al perro»: mismas palabras, sentido opuesto",
+        "AGENDA": [
+          {
+            "label": "01",
+            "text": "Por qué una red densa no entiende secuencias"
+          },
+          {
+            "label": "02",
+            "text": "Cómo recuerda una LSTM: las tres puertas"
+          },
+          {
+            "label": "03",
+            "text": "LSTM en Keras para texto e imágenes"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "title": "Cómo recuerda una LSTM",
+      "notes": "El funcionamiento interno, sin una sola fórmula. La analogía es leer una novela. Vas página a página y no recuerdas cada frase literal: mantienes un resumen mental de la trama. Una red recurrente simple es como leer sin memoria: al llegar al capítulo diez ya olvidó el uno, porque la información se va diluyendo. La LSTM, propuesta por Hochreiter y Schmidhuber en 1997, añade tres decisiones explícitas en cada página. La puerta de olvido dice «este personaje secundario ya no aparece, lo borro». La puerta de entrada dice «ojo, el mayordomo tiene una llave, esto lo guardo». Y la puerta de salida dice «para entender esta frase concreta necesito recordar justo lo del mayordomo». Ese resumen mental es el estado de celda y sobrevive cientos de páginas. Cierra con la consecuencia práctica: como lee en orden y cada página depende de la anterior, no puede leer varias a la vez, y por eso es lenta.",
+      "slots": {
+        "TAG_LEFT": "MODELO 1",
+        "TITLE": "Cómo recuerda una LSTM",
+        "TAG_RIGHT": "29",
+        "SPLIT": "1.2fr 1fr",
+        "DIAGRAM": "flowchart TD\n  A[Lees una página] --> B[¿Qué olvido de lo anterior?]\n  B --> C[¿Qué guardo de esta página?]\n  C --> D[Resumen mental de la trama]\n  D --> E[¿Qué necesito para esta frase?]\n  E --> A",
+        "SIDE_TITLE": "Como leer una novela",
+        "LEAD": "Lees una novela página a página. No recuerdas cada frase literal: mantienes un resumen mental de la trama, y vas decidiendo qué olvidar.",
+        "NOTE_LABEL": "La consecuencia práctica",
+        "NOTE": "Como lee en orden y cada página depende de la anterior, no puede leer varias a la vez. Por eso la LSTM es lenta de entrenar, y por eso llegaron los Transformers.",
+        "STEPS": [
+          {
+            "n": "1",
+            "name": "El problema",
+            "text": "Una red recurrente simple es como leer sin memoria: al llegar al capítulo 10 ya olvidó el 1."
+          },
+          {
+            "n": "2",
+            "name": "Puerta de olvido",
+            "text": "«Este personaje secundario ya no aparece más.» Decide qué borrar de la memoria."
+          },
+          {
+            "n": "3",
+            "name": "Puerta de entrada",
+            "text": "«Ojo: el mayordomo tiene una llave.» Decide qué vale la pena guardar de esta página."
+          },
+          {
+            "n": "4",
+            "name": "Estado de celda",
+            "text": "Tu resumen mental de la trama. Sobrevive cientos de páginas sin diluirse."
+          },
+          {
+            "n": "5",
+            "name": "Puerta de salida",
+            "text": "«Para entender ESTA frase necesito lo del mayordomo.» Decide qué usar ahora."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "LSTM para clasificar texto",
+      "notes": "El primer código de LSTM, con un conjunto distinto al de la evaluación —reseñas de cine— para que aprendan el patrón y lo apliquen ellos a su tarea. Tres piezas que hay que entender bien. La capa Embedding convierte cada palabra, que llega como un número entero de índice, en un vector denso de dimensiones que la red aprende durante el entrenamiento; sin ella, la red trataría los índices como cantidades y creería que la palabra número quinientos es mayor que la número tres. El padding es la segunda pieza: todas las secuencias del lote deben tener la misma longitud, así que se rellenan con ceros o se recortan. Y la tercera es el parámetro return_sequences, que es el que más errores de forma provoca: si es falso, la LSTM devuelve solo la salida del último paso, y eso es lo que quieres para clasificar; si es verdadero, devuelve la salida de todos los pasos, y eso es lo que necesitas si vas a apilar otra LSTM encima o si vas a generar texto.",
+      "slots": {
+        "TAG_LEFT": "DEMO · LSTM",
+        "TITLE": "LSTM para clasificar texto",
+        "TAG_RIGHT": "30",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Con reseñas de cine, no con el Quijote: aprende el patrón aquí y aplícalo tú a tu tarea.",
+        "CALLOUT_LABEL": "El parámetro que más errores da",
+        "CALLOUT": "return_sequences=False devuelve solo el último paso (para clasificar). =True devuelve todos (para apilar otra LSTM o para generar texto).",
+        "FILENAME": "lstm_clasificacion.py · Colab",
+        "CODE": "<span class='c-kw'>from</span> tensorflow.keras.preprocessing.sequence <span class='c-kw'>import</span> pad_sequences\n\nVOCAB, LARGO, EMB = <span class='c-num'>10000</span>, <span class='c-num'>200</span>, <span class='c-num'>128</span>\n\n(X_ent, y_ent), (X_prb, y_prb) = tf.keras.datasets.imdb.load_data(\n    num_words=VOCAB)\n\n<span class='c-cm'># 1 · Todas las secuencias con la misma longitud</span>\nX_ent = pad_sequences(X_ent, maxlen=LARGO)\nX_prb = pad_sequences(X_prb, maxlen=LARGO)\n\nmodelo = tf.keras.Sequential([\n    layers.Input(shape=(LARGO,)),\n    <span class='c-cm'># 2 · Cada palabra → vector denso que la red aprende</span>\n    layers.Embedding(input_dim=VOCAB, output_dim=EMB),\n    <span class='c-cm'># 3 · False: solo el último paso, para clasificar</span>\n    layers.LSTM(<span class='c-num'>128</span>, return_sequences=<span class='c-kw'>False</span>),\n    layers.Dropout(<span class='c-num'>0.5</span>),\n    layers.Dense(<span class='c-num'>64</span>, activation=<span class='c-str'>\"relu\"</span>),\n    layers.Dense(<span class='c-num'>1</span>, activation=<span class='c-str'>\"sigmoid\"</span>)   <span class='c-cm'># binaria</span>\n])\nmodelo.compile(optimizer=<span class='c-str'>\"adam\"</span>, loss=<span class='c-str'>\"binary_crossentropy\"</span>,\n               metrics=[<span class='c-str'>\"accuracy\"</span>])",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "pad_sequences rellena con ceros o recorta: todas las secuencias del lote deben medir igual."
+          },
+          {
+            "n": "2",
+            "text": "Embedding convierte el índice de cada palabra en un vector denso. Sin ella la red creería que la palabra 500 «vale más» que la 3."
+          },
+          {
+            "n": "3",
+            "text": "return_sequences=False para clasificar. True si apilas otra LSTM encima."
+          },
+          {
+            "n": "4",
+            "text": "sigmoid + binary_crossentropy porque hay dos clases. Con más clases: softmax + categorical."
+          },
+          {
+            "n": "5",
+            "text": "Para tu evaluación, cambia el conjunto y las clases: la estructura es exactamente esta."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "LSTM para generar texto",
+      "notes": "La segunda tarea posible de la evaluación, la del Quijote. El cambio conceptual es importante: en generación no clasificas entre categorías, predices cuál es el siguiente carácter o la siguiente palabra, así que el número de clases es el tamaño del vocabulario entero. Recorre la construcción del conjunto: se recorre el texto con una ventana deslizante y cada ejemplo es una secuencia de entrada más el carácter siguiente como etiqueta. Detente en la temperatura al generar, que es el concepto más interesante y el que da material para la sección de fine-tuning: con temperatura baja el modelo elige siempre lo más probable y produce texto repetitivo y aburrido; con temperatura alta arriesga más y produce texto creativo pero incoherente. Ajustar ese único número cambia por completo el resultado, y comparar salidas con distintas temperaturas es un experimento perfectamente documentable.",
+      "slots": {
+        "TAG_LEFT": "DEMO · LSTM",
+        "TITLE": "LSTM para generar texto",
+        "TAG_RIGHT": "31",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "En generación no clasificas entre categorías: predices el siguiente carácter. Las clases son el vocabulario entero.",
+        "CALLOUT_LABEL": "La temperatura",
+        "CALLOUT": "Baja (0,2): elige siempre lo más probable, texto repetitivo. Alta (1,2): arriesga, texto creativo pero incoherente. Comparar temperaturas es un experimento documentable.",
+        "FILENAME": "lstm_generacion.py · Colab",
+        "CODE": "<span class='c-cm'># 1 · Vocabulario de caracteres únicos</span>\nchars = <span class='c-fn'>sorted</span>(<span class='c-fn'>set</span>(texto))\nidx = {c: i <span class='c-kw'>for</span> i, c <span class='c-kw'>in</span> <span class='c-fn'>enumerate</span>(chars)}\n\n<span class='c-cm'># 2 · Ventana deslizante: entrada + siguiente carácter</span>\nLARGO, PASO = <span class='c-num'>60</span>, <span class='c-num'>3</span>\nX, y = [], []\n<span class='c-kw'>for</span> i <span class='c-kw'>in</span> <span class='c-fn'>range</span>(<span class='c-num'>0</span>, <span class='c-fn'>len</span>(texto) - LARGO, PASO):\n    X.append([idx[c] <span class='c-kw'>for</span> c <span class='c-kw'>in</span> texto[i:i+LARGO]])\n    y.append(idx[texto[i+LARGO]])\n\nmodelo = tf.keras.Sequential([\n    layers.Input(shape=(LARGO,)),\n    layers.Embedding(<span class='c-fn'>len</span>(chars), <span class='c-num'>64</span>),\n    layers.LSTM(<span class='c-num'>256</span>),\n    <span class='c-cm'># Tantas salidas como caracteres distintos</span>\n    layers.Dense(<span class='c-fn'>len</span>(chars), activation=<span class='c-str'>\"softmax\"</span>)\n])\n\n<span class='c-cm'># 3 · Generar: la temperatura controla el riesgo</span>\n<span class='c-kw'>def</span> <span class='c-fn'>muestrear</span>(pred, temp=<span class='c-num'>1.0</span>):\n    pred = np.log(pred + <span class='c-num'>1e-9</span>) / temp\n    exp = np.exp(pred)\n    <span class='c-kw'>return</span> np.argmax(np.random.multinomial(<span class='c-num'>1</span>, exp / exp.sum()))",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "El vocabulario son los caracteres únicos del texto. Con palabras sería mucho mayor."
+          },
+          {
+            "n": "2",
+            "text": "Ventana deslizante: 60 caracteres de entrada y el 61 como etiqueta. PASO controla el solape."
+          },
+          {
+            "n": "3",
+            "text": "La capa de salida tiene tantas neuronas como caracteres distintos: es clasificación multiclase."
+          },
+          {
+            "n": "4",
+            "text": "Al generar no se toma siempre el máximo: se muestrea de la distribución de probabilidad."
+          },
+          {
+            "n": "5",
+            "text": "La temperatura divide antes de normalizar: baja concentra la probabilidad, alta la aplana."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Trampas frecuentes con LSTM",
+      "notes": "Los cinco errores que más tiempo hacen perder con redes recurrentes, y varios aparecen indirectamente en la rúbrica. El de la forma de entrada es el número uno con diferencia: una LSTM espera tres dimensiones, lote por pasos temporales por características, y el mensaje de error de Keras cuando no coincide es largo y poco claro. El segundo es específico de la tarea de imágenes de la evaluación: una imagen no es una secuencia natural, así que si eligen esa tarea tienen que justificar cómo la convierten en secuencia, por ejemplo tratando cada fila de píxeles como un paso temporal; esa justificación es exactamente lo que pide el criterio uno de la rúbrica. El tercero es la lentitud, que se mitiga con GPU y lotes mayores. El cuarto, el padding sin máscara, hace que la red gaste capacidad procesando ceros. Y el quinto es un recordatorio: en generación de texto, la exactitud no significa nada útil.",
+      "slots": {
+        "TAG_LEFT": "DIAGNÓSTICO",
+        "TITLE": "Trampas frecuentes con LSTM",
+        "TAG_RIGHT": "32",
+        "LEAD": "Cinco errores que hacen perder horas. Varios están detrás de criterios concretos de la rúbrica.",
+        "CALLOUTS": [
+          {
+            "kind": "danger",
+            "icon": "inrunzby",
+            "title": "Forma de entrada incorrecta",
+            "text": "Una LSTM espera 3 dimensiones: (lote, pasos temporales, características). Imprime X.shape antes de construir el modelo y compáralo con lo que declara Input."
+          },
+          {
+            "kind": "warn",
+            "icon": "usownftb",
+            "title": "Una imagen no es una secuencia natural",
+            "text": "Si eliges la tarea de imágenes, tienes que justificar cómo la conviertes en secuencia: por ejemplo, cada fila de píxeles como un paso temporal. Esa justificación es el criterio 1."
+          },
+          {
+            "kind": "info",
+            "icon": "qhgmphtg",
+            "title": "Es lenta por diseño",
+            "text": "Cada paso depende del anterior, así que no se paraleliza. Activa la GPU, sube el batch_size y depura con pocas epochs antes de la ejecución final."
+          },
+          {
+            "kind": "note",
+            "icon": "msoeawqm",
+            "title": "Padding sin máscara",
+            "text": "Si rellenas con ceros y no usas mask_zero=True en el Embedding, la red gasta capacidad procesando relleno vacío."
+          },
+          {
+            "kind": "tip",
+            "icon": "xtzvywzp",
+            "title": "En generación, el accuracy no dice nada",
+            "text": "Predecir el carácter exacto es casi imposible y no es el objetivo. Usa la pérdida (loss) y, sobre todo, lee el texto generado: esa es la evaluación real."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Sesión 4 · Transformers y atención",
+      "notes": "Separador del segundo modelo de la evaluación. Conecta con la Unidad 1, donde ya se mencionaron los transformers y el problema del banco: la palabra que cambia de significado según el contexto. Aquí se ve por dentro. La idea que lo cambió todo, publicada por Google en 2017 en el artículo «Attention is All You Need», es abandonar el procesamiento secuencial: en lugar de leer paso a paso arrastrando memoria, el transformer mira todos los elementos de la secuencia simultáneamente y calcula cuánto debe atender cada uno a cada otro. Eso tiene dos consecuencias enormes: capta relaciones entre elementos muy distantes sin que se diluyan, y como no hay dependencia secuencial se puede paralelizar por completo, que es lo que hizo posible entrenar modelos gigantes.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 04",
+        "TITLE": "Transformers y atención",
+        "SUBTITLE": "Dejar de leer paso a paso y mirar toda la secuencia a la vez",
+        "AGENDA": [
+          {
+            "label": "01",
+            "text": "Qué gana un Transformer frente a una LSTM"
+          },
+          {
+            "label": "02",
+            "text": "El bloque Transformer, pieza a pieza"
+          },
+          {
+            "label": "03",
+            "text": "Embedding posicional: el TO-DO que más falla"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "title": "LSTM frente a Transformer",
+      "notes": "La comparación que la evaluación pide hacer con datos propios, así que aquí se dan los argumentos teóricos que después tendrán que contrastar con sus resultados. La LSTM procesa paso a paso, lo que la hace lenta pero también más frugal: funciona razonablemente con pocos datos y con secuencias cortas. El Transformer mira todo a la vez, se paraleliza y capta dependencias largas, pero tiene dos costes: necesita más datos para brillar y su coste de memoria crece con el cuadrado de la longitud de la secuencia, así que secuencias muy largas se vuelven caras. Advierte de algo importante para la honestidad del informe: en un proyecto de aula, con pocos datos y pocas epochs, es perfectamente posible que la LSTM gane al Transformer. Si eso ocurre, no es un error: es un hallazgo, y explicarlo bien vale más nota que forzar el resultado esperado.",
+      "slots": {
+        "TAG_LEFT": "LOS DOS MODELOS",
+        "TITLE": "LSTM frente a Transformer",
+        "TAG_RIGHT": "34",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "LSTM",
+        "LEFT_TITLE": "Paso a paso, con memoria",
+        "LEFT_BODY": "Recorre la secuencia en orden arrastrando un estado. Frugal: funciona con menos datos y secuencias cortas.",
+        "LEFT_EXAMPLE": "Buena opción cuando tienes pocos datos de entrenamiento.",
+        "RIGHT_LABEL": "TRANSFORMER",
+        "RIGHT_TITLE": "Todo a la vez, con atención",
+        "RIGHT_BODY": "Calcula cuánto debe atender cada elemento a cada otro. Sin dependencia secuencial: se paraleliza entero.",
+        "RIGHT_EXAMPLE": "La arquitectura detrás de GPT, BERT y todo lo generativo.",
+        "LEFT_POINTS": [
+          {
+            "text": "No se paraleliza: lenta de entrenar"
+          },
+          {
+            "text": "La memoria se diluye en secuencias muy largas"
+          },
+          {
+            "text": "Menos parámetros, menos datos necesarios"
+          },
+          {
+            "text": "Suele bastar para tareas sencillas"
+          }
+        ],
+        "RIGHT_POINTS": [
+          {
+            "text": "Paraleliza: aprovecha de verdad la GPU"
+          },
+          {
+            "text": "Capta relaciones entre elementos muy distantes"
+          },
+          {
+            "text": "Coste de memoria: crece al cuadrado de la longitud"
+          },
+          {
+            "text": "Necesita más datos para superar a la LSTM"
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "Atención"
+          },
+          {
+            "text": "2017"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "El bloque Transformer, pieza a pieza",
+      "notes": "La disección del bloque que ya tienen escrito en el código base. Empieza por la analogía, que es la que hace entender la atención: imagina que lees la frase «el perro que perseguía al gato estaba cansado» y te preguntan quién estaba cansado. Para responder, tu mente subraya automáticamente «perro» y le da poca importancia a «gato», aunque «gato» esté más cerca de «cansado». Eso es exactamente la atención: para cada palabra, decidir cuáles de las demás importan para entenderla. Y las múltiples cabezas son varios subrayadores de colores a la vez: uno marca quién hace la acción, otro el tiempo verbal, otro a qué se refiere cada pronombre. Después recorre las piezas técnicas: las conexiones residuales, que son las sumas, permiten que el gradiente fluya; la normalización estabiliza; la red hacia adelante procesa cada posición. Y termina con el error conceptual más frecuente: el subrayado no sabe en qué orden están las palabras. Para él la frase es un montón de palabras sueltas, no una secuencia. Por eso hay que añadir la posición aparte, y ese es el TO-DO que más se omite.",
+      "slots": {
+        "TAG_LEFT": "MODELO 2",
+        "TITLE": "El bloque Transformer",
+        "TAG_RIGHT": "35",
+        "SPEC_TITLE": "«El perro que perseguía al gato estaba cansado» · ¿quién estaba cansado?",
+        "FIELDS": [
+          {
+            "key": "MultiHeadAttention",
+            "value": "Como subrayar: para cada palabra, marca cuáles de las demás importan para entenderla.",
+            "highlight": "true"
+          },
+          {
+            "key": "num_heads",
+            "value": "Cuántos subrayadores de colores distintos usas a la vez. Uno mira quién hace qué; otro, el tiempo verbal.",
+            "highlight": ""
+          },
+          {
+            "key": "Conexión residual",
+            "value": "inputs + attn_output — deja que el gradiente fluya y hace entrenable una red profunda",
+            "highlight": "true"
+          },
+          {
+            "key": "LayerNormalization",
+            "value": "Estabiliza el entrenamiento normalizando dentro de cada ejemplo, no dentro del lote.",
+            "highlight": ""
+          },
+          {
+            "key": "Feed-forward (ffn)",
+            "value": "Dos capas densas que procesan cada posición por separado tras la atención.",
+            "highlight": ""
+          },
+          {
+            "key": "Dropout",
+            "value": "Igual que en cualquier red: regularización durante el entrenamiento.",
+            "highlight": ""
+          },
+          {
+            "key": "⚠ Lo que NO trae",
+            "value": "La atención NO tiene noción de orden: para ella la frase es un conjunto, no una secuencia.",
+            "highlight": "true"
+          },
+          {
+            "key": "Por eso hace falta",
+            "value": "Añadir información de posición explícitamente. Es el TO-DO que más se omite.",
+            "highlight": "true"
+          }
+        ],
+        "NOTES": [
+          {
+            "n": "1",
+            "title": "Sin posición no hay orden",
+            "text": "El subrayado no sabe dónde estaba cada palabra. Sin el embedding posicional, tu Transformer no distingue «el perro mordió al niño» de «el niño mordió al perro». La rúbrica lo menciona en el criterio 2."
+          },
+          {
+            "n": "2",
+            "title": "num_heads debe dividir a embed_dim",
+            "text": "Con embed_dim=32 puedes usar 2, 4 u 8 cabezas. Con 5 dará error de forma y el mensaje no lo dirá claramente."
+          },
+          {
+            "n": "3",
+            "title": "Las residuales no son opcionales",
+            "text": "Esas dos sumas parecen decorativas y son la razón de que una red profunda pueda entrenarse sin que el gradiente se desvanezca."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Embedding posicional · el TO-DO que más falla",
+      "notes": "Aquí se resuelve el punto exacto donde más gente se atasca en el código base, y sin darles el código de su tarea: se muestra el patrón con un caso genérico. La idea es sumar dos embeddings: uno que representa qué es cada elemento —el token— y otro que representa dónde está —la posición—. Ambos se aprenden durante el entrenamiento. La suma de los dos vectores es lo que entra al bloque de atención, y a partir de ahí la red ya puede distinguir el orden. Recorre los criterios y detente en el tercero: las dos dimensiones tienen que coincidir para poder sumarse, y ese es el error de forma más común. Y en el último: si la tarea es de imágenes en lugar de texto, el embedding de token se sustituye por una proyección densa de cada fila o parche, pero la parte posicional se mantiene igual.",
+      "slots": {
+        "TAG_LEFT": "DEMO · TRANSFORMER",
+        "TITLE": "Embedding posicional",
+        "TAG_RIGHT": "36",
+        "KICKER": "El patrón, con un caso genérico: adáptalo a tu tarea",
+        "CODE_TITLE": "posicional.py · el TO-DO del código base",
+        "CODE": "<span class='c-kw'>class</span> <span class='c-fn'>PosicionYToken</span>(layers.Layer):\n    <span class='c-kw'>def</span> <span class='c-fn'>__init__</span>(self, largo, vocab, embed_dim):\n        <span class='c-fn'>super</span>().__init__()\n        <span class='c-cm'># QUÉ es cada elemento</span>\n        self.tok = layers.Embedding(vocab, embed_dim)\n        <span class='c-cm'># DÓNDE está cada elemento</span>\n        self.pos = layers.Embedding(largo, embed_dim)\n\n    <span class='c-kw'>def</span> <span class='c-fn'>call</span>(self, x):\n        largo = tf.shape(x)[-<span class='c-num'>1</span>]\n        posiciones = tf.range(start=<span class='c-num'>0</span>, limit=largo, delta=<span class='c-num'>1</span>)\n        <span class='c-cm'># La SUMA de ambos entra al bloque de atención</span>\n        <span class='c-kw'>return</span> self.tok(x) + self.pos(posiciones)\n\n<span class='c-cm'># Uso dentro del modelo</span>\nentradas = layers.Input(shape=(LARGO,))\nx = PosicionYToken(LARGO, VOCAB, EMBED_DIM)(entradas)\nx = TransformerBlock(EMBED_DIM, NUM_HEADS, FF_DIM)(x)\nx = layers.GlobalAveragePooling1D()(x)",
+        "PANEL_TITLE": "Lo que hay que comprobar",
+        "WHY_TITLE": "Por qué se suman en lugar de concatenarse",
+        "WHY": "Sumar mantiene la dimensión constante en toda la red, que es lo que necesitan las conexiones residuales del bloque. Concatenar duplicaría el tamaño en cada capa. Por eso ambos embeddings deben tener exactamente la misma dimensión.",
+        "CRITERIA": [
+          {
+            "letter": "A",
+            "name": "Un embedding para el token y otro para la posición",
+            "meta": "Los dos",
+            "highlight": "true"
+          },
+          {
+            "letter": "B",
+            "name": "Se SUMAN, no se concatenan",
+            "meta": "Dimensión constante",
+            "highlight": ""
+          },
+          {
+            "letter": "C",
+            "name": "Ambos con la misma embed_dim",
+            "meta": "Error de forma nº1",
+            "highlight": "true"
+          },
+          {
+            "letter": "D",
+            "name": "GlobalAveragePooling antes de la capa densa final",
+            "meta": "Aplana la secuencia",
+            "highlight": ""
+          },
+          {
+            "letter": "E",
+            "name": "num_heads debe dividir a embed_dim",
+            "meta": "Comprobar",
+            "highlight": ""
+          },
+          {
+            "letter": "F",
+            "name": "Si es imagen: proyección densa en vez de token embedding",
+            "meta": "Adaptación",
+            "highlight": "true"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Comprobación · Sesiones 3 y 4",
+      "notes": "Cierre de los dos bloques de arquitecturas. La respuesta correcta es la C. Es el concepto que la rúbrica menciona explícitamente en el criterio dos, cuando dice que una implementación al 75% es la que omite detalles como el embedding posicional. El mecanismo de atención calcula relaciones entre todos los pares de elementos, pero esas relaciones no dependen de la posición: si barajas las palabras de la frase, la atención produce exactamente los mismos vectores. Por eso hay que inyectar la posición explícitamente. Si alguien elige la A, aclara que el problema no es de rendimiento sino de capacidad: sin posición, ciertas tareas son literalmente imposibles.",
+      "slots": {
+        "TAG_LEFT": "COMPRUEBA",
+        "TITLE": "Comprobación de las sesiones 3 y 4",
+        "TAG_RIGHT": "37",
+        "BADGE": "PREGUNTA 3",
+        "QUESTION": "Implementas un Transformer y omites el embedding posicional. ¿Qué consecuencia tiene?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Por qué",
+        "EXPLANATION": "La atención calcula relaciones entre todos los pares de elementos, pero esas relaciones no dependen de la posición: si barajas las palabras, produce los mismos vectores. No es un problema de rendimiento, es de capacidad: sin posición, ciertas tareas son imposibles. La rúbrica lo menciona en el criterio 2.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Entrena más lento pero llega al mismo resultado",
+            "correct": ""
+          },
+          {
+            "key": "B",
+            "text": "Ninguna: la atención ya codifica el orden internamente",
+            "correct": ""
+          },
+          {
+            "key": "C",
+            "text": "El modelo no distingue el orden: la secuencia es un conjunto para él",
+            "correct": "true"
+          },
+          {
+            "key": "D",
+            "text": "Falla al compilar por incompatibilidad de dimensiones",
+            "correct": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Sesión 5 · Procesamiento de lenguaje natural con NLTK",
+      "notes": "Separador del bloque de PLN, que es el que necesitan quienes elijan la tarea del Quijote. La cadena completa va desde un archivo de texto plano de dos megas hasta una matriz de números que una red pueda consumir, y cada paso de esa cadena es una decisión que afecta al resultado. Aviso importante y honesto: no todos los pasos son siempre buenos. Eliminar palabras vacías es imprescindible si vas a clasificar por tema, pero es contraproducente si vas a generar texto, porque «el», «de» y «que» son justamente las palabras que dan naturalidad a la prosa. La técnica no se aplica por costumbre: se aplica según el objetivo.",
+      "slots": {
+        "PART_LABEL": "SESIÓN 05",
+        "TITLE": "Procesamiento de lenguaje natural",
+        "SUBTITLE": "Del Quijote en texto plano a una matriz que la red pueda consumir",
+        "AGENDA": [
+          {
+            "label": "01",
+            "text": "La cadena de PLN, paso a paso"
+          },
+          {
+            "label": "02",
+            "text": "NLTK en español: tokenizar, limpiar, lematizar"
+          },
+          {
+            "label": "03",
+            "text": "De palabras a secuencias numéricas"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "La cadena de procesamiento de texto",
+      "notes": "Los cinco pasos que convierten texto en números, con la advertencia que los acompaña. Normalizar es pasar a minúsculas y quitar acentos o caracteres extraños. Tokenizar es partir en unidades, normalmente palabras, aunque en generación de texto suele usarse caracteres. Filtrar es eliminar palabras vacías y signos, y es el paso que hay que decidir según la tarea. Reducir es llevar cada palabra a su raíz, y aquí conviene distinguir dos técnicas: el stemming corta el final de la palabra de forma tosca y produce raíces que no siempre son palabras reales, mientras que la lematización usa un diccionario y devuelve la forma canónica; la lematización es mejor pero es más lenta y en español necesita recursos adicionales. Y vectorizar es el paso final, que convierte cada token en un número.",
+      "slots": {
+        "TAG_LEFT": "PROCESO",
+        "TITLE": "De texto plano a números",
+        "TAG_RIGHT": "39",
+        "LEAD": "Cinco pasos, cinco decisiones. Ninguno es obligatorio: dependen de si vas a clasificar o a generar.",
+        "COLS": "5",
+        "STEPS": [
+          {
+            "n": "1",
+            "phase": "Normalizar",
+            "title": "Uniformar el texto",
+            "desc": "Minúsculas, quitar caracteres extraños y normalizar acentos. «Quijote» y «quijote» deben ser lo mismo.",
+            "output": "Texto limpio"
+          },
+          {
+            "n": "2",
+            "phase": "Tokenizar",
+            "title": "Partir en unidades",
+            "desc": "Separar en palabras. En generación de texto suele usarse caracteres en lugar de palabras.",
+            "output": "Lista de tokens"
+          },
+          {
+            "n": "3",
+            "phase": "Filtrar",
+            "title": "Quitar lo que no aporta",
+            "desc": "Palabras vacías y signos. Imprescindible para clasificar; contraproducente para generar.",
+            "output": "Tokens útiles"
+          },
+          {
+            "n": "4",
+            "phase": "Reducir",
+            "title": "Llevar a la raíz",
+            "desc": "Stemming corta el final de forma tosca; lematización usa diccionario y devuelve la forma canónica.",
+            "output": "Raíces"
+          },
+          {
+            "n": "5",
+            "phase": "Vectorizar",
+            "title": "Convertir a números",
+            "desc": "Bolsa de palabras o TF-IDF para ML clásico; índices y Embedding para redes neuronales.",
+            "output": "Matriz numérica"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "NLTK en español · el Quijote",
+      "notes": "El código de NLTK aplicado al texto que tienen en la carpeta de la unidad. Detalle práctico: NLTK no trae los recursos descargados por defecto, así que hay que ejecutar los nltk.download del principio, y esa es la primera causa de error al empezar. Recorre la limpieza y detente en la expresión regular: mantiene las letras acentuadas y la eñe, algo que se pierde si se copia un ejemplo pensado para inglés, y en un texto en español eso destruye buena parte del contenido. Sobre las palabras vacías, muestra el filtro pero repite el aviso: si van a generar texto al estilo cervantino, no las eliminen. Y sobre el stemmer, señala que el SnowballStemmer en español produce raíces que a veces no son palabras, lo cual está bien para clasificar y es inaceptable si el resultado tiene que leerse.",
+      "slots": {
+        "TAG_LEFT": "DEMO · NLTK",
+        "TITLE": "NLTK en español",
+        "TAG_RIGHT": "40",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Sobre el archivo que ya tienes en la carpeta de la unidad. Ojo con los recursos: NLTK no los trae descargados.",
+        "CALLOUT_LABEL": "La expresión regular importa",
+        "CALLOUT": "Si copias un ejemplo pensado para inglés, [a-z] borra todas las tildes y la eñe. En un texto en español eso destruye buena parte del contenido.",
+        "FILENAME": "pln_quijote.py · Colab",
+        "CODE": "<span class='c-kw'>import</span> nltk, re\nnltk.download(<span class='c-str'>\"punkt\"</span>); nltk.download(<span class='c-str'>\"stopwords\"</span>)\n\n<span class='c-kw'>from</span> nltk.tokenize <span class='c-kw'>import</span> word_tokenize\n<span class='c-kw'>from</span> nltk.corpus <span class='c-kw'>import</span> stopwords\n<span class='c-kw'>from</span> nltk.stem <span class='c-kw'>import</span> SnowballStemmer\n\ntexto = <span class='c-fn'>open</span>(<span class='c-str'>\"Don Quijote de la Mancha.txt\"</span>,\n             encoding=<span class='c-str'>\"utf-8\"</span>).read().lower()\n\n<span class='c-cm'># 1 · Conserva tildes y ñ: NO uses [^a-z]</span>\ntexto = re.sub(<span class='c-str'>r\"[^a-záéíóúñü\\s]\"</span>, <span class='c-str'>\" \"</span>, texto)\n\n<span class='c-cm'># 2 · Tokenizar en español</span>\ntokens = word_tokenize(texto, language=<span class='c-str'>\"spanish\"</span>)\n\n<span class='c-cm'># 3 · Vacías: quítalas para CLASIFICAR, no para GENERAR</span>\nvacias = <span class='c-fn'>set</span>(stopwords.words(<span class='c-str'>\"spanish\"</span>))\nutiles = [t <span class='c-kw'>for</span> t <span class='c-kw'>in</span> tokens <span class='c-kw'>if</span> t <span class='c-kw'>not in</span> vacias <span class='c-kw'>and</span> <span class='c-fn'>len</span>(t) &gt; <span class='c-num'>2</span>]\n\n<span class='c-cm'># 4 · Raíces (produce formas que no son palabras)</span>\nstemmer = SnowballStemmer(<span class='c-str'>\"spanish\"</span>)\nraices = [stemmer.stem(t) <span class='c-kw'>for</span> t <span class='c-kw'>in</span> utiles]\n\n<span class='c-fn'>print</span>(<span class='c-fn'>len</span>(tokens), <span class='c-str'>\"tokens |\"</span>, <span class='c-fn'>len</span>(<span class='c-fn'>set</span>(utiles)), <span class='c-str'>\"únicos\"</span>)",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Los nltk.download del principio son obligatorios: NLTK no trae los recursos incluidos."
+          },
+          {
+            "n": "2",
+            "text": "word_tokenize con language='spanish' maneja mejor la puntuación y las contracciones."
+          },
+          {
+            "n": "3",
+            "text": "Filtrar por longitud mayor que 2 elimina restos y partículas sueltas."
+          },
+          {
+            "n": "4",
+            "text": "SnowballStemmer en español produce raíces que a veces no son palabras reales."
+          },
+          {
+            "n": "5",
+            "text": "Para clasificar por tema es perfecto. Si el resultado tiene que leerse, no uses stemming."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "De palabras a secuencias para la red",
+      "notes": "El puente entre NLTK y Keras, que es donde se conecta esta sesión con la evaluación. Dos caminos distintos según el modelo. Para aprendizaje automático clásico se usa TF-IDF, que produce una matriz donde cada fila es un documento y cada columna una palabra, con un peso que combina la frecuencia en el documento y la rareza en el corpus. Para redes neuronales el camino es otro: el Tokenizer de Keras asigna un índice a cada palabra, texts_to_sequences convierte cada texto en una lista de índices y pad_sequences los iguala en longitud. Ese es el formato exacto que espera la capa Embedding de su modelo. Insiste en el detalle del token para palabras desconocidas: sin él, las palabras que no estaban en el vocabulario de entrenamiento simplemente desaparecen del texto en lugar de marcarse, y eso distorsiona la secuencia en silencio.",
+      "slots": {
+        "TAG_LEFT": "DEMO · PUENTE A KERAS",
+        "TITLE": "De palabras a secuencias",
+        "TAG_RIGHT": "41",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "Dos caminos según el modelo: TF-IDF para scikit-learn, índices y padding para redes neuronales.",
+        "CALLOUT_LABEL": "No olvides oov_token",
+        "CALLOUT": "Sin él, las palabras que no estaban en el vocabulario de entrenamiento desaparecen del texto en lugar de marcarse. La secuencia se distorsiona en silencio.",
+        "FILENAME": "vectorizar.py · Colab",
+        "CODE": "<span class='c-cm'># ── CAMINO 1 · ML clásico (scikit-learn) ──</span>\n<span class='c-kw'>from</span> sklearn.feature_extraction.text <span class='c-kw'>import</span> TfidfVectorizer\n\ntfidf = TfidfVectorizer(max_features=<span class='c-num'>5000</span>, ngram_range=(<span class='c-num'>1</span>, <span class='c-num'>2</span>))\nX_tfidf = tfidf.fit_transform(documentos)\n<span class='c-fn'>print</span>(X_tfidf.shape)   <span class='c-cm'># (n_docs, 5000)</span>\n\n<span class='c-cm'># ── CAMINO 2 · redes neuronales (Keras) ──</span>\n<span class='c-kw'>from</span> tensorflow.keras.preprocessing.text <span class='c-kw'>import</span> Tokenizer\n<span class='c-kw'>from</span> tensorflow.keras.preprocessing.sequence <span class='c-kw'>import</span> pad_sequences\n\ntok = Tokenizer(num_words=<span class='c-num'>10000</span>, oov_token=<span class='c-str'>\"&lt;DESC&gt;\"</span>)\ntok.fit_on_texts(documentos)          <span class='c-cm'># SOLO con entrenamiento</span>\n\nsecuencias = tok.texts_to_sequences(documentos)\nX = pad_sequences(secuencias, maxlen=<span class='c-num'>200</span>, padding=<span class='c-str'>\"post\"</span>)\n\n<span class='c-fn'>print</span>(X.shape)                          <span class='c-cm'># (n_docs, 200)</span>\n<span class='c-fn'>print</span>(<span class='c-fn'>len</span>(tok.word_index), <span class='c-str'>\"palabras en el vocabulario\"</span>)\n<span class='c-cm'># → este número es el input_dim de tu capa Embedding</span>",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "TF-IDF pesa cada palabra por su frecuencia en el documento y su rareza en el corpus."
+          },
+          {
+            "n": "2",
+            "text": "ngram_range=(1,2) añade pares de palabras: captura «no bueno» como unidad."
+          },
+          {
+            "n": "3",
+            "text": "El Tokenizer de Keras asigna un índice entero a cada palabra del vocabulario."
+          },
+          {
+            "n": "4",
+            "text": "fit_on_texts SOLO con los datos de entrenamiento. El vocabulario no puede ver la prueba."
+          },
+          {
+            "n": "5",
+            "text": "El tamaño del vocabulario es exactamente el input_dim de tu capa Embedding."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Evaluación 3 · Modelado y evaluación",
+      "notes": "Último bloque: el proyecto que vale el 30%. Sitúalo con precisión: es la continuación directa de la Evaluación 2 y cubre las fases 4 y 5 de CRISP-DM, modelado y evaluación; la fase 6, despliegue, queda explícitamente fuera. Se trabaja en grupos de dos o tres personas y se entrega un único cuaderno de Jupyter. Lo que hay que dejar clarísimo desde el principio, porque cambia cómo se reparte el esfuerzo: de los diez criterios de la rúbrica, solo dos evalúan que los modelos estén implementados. Los otros ocho evalúan el proceso, el análisis, la comparación, la documentación y la reflexión. Un cuaderno con dos modelos perfectos y sin análisis saca menos que uno con dos modelos correctos y un análisis excelente.",
+      "slots": {
+        "PART_LABEL": "EVALUACIÓN 3 · 30%",
+        "TITLE": "Modelado y evaluación",
+        "SUBTITLE": "Solo 2 de los 10 criterios evalúan que el modelo funcione",
+        "AGENDA": [
+          {
+            "label": "01",
+            "text": "El encargo y el código base que ya tienes"
+          },
+          {
+            "label": "02",
+            "text": "Dónde está realmente la nota"
+          },
+          {
+            "label": "03",
+            "text": "Cómo documentar el fine-tuning"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "El encargo",
+      "notes": "El encargo completo, tal como está en el anexo. Grupos de dos o tres personas. Se parte del código base que ya está publicado, con sus secciones marcadas como TO-DO, y se continúa con los datos que cada grupo preparó en la Evaluación 2. Hay que implementar y entrenar los dos modelos, LSTM y Transformer, para la misma tarea, que puede ser clasificación de imágenes de Los Simpson o generación de texto con el Quijote. Después evaluar y comparar con métricas y visualizaciones, y finalmente hacer fine-tuning sobre el mejor de los dos, documentando cada experimento. Recalca el detalle de la misma tarea: no vale implementar la LSTM para imágenes y el Transformer para texto, porque entonces la comparación del criterio cinco no significa nada.",
+      "slots": {
+        "TAG_LEFT": "EL ENCARGO",
+        "TITLE": "Qué hay que entregar",
+        "TAG_RIGHT": "43",
+        "ICON": "kjkiqtxg",
+        "ACTIVITY_NAME": "Un cuaderno de Jupyter, en grupos de 2 o 3",
+        "INSTRUCTIONS": "Continuación directa de la Evaluación 2: parte de los datos que ya preparaste y del código base publicado. Los dos modelos deben resolver LA MISMA tarea, o la comparación no significa nada.",
+        "COLS": "3",
+        "META": [
+          {
+            "label": "Grupos de 2-3"
+          },
+          {
+            "label": "Un solo notebook"
+          },
+          {
+            "label": "Fases 4 y 5 de CRISP-DM"
+          }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Implementar",
+            "desc": "Una LSTM y un Transformer básico para la misma tarea: imágenes de Los Simpson o generación con el Quijote.",
+            "challenge_label": "Ojo",
+            "challenge": "Misma tarea en ambos. Si no, el criterio 5 se cae."
+          },
+          {
+            "num": "02",
+            "title": "Comparar",
+            "desc": "Métricas en el conjunto de prueba y visualizaciones: curvas de pérdida y exactitud, matriz de confusión si aplica.",
+            "challenge_label": "Ojo",
+            "challenge": "Los gráficos hay que interpretarlos, no solo pegarlos."
+          },
+          {
+            "num": "03",
+            "title": "Ajustar",
+            "desc": "Fine-tuning sobre el mejor modelo: al menos dos experimentos documentados con su resultado.",
+            "challenge_label": "Ojo",
+            "challenge": "Documentar incluye los experimentos que salieron mal."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "chart-bars",
+      "title": "Dónde está realmente la nota",
+      "notes": "Esta diapositiva reorienta el esfuerzo y conviene detenerse en ella. Agrupa los diez criterios de la rúbrica por naturaleza. Implementar los dos modelos son veinte puntos. Entrenarlos bien, otros diez. Pero evaluar, comparar y visualizar suman treinta, y documentar, justificar y concluir suman otros treinta. Es decir: sesenta de los cien puntos no dependen de que el modelo funcione bien, sino de que expliques lo que hiciste y por qué. Di la consecuencia práctica sin rodeos: si el grupo dedica todo el tiempo a que el Transformer alcance un noventa por ciento de exactitud y entrega el cuaderno sin análisis ni conclusiones, el techo de su nota es cuarenta. Y al revés: dos modelos modestos, bien comparados y bien justificados, superan holgadamente el setenta.",
+      "slots": {
+        "TAG_LEFT": "LA RÚBRICA",
+        "TITLE": "Dónde está realmente la nota",
+        "TAG_RIGHT": "44",
+        "LEAD": "Los 10 criterios agrupados por naturaleza. 60 de los 100 puntos no dependen de que el modelo funcione bien.",
+        "COLS": "4",
+        "SCALE_TOP": "40",
+        "SCALE_MID": "20",
+        "SCALE_BASE": "0",
+        "READ_LABEL": "Cómo se lee",
+        "READ": "Si dedicas todo el tiempo a que el Transformer llegue al 90% y entregas sin análisis, tu techo es 40 puntos. Dos modelos modestos, bien comparados y justificados, superan el 70.",
+        "SOURCE": "Anexo Entregable EVU3 · 10 criterios × 10 puntos",
+        "BARS": [
+          {
+            "label": "Implementar",
+            "sub": "C1-2",
+            "value": "20",
+            "unit": "pts",
+            "tone": ""
+          },
+          {
+            "label": "Entrenar",
+            "sub": "C3",
+            "value": "10",
+            "unit": "pts",
+            "tone": "mute"
+          },
+          {
+            "label": "Evaluar",
+            "sub": "C4·5·7",
+            "value": "30",
+            "unit": "pts",
+            "tone": "warn"
+          },
+          {
+            "label": "Documentar",
+            "sub": "C6·8·9·10",
+            "value": "40",
+            "unit": "pts",
+            "tone": "alt"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "Los diez criterios, uno a uno",
+      "notes": "La rúbrica completa, con la traducción de qué hay que hacer exactamente para llegar al cien por cien en cada criterio. Recórrela sin prisa porque es literalmente el índice de su cuaderno. Hazles notar los patrones: en casi todos los criterios, la diferencia entre el setenta y cinco y el cien es la interpretación, no la ejecución. Tener los gráficos vale un setenta y cinco; interpretarlos vale cien. Calcular métricas vale setenta y cinco; explicarlas vale cien. Hacer un experimento vale setenta y cinco; hacer varios y justificarlos vale cien. Ese patrón se repite en siete de los diez criterios, y entenderlo es la diferencia entre un cuaderno de sesenta y uno de noventa.",
+      "slots": {
+        "TAG_LEFT": "RÚBRICA · 100 PTS",
+        "TITLE": "Los diez criterios",
+        "TAG_RIGHT": "45",
+        "LEAD": "Este es literalmente el índice de tu cuaderno. En casi todos, la diferencia entre 75% y 100% es la interpretación, no la ejecución.",
+        "HEADERS": "<th>#</th><th>Criterio</th><th>Para llegar al 100%</th>",
+        "NOTE_LABEL": "El patrón que se repite",
+        "NOTE": "Tener el gráfico = 75%. Interpretarlo = 100%. Calcular la métrica = 75%. Explicar qué significa = 100%. Ese patrón aparece en 7 de los 10 criterios.",
+        "ROWS": [
+          {
+            "cells": "<td>1</td><td>Implementación LSTM</td><td>Correcta y <b>adaptada a tu tarea</b>, no copiada tal cual</td>"
+          },
+          {
+            "cells": "<td>2</td><td>Implementación Transformer</td><td>Flujo completo <b>incluido el embedding posicional</b></td>"
+          },
+          {
+            "cells": "<td>3</td><td>Proceso de entrenamiento</td><td>Con conjunto de <b>validación</b> separado del de prueba</td>"
+          },
+          {
+            "cells": "<td>4</td><td>Evaluación cuantitativa</td><td>Varias métricas <b>interpretadas</b>, no solo accuracy</td>"
+          },
+          {
+            "cells": "<td>5</td><td>Análisis comparativo</td><td>Comparación <b>basada en evidencia</b>: métricas y gráficos</td>"
+          },
+          {
+            "cells": "<td>6</td><td>Fine-tuning</td><td><b>Al menos dos</b> experimentos justificados y documentados</td>"
+          },
+          {
+            "cells": "<td>7</td><td>Visualizaciones</td><td>Curvas y matriz de confusión <b>con su lectura escrita</b></td>"
+          },
+          {
+            "cells": "<td>8</td><td>Calidad del código</td><td>Notebook <b>ordenado</b> y con comentarios que expliquen decisiones</td>"
+          },
+          {
+            "cells": "<td>9</td><td>Justificación</td><td>Razones técnicas de <b>cada</b> elección de arquitectura e hiperparámetro</td>"
+          },
+          {
+            "cells": "<td>10</td><td>Conclusiones</td><td>Hallazgos, desafíos y <b>limitaciones</b> de tu mejor modelo</td>"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "Cómo se documenta un experimento",
+      "notes": "El criterio seis pide al menos dos experimentos de ajuste documentados, y aquí está la diferencia entre hacerlos y documentarlos. A la izquierda, lo que entrega la mayoría: una frase que dice que se probaron cosas y que una funcionó mejor, sin números y sin hipótesis. A la derecha, el formato que sí puntúa: hipótesis de partida, qué se cambió exactamente, qué resultado dio y qué se concluye. Cuatro líneas por experimento. Y subraya el punto que más sorprende: un experimento que empeoró el resultado puntúa igual que uno que lo mejoró, siempre que esté documentado con su razonamiento. Documentar un fracaso demuestra método; ocultarlo no demuestra nada. De hecho, un informe donde todos los experimentos salieron bien resulta sospechoso.",
+      "slots": {
+        "TAG_LEFT": "AYUDA · CRITERIO 6",
+        "TITLE": "Cómo se documenta un experimento",
+        "TAG_RIGHT": "46",
+        "BAD_TITLE": "Lo que entrega la mayoría",
+        "BAD_SNIPPET": "## Fine-tuning\n\nProbamos varios optimizadores\ny tasas de aprendizaje.\n\nEl que mejor funcionó fue Adam.",
+        "GOOD_TITLE": "Lo que puntúa 100%",
+        "GOOD_SNIPPET": "### Exp 2 · dropout 0.3 → 0.6\nHipótesis: val_loss sube en e6,\nsospechamos sobreajuste.\nCambio: solo el dropout.\nResultado: val_acc 0.71 → 0.78.\nConclusión: era sobreajuste.",
+        "WHY_LABEL": "Lo que más sorprende",
+        "WHY": "Un experimento que EMPEORÓ el resultado puntúa igual que uno que lo mejoró, si está documentado con su razonamiento. Documentar un fracaso demuestra método. Un informe donde todo salió bien a la primera resulta sospechoso.",
+        "BAD_POINTS": [
+          {
+            "text": "«Probamos varios»: ¿cuáles, con qué valores?"
+          },
+          {
+            "text": "Sin hipótesis: no se sabe qué buscabas"
+          },
+          {
+            "text": "«Mejoró bastante» sin un solo número"
+          },
+          {
+            "text": "Cambia varias cosas a la vez: no sabes cuál actuó"
+          },
+          {
+            "text": "Oculta los experimentos que salieron mal"
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Hipótesis explícita antes de tocar nada"
+          },
+          {
+            "text": "Un solo cambio por experimento"
+          },
+          {
+            "text": "Métrica antes y después, con cifras"
+          },
+          {
+            "text": "Conclusión que confirma o refuta la hipótesis"
+          },
+          {
+            "text": "Incluye los intentos fallidos y qué enseñaron"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Dónde se pierden los puntos",
+      "notes": "Los cinco tropiezos concretos de esta evaluación, planteados como avisos. El primero es el más caro y el más frecuente: entregar dos modelos que funcionan y ninguna comparación explícita entre ellos; el criterio cinco dice literalmente que mencionar ambos sin compararlos vale un cincuenta por ciento. El segundo es el error de método más común en el entrenamiento: usar el mismo conjunto para validar durante el entrenamiento y para evaluar al final, lo que invalida la evaluación porque tomaste decisiones mirando esos datos. El tercero es específico del Transformer y ya lo vimos. El cuarto afecta a quien elija generación de texto: reportar exactitud no tiene sentido en esa tarea. Y el quinto es de forma pero pesa: un cuaderno con celdas ejecutadas en desorden, con salidas de errores antiguos, se lee como desordenado aunque el código sea correcto.",
+      "slots": {
+        "TAG_LEFT": "AYUDA · AVISOS",
+        "TITLE": "Dónde se pierden los puntos",
+        "TAG_RIGHT": "47",
+        "LEAD": "Cinco tropiezos concretos de esta evaluación. Ninguno tiene que ver con que el modelo acierte más o menos.",
+        "CALLOUTS": [
+          {
+            "kind": "danger",
+            "icon": "inrunzby",
+            "title": "Dos modelos y ninguna comparación",
+            "text": "El criterio 5 dice literalmente que mencionar ambos sin compararlos directamente vale 50%. Necesitas una sección donde los pongas frente a frente, con cifras."
+          },
+          {
+            "kind": "warn",
+            "icon": "usownftb",
+            "title": "Validar y evaluar con el mismo conjunto",
+            "text": "Si ajustaste hiperparámetros mirando ese conjunto, ya no es imparcial. Hacen falta tres: entrenamiento, validación y prueba. El criterio 3 lo pide explícitamente."
+          },
+          {
+            "kind": "info",
+            "icon": "qhgmphtg",
+            "title": "Transformer sin embedding posicional",
+            "text": "El criterio 2 lo menciona como el detalle que baja la nota al 75%. Es un TO-DO del código base y es el que más se omite."
+          },
+          {
+            "kind": "note",
+            "icon": "msoeawqm",
+            "title": "Accuracy en generación de texto",
+            "text": "Si eliges la tarea del Quijote, la exactitud no significa nada útil. Usa la pérdida y adjunta muestras del texto generado: eso sí es evidencia."
+          },
+          {
+            "kind": "tip",
+            "icon": "xtzvywzp",
+            "title": "Celdas ejecutadas en desorden",
+            "text": "Antes de entregar: Entorno de ejecución → Reiniciar y ejecutar todo. Un cuaderno con salidas de errores viejos y numeración saltada se lee como desordenado."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Autorrevisión antes de entregar",
+      "notes": "La última ayuda, para hacer con el cuaderno ya terminado. La instrucción es responder cada punto señalando con el dedo en qué celda está la respuesta; si hay que pensarlo, ese punto no está resuelto. El código de arriba son las tres comprobaciones de sanidad que conviene ejecutar al final: que la GPU esté activa, que los tres conjuntos existan y sean distintos, y que los dos modelos se hayan evaluado sobre exactamente el mismo conjunto de prueba, porque si no la comparación no vale. Cierra recordando lo más práctico de todo: reiniciar el entorno y ejecutar el cuaderno entero de principio a fin antes de entregar. Si falla en ese estado limpio, le fallará también a quien corrija.",
+      "slots": {
+        "TAG_LEFT": "AYUDA · AUTORREVISIÓN",
+        "TITLE": "Antes de entregar el cuaderno",
+        "TAG_RIGHT": "48",
+        "KICKER": "Con el trabajo terminado · señala en qué celda está cada respuesta",
+        "CODE_TITLE": "Tres comprobaciones de sanidad",
+        "CODE": "<span class='c-cm'># 1 · ¿Está la GPU realmente activa?</span>\n<span class='c-fn'>print</span>(tf.config.list_physical_devices(<span class='c-str'>\"GPU\"</span>))\n\n<span class='c-cm'># 2 · ¿Existen los TRES conjuntos y son distintos?</span>\n<span class='c-fn'>print</span>(X_ent.shape, X_val.shape, X_prb.shape)\n<span class='c-cm'># → validación y prueba NO pueden ser el mismo</span>\n\n<span class='c-cm'># 3 · ¿Comparo los modelos sobre el MISMO conjunto?</span>\n<span class='c-kw'>for</span> nombre, m <span class='c-kw'>in</span> [(<span class='c-str'>\"LSTM\"</span>, modelo_lstm),\n                   (<span class='c-str'>\"Transformer\"</span>, modelo_trf)]:\n    perdida, acc = m.evaluate(X_prb, y_prb, verbose=<span class='c-num'>0</span>)\n    <span class='c-fn'>print</span>(<span class='c-str'>f\"{nombre:12} loss={perdida:.4f}  acc={acc:.4f}\"</span>)\n\n<span class='c-cm'># Y al final: Reiniciar entorno y ejecutar todo</span>",
+        "PANEL_TITLE": "Señala la celda de cada respuesta",
+        "WHY_TITLE": "La prueba final",
+        "WHY": "Reinicia el entorno y ejecuta el cuaderno entero de principio a fin. Si falla en ese estado limpio, le fallará también a quien lo corrija, y el criterio 8 lo penaliza. Es lo último que hay que hacer, siempre.",
+        "CRITERIA": [
+          {
+            "letter": "1",
+            "name": "¿Hay una sección que compara ambos modelos?",
+            "meta": "Criterio 5",
+            "highlight": "true"
+          },
+          {
+            "letter": "2",
+            "name": "¿Interpreté por escrito cada gráfico?",
+            "meta": "Criterio 7",
+            "highlight": "true"
+          },
+          {
+            "letter": "3",
+            "name": "¿Documenté 2+ experimentos con cifras?",
+            "meta": "Criterio 6",
+            "highlight": "true"
+          },
+          {
+            "letter": "4",
+            "name": "¿Justifiqué por qué elegí cada hiperparámetro?",
+            "meta": "Criterio 9",
+            "highlight": ""
+          },
+          {
+            "letter": "5",
+            "name": "¿Mis conclusiones mencionan limitaciones?",
+            "meta": "Criterio 10",
+            "highlight": ""
+          },
+          {
+            "letter": "6",
+            "name": "¿Se ejecuta entero tras reiniciar el entorno?",
+            "meta": "Criterio 8",
+            "highlight": "true"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "title": "Material para el proyecto",
+      "notes": "Los recursos. La documentación de Keras es excepcionalmente buena y su sección de ejemplos tiene casos de clasificación de texto con Transformer prácticamente listos, aunque hay que adaptarlos. El artículo original de los transformers es corto y, aunque tiene matemáticas, la sección de arquitectura se entiende bien y citarlo en el informe demuestra criterio. El libro de Raschka es la bibliografía obligatoria de la asignatura para esta parte. Recuérdales que el video de la unidad y el anexo con la rúbrica completa están en el aula virtual, y que el código base ya publicado es el punto de partida obligatorio: no hay que empezar de cero.",
+      "slots": {
+        "TAG_LEFT": "MATERIAL",
+        "TITLE": "Para trabajar el proyecto",
+        "TAG_RIGHT": "49",
+        "LIST_TITLE": "Documentación y referencias",
+        "QR_LABEL": "AULA VIRTUAL",
+        "QR_DATA": "https%3A%2F%2Feva.ipss.cl",
+        "QR_ALT": "Código QR del aula virtual EVA IPSS",
+        "QR_CAPTION": "Video de la unidad, anexo y código base",
+        "NEXT_LABEL": "Entrega",
+        "NEXT": "Un cuaderno de Jupyter con LSTM, Transformer, comparación, fine-tuning documentado y conclusiones.",
+        "RESOURCES": [
+          {
+            "icon": "▤",
+            "title": "Keras · ejemplos de código",
+            "desc": "Clasificación de texto con Transformer, casi listos. Hay que adaptarlos, no copiarlos.",
+            "url": "keras.io/examples/nlp"
+          },
+          {
+            "icon": "▤",
+            "title": "Keras · guía de RNN y LSTM",
+            "desc": "return_sequences, máscaras y estados explicados con ejemplos ejecutables.",
+            "url": "keras.io/guides/working_with_rnns"
+          },
+          {
+            "icon": "▤",
+            "title": "«Attention is All You Need» (2017)",
+            "desc": "El artículo original. La sección de arquitectura se entiende sin las matemáticas.",
+            "url": "arxiv.org/abs/1706.03762"
+          },
+          {
+            "icon": "▤",
+            "title": "Raschka, S. (2023)",
+            "desc": "Machine learning with PyTorch and Scikit-Learn. Bibliografía obligatoria de la asignatura.",
+            "url": "Packt · Odilo IPSS"
+          },
+          {
+            "icon": "▤",
+            "title": "Anexo EVU3 y código base",
+            "desc": "El notebook de partida con los TO-DO y la rúbrica completa de 10 criterios.",
+            "url": "Aula virtual EVA"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "title": "Cierre de la Unidad 3 y de la asignatura",
+      "notes": "Cierre de la unidad y del trimestre. Haz el recorrido completo: la Unidad 1 respondió qué es la IA y qué problemas éticos trae, la Unidad 2 enseñó a elegir y evaluar algoritmos clásicos, y esta ha llevado el mismo método al aprendizaje profundo. El hilo que las une es el que conviene subrayar al despedirse: en las tres unidades, lo que se ha evaluado no ha sido nunca que el modelo acertara más, sino que supieran justificar sus decisiones y medir con honestidad. Esa es la competencia real y es la que se transfiere a cualquier herramienta que aparezca dentro de cinco años, cuando TensorFlow y Keras ya no sean lo que se use. Recuérdales por última vez lo práctico: reiniciar y ejecutar todo antes de entregar, y no dejar el entrenamiento para la última noche.",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "Lo que te llevas",
+        "TAG_RIGHT": "50",
+        "ICON": "wzwygmng",
+        "HERO_TITLE": "Las herramientas caducan; el método no",
+        "HERO_TEXT": "En las tres unidades nunca se evaluó que tu modelo acertara más, sino que supieras justificar tus decisiones y medir con honestidad. Eso es lo que se transfiere a cualquier librería que aparezca dentro de cinco años, cuando ya no uses ni Keras ni scikit-learn.",
+        "LEFT_PANEL_TITLE": "Ideas clave",
+        "RIGHT_PANEL_TITLE": "Antes de entregar",
+        "NEXT_LABEL": "Examen final",
+        "NEXT": "Evaluación transversal (40%): integra las tres unidades. Revisa el aula virtual para el formato y las fechas.",
+        "TAKEAWAYS": [
+          {
+            "n": "1",
+            "text": "Deep learning gana con datos crudos; con tablas pequeñas, gana el ML clásico."
+          },
+          {
+            "n": "2",
+            "text": "La LSTM recuerda paso a paso; el Transformer mira toda la secuencia a la vez."
+          },
+          {
+            "n": "3",
+            "text": "Sin embedding posicional, un Transformer no distingue el orden."
+          },
+          {
+            "n": "4",
+            "text": "Cuando val_loss sube y train_loss baja, está memorizando: detén y recupera."
+          },
+          {
+            "n": "5",
+            "text": "60 de los 100 puntos de la evaluación son análisis, no implementación."
+          }
+        ],
+        "NEXT_STEPS": [
+          {
+            "n": "1",
+            "text": "Activa la GPU y comprueba que list_physical_devices la ve."
+          },
+          {
+            "n": "2",
+            "text": "Verifica que validación y prueba son conjuntos distintos."
+          },
+          {
+            "n": "3",
+            "text": "Escribe la interpretación de cada gráfico, no solo lo pegues."
+          },
+          {
+            "n": "4",
+            "text": "Reinicia el entorno y ejecuta el cuaderno entero antes de subirlo."
+          }
+        ]
+      }
+    }
+  ]
+}

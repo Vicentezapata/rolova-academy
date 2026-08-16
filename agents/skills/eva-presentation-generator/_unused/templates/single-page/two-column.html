@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><title>Two Column</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/minimal-white.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Two column">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="grid g2 mt-l" style="align-items:start">
+<div class="card anim-fade-left" data-anim="fade-left">
+<h3>{{ title }}</h3>
+<p class="dim">{{ text }}</p>
+<ul class="mt-m">
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+<li>{{ item }}</li>
+</ul>
+</div>
+<div class="card anim-fade-right" data-anim="fade-right">
+<h3>{{ title }}</h3>
+<pre class="mono" style="font-size:13px;background:var(--surface-2);padding:14px;border-radius:var(--radius-sm);overflow:auto">
+:root {
+  --bg: #fff;
+  --text-1: #0c0d10;
+  --accent: #3b6cff;
+  --radius: 18px;
+}
+.card {
+  background: var(--bg);
+  color: var(--text-1);
+  border-radius: var(--radius);
+}</pre>
+</div>
+</div>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

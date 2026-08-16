@@ -1,0 +1,54 @@
+<!--CSS-->
+.hm-wrap{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:flex;flex-direction:column;gap:18px;}
+.hm-top{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 26px;display:grid;grid-template:1fr / auto 1fr;gap:32px;align-items:center;}
+.hm-plot{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.hm-axis-top{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-sec);}
+.hm-grid{display:grid;grid-template:repeat(3,1fr) / repeat(3,1fr);gap:6px;}
+.hm-cell{width:80px;height:54px;border-radius:var(--radius-sm, 6px);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:0.06em;border:var(--bw) solid;}
+.hm-cell.lv1{background:var(--ok-t);border-color:var(--ok-b);color:var(--ok);}
+.hm-cell.lv2{background:var(--warn-t);border-color:var(--warn-b);color:var(--warn);}
+.hm-cell.lv3{background:var(--err-t);border-color:var(--err-b);color:var(--err);}
+.hm-cell.lv4{background:var(--err-t);border-color:var(--err-b);color:var(--err);}
+.hm-axis-bot{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-sec);}
+.hm-expl h3{font-family:var(--display);font-size:19px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.02em;margin-bottom:9px;}
+.hm-expl p{font-size:13.5px;color:var(--text-sec);line-height:1.75;}
+.hm-cards{display:grid;grid-template:1fr / repeat({{COLS}},1fr);gap:16px;flex:1;min-height:0;}
+.hm-card{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;display:flex;flex-direction:column;gap:8px;}
+.hm-badge{width:fit-content;font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:5px 12px;border-radius:var(--radius-sm, 5px);border:var(--bw) solid;}
+.hm-cond{font-family:var(--mono);font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;}
+.hm-card h4{font-family:var(--display);font-size:15.5px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.015em;}
+.hm-card p{font-size:12px;color:var(--text-sec);line-height:1.65;}
+<!--BODY-->
+  <div class="header">
+    <span class="tag">{{TAG_LEFT}}</span>
+    <span class="h2">{{TITLE}}</span>
+    <span class="tag">{{TAG_RIGHT}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="hm-wrap">
+    <div class="hm-top">
+      <div class="hm-plot">
+        <div class="hm-axis-top">↑ {{AXIS_Y}}</div>
+        <div class="hm-grid">
+<!--REPEAT:CELLS-->
+          <div class="hm-cell {{level}}">{{label}}</div>
+<!--END:CELLS-->
+        </div>
+        <div class="hm-axis-bot">{{AXIS_X}} →</div>
+      </div>
+      <div class="hm-expl">
+        <h3>{{EXPL_TITLE}}</h3>
+        <p>{{EXPL_BODY}}</p>
+      </div>
+    </div>
+    <div class="hm-cards">
+<!--REPEAT:ZONES-->
+      <div class="hm-card">
+        <div class="hm-badge" style="border-color:{{color}};color:{{color}};background:{{bg}}">{{badge}}</div>
+        <div class="hm-cond" style="color:{{color}}">{{condition}}</div>
+        <h4>{{title}}</h4>
+        <p>{{desc}}</p>
+      </div>
+<!--END:ZONES-->
+    </div>
+  </div>

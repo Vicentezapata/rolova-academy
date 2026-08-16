@@ -1,0 +1,35 @@
+{
+  "id": "safari_savanna",
+  "name": "Safari Savanna",
+  "source": "Recreado desde style-gallery/safari_savanna.html sobre el contrato de tokens",
+  "best_for": ["Expedición y campo", "Geografía y naturaleza", "Bitácora de proyecto", "Revista de viaje"],
+  "preset": "field_atlas",
+  "decoration": "double_frame_horizon",
+  "notes": "Cuaderno de expedición: el doble marco (1.5px por fuera, 0.5px por dentro) es lo que lo convierte en lámina de atlas. Toda la metadata va en monoespaciada con tracking abierto; el cuerpo es serif y la cursiva Playfair en tierra quemada marca el topónimo. Cero radio, cero sombra.",
+  "palette": {
+    "bg": "#e8d4a8",
+    "text": "#2a1f0f",
+    "a1": "#c44d2a",
+    "a2": "#8b3a1f",
+    "a3": "#5a4a30"
+  },
+  "_comment_rhythm": "El renderer rota estas variantes por índice de slide. HORIZON cambia la temperatura del calor al pie.",
+  "background_rhythm": [
+    {
+      "HORIZON": "linear-gradient(180deg, transparent 0%, rgba(196,77,42,0.08) 50%, rgba(139,58,31,0.16) 100%)",
+      "BG": "radial-gradient(ellipse 110% 80% at 30% 20%, #f6ead2 0%, transparent 55%), radial-gradient(ellipse 90% 70% at 80% 90%, #d9bd83 0%, transparent 60%), linear-gradient(135deg, #f3e6cc 0%, #e8d4a8 60%, #ddc28a 100%)"
+    },
+    {
+      "HORIZON": "linear-gradient(180deg, transparent 0%, rgba(184,115,43,0.08) 50%, rgba(139,58,31,0.14) 100%)",
+      "BG": "radial-gradient(ellipse 105% 78% at 76% 18%, #f6ead2 0%, transparent 55%), radial-gradient(ellipse 88% 68% at 16% 88%, #d9bd83 0%, transparent 60%), linear-gradient(160deg, #f3e6cc 0%, #e8d4a8 58%, #ddc28a 100%)"
+    },
+    {
+      "HORIZON": "linear-gradient(180deg, transparent 0%, rgba(196,77,42,0.07) 45%, rgba(139,58,31,0.18) 100%)",
+      "BG": "radial-gradient(ellipse 115% 74% at 50% 6%, #f6ead2 0%, transparent 58%), radial-gradient(ellipse 84% 66% at 88% 94%, #d6b87b 0%, transparent 58%), linear-gradient(120deg, #f3e6cc 0%, #e8d4a8 62%, #ddc28a 100%)"
+    },
+    {
+      "HORIZON": "linear-gradient(180deg, transparent 0%, rgba(184,115,43,0.09) 55%, rgba(139,58,31,0.15) 100%)",
+      "BG": "radial-gradient(ellipse 100% 82% at 14% 74%, #f6ead2 0%, transparent 55%), radial-gradient(ellipse 92% 70% at 90% 14%, #d9bd83 0%, transparent 60%), linear-gradient(200deg, #ddc28a 0%, #e8d4a8 45%, #f3e6cc 100%)"
+    }
+  ]
+}

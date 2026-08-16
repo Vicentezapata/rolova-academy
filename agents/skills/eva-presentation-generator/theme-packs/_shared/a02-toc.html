@@ -1,0 +1,25 @@
+<!--CSS-->
+.toc-grid{position:absolute;left:48px;top:100px;right:48px;bottom:44px;display:grid;grid-template:repeat({{ROWS}},1fr) / repeat({{COLS}},1fr);gap:18px;z-index:10;}
+.toc-card{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 30px;display:flex;flex-direction:column;gap:10px;}
+.toc-num{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--a1);}
+.toc-icon{width:44px;height:44px;border-radius:var(--radius-sm, 8px);background:var(--a1-t);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.toc-card h3{font-family:var(--display);font-size:17px;font-weight:700;color:var(--text);line-height:1.25;letter-spacing:-0.015em;}
+.toc-card p{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+<!--BODY-->
+  <div class="header">
+    <span class="tag">{{TAG_LEFT}}</span>
+    <span class="h2">{{TITLE}}</span>
+    <span class="tag">{{TAG_RIGHT}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="toc-grid">
+<!--REPEAT:ITEMS-->
+    <div class="toc-card">
+      <div class="toc-num">{{num}}</div>
+      <div class="toc-icon icon" data-icon="{{icon}}" data-icon-size="26">{{icon}}</div>
+      <h3>{{title}}</h3>
+      <p>{{desc}}</p>
+      <div class="chip-row">{{chips}}</div>
+    </div>
+<!--END:ITEMS-->
+  </div>

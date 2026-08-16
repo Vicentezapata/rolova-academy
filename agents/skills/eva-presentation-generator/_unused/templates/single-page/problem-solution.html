@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"/><title>Problem Solution</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/dark_tech.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Problem Solution">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<div class="grid g2 mt-l" style="align-items:stretch; gap:40px">
+  <div class="card card-accent anim-fade-left" data-anim="fade-left" style="border-top-color:var(--bad)">
+    <p class="eyebrow" style="color:var(--bad); display:flex; align-items:center; gap:8px"><i data-lucide="x-circle" style="width:18px;height:18px"></i> {{ left_title }}</p>
+    <p class="mt-m dim" style="font-size:22px; line-height:1.6">{{ left_desc }}</p>
+  </div>
+  <div class="card card-accent anim-fade-right" data-anim="fade-right" style="border-top-color:var(--good)">
+    <p class="eyebrow" style="color:var(--good); display:flex; align-items:center; gap:8px"><i data-lucide="check-circle-2" style="width:18px;height:18px"></i> {{ right_title }}</p>
+    <p class="mt-m dim" style="font-size:22px; line-height:1.6">{{ right_desc }}</p>
+  </div>
+</div>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script>if (typeof lucide !== 'undefined') lucide.createIcons();</script>
+<script src="../../assets/runtime.js"></script>
+</body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<title>{{SLIDE_TITLE}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DEL PACK — ver theme-packs/TOKENS.md
+   Liquid Glass: malla de color saturada al fondo, blobs muy
+   desenfocados y superficies de vidrio esmerilado sobre ella.
+   Todo el texto es blanco: el contraste lo da el desenfoque.
+   ============================================================ */
+:root{
+  --bg:#2b6fd8; --bg2:#1a73e8;
+  --text:#ffffff; --text-sec:rgba(255,255,255,0.93); --text-ter:rgba(255,255,255,0.74);
+  --strong:#ffffff;
+
+  --a1:#ffffff; --a2:rgba(255,255,255,0.92); --a3:rgba(255,255,255,0.78);
+  --ok:#c9ffe6; --warn:#ffe6b0; --err:#ffc6d4;
+  --a1-t:rgba(255,255,255,0.22); --a1-b:rgba(255,255,255,0.55);
+  --a2-t:rgba(255,255,255,0.16); --a2-b:rgba(255,255,255,0.45);
+  --a3-t:rgba(255,255,255,0.12); --a3-b:rgba(255,255,255,0.38);
+  --ok-t:rgba(201,255,230,0.20); --ok-b:rgba(201,255,230,0.55);
+  --warn-t:rgba(255,230,176,0.20); --warn-b:rgba(255,230,176,0.55);
+  --err-t:rgba(255,198,212,0.20); --err-b:rgba(255,198,212,0.55);
+
+  /* El cristal blanco ACLARA el fondo: sobre los blobs amarillo y rosa el texto
+     blanco perdía contraste. El vidrio es azul oscuro en toda su altura porque el
+     cuerpo de texto puede caer arriba o abajo según el arquetipo; el brillo del
+     borde superior lo aporta el `inset` de --shadow, así que sigue leyéndose como
+     vidrio. */
+  --card-bg:linear-gradient(180deg, rgba(14,42,96,0.34) 0%, rgba(14,42,96,0.46) 100%);
+  --border:rgba(255,255,255,0.38);
+  --bw:1px; --rule-h:1px;
+  --radius:22px; --radius-lg:26px;
+  --shadow:0 18px 40px rgba(20,30,80,0.18), 0 2px 6px rgba(20,30,80,0.08), inset 0 1px 0 rgba(255,255,255,0.55);
+  --shadow-sm:0 10px 24px rgba(20,30,80,0.16), inset 0 1px 0 rgba(255,255,255,0.45);
+  --inset-bg:rgba(14,42,96,0.24); --inset-border:rgba(255,255,255,0.30);
+  --hi-bg:rgba(14,42,96,0.30);
+  --hairline:rgba(255,255,255,0.24);
+  --zebra:rgba(14,42,96,0.14);
+  --thead-bg:rgba(14,42,96,0.30);
+
+  --code-bg:rgba(20,30,80,0.28); --code-fg:#ffffff;
+  --c-kw:#ffd9ea; --c-fn:#cfe8ff; --c-str:#c9ffe6; --c-cm:rgba(255,255,255,0.6); --c-num:#ffe6b0;
+
+  --display:-apple-system,'SF Pro Display','Inter Tight','Inter',sans-serif;
+  --display-xl:-apple-system,'SF Pro Display','Inter Tight','Inter',sans-serif;
+  --body:-apple-system,'SF Pro Text','Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Instrument Serif',Georgia,serif;
+  --title-shadow:0 2px 20px rgba(20,40,90,0.18);
+  --em-family:var(--serif); --em-style:italic; --em-weight:400;
+  --heavy:600;
+
+  --mermaid-primary:rgba(255,255,255,0.18); --mermaid-text:#ffffff; --mermaid-border:rgba(255,255,255,0.5);
+  --mermaid-line:rgba(255,255,255,0.7); --mermaid-secondary:rgba(255,255,255,0.12); --mermaid-tertiary:rgba(255,255,255,0.08);
+}
+{{SHARED_CSS}}
+
+/* Sin el desenfoque de fondo esto no es vidrio, es plástico translúcido. */
+.card,[class*="card"],[class*="panel"],[class*="box"],[class*="stat"]{
+  backdrop-filter:blur(30px) saturate(180%);
+  -webkit-backdrop-filter:blur(30px) saturate(180%);
+}
+.tag{letter-spacing:0.22em;font-weight:600;}
+.h1,.h2{letter-spacing:-0.045em;}
+
+/* ============================================================
+   DECORACIONES DE FIRMA DEL PACK
+   Blobs desenfocados sobre la malla + grano fino.
+   ============================================================ */
+.deco-a{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(255,255,255,0.06) 0.6px, transparent 1.2px),
+    radial-gradient(circle at 75% 60%, rgba(255,255,255,0.04) 0.6px, transparent 1.2px);
+  background-size:6px 6px, 8px 8px;}
+
+.deco-b{position:absolute;border-radius:50%;z-index:0;pointer-events:none;filter:blur(64px);{{BLOB_A}}}
+.deco-c{position:absolute;border-radius:50%;z-index:0;pointer-events:none;filter:blur(70px);{{BLOB_B}}}
+
+.slide{background:{{BG}};}
+
+{{EXTRA_CSS}}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="{{SLIDE_TITLE}}">
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+  <div class="deco-a" aria-hidden="true"></div>
+{{BODY}}
+  <div class="slide-num">{{SLIDE_NUM}} / {{TOTAL}}</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

@@ -1,29 +1,20 @@
 "use client";
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html, MeshDistortMaterial, MeshWobbleMaterial } from '@react-three/drei';
-
-const COURSE_THEMES = [
-  { color: '#d946ef', ring: '#f0abfc', type: 'plasma' },
-  { color: '#06b6d4', ring: '#67e8f9', type: 'crystal' },
-  { color: '#a855f7', ring: '#d8b4fe', type: 'hologram' },
-  { color: '#f59e0b', ring: '#fde68a', type: 'energy' },
-  { color: '#10b981', ring: '#6ee7b7', type: 'glass' },
-];
-
-const COURSE_ICONS = ['🎓', '🧠', '🔬', '🌐', '⚡'];
+import { courseTheme } from '../lib/theme';
 
 function PlanetCore({ theme, isSelected }) {
   const emissiveIntensity = isSelected ? 2.5 : 1.0;
   
-  switch(theme.type) {
+  switch(theme.core) {
     case 'plasma':
       return (
         <mesh>
-          <sphereGeometry args={[0.85, 64, 64]} />
+          <sphereGeometry args={[0.85, 32, 32]} />
           <MeshDistortMaterial 
-            color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity} 
+            color={theme.accent} emissive={theme.accent} emissiveIntensity={emissiveIntensity} 
             distort={0.5} speed={4} roughness={0.2} metalness={0.8}
           />
         </mesh>
@@ -34,7 +25,7 @@ function PlanetCore({ theme, isSelected }) {
           <mesh>
             <octahedronGeometry args={[0.85, 0]} />
             <meshPhysicalMaterial 
-              color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity * 0.4}
+              color={theme.accent} emissive={theme.accent} emissiveIntensity={emissiveIntensity * 0.4}
               roughness={0.1} metalness={0.8} transmission={0.9} thickness={1} flatShading
             />
           </mesh>
@@ -50,7 +41,7 @@ function PlanetCore({ theme, isSelected }) {
           <mesh>
             <sphereGeometry args={[0.85, 16, 16]} />
             <meshStandardMaterial 
-              color={theme.color} emissive={theme.color} emissiveIntensity={isSelected ? 3 : 1.5}
+              color={theme.accent} emissive={theme.accent} emissiveIntensity={isSelected ? 3 : 1.5}
               wireframe roughness={0.1} metalness={0.1}
             />
           </mesh>
@@ -63,9 +54,9 @@ function PlanetCore({ theme, isSelected }) {
     case 'energy':
       return (
         <mesh>
-          <torusKnotGeometry args={[0.55, 0.18, 128, 32]} />
+          <torusKnotGeometry args={[0.55, 0.18, 96, 24]} />
           <MeshWobbleMaterial 
-            color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity * 1.5}
+            color={theme.accent} emissive={theme.accent} emissiveIntensity={emissiveIntensity * 1.5}
             factor={2} speed={3} roughness={0.2} metalness={0.8}
           />
         </mesh>
@@ -76,7 +67,7 @@ function PlanetCore({ theme, isSelected }) {
           <mesh>
             <sphereGeometry args={[0.75, 32, 32]} />
             <meshPhysicalMaterial 
-              color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity * 0.8}
+              color={theme.accent} emissive={theme.accent} emissiveIntensity={emissiveIntensity * 0.8}
               roughness={0.05} metalness={0.1} transmission={0.9} ior={1.5} clearcoat={1}
             />
           </mesh>
@@ -86,7 +77,7 @@ function PlanetCore({ theme, isSelected }) {
           </mesh>
           <mesh rotation={[-Math.PI/4, Math.PI/2, 0]}>
             <torusGeometry args={[0.95, 0.02, 32, 64]} />
-            <meshBasicMaterial color={theme.color} />
+            <meshBasicMaterial color={theme.accent} />
           </mesh>
         </group>
       );
@@ -95,7 +86,7 @@ function PlanetCore({ theme, isSelected }) {
         <mesh>
           <icosahedronGeometry args={[0.85, 2]} />
           <meshStandardMaterial 
-            color={theme.color} emissive={theme.color} emissiveIntensity={emissiveIntensity} 
+            color={theme.accent} emissive={theme.accent} emissiveIntensity={emissiveIntensity} 
             metalness={0.5} roughness={0.15}
           />
         </mesh>
@@ -103,16 +94,19 @@ function PlanetCore({ theme, isSelected }) {
   }
 }
 
-export default function SkillStation({ course, position, courseIndex, onSelect, isSelected }) {
+export default function SkillStation({ course, position, courseIndex, onSelect, isSelected, reducedMotion = false }) {
   const groupRef  = useRef();
   const coreRef   = useRef();
   const ring1Ref  = useRef();
   const ring2Ref  = useRef();
 
-  const theme = COURSE_THEMES[courseIndex % COURSE_THEMES.length];
-  const icon  = COURSE_ICONS[courseIndex % COURSE_ICONS.length];
+  const theme = courseTheme(courseIndex);
+
+  // El cursor se escribe en <body>; sin esta limpieza queda en 'pointer' si el componente se desmonta durante el hover.
+  useEffect(() => () => { document.body.style.cursor = 'auto'; }, []);
 
   useFrame((state) => {
+    if (reducedMotion) return;
     const t = state.clock.elapsedTime;
     if (groupRef.current) {
       groupRef.current.position.y = position[1] + Math.sin(t * 0.35 + courseIndex * 1.5) * 0.18;
@@ -135,13 +129,13 @@ export default function SkillStation({ course, position, courseIndex, onSelect, 
       {/* Glow halo */}
       <mesh>
         <sphereGeometry args={[1.2, 16, 16]} />
-        <meshBasicMaterial color={theme.color} transparent opacity={isSelected ? 0.22 : 0.07} depthWrite={false} />
+        <meshBasicMaterial color={theme.accent} transparent opacity={isSelected ? 0.22 : 0.07} depthWrite={false} />
       </mesh>
 
       {/* Orbital ring 1 */}
       <mesh ref={ring1Ref} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[1.5, 0.045, 12, 64]} />
-        <meshStandardMaterial color={theme.color} emissive={theme.color} emissiveIntensity={1.5} transparent opacity={0.75} />
+        <meshStandardMaterial color={theme.accent} emissive={theme.accent} emissiveIntensity={1.5} transparent opacity={0.75} />
       </mesh>
 
       {/* Orbital ring 2 */}
@@ -160,8 +154,8 @@ export default function SkillStation({ course, position, courseIndex, onSelect, 
         <PlanetCore theme={theme} isSelected={isSelected} />
 
         <Html distanceFactor={13} position={[0, 1.65, 0]} center occlude={false} zIndexRange={[100, 0]} style={{ pointerEvents: 'none' }}>
-          <div className="station-label" style={{ '--theme-color': theme.color }}>
-            <span className="station-icon">{icon}</span>
+          <div className="station-label" style={{ '--theme-color': theme.accent }}>
+            <span className="station-icon">{theme.icon}</span>
             <span className="station-title">{course.name}</span>
             <span className="station-count">{course.materials.length} materiales</span>
             <span className="station-hint">← Clic para ver</span>

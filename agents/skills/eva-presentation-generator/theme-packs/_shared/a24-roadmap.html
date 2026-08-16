@@ -1,0 +1,40 @@
+<!--CSS-->
+.rd-wrap{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:flex;flex-direction:column;gap:18px;justify-content:center;}
+.rd-lead{font-size:13.5px;color:var(--text-sec);line-height:1.7;max-width:860px;}
+.rd-track{display:grid;grid-template:1fr / repeat({{COLS}},1fr);gap:14px;position:relative;}
+.rd-lane{display:flex;flex-direction:column;gap:10px;}
+.rd-head{display:flex;align-items:center;gap:9px;padding-bottom:9px;border-bottom:2px solid;}
+.rd-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.rd-phase{font-family:var(--mono);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;font-weight:700;}
+.rd-when{margin-left:auto;font-family:var(--mono);font-size:9.5px;color:var(--text-ter);}
+.rd-items{display:flex;flex-direction:column;gap:9px;flex:1;}
+.rd-item{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius-sm, 8px);padding:12px 14px;display:flex;flex-direction:column;gap:5px;}
+.rd-item h4{font-family:var(--display);font-size:13px;font-weight:700;color:var(--text);letter-spacing:-0.01em;line-height:1.25;}
+.rd-item p{font-size:11px;color:var(--text-sec);line-height:1.55;}
+.rd-status{width:fit-content;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:var(--radius-pill, 999px);border:var(--bw) solid;}
+.st-done{background:var(--ok-t);border-color:var(--ok-b);color:var(--ok);}
+.st-now{background:var(--a1-t);border-color:var(--a1-b);color:var(--a1);}
+.st-next{background:var(--a2-t);border-color:var(--a2-b);color:var(--a2);}
+.st-later{background:var(--inset-bg);border-color:var(--inset-border);color:var(--text-ter);}
+<!--BODY-->
+  <div class="header">
+    <span class="tag">{{TAG_LEFT}}</span>
+    <span class="h2">{{TITLE}}</span>
+    <span class="tag">{{TAG_RIGHT}}</span>
+  </div>
+  <div class="divider"></div>
+  <div class="rd-wrap">
+    <p class="rd-lead">{{LEAD}}</p>
+    <div class="rd-track">
+<!--REPEAT:LANES-->
+      <div class="rd-lane">
+        <div class="rd-head" style="border-color:{{color}}">
+          <div class="rd-dot" style="background:{{color}}"></div>
+          <div class="rd-phase" style="color:{{color}}">{{phase}}</div>
+          <div class="rd-when">{{when}}</div>
+        </div>
+        <div class="rd-items">{{items}}</div>
+      </div>
+<!--END:LANES-->
+    </div>
+  </div>

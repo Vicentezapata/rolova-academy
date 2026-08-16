@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<title>{{SLIDE_TITLE}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DEL PACK — ver theme-packs/TOKENS.md
+   Medical Pulse: blanco clínico, cian de monitor, tarjetas con
+   barra lateral turquesa y una traza de ECG al pie.
+   ============================================================ */
+:root{
+  --bg:#ffffff; --bg2:#f0fdfa;
+  --text:#0a2540; --text-sec:#5a7a96; --text-ter:#8aa4bb;
+  --strong:#0a2540;
+
+  /* Los cianes del original (#00b4d8, #4ecdc4) no llegan a 3:1 sobre
+     blanco: viven en los tokens gráficos (-b) y el texto usa versiones
+     profundas. El rojo de cruz se reserva para el estado de error. */
+  --a1:#0086a8; --a2:#0e7c74; --a3:#5a7a96;
+  --ok:#0e7c74; --warn:#b06a00; --err:#c2202c;
+  --a1-t:rgba(0,180,216,0.09); --a1-b:#00b4d8;
+  --a2-t:rgba(78,205,196,0.12); --a2-b:#4ecdc4;
+  --a3-t:rgba(90,122,150,0.09); --a3-b:#95e1d3;
+  --ok-t:rgba(14,124,116,0.09); --ok-b:#0e7c74;
+  --warn-t:rgba(176,106,0,0.09); --warn-b:#b06a00;
+  --err-t:rgba(230,57,70,0.09); --err-b:#e63946;
+
+  --card-bg:#f0fdfa; --border:#d3ecec;
+  --bw:1px; --rule-h:1px;
+  --radius:8px; --radius-lg:10px;
+  --shadow:0 1px 0 rgba(10,37,64,0.04), 0 6px 18px rgba(78,205,196,0.10);
+  --shadow-sm:0 1px 0 rgba(10,37,64,0.04), 0 3px 10px rgba(78,205,196,0.08);
+  --inset-bg:#f0fdfa; --inset-border:#d3ecec;
+  --hi-bg:rgba(0,180,216,0.10);
+  --hairline:#e3edf3;
+  --zebra:rgba(10,37,64,0.022);
+  --thead-bg:#e6f8f6;
+
+  --code-bg:#f4f9fc; --code-fg:#0a2540;
+  --c-kw:#0086a8; --c-fn:#0e7c74; --c-str:#1c7a4a; --c-cm:#8aa4bb; --c-num:#b06a00;
+
+  --display:'Inter Tight','Inter',-apple-system,sans-serif;
+  --display-xl:'Inter Tight','Inter',-apple-system,sans-serif;
+  --body:'Inter',-apple-system,sans-serif;
+  --mono:'IBM Plex Mono','JetBrains Mono',monospace;
+  --serif:Georgia,serif;
+  --title-shadow:none;
+  --em-family:var(--display); --em-style:normal; --em-weight:700;
+  --heavy:700;
+
+  --mermaid-primary:#f0fdfa; --mermaid-text:#0a2540; --mermaid-border:#00b4d8;
+  --mermaid-line:#4ecdc4; --mermaid-secondary:#ffffff; --mermaid-tertiary:#f0fdfa;
+}
+{{SHARED_CSS}}
+
+.h1,.h2,.h3,h1,h2,h3{letter-spacing:-0.035em;}
+.kicker{font-family:var(--body);font-weight:600;letter-spacing:0.22em;}
+.tag{letter-spacing:0.14em;}
+
+/* La barra lateral turquesa de la tarjeta es la firma del original. */
+.card{border-left:3px solid var(--a2-b);}
+
+/* ============================================================
+   DECORACIONES DE FIRMA DEL PACK
+   Retícula de 64px, halo turquesa, franja de instrumento y ECG.
+   ============================================================ */
+.deco-a{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-repeat:no-repeat, repeat, repeat;
+  background-image:
+    {{GLOW}},
+    linear-gradient(rgba(10,37,64,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10,37,64,0.025) 1px, transparent 1px);
+  background-size:auto, 64px 64px, 64px 64px;}
+
+/* Franja de instrumento: 4px de cian a menta, como el bisel del monitor. */
+.deco-b{position:absolute;top:0;left:0;right:0;height:4px;z-index:6;pointer-events:none;
+  background:{{BAR}};}
+
+/* Traza de ECG al pie, con su línea de base. Se detiene antes de la
+   numeración para no pisarla. */
+.deco-c{position:absolute;left:48px;right:110px;bottom:14px;height:36px;z-index:0;pointer-events:none;opacity:0.72;
+  background-repeat:no-repeat;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1120 80' preserveAspectRatio='none'><polyline points='0,40 80,40 92,40 100,34 108,46 116,40 180,40 188,38 196,42 204,40 230,40 238,18 246,62 254,22 262,40 340,40 348,40 356,34 364,46 372,40 440,40 448,38 456,42 464,40 490,40 498,14 506,68 514,18 522,40 600,40 608,40 616,34 624,46 632,40 700,40 708,38 716,42 724,40 750,40 758,16 766,64 774,20 782,40 860,40 868,40 876,34 884,46 892,40 960,40 968,38 976,42 984,40 1010,40 1018,18 1026,62 1034,22 1042,40 1120,40' fill='none' stroke='%2300b4d8' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>"),
+    linear-gradient(90deg, transparent 0%, rgba(0,180,216,0.18) 12%, rgba(0,180,216,0.18) 88%, transparent 100%);
+  background-size:100% 100%, 100% 1px;
+  background-position:left center, left center;}
+
+.slide{background:{{BG}};}
+
+{{EXTRA_CSS}}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="{{SLIDE_TITLE}}">
+  <div class="deco-a" aria-hidden="true"></div>
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+{{BODY}}
+  <div class="slide-num">{{SLIDE_NUM}} / {{TOTAL}}</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' '].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+</script>
+</body>
+</html>

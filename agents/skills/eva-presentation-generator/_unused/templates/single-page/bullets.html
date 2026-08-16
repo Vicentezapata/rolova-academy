@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><title>Bullets</title>
+<link href="../../assets/fonts.css" rel="stylesheet"/>
+<link href="../../assets/base.css" rel="stylesheet"/>
+<link href="../../assets/themes/minimal-white.css" id="theme-link" rel="stylesheet"/>
+<link href="../../assets/animations/animations.css" rel="stylesheet"/>
+</head><body class="single">
+<div class="deck"><section class="slide is-active" data-title="Why">
+<header class="slide-header">
+  <span class="overline">{{ part_label }}</span>
+  <h1 class="page-title">{{ title }}</h1>
+</header>
+<p class="lede mb-l">{{ text }}</p>
+<ul class="grid g1 anim-stagger-list" data-anim-target="" style="list-style:none;padding:0;margin:0;gap:14px">
+<li class="card card-accent">{{ item }}</li>
+<li class="card card-accent">{{ item }}</li>
+<li class="card card-accent">{{ item }}</li>
+</ul>
+
+<footer class="slide-footer"><span class="slide-number">{{ slide_number }}</span></footer>
+</section></div>
+<script src="../../assets/runtime.js"></script>
+</body></html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Prompts - EVA Presentation</title>
+    <style>
+        :root {
+            --bg-color: #0f111a;
+            --panel-bg: #1a1d27;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #334155;
+            --success: #10b981;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 { margin-bottom: 0.5rem; font-size: 2rem; }
+        p.desc { color: var(--text-muted); margin-bottom: 2rem; }
+        
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .panel h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .form-group { margin-bottom: 1.5rem; }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        
+        input[type="text"], select {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+        
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .checkbox-group input { width: 1.2rem; height: 1.2rem; }
+        
+        .preview-container {
+            width: 100%;
+            height: 250px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .preview-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .preview-placeholder {
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        #prompt-output {
+            width: 100%;
+            height: 200px;
+            background-color: #000;
+            color: #10b981;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+        
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+        
+        button:hover { background-color: var(--accent-hover); }
+        button.success { background-color: var(--success); }
+        
+        .note {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Generador de Prompts</h1>
+    <p class="desc">Configura los parámetros para generar el prompt exacto que el Agente IA necesita para crear tu presentación.</p>
+
+    <div class="grid-layout">
+        <!-- Controles -->
+        <div class="panel">
+            <h2>1. Configuración de la Presentación</h2>
+            
+            <div class="form-group">
+                <label for="topic">Tema o Título (Ej: Unidad 4 de Desarrollo Web)</label>
+                <input type="text" id="topic" placeholder="Ingresa el tema..." value="la Unidad 4">
+            </div>
+            
+            <div class="form-group">
+                <label for="path">Ruta del Material Base (Opcional)</label>
+                <input type="text" id="path" placeholder="/ruta/a/tus/documentos" value="">
+            </div>
+            
+            <div class="form-group">
+                <label for="mode">Modo de Ensamblaje</label>
+                <select id="mode">
+                    <option value="standard">Modo Estándar (Componentes + Style Gallery)</option>
+                    <option value="fulldeck">Modo Full-Deck (Plantilla Completa)</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="style-group">
+                <label for="template">Selecciona el Template / Estilo</label>
+                <select id="template">
+                    <!-- Standard Options (Style Gallery) -->
+                    <optgroup label="Dark & Premium" id="opt-dark">
+                        <option value="dark_tech">Dark Tech (Por Defecto)</option>
+                        <option value="liquid_glass">Liquid Glass</option>
+                        <option value="cyberpunk_neon">Cyberpunk Neon</option>
+                        <option value="noir_film">Noir Film</option>
+                        <option value="neo_brutalism">Neo Brutalism</option>
+                        <option value="midnight_velvet">Midnight Velvet</option>
+                        <option value="abyss_blue">Abyss Blue</option>
+                        <option value="neon_synthwave">Neon Synthwave</option>
+                        <option value="hacker_terminal">Hacker Terminal</option>
+                    </optgroup>
+                    <optgroup label="Light & Clean" id="opt-light">
+                        <option value="minimal_gray">Minimal Gray</option>
+                        <option value="blue_white">Blue White</option>
+                        <option value="bauhaus_block">Bauhaus Block</option>
+                        <option value="scandinavian_clean">Scandinavian Clean</option>
+                        <option value="corporate_trust">Corporate Trust</option>
+                        <option value="academic_serif">Academic Serif</option>
+                        <option value="wireframe_blueprint">Wireframe Blueprint</option>
+                        <option value="monochrome_ink">Monochrome Ink</option>
+                    </optgroup>
+                    <optgroup label="Playful & Creative" id="opt-playful">
+                        <option value="retro_70s">Retro 70s</option>
+                        <option value="botanic_forest">Botanic Forest</option>
+                        <option value="candy_pastel">Candy Pastel</option>
+                        <option value="memphis_pop">Memphis Pop</option>
+                        <option value="claymorphism_soft">Claymorphism Soft</option>
+                        <option value="sunset_vibes">Sunset Vibes</option>
+                        <option value="arcade_8bit">Arcade 8-Bit</option>
+                        <option value="watercolor_wash">Watercolor Wash</option>
+                        <option value="comic_book">Comic Book</option>
+                    </optgroup>
+                    
+                    <!-- Full-Deck Options -->
+                    <optgroup label="Full-Decks" id="opt-fulldeck" style="display:none;">
+                        <option value="tech-sharing">Tech Sharing</option>
+                        <option value="product-launch">Product Launch</option>
+                        <option value="pitch-deck">Pitch Deck</option>
+                        <option value="weekly-report">Weekly Report</option>
+                        <option value="testing-safety-alert">Testing Safety Alert</option>
+                        <option value="course-module">Course Module</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="investigate" checked>
+                <label for="investigate" style="margin-bottom:0;">Permitir a la IA investigar y expandir contenido</label>
+            </div>
+        </div>
+
+        <!-- Previsualización y Salida -->
+        <div class="panel">
+            <h2>2. Previsualización y Prompt</h2>
+            
+            <label>Vista Previa del Estilo</label>
+            <div class="preview-container" id="preview">
+                <!-- Imagen renderizada dinámica para Standard -->
+                <img id="preview-img" src="style-gallery/dark_tech.png" alt="Vista previa del tema" onerror="this.style.display='none'; document.getElementById('preview-text').style.display='block';">
+                
+                <!-- Iframe interactivo para Full-Decks -->
+                <iframe id="preview-iframe" src="" style="width:100%; height:100%; border:none; display:none; background:#000;"></iframe>
+
+                <div id="preview-text" class="preview-placeholder" style="display:none;">
+                    No hay vista previa estática disponible.<br><small>El sistema cargará la plantilla base.</small>
+                </div>
+            </div>
+            
+            <label style="margin-top: 1.5rem;">Prompt Generado</label>
+            <textarea id="prompt-output" readonly></textarea>
+            
+            <button id="copy-btn">Copiar al Portapapeles</button>
+            <p class="note">Pega este texto en el chat con tu Agente IA.</p>
+        </div>
+    </div>
+
+    <script>
+        const topicEl = document.getElementById('topic');
+        const pathEl = document.getElementById('path');
+        const modeEl = document.getElementById('mode');
+        const templateEl = document.getElementById('template');
+        const investigateEl = document.getElementById('investigate');
+        const promptOutput = document.getElementById('prompt-output');
+        const copyBtn = document.getElementById('copy-btn');
+        const previewImg = document.getElementById('preview-img');
+        const previewIframe = document.getElementById('preview-iframe');
+        const previewText = document.getElementById('preview-text');
+        
+        const optStandard = document.getElementById('opt-standard');
+        const optFulldeck = document.getElementById('opt-fulldeck');
+
+        function updateUI() {
+            const mode = modeEl.value;
+            
+            // Toggle options based on mode
+            if (mode === 'standard') {
+                document.getElementById('opt-dark').style.display = 'block';
+                document.getElementById('opt-light').style.display = 'block';
+                document.getElementById('opt-playful').style.display = 'block';
+                optFulldeck.style.display = 'none';
+                if(optFulldeck.contains(templateEl.options[templateEl.selectedIndex])) {
+                    templateEl.value = 'dark_tech';
+                }
+            } else {
+                document.getElementById('opt-dark').style.display = 'none';
+                document.getElementById('opt-light').style.display = 'none';
+                document.getElementById('opt-playful').style.display = 'none';
+                optFulldeck.style.display = 'block';
+                // Si el seleccionado actual no está en fulldeck, reset
+                if(!optFulldeck.contains(templateEl.options[templateEl.selectedIndex])) {
+                    templateEl.value = 'tech-sharing';
+                }
+            }
+            
+            updatePreview();
+            generatePrompt();
+        }
+
+        function updatePreview() {
+            const template = templateEl.value;
+            const mode = modeEl.value;
+            
+            if (mode === 'standard') {
+                previewImg.style.display = 'block';
+                previewIframe.style.display = 'none';
+                previewText.style.display = 'none';
+                previewImg.src = `style-gallery/${template}.png`;
+            } else {
+                // Para full-decks cargamos el HTML real en un iframe interactivo
+                previewImg.style.display = 'none';
+                previewText.style.display = 'none';
+                previewIframe.style.display = 'block';
+                previewIframe.src = `templates/full-decks/${template}/index.html`;
+            }
+        }
+
+        function generatePrompt() {
+            const topic = topicEl.value.trim() || 'la presentación';
+            const path = pathEl.value.trim();
+            const template = templateEl.value;
+            const mode = modeEl.value;
+            const investigate = investigateEl.checked;
+            
+            let prompt = `Quiero crear una presentación para ${topic}. `;
+            
+            if (path) {
+                prompt += `Todo el material base está en la carpeta \`${path}\`. Utiliza la herramienta \`all2md\` para procesar y unificar los documentos de esa carpeta. `;
+            }
+            
+            if (mode === 'standard') {
+                prompt += `Quiero usar el tema visual \`${template}\`. `;
+            } else {
+                prompt += `Esta vez quiero que uses el full-deck \`${template}\` (ubicado en templates/full-decks). Toma el \`index.html\` de esa plantilla como base, duplica los moldes para que quepa todo el contenido, inyecta mi material educativo, y genera el archivo final con \`serve.py\`. `;
+            }
+            
+            if (investigate) {
+                prompt += `La presentación debe ser extensa y muy detallada. Si notas que el material base es escaso, por favor investiga y complementa el contenido con buenas prácticas y tendencias. `;
+            }
+            
+            prompt += `Empieza entregándome el borrador con el esquema de diapositivas y el plan visual, sin programar nada todavía.`;
+            
+            promptOutput.value = prompt;
+        }
+
+        modeEl.addEventListener('change', updateUI);
+        templateEl.addEventListener('change', () => { updatePreview(); generatePrompt(); });
+        topicEl.addEventListener('input', generatePrompt);
+        pathEl.addEventListener('input', generatePrompt);
+        investigateEl.addEventListener('change', generatePrompt);
+
+        copyBtn.addEventListener('click', () => {
+            promptOutput.select();
+            document.execCommand('copy');
+            const originalText = copyBtn.innerText;
+            copyBtn.innerText = '¡Copiado!';
+            copyBtn.classList.add('success');
+            setTimeout(() => {
+                copyBtn.innerText = originalText;
+                copyBtn.classList.remove('success');
+            }, 2000);
+        });
+
+        // Init
+        updateUI();
+    </script>
+</body>
+</html>

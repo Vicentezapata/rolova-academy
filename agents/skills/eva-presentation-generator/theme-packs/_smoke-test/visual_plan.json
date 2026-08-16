@@ -1,0 +1,97 @@
+{
+  "pack": "dark_tech",
+  "title": "Prueba de arquetipos nuevos",
+  "slides": [
+    {
+      "archetype": "principle",
+      "title": "El Principio del Contexto",
+      "notes": "Explicar que el testing depende del contexto y que elegir tipos de prueba es una decisión de inversión.",
+      "slots": {
+        "TAG_LEFT": "Sesión 01 · Selección de tipos",
+        "TITLE": "El Principio del Contexto (ISTQB #6)",
+        "TAG_RIGHT": "S1",
+        "GHOST": "6",
+        "KICKER": "Principio fundamental ISTQB",
+        "PRINCIPLE": "\"El Testing depende del contexto.\"",
+        "PRINCIPLE_BODY": "La selección de tipos de prueba es una <b>decisión de inversión financiera</b>, no solo técnica. Los recursos son limitados: se invierte donde el riesgo es mayor.",
+        "LIST_TITLE": "Factores que definen la estrategia de pruebas",
+        "FACTORS": [
+          { "name": "Complejidad arquitectónica", "text": "Sistemas distribuidos, microservicios e integraciones necesitan más tipos de prueba que un CRUD monolítico.", "color": "#22D3EE" },
+          { "name": "Requisitos regulatorios", "text": "Fintech, salud y sistemas críticos están sujetos a normativas (ISO 26262, IEC 62443) que obligan a ciertos tipos de prueba.", "color": "#6366f1" },
+          { "name": "Ciclo de vida del proyecto", "text": "Agile con entregas semanales favorece unitarias más integración continua; Waterfall prioriza pruebas de sistema al final.", "color": "#FDE047" },
+          { "name": "Probabilidad e impacto del fallo", "text": "¿Es tecnología nueva? ¿Equipo junior? ¿Un fallo mata a alguien o solo molesta?", "color": "#10b981" }
+        ],
+        "EXAMPLES": [
+          { "tag": "Ejemplo A — Startup MVP", "value": "1 mes", "label": "Tiempo para lanzar", "desc": "Pruebas unitarias core y smoke tests manuales. Sin pruebas de carga aún: el riesgo de negocio es no llegar al mercado.", "color": "#22D3EE" },
+          { "tag": "Ejemplo B — App bancaria core", "value": "~100%", "label": "Cobertura requerida", "desc": "Pruebas estructurales estrictas, pen-testing obligatorio y pruebas de estrés. El riesgo es la pérdida de fondos de clientes.", "color": "#ef4444" }
+        ]
+      }
+    },
+    {
+      "archetype": "heatmap",
+      "title": "Matriz de Riesgo",
+      "notes": "Herramienta central de priorización basada en riesgo.",
+      "slots": {
+        "TAG_LEFT": "Sesión 01 · Selección de tipos",
+        "TITLE": "Matriz de Riesgo: Impacto × Probabilidad",
+        "TAG_RIGHT": "S1",
+        "AXIS_Y": "Impacto",
+        "AXIS_X": "Probabilidad",
+        "EXPL_TITLE": "Priorización basada en Riesgo",
+        "EXPL_BODY": "La Matriz de Riesgo decide <b>dónde invertir el esfuerzo de prueba</b>. Clasifica cada funcionalidad por <b>Probabilidad × Impacto</b>. El cuadrante Crítico recibe cobertura máxima; el cuadrante Bajo puede quedar fuera de alcance en proyectos con tiempo limitado.",
+        "COLS": "3",
+        "CELLS": [
+          { "label": "MED", "level": "lv2" }, { "label": "ALTO", "level": "lv3" }, { "label": "CRÍTICO", "level": "lv4" },
+          { "label": "BAJO", "level": "lv1" }, { "label": "MED", "level": "lv2" }, { "label": "ALTO", "level": "lv3" },
+          { "label": "BAJO", "level": "lv1" }, { "label": "BAJO", "level": "lv1" }, { "label": "MED", "level": "lv2" }
+        ],
+        "ZONES": [
+          { "badge": "Crítico", "condition": "Alta prob. + alto impacto", "title": "Cobertura Máxima", "desc": "Unitarias, integración, E2E y seguridad en cada build. Ejemplo: módulo de pagos en e-commerce.", "color": "#fca5a5", "bg": "rgba(239,68,68,0.12)" },
+          { "badge": "Alto", "condition": "Alta prob. + bajo impacto", "title": "Cobertura Selectiva", "desc": "Regresión y humo. Se automatizan los caminos felices. Ejemplo: buscador con texto libre que devuelve 0 resultados.", "color": "#fcd34d", "bg": "rgba(245,158,11,0.12)" },
+          { "badge": "Bajo", "condition": "Baja prob. + bajo impacto", "title": "Cobertura Mínima", "desc": "Se documenta la decisión de no probar. El riesgo lo asume el Product Owner. Ejemplo: página institucional estática.", "color": "#6ee7b7", "bg": "rgba(16,185,129,0.12)" }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Gherkin e INVEST",
+      "notes": "Criterios de aceptación en formato ejecutable.",
+      "slots": {
+        "TAG_LEFT": "Sesión 02 · Requerimientos",
+        "TITLE": "Criterios de Aceptación — INVEST + Gherkin BDD",
+        "TAG_RIGHT": "S2",
+        "KICKER": "Sintaxis Gherkin (BDD)",
+        "CODE_TITLE": "Criterios de Aceptación — estándar de facto en Agile",
+        "CODE": "<span class=\"c-tag\">Funcionalidad:</span> <span class=\"c-str\">Suscripción al Newsletter</span>\n\n<span class=\"c-tag\">Escenario:</span> <span class=\"c-str\">Suscripción exitosa con correo válido</span>\n  <span class=\"c-kw\">DADO</span> que el usuario está en la página principal\n  <span class=\"c-kw\">Y</span> el correo <span class=\"c-str\">\"ana@empresa.cl\"</span> no existe en la base\n  <span class=\"c-kw\">CUANDO</span> el usuario ingresa el correo y pulsa Suscribir\n  <span class=\"c-kw\">ENTONCES</span> el sistema muestra <span class=\"c-str\">\"¡Te has suscrito!\"</span>\n  <span class=\"c-kw\">Y</span> el correo queda registrado en la tabla newsletters\n\n<span class=\"c-tag\">Escenario:</span> <span class=\"c-str\">Rechazo por correo ya registrado</span>\n  <span class=\"c-kw\">DADO</span> que <span class=\"c-str\">\"juan@empresa.cl\"</span> ya existe\n  <span class=\"c-kw\">CUANDO</span> el usuario intenta suscribirse con ese correo\n  <span class=\"c-kw\">ENTONCES</span> el sistema muestra <span class=\"c-str\">\"Correo ya registrado\"</span>\n\n<span class=\"c-cm\"># Ejecutable con Cucumber, Behave o SpecFlow</span>",
+        "PANEL_TITLE": "Criterio INVEST para User Stories",
+        "CRITERIA": [
+          { "letter": "I", "name": "Independiente", "meta": "Sin dependencias rígidas", "highlight": "" },
+          { "letter": "N", "name": "Negociable", "meta": "Sujeta a conversación", "highlight": "" },
+          { "letter": "V", "name": "Valiosa", "meta": "Valor para el usuario", "highlight": "" },
+          { "letter": "E", "name": "Estimable", "meta": "El equipo puede estimarla", "highlight": "" },
+          { "letter": "S", "name": "Small (Pequeña)", "meta": "Cabe en un sprint", "highlight": "" },
+          { "letter": "T", "name": "Testeable", "meta": "Base del Gherkin", "highlight": "hi" }
+        ],
+        "WHY_TITLE": "¿Por qué Gherkin?",
+        "WHY": "Permite que <b>Negocio, Desarrollo y QA</b> hablen exactamente el mismo idioma. Los escenarios son directamente ejecutables con frameworks como Cucumber, Behave o SpecFlow."
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Errores frecuentes",
+      "notes": "Advertencias prácticas sacadas de auditorías reales.",
+      "slots": {
+        "TAG_LEFT": "Sesión 01 · Práctica",
+        "TITLE": "Errores frecuentes al definir la estrategia",
+        "TAG_RIGHT": "S1",
+        "LEAD": "Cuatro patrones que aparecen una y otra vez en auditorías de calidad de equipos junior.",
+        "CALLOUTS": [
+          { "kind": "danger", "icon": "!", "title": "Automatizarlo todo desde el día uno", "text": "Una suite E2E completa antes de estabilizar el producto genera mantenimiento constante y falsos negativos. Empieza por la capa unitaria." },
+          { "kind": "warn", "icon": "▲", "title": "Confundir cobertura con calidad", "text": "Un 95% de cobertura de líneas no dice nada sobre si las aserciones son correctas. Mide cobertura de <code>ramas</code> y revisa los asserts." },
+          { "kind": "tip", "icon": "✓", "title": "Documenta lo que decides NO probar", "text": "El riesgo aceptado explícitamente es gestión; el riesgo ignorado en silencio es negligencia. Déjalo firmado por el Product Owner." },
+          { "kind": "info", "icon": "i", "title": "Revisa la matriz cada sprint", "text": "El contexto cambia: una funcionalidad de bajo impacto puede volverse crítica tras un cambio regulatorio o un pico de tráfico." }
+        ]
+      }
+    }
+  ]
+}
