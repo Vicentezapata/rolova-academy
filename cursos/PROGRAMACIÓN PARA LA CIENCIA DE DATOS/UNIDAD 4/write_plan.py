@@ -1,0 +1,446 @@
+import json
+import os
+
+unit_path = r"C:\Users\vicen\OneDrive\Escritorio\EVA IPSS\academy-portal\cursos\PROGRAMACIÓN PARA LA CIENCIA DE DATOS\UNIDAD 4"
+os.makedirs(unit_path, exist_ok=True)
+plan_path = os.path.join(unit_path, "visual_plan.json")
+
+data = {
+  "pack": "fresh_green",
+  "title": "Unidad 4 — Capstone Project y Nivel Avanzado",
+  "slides": [
+    {
+      "archetype": "cover",
+      "title": "Unidad 4",
+      "notes": "Bienvenidos a la última sesión del curso. Hoy pasaremos de saber programar a dominar la ciencia de datos en Python a un nivel profesional.",
+      "slots": {
+        "EYEBROW": "UNIDAD 4",
+        "TITLE": "Técnicas Avanzadas<br>y Capstone Project",
+        "SUBTITLE": "Programación para la Ciencia de Datos",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          { "label": "Evaluación Final", "accent": "var(--a1)" },
+          { "label": "40% Ponderación", "accent": "var(--a2)" }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "title": "Mapa de la Sesión",
+      "notes": "Repasaremos todo el camino recorrido e introduciremos técnicas que distinguen a un Junior de un Semi-Senior.",
+      "slots": {
+        "TAG_LEFT": "Unidad 4",
+        "TITLE": "Mapa de la Sesión",
+        "TAG_RIGHT": "Sincrónica",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          { "num": "01", "icon": "qhsqomla", "title": "El Desafío", "desc": "Evaluación Final.", "chips": "" },
+          { "num": "02", "icon": "yyecauzv", "title": "Retrospectiva", "desc": "Evolución U1 a U3.", "chips": "" },
+          { "num": "03", "icon": "wzpjhhhq", "title": "Python Pro", "desc": "Lambdas y Regex.", "chips": "" },
+          { "num": "04", "icon": "qgcohzrn", "title": "Visualización", "desc": "Subplots y Grillas.", "chips": "" },
+          { "num": "05", "icon": "gqdyesfu", "title": "Caso Maestro", "desc": "Integración Total.", "chips": "" },
+          { "num": "06", "icon": "dxjqoygy", "title": "Examen", "desc": "Tácticas de éxito.", "chips": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 1: El Desafío Final",
+      "notes": "Dejamos claro el peso e importancia de esta etapa.",
+      "slots": {
+        "PART_LABEL": "Bloque 1",
+        "TITLE": "El Examen Integrativo",
+        "SUBTITLE": "La prueba de fuego del curso.",
+        "AGENDA": [
+          { "label": "1.1", "text": "Competencia Global" },
+          { "label": "1.2", "text": "Ponderación del 40%" }
+        ]
+      }
+    },
+    {
+      "archetype": "metrics",
+      "title": "Ponderación del Examen Final",
+      "notes": "El 40% de la nota exige dominar todos los conceptos previos.",
+      "slots": {
+        "TAG_LEFT": "Evaluación",
+        "TITLE": "El Peso de la Evaluación Final",
+        "TAG_RIGHT": "U4",
+        "LEAD": "El Examen Final Integrativo evalúa la autonomía total en la resolución de problemas reales.",
+        "COLS": "3",
+        "SOURCE": "Programa de Asignatura 2025",
+        "METRICS": [
+          { "label": "Ponderación", "value": "40", "unit": "%", "desc": "De la nota final de la asignatura.", "pct": "40%" },
+          { "label": "Tiempo Estimado", "value": "6", "unit": "h", "desc": "Resolución en tiempo limitado.", "pct": "100%" },
+          { "label": "Unidades Evaluadas", "value": "3", "unit": "", "desc": "U1, U2 y U3 integradas.", "pct": "100%" }
+        ]
+      }
+    },
+    {
+      "archetype": "quote",
+      "title": "Competencia Final",
+      "notes": "La meta suprema.",
+      "slots": {
+        "QUOTE": "Resolver en tiempo limitado desafíos prácticos de codificación en Python, desde la depuración de errores hasta la entrega de un dataset limpio y validado.",
+        "AUTHOR": "Evaluación Integrativa",
+        "ROLE": "Nivel de Dominio: 5",
+        "CONTEXT_LABEL": "EL ESTÁNDAR",
+        "CONTEXT": "Código funcional, eficiente y mantenible."
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 2: Retrospectiva Arquitectónica",
+      "notes": "Mirar hacia atrás para ver cuánto hemos crecido.",
+      "slots": {
+        "PART_LABEL": "Bloque 2",
+        "TITLE": "La Evolución del Científico",
+        "SUBTITLE": "De variables simples a arquitecturas complejas.",
+        "AGENDA": [
+          { "label": "2.1", "text": "La escalera del conocimiento" },
+          { "label": "2.2", "text": "Nuestro Arsenal de Herramientas" }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "El Camino Recorrido",
+      "notes": "Cómo subimos la escalera de complejidad técnica.",
+      "slots": {
+        "TAG_LEFT": "Retrospectiva",
+        "TITLE": "Evolución Técnica (U1 a U4)",
+        "TAG_RIGHT": "U4",
+        "LEAD": "Nadie nace sabiendo optimizar; es un proceso acumulativo.",
+        "COLS": "4",
+        "STEPS": [
+          { "n": "01", "phase": "Unidad 1", "title": "Bases", "desc": "Tipos, variables, y sintaxis.", "output": "Scripts secuenciales." },
+          { "n": "02", "phase": "Unidad 2", "title": "Pipelines", "desc": "Limpieza, merges y funciones.", "output": "Código modular." },
+          { "n": "03", "phase": "Unidad 3", "title": "Performance", "desc": "Vectorización y manejo de errores.", "output": "Código robusto." },
+          { "n": "04", "phase": "Unidad 4", "title": "Maestría", "desc": "Técnicas avanzadas y dashboards.", "output": "Autonomía profesional." }
+        ]
+      }
+    },
+    {
+      "archetype": "bento",
+      "title": "El Arsenal Actual",
+      "notes": "Las herramientas que el estudiante ya debe dominar a la perfección.",
+      "slots": {
+        "TAG_LEFT": "Herramientas",
+        "TITLE": "Tu Navaja Suiza Actual",
+        "TAG_RIGHT": "U4"
+      },
+      "repeats": {
+        "TILES": [
+          { "variant": "solid", "col": "1 / 4", "row": "1 / 4", "icon": "qhsqomla", "tag": "CORE", "stat": "", "unit": "", "title": "Pandas & NumPy", "body": "Vectorización, GroupBy, Merges, y limpieza de NaNs a velocidad de C.", "foot": "" },
+          { "variant": "outline", "col": "4 / 7", "row": "1 / 7", "icon": "yyecauzv", "tag": "LÓGICA", "stat": "", "unit": "", "title": "Control de Flujo Avanzado", "body": "Uso de if/elif/else para categorizar, y for/while solo cuando es estrictamente necesario. Manejo de excepciones try/except.", "foot": "Mantenibilidad > Astucia" },
+          { "variant": "card", "col": "1 / 4", "row": "4 / 7", "icon": "wzpjhhhq", "tag": "CALIDAD", "stat": "", "unit": "", "title": "Validación", "body": "Uso de Asserts y Logging para garantizar exactitud tras cruces.", "foot": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 3: Llevando Python al Próximo Nivel",
+      "notes": "Aquí introducimos conceptos 'intermediarios' que separan al amateur del profesional.",
+      "slots": {
+        "PART_LABEL": "Bloque 3",
+        "TITLE": "Python Nivel Intermedio",
+        "SUBTITLE": "Sintaxis compacta y poderosa.",
+        "AGENDA": [
+          { "label": "3.1", "text": "List Comprehensions" },
+          { "label": "3.2", "text": "Funciones Lambda" },
+          { "label": "3.3", "text": "Expresiones Regulares (Regex)" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Conceptos Avanzados de Sintaxis",
+      "notes": "Herramientas que aceleran la escritura y el procesamiento.",
+      "slots": {
+        "TAG_LEFT": "Sintaxis Pro",
+        "TITLE": "Escribiendo Código Elegante",
+        "TAG_RIGHT": "U4",
+        "COLS": "3",
+        "CARDS": [
+          { "badge": "[ x for x ]", "title": "Comprensión de Listas", "body": "Crea listas nuevas aplicando lógica en una sola línea, operando a nivel de C internamente.", "note_label": "VENTAJA", "note": "Rápido y conciso" },
+          { "badge": "lambda", "title": "Funciones Anónimas", "body": "Funciones desechables de una línea, perfectas para aplicar transformaciones rápidas en pandas (.apply).", "note_label": "VENTAJA", "note": "Menos boilerplate" },
+          { "badge": "Regex", "title": "Expresiones Regulares", "body": "Patrones de búsqueda de texto ultravanzados (re.match). Ideal para extraer códigos ocultos en strings.", "note_label": "VENTAJA", "note": "Precisión quirúrgica" }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "List Comprehension",
+      "notes": "El patrón más pitónico.",
+      "slots": {
+        "TAG_LEFT": "Eficiencia Visual",
+        "TITLE": "El Poder de las Comprensiones",
+        "TAG_RIGHT": "U4",
+        "BAD_TITLE": "Bucle For Clásico",
+        "BAD_SNIPPET": "limpios = []\n<span class=\"c-kw\">for</span> val <span class=\"c-kw\">in</span> datos:\n    <span class=\"c-kw\">if</span> val > <span class=\"c-num\">0</span>:\n        limpios.<span class=\"c-fn\">append</span>(val * <span class=\"c-num\">2</span>)",
+        "GOOD_TITLE": "List Comprehension",
+        "GOOD_SNIPPET": "<span class=\"c-cm\"># [ expresion for item in lista if condicion ]</span>\nlimpios = [v * <span class=\"c-num\">2</span> <span class=\"c-kw\">for</span> v <span class=\"c-kw\">in</span> datos <span class=\"c-kw\">if</span> v > <span class=\"c-num\">0</span>]",
+        "WHY_LABEL": "RENDIMIENTO",
+        "WHY": "La comprensión de listas no solo usa 1 línea en lugar de 4, sino que se ejecuta en C por debajo, siendo hasta un 30% más rápida que el for.append().",
+        "BAD_POINTS": [
+          { "text": "Requiere instanciar lista vacía." },
+          { "text": "Más líneas de código." }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Una sola línea legible." },
+          { "text": "Operación optimizada." }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Lambdas en Pandas",
+      "notes": "El combo perfecto para transformaciones al vuelo.",
+      "slots": {
+        "TAG_LEFT": "Transformaciones",
+        "TITLE": "Funciones Lambda con .assign()",
+        "TAG_RIGHT": "U4",
+        "KICKER": "FLUJO DE TRABAJO",
+        "CODE_TITLE": "Creando columnas derivadas sin romper la cadena",
+        "CODE": "<span class=\"c-cm\"># En lugar de mutar el df 3 veces separadas:</span>\ndf_limpio = (\n    df.<span class=\"c-fn\">dropna</span>()\n      .<span class=\"c-fn\">assign</span>(\n          <span class=\"c-kw\">precio_iva</span> = <span class=\"c-kw\">lambda</span> x: x[<span class=\"c-str\">'precio'</span>] * <span class=\"c-num\">1.19</span>,\n          <span class=\"c-kw\">categoria</span> = <span class=\"c-kw\">lambda</span> x: x[<span class=\"c-str\">'tipo'</span>].<span class=\"c-fn\">str</span>.upper()\n      )\n      .<span class=\"c-fn\">query</span>(<span class=\"c-str\">'precio_iva > 1000'</span>)\n)",
+        "PANEL_TITLE": "Chaining",
+        "WHY_TITLE": "Elegancia",
+        "WHY": "El 'Method Chaining' combinado con lambdas permite leer el procesamiento de datos como un párrafo fluido, eliminando las variables intermedias (df2, df3).",
+        "CRITERIA": [
+          { "letter": "L", "name": "Lambda x", "meta": "x representa al DataFrame actual.", "highlight": "hi" },
+          { "letter": "A", "name": "Assign", "meta": "Crea columnas en tiempo real.", "highlight": "" },
+          { "letter": "C", "name": "Chaining", "meta": "Operaciones encadenadas por puntos.", "highlight": "hi" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 4: Visualización Avanzada",
+      "notes": "Matplotlib puede hacer mucho más que un simple gráfico de barras.",
+      "slots": {
+        "PART_LABEL": "Bloque 4",
+        "TITLE": "Visualización Avanzada",
+        "SUBTITLE": "Dashboards y Grillas con Matplotlib.",
+        "AGENDA": [
+          { "label": "4.1", "text": "Subplots (Grillas)" },
+          { "label": "4.2", "text": "Gráficos Compuestos" }
+        ]
+      }
+    },
+    {
+      "archetype": "chart-grid",
+      "title": "Grillas Analíticas",
+      "notes": "Una vista de comando (dashboard).",
+      "slots": {
+        "TAG_LEFT": "Dashboards",
+        "TITLE": "Vista de Panel (Subplots)",
+        "TAG_RIGHT": "U4",
+        "LEAD": "Con plt.subplots(nrows, ncols) puedes crear grillas analíticas en una sola figura.",
+        "COLS": "2",
+        "SOURCE": "Ejemplo de Dashboard Integrado"
+      },
+      "repeats": {
+        "PANELS": [
+          { "title": "Crecimiento Mensual", "tag": "KPI", "kind": "spark", "series": "Ene:10|Feb:15|Mar:22|Abr:30|May:45", "center": "", "note": "Tendencia exponencial" },
+          { "title": "Market Share", "tag": "KPI", "kind": "donut", "series": "Norte:30|Centro:50|Sur:20", "center": "100%", "note": "Concentración" }
+        ]
+      }
+    },
+    {
+      "archetype": "chart-split",
+      "title": "Gráfico Compuesto: Datos + Visual",
+      "notes": "A veces necesitas el número exacto y la forma visual al mismo tiempo.",
+      "slots": {
+        "TAG_LEFT": "Mixto",
+        "TITLE": "Validaciones por Comuna",
+        "TAG_RIGHT": "U4",
+        "SPLIT": "1fr 1fr",
+        "LEAD": "Combina la exactitud de una tabla con la inmediatez de un gráfico.",
+        "TABLE_TITLE": "Top 4 Saturación",
+        "HEADERS": "<th>Comuna</th><th>Ratio</th>",
+        "INSIGHT_TITLE": "Conclusión Rápida",
+        "INSIGHT": "Santiago duplica a la segunda comuna con mayor presión operativa, requiriendo acción urgente.",
+        "SOURCE": "Datos de ejemplo"
+      },
+      "repeats": {
+        "BARS": [
+          { "label": "Santiago", "value": "285", "unit": "", "tone": "warn" },
+          { "label": "Puente Alto", "value": "140", "unit": "", "tone": "" },
+          { "label": "Maipú", "value": "120", "unit": "", "tone": "" },
+          { "label": "La Florida", "value": "95", "unit": "", "tone": "mute" }
+        ],
+        "ROWS": [
+          { "cells": "<td>Santiago</td><td>285</td>" },
+          { "cells": "<td>Puente Alto</td><td>140</td>" },
+          { "cells": "<td>Maipú</td><td>120</td>" },
+          { "cells": "<td>La Florida</td><td>95</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 5: El Caso Maestro",
+      "notes": "De cara al examen, cómo abordar un proyecto gigantesco.",
+      "slots": {
+        "PART_LABEL": "Bloque 5",
+        "TITLE": "Enfrentando un Proyecto Capstone",
+        "SUBTITLE": "Mentalidad de Arquitecto de Datos.",
+        "AGENDA": [
+          { "label": "5.1", "text": "Entender la Misión" },
+          { "label": "5.2", "text": "Priorización (Matriz Eisenhower)" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "El Sistema Nacional",
+      "notes": "Un escenario hipotético de examen.",
+      "slots": {
+        "TAG_LEFT": "Escenario",
+        "TITLE": "El Examen en el Mundo Real",
+        "TAG_RIGHT": "U4",
+        "SPEC_TITLE": "Anatomía de una Prueba Integrativa",
+        "FIELDS": [
+          { "key": "Fuentes Incompatibles", "value": "Te darán CSVs, JSONs y TXTs rotos.", "highlight": "" },
+          { "key": "Lógica de Negocio", "value": "No es solo programar; es calcular la 'Tasa Crítica' o el 'GMV' según reglas de negocio.", "highlight": "hi" },
+          { "key": "Tiempo Limitado", "value": "Solo tienes un puñado de horas.", "highlight": "hi" },
+          { "key": "Entregable Perfecto", "value": "Un pipeline que ejecuta de inicio a fin sin tocarlo.", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Bloqueo", "text": "Si un paso de limpieza te toma más de 30 mins, evádelo temporalmente con un Try/Except." }
+        ]
+      }
+    },
+    {
+      "archetype": "matrix",
+      "title": "Matriz de Priorización",
+      "notes": "Cómo administrar el tiempo en un examen de 6 horas.",
+      "slots": {
+        "TAG_LEFT": "Táctica",
+        "TITLE": "Gestión del Tiempo en el Examen",
+        "TAG_RIGHT": "U4",
+        "AXIS_X": "Impacto en el Resultado",
+        "AXIS_Y": "Urgencia (Bloqueante)",
+        "SIDE_TITLE": "Reglas de Ejecución",
+        "Q1_TAG": "CRÍTICO",
+        "Q1_TITLE": "Hacer Ahora",
+        "Q1_DESC": "Cruces de tablas (Merge) y manejo de Nulos. Si fallan, no hay análisis.",
+        "Q2_TAG": "PLANIFICAR",
+        "Q2_TITLE": "Agendar",
+        "Q2_DESC": "Refactor a funciones, Docstrings, Optimización vectorizada.",
+        "Q3_TAG": "DELEGAR",
+        "Q3_TITLE": "Atajos",
+        "Q3_DESC": "Casos borde de limpieza muy complejos (Ej. 1 fila rota de 10.000). Dropna y avanza.",
+        "Q4_TAG": "DESCARTAR",
+        "Q4_TITLE": "No Tocar",
+        "Q4_DESC": "Optimizaciones de microsegundos que complican la legibilidad."
+      },
+      "repeats": {
+        "RULES": [
+          { "label": "1. Funcional", "text": "Primero logra que el código cruce de A a Z." },
+          { "label": "2. Correcto", "text": "Verifica que las métricas sumen lo que deben." },
+          { "label": "3. Rápido", "text": "Optimiza y decora (Gráficos) al final." }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 6: Preparación Final",
+      "notes": "Consejos dorados antes de la prueba.",
+      "slots": {
+        "PART_LABEL": "Bloque 6",
+        "TITLE": "Tácticas de Éxito",
+        "SUBTITLE": "Asegurando ese 40%.",
+        "AGENDA": [
+          { "label": "6.1", "text": "Consejos Prácticos" },
+          { "label": "6.2", "text": "Cierre del Curso" }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Consejos para la Prueba de Fuego",
+      "notes": "Errores comunes que hacen perder puntos tontos.",
+      "slots": {
+        "TAG_LEFT": "Consejos",
+        "TITLE": "Trampas a Evitar en el Examen",
+        "TAG_RIGHT": "U4",
+        "LEAD": "El 80% de las fallas no son por desconocimiento de Python, sino por desorden mental.",
+        "CALLOUTS": [
+          { "kind": "danger", "icon": "msoeawqm", "title": "Rutas Absolutas", "text": "Nunca uses 'C:/Users/tu_nombre/archivo.csv'. Usa rutas relativas ('./data/archivo.csv')." },
+          { "kind": "warn", "icon": "pithnlch", "title": "Joins Cartesianos", "text": "Valida con shape o assert antes y después de un merge. Un merge mal hecho infla las filas x10." },
+          { "kind": "tip", "icon": "lhjllvga", "title": "Respira y Lee", "text": "Lee las instrucciones 2 veces completas antes de escribir la primera línea de código." }
+        ]
+      }
+    },
+    {
+      "archetype": "quote",
+      "title": "Cierre",
+      "notes": "El mensaje final para los alumnos.",
+      "slots": {
+        "QUOTE": "La ciencia de datos no trata de escribir el código más complejo, sino de utilizar el código para encontrar la verdad oculta en el caos, de la manera más simple y reproducible posible.",
+        "AUTHOR": "Programación para la Ciencia de Datos",
+        "ROLE": "Visión Final",
+        "CONTEXT_LABEL": "EL PRÓXIMO NIVEL",
+        "CONTEXT": "Estás listo para enfrentar cualquier set de datos en el mundo real."
+      }
+    },
+    {
+      "archetype": "resources",
+      "title": "Bibliografía Avanzada",
+      "notes": "Dónde seguir aprendiendo.",
+      "slots": {
+        "TAG_LEFT": "Futuro",
+        "TITLE": "El Viaje Continúa",
+        "TAG_RIGHT": "U4",
+        "LIST_TITLE": "Enlaces para Maestría",
+        "QR_LABEL": "ESCANEAR",
+        "QR_DATA": "https%3A%2F%2Fpandas.pydata.org%2Fdocs%2Fuser_guide%2Fcookbook.html",
+        "QR_ALT": "Pandas Cookbook",
+        "QR_CAPTION": "Pandas Cookbook",
+        "NEXT_LABEL": "Siguiente paso",
+        "NEXT": "Rendir el Examen Final.",
+        "RESOURCES": [
+          { "icon": "hwwxhzgs", "title": "Pandas Cookbook", "desc": "Recetas avanzadas oficiales.", "url": "pandas.pydata.org" },
+          { "icon": "yyecauzv", "title": "Expresiones Regulares", "desc": "Domina el módulo re.", "url": "regex101.com" },
+          { "icon": "qgcohzrn", "title": "Kaggle", "desc": "Práctica con datasets reales.", "url": "kaggle.com" }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "title": "Despedida",
+      "notes": "Fin del curso.",
+      "slots": {
+        "TAG_LEFT": "Cierre",
+        "TITLE": "Fin de la Asignatura",
+        "TAG_RIGHT": "U4",
+        "ICON": "wzpjhhhq",
+        "HERO_TITLE": "Mucho Éxito",
+        "HERO_TEXT": "Han completado la ruta. Su código ahora es un activo para la toma de decisiones.",
+        "LEFT_PANEL_TITLE": "El Poder Adquirido",
+        "RIGHT_PANEL_TITLE": "Destino Final",
+        "NEXT_LABEL": "ACCIÓN",
+        "NEXT": "Aprobar el Integrativo.",
+        "TAKEAWAYS": [
+          { "n": "1", "text": "Entienden la algoritmia." },
+          { "n": "2", "text": "Dominan la manipulación de datos." },
+          { "n": "3", "text": "Construyen software robusto." }
+        ],
+        "NEXT_STEPS": [
+          { "n": "1", "text": "Descansar antes de la prueba." },
+          { "n": "2", "text": "Leer bien la pauta técnica." },
+          { "n": "3", "text": "Programar con confianza." }
+        ]
+      }
+    }
+  ]
+}
+
+# Recursively inject repeats into slots
+for s in data['slides']:
+    if 'repeats' in s:
+        s.setdefault('slots', {}).update(s.pop('repeats'))
+
+with open(plan_path, "w", encoding="utf-8") as f:
+    json.dump(data, f, indent=2, ensure_ascii=False)

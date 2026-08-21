@@ -1,0 +1,1030 @@
+{
+  "course_id": "FRAMEWORK DE SOLUCIONES EMPRESARIALES",
+  "unit_id": "Unidad 3",
+  "pack": "botanic_forest",
+  "slides": [
+    {
+      "archetype": "cover",
+      "slots": {
+        "EYEBROW": "UNIDAD 3",
+        "TITLE": "Acceso a Datos y Framework",
+        "SUBTITLE": "Patrones DAO, DTO y Spring Data JPA",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          {
+            "label": "Framework de Soluciones",
+            "accent": "a1"
+          },
+          {
+            "label": "Spring JPA",
+            "accent": "a2"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "slots": {
+        "TAG_LEFT": "AGENDA",
+        "TITLE": "Ruta de Aprendizaje",
+        "TAG_RIGHT": "3.0",
+        "ROWS": "2",
+        "COLS": "4",
+        "ITEMS": [
+          {
+            "num": "01",
+            "icon": "egiwmiit",
+            "title": "El Problema Histórico",
+            "desc": "Por qué separar el acceso a datos",
+            "chips": ""
+          },
+          {
+            "num": "02",
+            "icon": "usownftb",
+            "title": "El Patrón DAO",
+            "desc": "Data Access Object",
+            "chips": ""
+          },
+          {
+            "num": "03",
+            "icon": "egiwmiit",
+            "title": "El Patrón DTO",
+            "desc": "Data Transfer Object",
+            "chips": ""
+          },
+          {
+            "num": "04",
+            "icon": "usownftb",
+            "title": "Spring Data JPA",
+            "desc": "El Súper DAO Moderno",
+            "chips": ""
+          },
+          {
+            "num": "05",
+            "icon": "egiwmiit",
+            "title": "Construyendo un CRUD",
+            "desc": "Taller Práctico",
+            "chips": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "01",
+        "TITLE": "El Desafío del Acceso a Datos",
+        "SUBTITLE": "¿Por qué es tan peligroso mezclar nuestra lógica de negocios con instrucciones SQL?",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Múltiples Fuentes de Datos"
+          },
+          {
+            "label": "1.2",
+            "text": "Código Espagueti de BD"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "HISTORIA",
+        "TITLE": "Múltiples Fuentes de Datos",
+        "TAG_RIGHT": "1.1",
+        "GHOST": "DATOS",
+        "KICKER": "El problema de la dependencia directa",
+        "PRINCIPLE": "Uno de los mayores problemas históricos al acceder a datos es que la implementación varía drásticamente según la fuente.",
+        "PRINCIPLE_BODY": "Si escribes sentencias SQL directamente en tu código principal, quedas 'atrapado' a esa base de datos específica. Si mañana decides cambiar de Oracle a MySQL, tendrías que reescribir todo el núcleo del sistema.",
+        "LIST_TITLE": "Principales Desafíos",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Rigidez",
+            "text": "Imposibilidad de cambiar de tecnología."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Mantenimiento",
+            "text": "Costoso y propenso a errores."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Escalabilidad",
+            "text": "Difícil adaptación a nuevos requerimientos."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "BD",
+            "value": "1",
+            "label": "MySQL",
+            "desc": "Local",
+            "color": "var(--a1)"
+          },
+          {
+            "tag": "BD",
+            "value": "2",
+            "label": "Oracle",
+            "desc": "Corporativa",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "ANTI-PATRÓN",
+        "TITLE": "Código Espagueti de Base de Datos",
+        "TAG_RIGHT": "1.2",
+        "BAD_TITLE": "Todo en un solo lugar",
+        "BAD_SNIPPET": "public void calcular() {\n  Connection c = getConn();\n  ResultSet rs = c.execute();\n}",
+        "GOOD_TITLE": "Delegar la responsabilidad",
+        "GOOD_SNIPPET": "public void calcular() {\n  User user = userDao.getUsers();\n}",
+        "WHY_LABEL": "Acoplamiento Fuerte",
+        "WHY": "Si mezclas reglas de negocio con lógicas de acceso, el código se vuelve imposible de mantener, testear y escalar.",
+        "BAD_POINTS": [
+          {
+            "text": "Imposible cambiar de Base de Datos."
+          },
+          {
+            "text": "Dificulta enormemente las pruebas unitarias."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "El núcleo no sabe si usas MySQL o un TXT."
+          },
+          {
+            "text": "Código limpio y modularizado."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "02",
+        "TITLE": "El Patrón DAO",
+        "SUBTITLE": "La barrera protectora entre nuestra aplicación pura y el salvaje mundo de las bases de datos.",
+        "AGENDA": [
+          {
+            "label": "2.1",
+            "text": "Abstracción Absoluta"
+          },
+          {
+            "label": "2.2",
+            "text": "La Arquitectura DAO"
+          },
+          {
+            "label": "2.3",
+            "text": "Leyes del DAO"
+          },
+          {
+            "label": "2.4",
+            "text": "Ciclo de Vida"
+          },
+          {
+            "label": "2.5",
+            "text": "El Impacto"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "PATRÓN",
+        "TITLE": "Entendiendo el Patrón DAO",
+        "TAG_RIGHT": "2.1",
+        "GHOST": "DAO",
+        "KICKER": "Abstracción Absoluta",
+        "PRINCIPLE": "El DAO proporciona los métodos para crear, leer, actualizar y borrar (CRUD).",
+        "PRINCIPLE_BODY": "Oculta todo el código espantoso (SQL, Conexiones) al resto del sistema, separando por completo la lógica de negocio de la lógica de acceso.",
+        "LIST_TITLE": "El Trato es Simple:",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Servicio (Negocio)",
+            "text": "Solo pide objetos ('Dame el usuario 5')."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "DAO (Datos)",
+            "text": "Abre conexiones, ejecuta SQL y devuelve el objeto."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "B",
+            "value": "+",
+            "label": "Beneficio",
+            "desc": "Intercambiabilidad total.",
+            "color": "var(--a1)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "COMPONENTES",
+        "TITLE": "La Arquitectura del Patrón DAO",
+        "TAG_RIGHT": "2.2",
+        "GHOST": "ARQ",
+        "KICKER": "Componentes Principales",
+        "PRINCIPLE": "El patrón DAO se compone de actores principales colaborando entre sí.",
+        "PRINCIPLE_BODY": "Trabajan en conjunto para aislar a la base de datos de la lógica de negocio.",
+        "LIST_TITLE": "Los 4 Pilares",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Business Object",
+            "text": "Lógica de negocio."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "DAO",
+            "text": "Interfaz de BD."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Transfer Object",
+            "text": "Objeto plano (POJO)."
+          },
+          {
+            "color": "var(--a4)",
+            "name": "Data Source",
+            "text": "MySQL, API, etc."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "S",
+            "value": "4",
+            "label": "Pilares",
+            "desc": "Fundamentales",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "REGLAS",
+        "TITLE": "Las Leyes del DAO",
+        "TAG_RIGHT": "2.3",
+        "GHOST": "LEYES",
+        "KICKER": "¿Qué DEBE y NO DEBE hacer un DAO?",
+        "PRINCIPLE": "El DAO es un soldado ciego: obedece órdenes de guardar o buscar, pero jamás toma decisiones.",
+        "PRINCIPLE_BODY": "Su única responsabilidad es asegurar que la información persista.",
+        "LIST_TITLE": "Responsabilidades",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "SÍ: SQL y Resultados",
+            "text": "El único lugar con SELECT e INSERT."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "NO: Lógica de Negocios",
+            "text": "No valida reglas comerciales."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "NO: Interfaz Gráfica",
+            "text": "No interactúa con HTML."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "R",
+            "value": "!",
+            "label": "Regla de Oro",
+            "desc": "Cero HTML en DAO",
+            "color": "var(--a1)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "slots": {
+        "TAG_LEFT": "FLUJO",
+        "TITLE": "El Ciclo de Vida del Dato",
+        "TAG_RIGHT": "2.4",
+        "SPLIT": "50",
+        "DIAGRAM": "flowchart LR\n  B((Business)) -->|1. Pide| D(DAO)\n  D -->|2. SQL| DS[(BD)]\n  DS -->|3. Rows| D\n  D -->|4. Objeto| T[Transfer Object]\n  T -->|5. Retorna| B",
+        "SIDE_TITLE": "La Danza del Acceso",
+        "LEAD": "El Business Object solicita la información sin saber CÓMO se obtiene.",
+        "NOTE_LABEL": "Separación",
+        "NOTE": "El DAO hace el trabajo sucio.",
+        "STEPS": [
+          {
+            "n": "1",
+            "name": "Petición",
+            "text": "El negocio requiere datos."
+          },
+          {
+            "n": "2",
+            "name": "Traducción",
+            "text": "El DAO traduce la petición."
+          },
+          {
+            "n": "3",
+            "name": "Retorno",
+            "text": "Se devuelve el objeto plano."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "slots": {
+        "TAG_LEFT": "ANÁLISIS",
+        "TITLE": "El Impacto de Usar DAO",
+        "TAG_RIGHT": "2.5",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "SISTEMA SIN DAO",
+        "LEFT_TITLE": "Conexión Acoplada",
+        "LEFT_BODY": "Las sentencias SQL (SELECT, UPDATE) viven en la misma clase que hace los cálculos de IVA o validaciones.",
+        "LEFT_EXAMPLE": "Imposible de migrar.",
+        "RIGHT_LABEL": "SISTEMA CON DAO",
+        "RIGHT_TITLE": "Conexión Desacoplada",
+        "RIGHT_BODY": "El negocio solo ve interfaces. Puede usar un UserDao sin importarle si lee de MySQL o de un disco.",
+        "RIGHT_EXAMPLE": "Altamente Escalable.",
+        "LEFT_POINTS": [
+          {
+            "text": "Código extremadamente frágil y largo."
+          },
+          {
+            "text": "Migrar a la Nube requiere reescribir todo."
+          }
+        ],
+        "RIGHT_POINTS": [
+          {
+            "text": "El código se concentra 100% en el modelo."
+          },
+          {
+            "text": "Si cambia la BD, solo reescribes el DAO."
+          }
+        ],
+        "LEFT_TAGS": [
+          {
+            "text": "Rígido"
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "Desacoplado"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "slots": {
+        "TAG_LEFT": "ACTIVACIÓN",
+        "TITLE": "Decisión Arquitectónica",
+        "TAG_RIGHT": "2.6",
+        "BADGE": "Pregunta Práctica",
+        "QUESTION": "El sistema necesita verificar que un 'Empleado' tenga un sueldo mayor al mínimo, y guardarlo. ¿Quién hace qué?",
+        "COLS": "1",
+        "EXPLANATION_LABEL": "Respuesta Correcta",
+        "EXPLANATION": "¡Exacto! El BusinessObject (Servicio) es dueño de las REGLAS (sueldo). El DAO es un obrero mudo que solo sabe GUARDAR.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "El DAO verifica el sueldo y luego lo guarda en la BD.",
+            "correct": "false"
+          },
+          {
+            "key": "B",
+            "text": "El BusinessObject verifica el sueldo, si pasa, le dice al DAO que lo guarde.",
+            "correct": "true"
+          },
+          {
+            "key": "C",
+            "text": "El Controlador HTML hace la validación y el SQL.",
+            "correct": "false"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "03",
+        "TITLE": "El Patrón DTO",
+        "SUBTITLE": "¿Es buena idea enviar TODA la información secreta de nuestra Base de Datos hacia las vistas HTML del cliente? (Alerta de Spoiler: NO).",
+        "AGENDA": [
+          {
+            "label": "3.1",
+            "text": "¿Qué es un DTO?"
+          },
+          {
+            "label": "3.2",
+            "text": "Múltiples Fuentes a un DTO"
+          },
+          {
+            "label": "3.3",
+            "text": "El Peligro de Entidades Puras"
+          },
+          {
+            "label": "3.4",
+            "text": "Reglas de Oro del DTO"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "OBJETOS PLANOS",
+        "TITLE": "¿Qué es un DTO?",
+        "TAG_RIGHT": "3.1",
+        "GHOST": "DTO",
+        "KICKER": "Transportadores especializados",
+        "PRINCIPLE": "El Data Transfer Object (DTO) crea un objeto plano (POJO) que transporta información entre el cliente y el servidor en una sola invocación.",
+        "PRINCIPLE_BODY": "Puede contener información de MÚLTIPLES tablas concentradas en una única clase hecha 'a la medida'.",
+        "LIST_TITLE": "El Rol del DTO",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Unificación",
+            "text": "Junta datos de clientes y direcciones."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Optimización",
+            "text": "Reduce llamadas por red."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "O",
+            "value": "1",
+            "label": "Invocación",
+            "desc": "Múltiples datos en una sola llamada.",
+            "color": "var(--a1)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "slots": {
+        "TAG_LEFT": "AGRUPACIÓN",
+        "TITLE": "Múltiples Fuentes a un DTO",
+        "TAG_RIGHT": "3.2",
+        "SPLIT": "40",
+        "DIAGRAM": "flowchart LR\n  U[(Users)] --> D[UserDTO]\n  P[(Profiles)] --> D\n  S[(Sueldos)] --> D\n  D --> V((Vista Web))",
+        "SIDE_TITLE": "El Gran Recolector",
+        "LEAD": "En vez de hacer 3 peticiones distintas desde el Cliente, el servidor junta toda la información en un solo paquete (DTO).",
+        "NOTE_LABEL": "Ventaja",
+        "NOTE": "Una sola petición.",
+        "STEPS": [
+          {
+            "n": "1",
+            "name": "Eficiencia Red:",
+            "text": "Reduce drásticamente las llamadas entre Cliente y Servidor."
+          },
+          {
+            "n": "2",
+            "name": "Vistas limpias:",
+            "text": "La vista recibe todo masticado."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "CIBERSEGURIDAD",
+        "TITLE": "El Peligro de las Entidades Puras",
+        "TAG_RIGHT": "3.3",
+        "GHOST": "RIESGO",
+        "KICKER": "Omisión de Datos Sensibles",
+        "PRINCIPLE": "Si envías la Entidad real a la Vista, estás exponiendo el password hash al frontend.",
+        "PRINCIPLE_BODY": "El DTO soluciona esto: Creamos un 'UsuarioDTO' que SOLO tiene 'Nombre' y 'Email'. La contraseña jamás sale del servidor.",
+        "LIST_TITLE": "Peligros Comunes",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Exposición",
+            "text": "Contraseñas y Tokens viajan en JSON."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Id Internos",
+            "text": "Permite ataques al exponer llaves primarias."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "R",
+            "value": "!",
+            "label": "Ataque",
+            "desc": "Fuga de datos por Entidad plana.",
+            "color": "var(--a1)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "CARACTERÍSTICAS",
+        "TITLE": "Reglas de Oro de un DTO",
+        "TAG_RIGHT": "3.4",
+        "GHOST": "REGLAS",
+        "KICKER": "Requisitos para un buen Transfer Object",
+        "PRINCIPLE": "Un DTO debe seguir reglas estrictas para funcionar correctamente en red.",
+        "PRINCIPLE_BODY": "Es simplemente un contenedor tonto de datos.",
+        "LIST_TITLE": "Reglas",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Solo Lectura",
+            "text": "Getters y Setters puros. Sin métodos de lógica."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Serializable",
+            "text": "Debe poder convertirse a JSON."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Desacoplado",
+            "text": "Cero anotaciones @Entity."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "C",
+            "value": "0",
+            "label": "Lógica",
+            "desc": "El DTO no debe calcular nada.",
+            "color": "var(--a1)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "PRÁCTICA",
+        "TITLE": "Buenas vs Malas Prácticas",
+        "TAG_RIGHT": "3.5",
+        "BAD_TITLE": "Entidad como DTO",
+        "BAD_SNIPPET": "@Entity\npublic class User {\n  private String password; \n  public void applyDiscount() {}\n}",
+        "GOOD_TITLE": "DTO Limpio",
+        "GOOD_SNIPPET": "public class UserDTO {\n  private String name;\n  // Solo Getters/Setters\n}",
+        "WHY_LABEL": "Responsabilidad Única",
+        "WHY": "Forzar a una Entidad a hacer el trabajo de un DTO genera fugas de datos y código pesado.",
+        "BAD_POINTS": [
+          {
+            "text": "Contiene lógica de negocio no permitida."
+          },
+          {
+            "text": "Expone campos secretos de BD."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Objeto estúpido, solo almacena datos."
+          },
+          {
+            "text": "Totalmente seguro para el Frontend."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "ANATOMÍA",
+        "TITLE": "Ejemplo en Código Java",
+        "TAG_RIGHT": "3.6",
+        "SPLIT": "1/2",
+        "LEAD": "Este DTO podría representar información de múltiples tablas.",
+        "CALLOUT_LABEL": "Importante",
+        "CALLOUT": "Requiere un Constructor vacío y getters/setters.",
+        "FILENAME": "ResumenFacturaDTO.java",
+        "CODE": "public class ResumenFacturaDTO implements Serializable {\n    private Long folio;\n    private Double montoTotal;\n    \n    public ResumenFacturaDTO() {}\n\n    public Long getFolio() { return folio; }\n    public void setFolio(Long folio) { this.folio = folio; }\n}",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Implements Serializable"
+          },
+          {
+            "n": "2",
+            "text": "Atributos planos"
+          },
+          {
+            "n": "3",
+            "text": "Constructor vacío obligatorio"
+          },
+          {
+            "n": "4",
+            "text": "Getters y Setters"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "slots": {
+        "TAG_LEFT": "CONTROL DE LECTURA",
+        "TITLE": "Caso Práctico DTO",
+        "TAG_RIGHT": "3.7",
+        "BADGE": "Pregunta",
+        "QUESTION": "Según la síntesis, ¿Para qué sirve principalmente implementar un DTO?",
+        "COLS": "1",
+        "EXPLANATION_LABEL": "Respuesta",
+        "EXPLANATION": "¡Correcto! El DTO junta información de muchos orígenes en un solo paquete y descarta cualquier dato sensible que la vista no deba ver.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Para crear múltiples insertados en BD simultáneamente.",
+            "correct": "false"
+          },
+          {
+            "key": "B",
+            "text": "Para recuperar y agrupar datos de distintas tablas omitiendo datos sensibles.",
+            "correct": "true"
+          },
+          {
+            "key": "C",
+            "text": "Para crear un acceso directo a la BD sin usar un framework.",
+            "correct": "false"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "04",
+        "TITLE": "Spring Data JPA: El DAO Moderno",
+        "SUBTITLE": "¿Y si te dijera que el Framework puede escribir todo el DAO y todo el SQL por ti automáticamente?",
+        "AGENDA": [
+          {
+            "label": "4.1",
+            "text": "El Milagro de JPA"
+          },
+          {
+            "label": "4.2",
+            "text": "CrudRepository"
+          },
+          {
+            "label": "4.3",
+            "text": "JDBC vs JPA"
+          },
+          {
+            "label": "4.4",
+            "text": "Query Methods Automáticos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "EL MILAGRO",
+        "TITLE": "El Fin del SQL Manual",
+        "TAG_RIGHT": "4.1",
+        "GHOST": "JPA",
+        "KICKER": "¿Magia Negra? No, es JPA.",
+        "PRINCIPLE": "Spring Data JPA revoluciona el patrón DAO introduciendo los 'Repositorios'.",
+        "PRINCIPLE_BODY": "Solo tienes que crear una Interfaz (no una clase) y Spring genera TODO el código CRUD por detrás en tiempo de ejecución.",
+        "LIST_TITLE": "Ventajas Clave",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Agilidad",
+            "text": "Cero código repetitivo."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Mantenimiento",
+            "text": "Fácil de leer y mantener."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "R",
+            "value": "100%",
+            "label": "Ahorro",
+            "desc": "De tiempo en SQL",
+            "color": "var(--a1)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "slots": {
+        "TAG_LEFT": "SPRING REPOSITORIES",
+        "TITLE": "CrudRepository en Acción",
+        "TAG_RIGHT": "4.2",
+        "KICKER": "El DAO más corto del mundo",
+        "CODE_TITLE": "ClienteDao.java",
+        "CODE": "@Repository\npublic interface ClienteDao extends CrudRepository<Cliente, Long> {\n    // Y... ¡Ya está!\n}",
+        "PANEL_TITLE": "Beneficios de Heredar",
+        "WHY_TITLE": "¿Por qué es tan corto?",
+        "WHY": "Al heredar de CrudRepository, heredas docenas de métodos pre-implementados.",
+        "CRITERIA": [
+          {
+            "letter": "1",
+            "name": "Métodos Gratis",
+            "meta": "CRUD",
+            "highlight": "obtienes instantáneamente save(), findById(), etc."
+          },
+          {
+            "letter": "2",
+            "name": "Tipado Fuerte",
+            "meta": "Generics",
+            "highlight": "Le indicas <Cliente, Long> (La Entidad y su Llave Primaria)."
+          },
+          {
+            "letter": "3",
+            "name": "Cero Implementación",
+            "meta": "Spring",
+            "highlight": "Spring genera la clase en ejecución."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "slots": {
+        "TAG_LEFT": "EVOLUCIÓN",
+        "TITLE": "JDBC Antiguo vs Spring Data JPA",
+        "TAG_RIGHT": "4.3",
+        "VS_LABEL": "VS",
+        "LEFT_LABEL": "DAO MANUAL (JDBC)",
+        "LEFT_TITLE": "El dolor del ResultSet",
+        "LEFT_BODY": "Para buscar un Usuario: Abrir conexión, crear PreparedStatement, 'SELECT * FROM...', inyectar ID, ejecutar Query, recorrer ResultSet manual...",
+        "LEFT_EXAMPLE": "30 a 50 líneas de código.",
+        "RIGHT_LABEL": "DAO MODERNO (JPA)",
+        "RIGHT_TITLE": "La Gloria de JPA",
+        "RIGHT_BODY": "Para buscar un Usuario:\n\nOptional<User> u = userDao.findById(1L);",
+        "RIGHT_EXAMPLE": "1 línea de código.",
+        "LEFT_POINTS": [
+          {
+            "text": "Propenso a errores de sintaxis."
+          },
+          {
+            "text": "Mucho código repetitivo."
+          }
+        ],
+        "RIGHT_POINTS": [
+          {
+            "text": "Spring maneja la conexión y el cerrado."
+          },
+          {
+            "text": "El mapeo de Columnas es automático."
+          }
+        ],
+        "LEFT_TAGS": [
+          {
+            "text": "Manual"
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "Automático"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "SÚPER PODERES",
+        "TITLE": "Query Methods Automáticos",
+        "TAG_RIGHT": "4.4",
+        "SPLIT": "1/2",
+        "LEAD": "Spring Data JPA puede analizar el nombre del método en inglés y construir el SQL.",
+        "CALLOUT_LABEL": "Mágico",
+        "CALLOUT": "Detecta palabras como And, Or, Like, Between.",
+        "FILENAME": "ClienteDao.java",
+        "CODE": "public interface ClienteDao extends CrudRepository<Cliente, Long> {\n    // SELECT * FROM clientes WHERE email = ?\n    public Cliente findByEmail(String email);\n\n    // SELECT * FROM clientes WHERE nombre LIKE ? AND apellido = ?\n    public List<Cliente> findByNombreLikeAndApellido(String n, String a);\n}",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "findBy - Prefijo obligatorio."
+          },
+          {
+            "n": "2",
+            "text": "Email - Campo de la entidad."
+          },
+          {
+            "n": "3",
+            "text": "And / Like - Operadores."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "DECISIONES",
+        "TITLE": "¿Cuándo usar @Query Nativo?",
+        "TAG_RIGHT": "4.5",
+        "BAD_TITLE": "Abusar del Query Method",
+        "BAD_SNIPPET": "List<Cliente> findByNombreAndApellidoAndEdadGreaterThan(...);",
+        "GOOD_TITLE": "Usar @Query para casos complejos",
+        "GOOD_SNIPPET": "@Query(\"SELECT c FROM Cliente c WHERE c.nombre = ?1...\")\nList<Cliente> busquedaAvanzada(String nom);",
+        "WHY_LABEL": "Legibilidad ante todo",
+        "WHY": "Si el nombre del método supera las 3 o 4 propiedades, se vuelve ilegible.",
+        "BAD_POINTS": [
+          {
+            "text": "Nombres de métodos horribles y larguísimos."
+          },
+          {
+            "text": "Difícil de debuggear si falla."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "HQL te da control total de la consulta."
+          },
+          {
+            "text": "Mucho más limpio a la vista."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "05",
+        "TITLE": "Construyendo un Mantenedor (CRUD)",
+        "SUBTITLE": "Hora de unir las piezas: Del Controlador Web a la BD usando DAO autogenerado.",
+        "AGENDA": [
+          {
+            "label": "5.1",
+            "text": "La Vida de un Dato"
+          },
+          {
+            "label": "5.2",
+            "text": "Laboratorio: CRUD"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "slots": {
+        "TAG_LEFT": "FLUJO",
+        "TITLE": "La Vida de un Dato en un CRUD",
+        "TAG_RIGHT": "5.1",
+        "SPLIT": "50",
+        "DIAGRAM": "sequenceDiagram\n  Web->>Controller: POST /save (Formulario)\n  Controller->>DAO: save(cliente)\n  DAO->>MySQL: INSERT INTO...\n  MySQL-->>DAO: OK\n  DAO-->>Controller: Entidad Guardada\n  Controller-->>Web: Redirect /list",
+        "SIDE_TITLE": "El Viaje del Dato",
+        "LEAD": "Desde el formulario web hasta la tabla de MySQL.",
+        "NOTE_LABEL": "MVC",
+        "NOTE": "El DAO es inyectado en el Controller.",
+        "STEPS": [
+          {
+            "n": "1",
+            "name": "Controlador",
+            "text": "Recibe el objeto web."
+          },
+          {
+            "n": "2",
+            "name": "Invocación al DAO",
+            "text": "clienteDao.save(cliente)."
+          },
+          {
+            "n": "3",
+            "name": "JPA",
+            "text": "Spring hace el INSERT y cierra la conexión."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "slots": {
+        "TAG_LEFT": "PRÁCTICA",
+        "TITLE": "Laboratorio: Conexión y CRUD",
+        "TAG_RIGHT": "5.2",
+        "ICON": "egiwmiit",
+        "ACTIVITY_NAME": "Taller: spring-boot-data-jpa [CRUD]",
+        "INSTRUCTIONS": "Conectaremos el aplicativo a BD, crearemos Entidades y nuestro primer DAO.",
+        "COLS": "3",
+        "META": [
+          {
+            "label": "45 min"
+          },
+          {
+            "label": "Laboratorio"
+          }
+        ],
+        "CASES": [
+          {
+            "num": "1",
+            "title": "application.properties",
+            "desc": "Configurar credenciales MySQL.",
+            "challenge_label": "Paso 1",
+            "challenge": "Conectar BD."
+          },
+          {
+            "num": "2",
+            "title": "Anotar Entidad",
+            "desc": "Agregar @Entity y @Id al objeto.",
+            "challenge_label": "Paso 2",
+            "challenge": "Crear tabla automática."
+          },
+          {
+            "num": "3",
+            "title": "El Controlador",
+            "desc": "Inyectar el DAO y guardar formularios.",
+            "challenge_label": "Paso 3",
+            "challenge": "Programar guardar()."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "REPASO",
+        "TITLE": "Síntesis de la Unidad 3",
+        "TAG_RIGHT": "5.3",
+        "GHOST": "FIN",
+        "KICKER": "Lo que dominamos hoy:",
+        "PRINCIPLE": "Hemos completado la evolución del acceso a datos, desde conexiones directas hasta frameworks mágicos.",
+        "PRINCIPLE_BODY": "Dominamos el aislamiento entre lógica y bases de datos.",
+        "LIST_TITLE": "Puntos Clave",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Patrón DAO",
+            "text": "Aísla interacciones con BD."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Patrón DTO",
+            "text": "Oculta secretos al cliente."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Spring JPA",
+            "text": "CrudRepository lo hace todo."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "L",
+            "value": "✓",
+            "label": "Listos",
+            "desc": "Para el siguiente nivel",
+            "color": "var(--a1)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "slots": {
+        "TAG_LEFT": "FINAL",
+        "TITLE": "Felicidades",
+        "TAG_RIGHT": "Cierre",
+        "ICON": "usownftb",
+        "HERO_TITLE": "Unidad 3 Completada",
+        "HERO_TEXT": "Ya controlas el Acceso a Datos.",
+        "LEFT_PANEL_TITLE": "Aprendizaje Clave",
+        "RIGHT_PANEL_TITLE": "Próximos Pasos",
+        "NEXT_LABEL": "Siguiente Módulo",
+        "NEXT": "Formularios y Validaciones.",
+        "TAKEAWAYS": [
+          {
+            "n": "1",
+            "text": "Patrones Arquitectónicos DAO y DTO."
+          },
+          {
+            "n": "2",
+            "text": "Mapeo Objeto-Relacional con JPA."
+          }
+        ],
+        "NEXT_STEPS": [
+          {
+            "n": "1",
+            "text": "Revisar los repositorios del profesor."
+          },
+          {
+            "n": "2",
+            "text": "Completar el laboratorio de CRUD."
+          }
+        ]
+      }
+    }
+  ]
+}

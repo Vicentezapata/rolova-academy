@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="dark">
+<title>Mapa de Sesiones</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS DEL PACK — ver theme-packs/TOKENS.md
+   Cyberpunk Neon: violeta profundo, neón cian/magenta, TODO el
+   cuerpo en monoespaciada y esquinas cortadas por clip-path
+   (no border-radius). El título lleva aberración cromática.
+   ============================================================ */
+:root{
+  --bg:#0a0014; --bg2:#14002a;
+  --text:#ffffff; --text-sec:rgba(255,255,255,0.62); --text-ter:rgba(255,255,255,0.38);
+  --strong:#ffffff;
+
+  --a1:#00ffff; --a2:#ff00c8; --a3:#ffd60a;
+  --ok:#00ffb0; --warn:#ffd60a; --err:#ff4d6d;
+  --a1-t:rgba(0,255,255,0.10); --a1-b:#00ffff;
+  --a2-t:rgba(255,0,200,0.10); --a2-b:#ff00c8;
+  --a3-t:rgba(255,214,10,0.10); --a3-b:#ffd60a;
+  --ok-t:rgba(0,255,176,0.10); --ok-b:#00ffb0;
+  --warn-t:rgba(255,214,10,0.10); --warn-b:#ffd60a;
+  --err-t:rgba(255,77,109,0.10); --err-b:#ff4d6d;
+
+  --card-bg:linear-gradient(135deg, rgba(255,0,200,0.10) 0%, rgba(0,255,255,0.05) 100%);
+  --border:#ff00c8; --bw:1px; --rule-h:1px;
+  --radius:0px; --radius-lg:0px;
+  --radius-sm:0px; --radius-pill:0px;
+  --shadow:0 0 0 1px rgba(255,0,200,0.15), inset 0 0 24px rgba(255,0,200,0.18);
+  --shadow-sm:inset 0 0 18px rgba(0,255,255,0.14);
+  --inset-bg:rgba(0,255,255,0.05); --inset-border:rgba(0,255,255,0.45);
+  --hi-bg:rgba(0,255,255,0.12);
+  --hairline:rgba(0,255,255,0.18);
+  --zebra:rgba(0,255,255,0.04);
+  --thead-bg:rgba(255,0,200,0.14);
+
+  --code-bg:rgba(0,0,0,0.55); --code-fg:#e8f8ff;
+  --c-kw:#ff00c8; --c-fn:#00ffff; --c-str:#00ffb0; --c-cm:rgba(255,255,255,0.38); --c-num:#ffd60a;
+
+  --display:'Orbitron','JetBrains Mono',monospace;
+  --display-xl:'Orbitron','JetBrains Mono',monospace;
+  --body:'JetBrains Mono','DM Mono',monospace;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Orbitron','JetBrains Mono',monospace;
+  --title-shadow:3px 0 0 rgba(255,0,200,0.55), -3px 0 0 rgba(0,255,255,0.55), 0 0 24px rgba(0,255,255,0.22);
+  --em-family:var(--mono); --em-style:normal; --em-weight:700;
+  --heavy:900;
+
+  --mermaid-primary:#14002a; --mermaid-text:#ffffff; --mermaid-border:#00ffff;
+  --mermaid-line:#ff00c8; --mermaid-secondary:#1a0020; --mermaid-tertiary:#0a0014;
+}
+/* ============================================================
+   PRIMITIVAS COMPARTIDAS — idénticas en todos los theme packs.
+   El renderer las inyecta en el marcador SHARED_CSS de cada _frame.html.
+   Todo aquí se expresa con los tokens del contrato (TOKENS.md).
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1280px;height:720px;overflow:hidden;font-family:var(--body);background:var(--bg);color:var(--text);}
+.slide{width:100%;height:100%;position:relative;overflow:hidden;}
+
+/* Chrome de slide de contenido */
+.header{position:absolute;top:28px;left:48px;right:48px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:10;}
+.tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.17em;color:var(--a2);text-transform:uppercase;white-space:nowrap;}
+.h2{font-family:var(--display);font-size:22px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.02em;text-align:center;}
+.divider{position:absolute;top:70px;left:48px;right:48px;height:var(--rule-h);background:linear-gradient(90deg,var(--a2),transparent);opacity:0.45;z-index:10;}
+.content{position:absolute;left:48px;top:88px;right:48px;bottom:44px;z-index:10;display:flex;flex-direction:column;gap:16px;}
+.slide-num{position:absolute;bottom:18px;right:36px;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--text-ter);letter-spacing:0.1em;z-index:10;}
+
+/* Primitivas de contenido */
+.card{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 26px;display:flex;flex-direction:column;gap:10px;}
+.card h3{font-family:var(--display);font-size:17px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.015em;line-height:1.25;}
+.card p{font-size:13px;color:var(--text-sec);line-height:1.65;}
+.kicker{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.17em;text-transform:uppercase;color:var(--a1);}
+.chip{background:var(--inset-bg);border:var(--bw) solid var(--inset-border);border-radius:var(--radius-sm, 4px);padding:3px 9px;font-size:10px;color:var(--text-sec);letter-spacing:0.04em;}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+
+/* Iconos. El slot acepta un emoji, un carácter o un ID de Lordicon de 8
+   caracteres; _runtime.js convierte solo los IDs en <lord-icon>. */
+.icon{display:inline-flex;align-items:center;justify-content:center;line-height:1;color:var(--a1);}
+.icon lord-icon{display:block;}
+
+/* Primitivas de gráfico. El valor crudo lo normaliza _runtime.js en --n (0..1). */
+.axis{position:relative;border-bottom:var(--bw) solid var(--inset-border);}
+.gridline{position:absolute;left:0;right:0;height:1px;background:var(--inset-border);opacity:0.55;}
+.legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-sec);}
+.legend-key{width:10px;height:10px;border-radius:var(--radius-sm, 2px);flex-shrink:0;}
+.chart-note{font-family:var(--mono);font-size:10.5px;color:var(--text-ter);letter-spacing:0.06em;}
+
+/* Mini-series construidas por _runtime.js a partir de data-series + data-kind. */
+.ms-bars{display:flex;align-items:stretch;gap:6px;height:100%;width:100%;}
+.ms-col{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0;}
+.ms-track{flex:1;display:flex;align-items:flex-end;min-height:0;}
+.ms-track i{display:block;width:100%;background:var(--a1);border-radius:var(--radius-sm, 3px) var(--radius-sm, 3px) 0 0;min-height:2px;}
+.ms-col u{font-family:var(--mono);font-size:8px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-ter);text-decoration:none;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ms-donut{position:relative;width:112px;height:112px;flex-shrink:0;margin:0 auto;}
+.ms-donut::before{content:'';position:absolute;inset:0;border-radius:50%;background:var(--ms-ring, none);-webkit-mask:radial-gradient(circle,transparent 0 54%,var(--strong) 55%);mask:radial-gradient(circle,transparent 0 54%,var(--strong) 55%);}
+.ms-hole{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:19px;font-weight:var(--heavy);color:var(--text);letter-spacing:-0.03em;}
+.ms-stack{display:flex;width:100%;height:26px;border-radius:var(--radius-sm, 3px);overflow:hidden;}
+.ms-seg{display:block;height:100%;min-width:3px;}
+.ms-spark{width:100%;height:100%;}
+.ms-spark polyline{fill:none;stroke:var(--a1);stroke-width:2;stroke-linejoin:round;stroke-linecap:round;}
+
+em{font-family:var(--em-family);font-style:var(--em-style);font-weight:var(--em-weight);color:var(--a1);}
+b,strong{color:var(--strong);font-weight:700;}
+code{font-family:var(--mono);font-size:0.92em;background:var(--a1-t);border:1px solid var(--a1-b);border-radius:var(--radius-sm, 4px);padding:1px 6px;color:var(--a1);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+
+/* Accesibilidad y exportación */
+:focus-visible{outline:2px solid var(--a1);outline-offset:3px;border-radius:var(--radius-sm, 3px);}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important;}}
+@media print{@page{size:1280px 720px;margin:0;}html,body{width:1280px;height:720px;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.no-print{display:none!important;}}
+
+
+/* Las esquinas se cortan con clip-path, no se redondean: es la firma. */
+.card,[class*="card"],[class*="panel"],[class*="box"],[class*="stat"]{
+  clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+.h1,.h2,.h3,.display,h1,h2,h3{text-transform:uppercase;letter-spacing:-0.035em;}
+.tag{letter-spacing:0.28em;color:var(--a1);text-shadow:0 0 8px rgba(0,255,255,0.6);}
+.slide-num{color:var(--a1);text-shadow:0 0 8px rgba(0,255,255,0.5);}
+
+/* ============================================================
+   DECORACIONES DE FIRMA DEL PACK
+   Retícula 64px + scanlines, línea de horizonte y marco cortado.
+   ============================================================ */
+.deco-a{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,255,255,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,255,0.07) 1px, transparent 1px);
+  background-size:64px 64px;}
+
+.deco-b{position:absolute;left:0;right:0;height:1px;z-index:1;pointer-events:none;
+  background:linear-gradient(90deg, transparent 0%, rgba(0,255,255,0.55) 30%, rgba(255,0,200,0.55) 70%, transparent 100%);
+  box-shadow:0 0 18px rgba(0,255,255,0.4);
+  top:78%;}
+
+.deco-c{position:absolute;inset:18px;z-index:6;pointer-events:none;
+  border:1px solid rgba(0,255,255,0.18);
+  clip-path:polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));}
+/* Las scanlines van encima de todo, como en un CRT. */
+.deco-c::after{content:'';position:absolute;inset:-18px;
+  background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,255,255,0.035) 3px, rgba(0,255,255,0.035) 4px);}
+
+.slide{background:radial-gradient(ellipse 62% 50% at 82% 20%, rgba(255,0,200,0.16) 0%, transparent 60%), radial-gradient(ellipse 68% 55% at 14% 80%, rgba(0,255,255,0.16) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 50% -10%, rgba(181,107,255,0.18) 0%, transparent 60%), linear-gradient(160deg, #14002a 0%, #0a0014 55%, #1a0020 100%);}
+
+.toc-grid{position:absolute;left:48px;top:100px;right:48px;bottom:44px;display:grid;grid-template:repeat(2,1fr) / repeat(3,1fr);gap:18px;z-index:10;}
+.toc-card{background:var(--card-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 30px;display:flex;flex-direction:column;gap:10px;}
+.toc-num{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--a1);}
+.toc-icon{width:44px;height:44px;border-radius:var(--radius-sm, 8px);background:var(--a1-t);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.toc-card h3{font-family:var(--display);font-size:17px;font-weight:700;color:var(--text);line-height:1.25;letter-spacing:-0.015em;}
+.toc-card p{font-size:12.5px;color:var(--text-sec);line-height:1.6;}
+</style>
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+</head>
+<body>
+<main class="slide" role="region" aria-label="Mapa de Sesiones">
+  <div class="deco-a" aria-hidden="true"></div>
+  <div class="deco-b" aria-hidden="true"></div>
+  <div class="deco-c" aria-hidden="true"></div>
+  <div class="header">
+    <span class="tag">Índice</span>
+    <span class="h2">Mapa de la Sesión</span>
+    <span class="tag">01</span>
+  </div>
+  <div class="divider"></div>
+  <div class="toc-grid">
+    <div class="toc-card">
+      <div class="toc-num">1</div>
+      <div class="toc-icon icon" data-icon="1" data-icon-size="26">1</div>
+      <h3>Ecosistema GHAS</h3>
+      <p>Suites y características</p>
+      <div class="chip-row"></div>
+    </div>
+    <div class="toc-card">
+      <div class="toc-num">2</div>
+      <div class="toc-icon icon" data-icon="2" data-icon-size="26">2</div>
+      <h3>Secret Protection</h3>
+      <p>Escaneo e interceptación</p>
+      <div class="chip-row"></div>
+    </div>
+    <div class="toc-card">
+      <div class="toc-num">3</div>
+      <div class="toc-icon icon" data-icon="3" data-icon-size="26">3</div>
+      <h3>Supply Chain</h3>
+      <p>Dependabot & Reviews</p>
+      <div class="chip-row"></div>
+    </div>
+    <div class="toc-card">
+      <div class="toc-num">4</div>
+      <div class="toc-icon icon" data-icon="4" data-icon-size="26">4</div>
+      <h3>Code Security</h3>
+      <p>CodeQL y SARIF</p>
+      <div class="chip-row"></div>
+    </div>
+    <div class="toc-card">
+      <div class="toc-num">5</div>
+      <div class="toc-icon icon" data-icon="5" data-icon-size="26">5</div>
+      <h3>Operaciones</h3>
+      <p>Priorización y campañas</p>
+      <div class="chip-row"></div>
+    </div>
+    <div class="toc-card">
+      <div class="toc-num">6</div>
+      <div class="toc-icon icon" data-icon="6" data-icon-size="26">6</div>
+      <h3>Administración</h3>
+      <p>Policies & Enforcement</p>
+      <div class="chip-row"></div>
+    </div>
+  </div>
+<script>
+/* ============================================================
+   RUNTIME COMPARTIDO — idéntico en todas las slides.
+   El renderer lo inyecta al final del BODY, igual que _base.css
+   se inyecta en SHARED_CSS.
+
+   REGLA: aquí no puede haber literales de color. Los colores se
+   leen en tiempo de ejecución desde los tokens del frame.
+   ============================================================ */
+(function () {
+  var LORDICON_ID = /^[a-z0-9]{8}$/;
+
+  function token(el, name) {
+    return getComputedStyle(el).getPropertyValue(name).trim();
+  }
+
+  /* 1 · ICONOS
+     El agente escribe en el slot un emoji, un carácter o un ID de Lordicon.
+     Si es un ID de 8 caracteres se sustituye por <lord-icon> coloreado con
+     los tokens del pack. Cualquier otra cosa se deja como texto. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-icon]'), function (el) {
+    var id = (el.dataset.icon || '').trim();
+    if (!LORDICON_ID.test(id)) return;
+    var size = el.dataset.iconSize || '34';
+    var ico = document.createElement('lord-icon');
+    ico.setAttribute('src', 'https://cdn.lordicon.com/' + id + '.json');
+    ico.setAttribute('trigger', el.dataset.iconTrigger || 'loop');
+    ico.setAttribute('delay', '1600');
+    ico.setAttribute('colors', 'primary:' + token(el, '--a1') + ',secondary:' + token(el, '--a2'));
+    ico.style.width = size + 'px';
+    ico.style.height = size + 'px';
+    el.textContent = '';
+    el.classList.add('is-lottie');
+    el.appendChild(ico);
+  });
+
+  /* 2 · GRÁFICOS
+     El agente entrega valores crudos, nunca porcentajes. Aquí se normalizan
+     a la variable --n (0..1) que cada arquetipo usa como altura, anchura o
+     ángulo. data-chart="pct" normaliza contra 100; el resto, contra el máximo
+     de la propia serie. */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-chart]'), function (chart) {
+    var items = Array.prototype.slice.call(chart.querySelectorAll('[data-value]'));
+    if (!items.length) return;
+
+    var vals = items.map(function (el) { return parseFloat(el.dataset.value) || 0; });
+    var max = chart.dataset.chart === 'pct'
+      ? 100
+      : Math.max.apply(null, vals.concat([0]));
+    if (!(max > 0)) max = 1;
+
+    items.forEach(function (el, i) {
+      el.style.setProperty('--n', (vals[i] / max).toFixed(4));
+    });
+
+    /* Serie de línea: el trazado se calcula con los mismos valores, así el
+       agente nunca escribe coordenadas SVG. */
+    var line = chart.querySelector('[data-line]');
+    if (!line || vals.length < 2) return;
+
+    var svg = line.ownerSVGElement;
+    var box = (svg.getAttribute('viewBox') || '0 0 100 100').split(/\s+/);
+    var W = parseFloat(box[2]);
+    var H = parseFloat(box[3]);
+    var pad = H * 0.1;
+    var step = W / (vals.length - 1);
+
+    var pts = vals.map(function (v, i) {
+      var y = H - pad - (v / max) * (H - pad * 2);
+      return (i * step).toFixed(2) + ',' + y.toFixed(2);
+    });
+
+    line.setAttribute('points', pts.join(' '));
+
+    var area = chart.querySelector('[data-area]');
+    if (area) area.setAttribute('points', '0,' + H + ' ' + pts.join(' ') + ' ' + W + ',' + H);
+
+    var dots = chart.querySelector('[data-dots]');
+    if (dots) {
+      pts.forEach(function (p) {
+        var xy = p.split(',');
+        var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', xy[0]);
+        c.setAttribute('cy', xy[1]);
+        c.setAttribute('r', (H * 0.035).toFixed(2));
+        dots.appendChild(c);
+      });
+    }
+  });
+
+  /* 3 · MINI-SERIES
+     Para paneles pequeños el agente escribe una sola cadena de texto:
+       data-series="Unitarias:120|Integración:45|E2E:12"
+     y el tipo de gráfico en data-kind (bars | donut | stack | spark).
+     Aquí se parsea y se construye el DOM; el agente nunca escribe HTML. */
+  var RAMP = ['--a1', '--a2', '--a3', '--ok', '--warn'];
+
+  function parseSeries(raw) {
+    return (raw || '').split('|').filter(Boolean).map(function (part) {
+      var cut = part.lastIndexOf(':');
+      return {
+        label: part.slice(0, cut).trim(),
+        value: parseFloat(part.slice(cut + 1)) || 0
+      };
+    });
+  }
+
+  function el(tag, cls, parent) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (parent) parent.appendChild(node);
+    return node;
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-series]'), function (host) {
+    var data = parseSeries(host.dataset.series);
+    if (!data.length) return;
+
+    var kind = host.dataset.kind || 'bars';
+    var total = data.reduce(function (a, d) { return a + d.value; }, 0) || 1;
+    var max = Math.max.apply(null, data.map(function (d) { return d.value; }).concat([0])) || 1;
+    host.textContent = '';
+
+    if (kind === 'donut') {
+      var stops = [];
+      var acc = 0;
+      data.forEach(function (d, i) {
+        var from = (acc / total) * 100;
+        acc += d.value;
+        var to = (acc / total) * 100;
+        stops.push('var(' + RAMP[i % RAMP.length] + ') ' + from.toFixed(2) + '% ' + to.toFixed(2) + '%');
+      });
+      var ring = el('div', 'ms-donut', host);
+      ring.style.setProperty('--ms-ring', 'conic-gradient(' + stops.join(',') + ')');
+      var hole = el('div', 'ms-hole', ring);
+      hole.textContent = host.dataset.center || data.length;
+
+    } else if (kind === 'stack') {
+      var bar = el('div', 'ms-stack', host);
+      data.forEach(function (d, i) {
+        var seg = el('span', 'ms-seg', bar);
+        seg.style.flexGrow = String(d.value);
+        seg.style.background = 'var(' + RAMP[i % RAMP.length] + ')';
+        seg.title = d.label + ': ' + d.value;
+      });
+
+    } else if (kind === 'spark') {
+      var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 100 34');
+      svg.setAttribute('preserveAspectRatio', 'none');
+      svg.setAttribute('class', 'ms-spark');
+      var poly = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      var stp = 100 / (data.length - 1 || 1);
+      poly.setAttribute('points', data.map(function (d, i) {
+        return (i * stp).toFixed(1) + ',' + (32 - (d.value / max) * 28).toFixed(1);
+      }).join(' '));
+      poly.setAttribute('vector-effect', 'non-scaling-stroke');
+      svg.appendChild(poly);
+      host.appendChild(svg);
+
+    } else {
+      var cols = el('div', 'ms-bars', host);
+      data.forEach(function (d) {
+        var col = el('span', 'ms-col', cols);
+        var track = el('span', 'ms-track', col);
+        el('i', null, track).style.height = ((d.value / max) * 100).toFixed(1) + '%';
+        el('u', null, col).textContent = d.label;
+      });
+    }
+
+    /* La leyenda solo tiene sentido cuando cada color es una categoría. */
+    if (kind !== 'donut' && kind !== 'stack') return;
+
+    var scope = host.closest('[data-legend-scope]') || host.parentNode;
+    var legend = scope ? scope.querySelector('[data-legend]') : null;
+    if (legend) {
+      legend.textContent = '';
+      data.forEach(function (d, i) {
+        var item = el('span', 'legend-item', legend);
+        var key = el('i', 'legend-key', item);
+        key.style.background = 'var(' + RAMP[i % RAMP.length] + ')';
+        el('span', null, item).textContent = d.label + ' · ' + d.value;
+      });
+    }
+  });
+})();
+
+</script>
+  <div class="slide-num">01 / 48</div>
+</main>
+<script>
+  document.addEventListener('keydown', e => {
+    if (['ArrowLeft','ArrowUp','ArrowRight','ArrowDown',' ','+','-'].includes(e.key)) e.preventDefault();
+    window.parent.postMessage({ type: 'forward-key', key: e.key }, '*');
+  });
+  window.addEventListener('message', e => {
+    if (e.data && e.data.type === 'text-zoom') {
+      const content = document.querySelector('.content') || document.querySelector('.slide') || document.body;
+      if (content) content.style.zoom = e.data.scale;
+    }
+  });
+</script>
+</body>
+</html>

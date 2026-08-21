@@ -1,0 +1,895 @@
+{
+  "pack": "botanic_forest",
+  "title": "Unidad 2 — Patrón MVC y Frameworks Web",
+  "slides": [
+    {
+      "archetype": "cover",
+      "slots": {
+        "EYEBROW": "UNIDAD",
+        "TITLE": "Dominando el Patrón MVC",
+        "SUBTITLE": "Desde la arquitectura abstracta de 1976 hasta el poderoso ecosistema moderno de Spring MVC y JPA.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          {
+            "label": "Introducción",
+            "accent": "a1"
+          }
+        ]
+      },
+      "speaker_notes": "En esta unidad comprenderemos por qué dividimos el código en tres capas fundamentales y cómo Spring facilita la manipulación de formularios web y bases de datos."
+    },
+    {
+      "archetype": "toc",
+      "slots": {
+        "TAG_LEFT": "AGENDA",
+        "TITLE": "Estructura de la Clase",
+        "TAG_RIGHT": "Ruta",
+        "ROWS": "2",
+        "COLS": "4",
+        "ITEMS": [
+          {
+            "num": "01",
+            "icon": "egiwmiit",
+            "title": "Parte 1",
+            "desc": "Inicio",
+            "chips": ""
+          },
+          {
+            "num": "02",
+            "icon": "usownftb",
+            "title": "Parte 2",
+            "desc": "Desarrollo",
+            "chips": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO",
+        "TITLE": "La Teoría Arquitectónica del Patrón MVC",
+        "SUBTITLE": "",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Conceptos"
+          },
+          {
+            "label": "1.2",
+            "text": "Ejemplos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "slots": {
+        "TAG_LEFT": "HISTORIA",
+        "TITLE": "El Origen del Orden",
+        "TAG_RIGHT": "1.1",
+        "LEAD": "El MVC no se inventó para la Web. Es un patrón antiguo rescatado para resolver un problema moderno.",
+        "COLS": "3",
+        "STEPS": [
+          {
+            "n": "1976",
+            "phase": "El Nacimiento",
+            "title": "Smalltalk-79",
+            "desc": "Trygve Reenskaug crea el concepto original en Xerox PARC para separar las pantallas de escritorio de los datos crudos.",
+            "output": "Desktop GUI"
+          },
+          {
+            "n": "2004",
+            "phase": "La Revolución Web",
+            "title": "Ruby on Rails",
+            "desc": "Toma el patrón olvidado y lo inyecta en el desarrollo web. De pronto, desarrollar para internet se vuelve limpio y estructurado.",
+            "output": "Auge Web MVC"
+          },
+          {
+            "n": "Hoy",
+            "phase": "El Estándar Global",
+            "title": "Spring, .NET, Laravel",
+            "desc": "El MVC se convierte en la única forma aceptable a nivel profesional para construir sistemas escalables en cualquier lenguaje.",
+            "output": "Multiplataforma"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURAS",
+        "TITLE": "MVC vs Formularios Clásicos",
+        "TAG_RIGHT": "1.2",
+        "LEFT_LABEL": "ANTIGUO",
+        "LEFT_TITLE": "Web-Forms Clásicos",
+        "LEFT_BODY": "Cada página web es un archivo que contiene TODO: El HTML visual, las consultas a la Base de Datos, y la lógica (Ej. PHP Antiguo o ASP clásico).",
+        "LEFT_EXAMPLE": "index.php (Mil líneas de código)",
+        "LEFT_POINTS": [
+          {
+            "text": "Fácil de aprender inicialmente."
+          },
+          {
+            "text": "Código espagueti (Mezcla Frontend y Backend)."
+          },
+          {
+            "text": "Terrible para trabajar en equipo."
+          }
+        ],
+        "RIGHT_LABEL": "MODERNO",
+        "RIGHT_TITLE": "Patrón MVC",
+        "RIGHT_BODY": "Se divide drásticamente la aplicación en 3 piezas separadas (Carpetas distintas, archivos distintos).",
+        "RIGHT_EXAMPLE": "Modelo, Vista y Controlador",
+        "RIGHT_POINTS": [
+          {
+            "text": "Curva de aprendizaje más alta."
+          },
+          {
+            "text": "Elimina la duplicación de tareas."
+          },
+          {
+            "text": "Permite equipos Frontend y Backend aislados."
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "Escalable"
+          },
+          {
+            "text": "Limpio"
+          }
+        ],
+        "VS_LABEL": "VS"
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "CORE",
+        "TITLE": "Separation of Concerns",
+        "TAG_RIGHT": "1.3",
+        "GHOST": "PRINCIPIO",
+        "KICKER": "Regla",
+        "PRINCIPLE": "El MVC se adhiere a la Separación de Preocupaciones. Imagina un restaurante: El mesero (Controlador) atiende a los clientes, la cocina (Modelo) prepara la comida, y el plato decorado (Vista) es lo que ve el comensal. ¡Si el mesero intenta cocinar, todo es un caos!",
+        "PRINCIPLE_BODY": "",
+        "LIST_TITLE": "Razones por las que esto salva empresas:",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Especialización",
+            "text": "Los diseñadores UI solo tocan la Vista. Los DBAs solo tocan el Modelo."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Reutilización",
+            "text": "Puedes crear una Vista para móvil y otra para PC, usando exactamente el mismo Modelo subyacente."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Pruebas Aisladas",
+            "text": "Puedes probar la matemática del Modelo sin necesidad de levantar una página visual."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "Ej",
+            "value": "1",
+            "label": "Caso",
+            "desc": "Desc",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "slots": {
+        "TAG_LEFT": "FLUJO",
+        "TITLE": "El Ciclo Circular del MVC",
+        "TAG_RIGHT": "1.4",
+        "SPLIT": "1/2",
+        "DIAGRAM": "flowchart LR\n    U((Usuario)) -->|Hace Click| C(Controlador)\n    C -->|Actualiza Datos| M[(Modelo)]\n    M -->|Notifica Cambios| V[Vista]\n    C -->|Elige qué mostrar| V\n    V -->|Muestra al| U",
+        "SIDE_TITLE": "Pasos",
+        "LEAD": "El patrón establece reglas claras de quién puede hablar con quién para evitar que la aplicación implosione en complejidad.",
+        "NOTE_LABEL": "Nota",
+        "NOTE": "Diagrama de flujo.",
+        "STEPS": [
+          {
+            "n": "1",
+            "name": "Inicio",
+            "text": "Comienzo del flujo."
+          },
+          {
+            "n": "2",
+            "name": "Fin",
+            "text": "Fin del flujo."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "slots": {
+        "TAG_LEFT": "DINÁMICA",
+        "TITLE": "Identifica al Culpable",
+        "TAG_RIGHT": "1.5",
+        "ICON": "usownftb",
+        "ACTIVITY_NAME": "",
+        "INSTRUCTIONS": "",
+        "COLS": "1",
+        "META": [
+          {
+            "label": "15 min"
+          },
+          {
+            "label": "Individual"
+          }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Paso 1",
+            "desc": "Tarea 1",
+            "challenge_label": "Meta",
+            "challenge": "Completar paso 1."
+          },
+          {
+            "num": "02",
+            "title": "Paso 2",
+            "desc": "Tarea 2",
+            "challenge_label": "Meta",
+            "challenge": "Completar paso 2."
+          },
+          {
+            "num": "03",
+            "title": "Paso 3",
+            "desc": "Tarea 3",
+            "challenge_label": "Meta",
+            "challenge": "Completar paso 3."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO",
+        "TITLE": "Profundizando en los Roles",
+        "SUBTITLE": "",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Conceptos"
+          },
+          {
+            "label": "1.2",
+            "text": "Ejemplos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "ROL #1",
+        "TITLE": "El Modelo",
+        "TAG_RIGHT": "2.1",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "M",
+            "title": "Acceso a Datos",
+            "body": "Es el único autorizado a conectarse a la capa de almacenamiento (Bases de datos). Lo ideal es que sea independiente del motor de DB usado.",
+            "note_label": "Responsabilidad",
+            "note": "Persistencia."
+          },
+          {
+            "badge": "M",
+            "title": "Reglas de Negocio",
+            "body": "Define las reglas estrictas. Ej: 'Si el stock es cero, llamar al proveedor'. Esta inteligencia matemática no puede estar en la pantalla.",
+            "note_label": "Responsabilidad",
+            "note": "Lógica pesada."
+          },
+          {
+            "badge": "M",
+            "title": "Notificador",
+            "body": "Lleva un registro de quién lo está observando. Si sufre un cambio (alguien compró el último ticket), avisa a la vista que los datos mutaron.",
+            "note_label": "Responsabilidad",
+            "note": "Patrón Observador."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "ROL #2",
+        "TITLE": "La Vista",
+        "TAG_RIGHT": "2.2",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "V",
+            "title": "Mostrar Información",
+            "body": "Su trabajo es ser bella y legible. Recibe datos en bruto provenientes del Modelo y los maquilla usando tipografías, colores y tablas para el usuario.",
+            "note_label": "Responsabilidad",
+            "note": "Renderizado UI."
+          },
+          {
+            "badge": "V",
+            "title": "Cero Matemáticas",
+            "body": "Jamás debe tener sentencias SQL dentro, ni bucles extremadamente complejos de lógica de negocio.",
+            "note_label": "Responsabilidad",
+            "note": "Presentación 'Tonta'."
+          },
+          {
+            "badge": "V",
+            "title": "Actualización Reactiva",
+            "body": "Puede brindar el servicio de Actualización() para ser invocada por el controlador cuando un agente externo cambia la base de datos.",
+            "note_label": "Responsabilidad",
+            "note": "Reactividad."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "ROL #3",
+        "TITLE": "El Controlador",
+        "TAG_RIGHT": "2.3",
+        "COLS": "2",
+        "CARDS": [
+          {
+            "badge": "C",
+            "title": "Receptor de Eventos",
+            "body": "Es la primera barrera de la aplicación. Recibe de la red las peticiones, los clicks y los envíos de formularios. Interpreta QUÉ quiere hacer el usuario.",
+            "note_label": "Rol Frontal",
+            "note": "Listener."
+          },
+          {
+            "badge": "C",
+            "title": "Gestión de Flujo",
+            "body": "Contiene reglas del tipo 'SI evento Z, ENTONCES pide datos al Modelo y ENTREGALOS a la Vista W'. Es el orquestador del tráfico.",
+            "note_label": "Rol Central",
+            "note": "Director de Ruta."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "slots": {
+        "TAG_LEFT": "ACTIVACIÓN",
+        "TITLE": "Pregunta de Entrevista",
+        "TAG_RIGHT": "2.4",
+        "BADGE": "Pregunta",
+        "QUESTION": "El equipo de Front-End necesita que se vea el nombre del usuario logueado en color azul arriba a la derecha. ¿Qué capa debe buscar en la Base de Datos el nombre del usuario?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Respuesta",
+        "EXPLANATION": "La Vista pide el color, el Controlador recibe la petición de la página, pero SOLAMENTE el Modelo tiene autorización arquitectónica para consultar la Base de Datos. El Modelo le pasará el nombre al Controlador, y este se lo dará a la Vista.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Opción correcta",
+            "correct": "true"
+          },
+          {
+            "key": "B",
+            "text": "Opción falsa",
+            "correct": "false"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO",
+        "TITLE": "Spring Web MVC en Acción",
+        "SUBTITLE": "",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Conceptos"
+          },
+          {
+            "label": "1.2",
+            "text": "Ejemplos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "slots": {
+        "TAG_LEFT": "IMPLEMENTACIÓN",
+        "TITLE": "MVC al estilo Spring",
+        "TAG_RIGHT": "3.1",
+        "SPLIT": "1/2",
+        "DIAGRAM": "flowchart LR\n    U((Navegador)) -->|HTTP Request| D[Dispatcher\nServlet]\n    D -->|Deriva URL| C(Tu @Controller)\n    C -->|Obtiene| M[(Tu Servicio / DB)]\n    C -->|Retorna String| D\n    D -->|Renderiza HTML| V[Thymeleaf / JSP]\n    V -->|HTTP Response| U",
+        "SIDE_TITLE": "Pasos",
+        "LEAD": "Spring toma el patrón MVC y le agrega un Front-Controller llamado DispatcherServlet.",
+        "NOTE_LABEL": "Nota",
+        "NOTE": "Diagrama de flujo.",
+        "STEPS": [
+          {
+            "n": "1",
+            "name": "Inicio",
+            "text": "Comienzo del flujo."
+          },
+          {
+            "n": "2",
+            "name": "Fin",
+            "text": "Fin del flujo."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "slots": {
+        "TAG_LEFT": "SINTAXIS",
+        "TITLE": "El Corazón del Controlador",
+        "TAG_RIGHT": "3.2",
+        "KICKER": "RUTEO MODERNO",
+        "CODE_TITLE": "ClienteController.java",
+        "CODE": "@Controller\n@RequestMapping(\"/clientes\")\npublic class ClienteController {\n\n    @Autowired\n    private ClienteService clienteService; // Nuestro Modelo\n\n    @GetMapping(\"/listar\")\n    public String listarClientes(Model model) {\n        // 1. Hablamos con el Modelo\n        List<Cliente> lista = clienteService.buscarTodos();\n        \n        // 2. Preparamos el paquete para la Vista\n        model.addAttribute(\"titulo\", \"Listado de Clientes\");\n        model.addAttribute(\"clientes\", lista);\n        \n        // 3. Decidimos qué Vista mostrar\n        return \"vista_lista_clientes\"; \n    }\n}",
+        "PANEL_TITLE": "Criterios",
+        "WHY_TITLE": "¿Por qué?",
+        "WHY": "Puntos clave.",
+        "CRITERIA": [
+          {
+            "letter": "A",
+            "name": "Crit 1",
+            "meta": "Info",
+            "highlight": "Desc 1"
+          },
+          {
+            "letter": "B",
+            "name": "Crit 2",
+            "meta": "Info",
+            "highlight": "Desc 2"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "TRUCO",
+        "TITLE": "Transportando Datos a la Vista",
+        "TAG_RIGHT": "3.3",
+        "BAD_TITLE": "Forma Antigua (Servlet API)",
+        "BAD_SNIPPET": "public String ver(HttpServletRequest request) {\n    // Acoplado a J2EE primitivo\n    request.setAttribute(\"nombre\", \"Juan\");\n    return \"perfil\";\n}",
+        "GOOD_TITLE": "Forma Spring MVC",
+        "GOOD_SNIPPET": "public String ver(Model model) {\n    // Agnostico y testeable\n    model.addAttribute(\"nombre\", \"Juan\");\n    return \"perfil\";\n}",
+        "WHY_LABEL": "Independencia del Servidor Web",
+        "WHY": "Si utilizas HttpServletRequest directamente, atas tu código a que siempre viva dentro de un Tomcat. Al usar el objeto 'Model' (o ModelMap) propio de Spring, tu controlador no sabe nada del protocolo HTTP y puede ser testeado fácilmente (Unit Testing).",
+        "BAD_POINTS": [
+          {
+            "text": "Fuerte acoplamiento a Servlets."
+          },
+          {
+            "text": "Difícil de hacer Testing con JUnit."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Interfaz limpia y agnóstica."
+          },
+          {
+            "text": "Soporta Mapas Java nativos."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "slots": {
+        "TAG_LEFT": "PRÁCTICA",
+        "TITLE": "Diseñando Rutas Lógicas",
+        "TAG_RIGHT": "3.4",
+        "ICON": "usownftb",
+        "ACTIVITY_NAME": "",
+        "INSTRUCTIONS": "",
+        "COLS": "1",
+        "META": [
+          {
+            "label": "15 min"
+          },
+          {
+            "label": "Individual"
+          }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Paso 1",
+            "desc": "Tarea 1",
+            "challenge_label": "Meta",
+            "challenge": "Completar paso 1."
+          },
+          {
+            "num": "02",
+            "title": "Paso 2",
+            "desc": "Tarea 2",
+            "challenge_label": "Meta",
+            "challenge": "Completar paso 2."
+          },
+          {
+            "num": "03",
+            "title": "Paso 3",
+            "desc": "Tarea 3",
+            "challenge_label": "Meta",
+            "challenge": "Completar paso 3."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO",
+        "TITLE": "Formularios y Data Binding",
+        "SUBTITLE": "",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Conceptos"
+          },
+          {
+            "label": "1.2",
+            "text": "Ejemplos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "slots": {
+        "TAG_LEFT": "FRONTEND",
+        "TITLE": "Formularios de ingreso",
+        "TAG_RIGHT": "4.1",
+        "LEFT_LABEL": "HTML ESTÁNDAR",
+        "LEFT_TITLE": "<form> y <input>",
+        "LEFT_BODY": "Formularios comunes. Cada campo debe ser extraído manualmente en el servidor mediante request.getParameter('campo').",
+        "LEFT_EXAMPLE": "&lt;input type='text' name='email'&gt;",
+        "LEFT_POINTS": [
+          {
+            "text": "Desconectados del objeto Java."
+          },
+          {
+            "text": "Difícil poblar errores si falla la validación."
+          }
+        ],
+        "RIGHT_LABEL": "SPRING FORMS",
+        "RIGHT_TITLE": "Formularios enlazados (Tags)",
+        "RIGHT_BODY": "Librerías de vistas (como Thymeleaf o JSP Tags) permiten mapear un input DIRECTAMENTE a la propiedad de una clase Java.",
+        "RIGHT_EXAMPLE": "th:field='*{email}'",
+        "RIGHT_POINTS": [
+          {
+            "text": "Enlace automático bidireccional."
+          },
+          {
+            "text": "Si hay error de llenado, devuelve los valores que escribiste automáticamente."
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "Magia Web"
+          }
+        ],
+        "VS_LABEL": "VS"
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "MECANISMO",
+        "TITLE": "Data Binding: Llenado Automático",
+        "TAG_RIGHT": "4.2",
+        "GHOST": "PRINCIPIO",
+        "KICKER": "Regla",
+        "PRINCIPLE": "Antes, perdíamos 20 líneas de código haciendo getParameter('nombre'), getParameter('edad') y luego convirtiendo Strings a Integers. El Data Binding de Spring detecta que enviaste un formulario, crea un 'Usuario' vacío (Command Object), y llena todas sus variables usando sus setters correspondientes de forma automática.",
+        "PRINCIPLE_BODY": "",
+        "LIST_TITLE": "Requisitos para el milagro:",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Match de Nombres",
+            "text": "El name del &lt;input&gt; HTML debe ser exactamente igual a la variable privada de Java."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Setters",
+            "text": "La clase Java debe tener los métodos setNombre() y getNombre() generados."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "@ModelAttribute",
+            "text": "Le indica a Spring que espere un objeto pre-empaquetado desde la vista."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "Ej",
+            "value": "1",
+            "label": "Caso",
+            "desc": "Desc",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "CÓDIGO",
+        "TITLE": "Recibiendo el Formulario POST",
+        "TAG_RIGHT": "4.3",
+        "SPLIT": "1/2",
+        "LEAD": "Observemos cómo se procesa la llegada del formulario (Guardar).",
+        "CALLOUT_LABEL": "Nota",
+        "CALLOUT": "Atención",
+        "FILENAME": "codigo.js",
+        "CODE": "@PostMapping(\"/guardar\")\npublic String procesar(\n        @Valid @ModelAttribute(\"usuario\") Usuario usuario, \n        BindingResult result) {\n\n    // 1. Verificamos si rompió alguna regla\n    if(result.hasErrors()) {\n        // Falló: Lo devolvemos al form\n        return \"formulario_registro\";\n    }\n    \n    // 2. Si todo está ok, guardamos en la DB\n    usuarioService.guardar(usuario);\n    \n    // 3. Redirigimos por URL (Patrón PRG)\n    return \"redirect:/clientes/listar\";\n}",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Revisar el código"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "REGLAS",
+        "TITLE": "Validación (JSR-380)",
+        "TAG_RIGHT": "4.4",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "1",
+            "title": "@NotEmpty / @NotBlank",
+            "body": "Se coloca en tu clase Java justo arriba del String nombre. Verifica que el usuario no envíe campos en blanco o llenos de puros espacios.",
+            "note_label": "Uso",
+            "note": "Cadenas de texto."
+          },
+          {
+            "badge": "2",
+            "title": "@Size(min, max)",
+            "body": "Garantiza que la contraseña tenga al menos 8 caracteres y no más de 12, previniendo inyección de datos absurdos.",
+            "note_label": "Uso",
+            "note": "Límites."
+          },
+          {
+            "badge": "3",
+            "title": "@Email",
+            "body": "Aplica una expresión regular matemática ultra compleja que valida si el texto ingresado tiene formato de correo válido (contiene @ y dominio).",
+            "note_label": "Uso",
+            "note": "Validación compleja."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "PERSISTENCIA",
+        "TITLE": "Flash Attributes",
+        "TAG_RIGHT": "4.5",
+        "BAD_TITLE": "Model normal tras Redireccionar",
+        "BAD_SNIPPET": "model.addAttribute(\"mensaje\", \"Éxito\");\nreturn \"redirect:/listar\";\n// Al redirigir a otra URL, la petición muere y el model se borra.",
+        "GOOD_TITLE": "RedirectAttributes",
+        "GOOD_SNIPPET": "flash.addFlashAttribute(\"mensaje\", \"Éxito\");\nreturn \"redirect:/listar\";\n// El mensaje sobrevive mágico por UN solo salto.",
+        "WHY_LABEL": "El desafío de la Memoria",
+        "WHY": "Cuando ejecutas un 'redirect:', el navegador cambia de URL y genera un Request 100% nuevo. Cualquier variable guardada en el 'Model' desaparece. Los Flash Attributes guardan el mensaje en la sesión de forma hiper temporal (dura 1 recarga) ideal para mostrar alertas de 'Guardado Exitoso'.",
+        "BAD_POINTS": [
+          {
+            "text": "Pérdida de alertas al cambiar de vista."
+          },
+          {
+            "text": "Posible confusión del usuario final."
+          },
+          {
+            "text": "Requiere hacks usando la Sesión manual."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Notificaciones a prueba de recargas."
+          },
+          {
+            "text": "Sobreviven exactamente 1 redirección."
+          },
+          {
+            "text": "Limpian la memoria automáticamente."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO",
+        "TITLE": "Conectando al Almacenamiento: Data JPA",
+        "SUBTITLE": "",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Conceptos"
+          },
+          {
+            "label": "1.2",
+            "text": "Ejemplos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "slots": {
+        "TAG_LEFT": "BASE DE DATOS",
+        "TITLE": "Mapeo Objeto Relacional (ORM)",
+        "TAG_RIGHT": "5.1",
+        "KICKER": "ADIÓS AL SQL PURO",
+        "CODE_TITLE": "Factura.java",
+        "CODE": "import javax.persistence.*;\n\n@Entity\n@Table(name = \"facturas_comerciales\")\npublic class Factura {\n\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n\n    @Column(name = \"desc_corta\", length = 100)\n    private String descripcion;\n\n    private Double montoTotal;\n    \n    // getters y setters...\n}",
+        "PANEL_TITLE": "Criterios",
+        "WHY_TITLE": "¿Por qué?",
+        "WHY": "Puntos clave.",
+        "CRITERIA": [
+          {
+            "letter": "A",
+            "name": "Crit 1",
+            "meta": "Info",
+            "highlight": "Desc 1"
+          },
+          {
+            "letter": "B",
+            "name": "Crit 2",
+            "meta": "Info",
+            "highlight": "Desc 2"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "REPOSITORIOS",
+        "TITLE": "El milagro de CrudRepository",
+        "TAG_RIGHT": "5.2",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "1",
+            "title": "Zero Implementación",
+            "body": "En Spring Data, no programas la lógica para buscar clientes. Solo declaras una 'Interface' que hereda de CrudRepository. Spring escribe el código por debajo.",
+            "note_label": "Ahorro",
+            "note": "90% menos de código."
+          },
+          {
+            "badge": "2",
+            "title": "Métodos Gratis",
+            "body": "Sin escribir ni una línea, tu repositorio ya trae los métodos: save(), findAll(), findById(), deleteById().",
+            "note_label": "Funcionalidad",
+            "note": "CRUD Automático."
+          },
+          {
+            "badge": "3",
+            "title": "Query Methods",
+            "body": "Puedes crear consultas nombrando el método. Ej: `findByNombreAndEdad(String n, int e)`. Spring parsea el nombre en inglés y genera la query SQL.",
+            "note_label": "Poder",
+            "note": "Consultas dinámicas."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "slots": {
+        "TAG_LEFT": "ACTIVACIÓN",
+        "TITLE": "Prueba Final de Arquitectura",
+        "TAG_RIGHT": "5.3",
+        "BADGE": "Pregunta",
+        "QUESTION": "Acabamos de aprender cómo JPA se conecta a MySQL y gestiona las clases Entidades. Volviendo a la teoría del Módulo 1, ¿a qué capa arquitectónica del MVC pertenece todo lo visto en JPA (Entidades y Repositorios)?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Respuesta",
+        "EXPLANATION": "Spring Data JPA y todo lo que concierne al almacenamiento en Bases de Datos, Entidades y Repositorios, pertenece de forma absoluta y puritana a la capa de MODELO.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Opción correcta",
+            "correct": "true"
+          },
+          {
+            "key": "B",
+            "text": "Opción falsa",
+            "correct": "false"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "slots": {
+        "TAG_LEFT": "FINAL",
+        "TITLE": "Arquitectos de Software",
+        "TAG_RIGHT": "Resumen",
+        "ICON": "egiwmiit",
+        "HERO_TITLE": "Arquitectos de Software",
+        "HERO_TEXT": "Has llegado al final de la unidad.",
+        "LEFT_PANEL_TITLE": "Aprendizaje Clave",
+        "RIGHT_PANEL_TITLE": "Próximos Pasos",
+        "NEXT_LABEL": "Siguiente",
+        "NEXT": "Continuar con el curso.",
+        "TAKEAWAYS": [
+          {
+            "n": "1",
+            "text": "Repaso de conceptos."
+          }
+        ],
+        "NEXT_STEPS": [
+          {
+            "n": "1",
+            "text": "Prepararse para evaluación."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "slots": {
+        "TAG_LEFT": "MATERIAL",
+        "TITLE": "Kit de Supervivencia",
+        "TAG_RIGHT": "RECURSOS",
+        "LIST_TITLE": "Documentación Vital de Spring",
+        "QR_LABEL": "GUARDA TUS FAVORITOS",
+        "QR_DATA": "https://spring.io/projects/spring-data-jpa",
+        "QR_ALT": "QR hacia Spring Data",
+        "QR_CAPTION": "Oficial: Spring Data JPA",
+        "NEXT_LABEL": "Práctica Obligatoria",
+        "NEXT": "Revisa el archivo comprimido '1_spring-boot-data-jpa[CRUD].zip' alojado en los Recursos de la Asignatura.",
+        "RESOURCES": [
+          {
+            "icon": "egiwmiit",
+            "title": "Spring Data JPA Docs",
+            "desc": "Toda la sintaxis sobre los Query Methods de los repositorios.",
+            "url": "https://docs.spring.io/spring-data/jpa/reference/"
+          },
+          {
+            "icon": "usownftb",
+            "title": "Jakarta Bean Validation",
+            "desc": "Lista completa de anotaciones como @NotNull, @Min, @Max.",
+            "url": "https://beanvalidation.org/"
+          },
+          {
+            "icon": "qhgmphtg",
+            "title": "Thymeleaf + Spring",
+            "desc": "Cómo usar th:field en formularios.",
+            "url": "https://www.thymeleaf.org/doc/tutorials/3.1/thymeleafspring.html"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "cover",
+      "slots": {
+        "EYEBROW": "UNIDAD",
+        "TITLE": "¡Misión Cumplida!",
+        "SUBTITLE": "¿Preguntas, dudas existenciales o consultas de código? Abrimos el foro de discusión.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          {
+            "label": "Introducción",
+            "accent": "a1"
+          }
+        ]
+      },
+      "speaker_notes": "Abrir sesión de Preguntas y Respuestas sobre las responsabilidades del Modelo, Vista y Controlador."
+    }
+  ]
+}

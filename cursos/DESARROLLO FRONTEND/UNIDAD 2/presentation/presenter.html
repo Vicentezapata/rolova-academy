@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Presenter View</title>
+<script src="notas_orador.js"></script>
+<style>
+  body { margin:0; background:#0d1117; color:#c9d1d9; font-family:-apple-system,sans-serif; overflow:hidden; user-select:none; }
+  #stage { position:relative; width:100vw; height:100vh; overflow:hidden; }
+  .pcard { position:absolute; background:#161b22; border:1px solid #30363d; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.5); overflow:hidden; display:flex; flex-direction:column; }
+  .pcard-head { padding:8px 12px; background:#21262d; border-bottom:1px solid #30363d; font-size:12px; font-weight:600; letter-spacing:0.05em; display:flex; align-items:center; gap:8px; cursor:move; }
+  .pcard-dot { width:8px; height:8px; border-radius:50%; background:var(--dot-color,#8b949e); }
+  .pcard-body { flex:1; position:relative; overflow:hidden; }
+  .pcard-preview .pcard-body { background:#000; }
+  .pcard-preview iframe { position:absolute; top:0; left:0; width:1280px; height:720px; border:none; transform-origin:top left; }
+  .pcard-notes .pcard-body { padding:14px 18px; overflow-y:auto; font-size:24px; line-height:1.75; }
+  .pcard-notes .pcard-body strong { color:#f0883e; }
+  .pcard-timer .pcard-body { display:flex; flex-direction:column; gap:14px; padding:18px 20px; justify-content:center; }
+  .timer-display { font-size:48px; font-weight:700; color:#3fb950; line-height:1; }
+  .timer-row { display:flex; gap:12px; font-size:16px; color:#8b949e; }
+  .timer-controls { display:flex; gap:8px; flex-wrap:wrap; }
+  .timer-btn { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:#e6edf3; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:bold; }
+  .pcard-resize { position:absolute; right:0; bottom:0; width:18px; height:18px; cursor:nwse-resize; z-index:5; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="pcard pcard-preview" id="card-cur" style="--dot-color:#58a6ff">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">CURRENT</span></div>
+    <div class="pcard-body"><iframe id="iframe-cur"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+  <div class="pcard pcard-preview" id="card-nxt" style="--dot-color:#bc8cff">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">NEXT</span></div>
+    <div class="pcard-body"><iframe id="iframe-nxt"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+  <div class="pcard pcard-notes" id="card-notes" style="--dot-color:#f0883e">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">SPEAKER SCRIPT</span></div>
+    <div class="pcard-body" id="notes-body"></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+  <div class="pcard pcard-timer" id="card-timer" style="--dot-color:#3fb950">
+    <div class="pcard-head" data-drag><span class="pcard-dot"></span><span class="pcard-title">TIMER</span></div>
+    <div class="pcard-body">
+      <div class="timer-display" id="timer-display">00:00</div>
+      <div class="timer-row">Slide <span id="timer-count"></span></div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="btn-prev">Prev</button>
+        <button class="timer-btn" id="btn-next">Next</button>
+        <button class="timer-btn" id="btn-reset">Reset</button>
+      </div>
+    </div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+</div>
+<script>
+  window.idx = 0;
+  window.total = 41;
+  
+  function initPresenter() {
+    let bc;
+    try {
+      bc = new BroadcastChannel('ppt_channel');
+    } catch (e) {
+      console.warn("BroadcastChannel blocked.");
+      bc = { postMessage: function(msg) {} };
+    }
+    
+    function initLayout() {
+      let w = window.innerWidth || 1280;
+      let h = window.innerHeight || 820;
+      document.getElementById('card-cur').style.cssText = `left: 16px; top: 16px; width: ${w*0.55 - 24}px; height: ${h*0.62 - 16}px`;
+      document.getElementById('card-nxt').style.cssText = `left: ${w*0.55 + 8}px; top: 16px; width: ${w - w*0.55 - 24}px; height: ${h*0.42 - 16}px`;
+      document.getElementById('card-notes').style.cssText = `left: ${w*0.55 + 8}px; top: ${h*0.42 + 8}px; width: ${w - w*0.55 - 24}px; height: ${h - h*0.42 - 16}px`;
+      document.getElementById('card-timer').style.cssText = `left: 16px; top: ${h*0.62 + 8}px; width: ${w*0.55 - 24}px; height: ${h - h*0.62 - 16}px`;
+    }
+    initLayout();
+    
+    let iframeCur = document.getElementById('iframe-cur');
+    let iframeNxt = document.getElementById('iframe-nxt');
+    
+    function fitIframe(iframe) {
+        let cw = iframe.parentElement.clientWidth;
+        let ch = iframe.parentElement.clientHeight;
+        let scale = Math.min(cw/1280, ch/720);
+        iframe.style.transform = `scale(${scale})`;
+    }
+    
+    function renderState() {
+      document.getElementById('timer-count').innerText = (window.idx+1) + " / " + window.total;
+      let n = window.speakerNotes && window.speakerNotes[window.idx];
+      document.getElementById('notes-body').innerHTML = n || '<span style="color:#6e7681;font-style:italic">Sin guion</span>';
+      
+      iframeCur.src = "slides/slide_" + String(window.idx).padStart(2, '0') + ".html";
+      let nxt = window.idx + 1 < window.total ? window.idx + 1 : window.idx;
+      iframeNxt.src = "slides/slide_" + String(nxt).padStart(2, '0') + ".html";
+      
+      setTimeout(() => { 
+        fitIframe(iframeCur); fitIframe(iframeNxt); 
+        iframeCur.contentWindow.postMessage({ type: 'text-zoom', scale: textZoom }, '*');
+        iframeNxt.contentWindow.postMessage({ type: 'text-zoom', scale: textZoom }, '*');
+      }, 50);
+      bc.postMessage({ type: 'goto', idx: window.idx });
+    }
+    
+    let textZoom = 1.0;
+    function adjustTextZoom(delta) {
+      textZoom += delta;
+      if (textZoom < 0.5) textZoom = 0.5;
+      if (textZoom > 3.0) textZoom = 3.0;
+      iframeCur.contentWindow.postMessage({ type: 'text-zoom', scale: textZoom }, '*');
+      iframeNxt.contentWindow.postMessage({ type: 'text-zoom', scale: textZoom }, '*');
+      bc.postMessage({ type: 'text-zoom-sync', scale: textZoom });
+    }
+    
+    window.addEventListener('resize', () => {
+        fitIframe(iframeCur); fitIframe(iframeNxt);
+    });
+    
+    document.getElementById('btn-prev').onclick = () => { if(window.idx>0){ window.idx--; renderState(); } };
+    document.getElementById('btn-next').onclick = () => { if(window.idx<window.total-1){ window.idx++; renderState(); } };
+    
+    bc.onmessage = e => {
+      if(e.data.type === 'goto' && Number(e.data.idx) !== Number(window.idx)) { window.idx = Number(e.data.idx); renderState(); }
+      if(e.data.type === 'text-zoom-sync') {
+        textZoom = Number(e.data.scale);
+        iframeCur.contentWindow.postMessage({ type: 'text-zoom', scale: textZoom }, '*');
+        iframeNxt.contentWindow.postMessage({ type: 'text-zoom', scale: textZoom }, '*');
+      }
+    };
+    
+    bc.postMessage({type: 'req_sync'}); // Request sync on load
+    
+    let startT = Date.now();
+    let timerEl = document.getElementById('timer-display');
+    setInterval(() => {
+      let diff = Math.floor((Date.now() - startT)/1000);
+      let m = Math.floor(diff/60).toString().padStart(2,'0');
+      let s = (diff%60).toString().padStart(2,'0');
+      timerEl.innerText = m + ':' + s;
+    }, 1000);
+    document.getElementById('btn-reset').onclick = () => { startT = Date.now(); };
+    
+    document.addEventListener('keydown', e => {
+      if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', ' ', '+', '-'].includes(e.key)) e.preventDefault();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if(window.idx>0){ window.idx--; renderState(); } }
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { if(window.idx<window.total-1){ window.idx++; renderState(); } }
+      if (e.key === '+') adjustTextZoom(0.1);
+      if (e.key === '-') adjustTextZoom(-0.1);
+    });
+    
+    // Drag handlers
+    document.querySelectorAll('[data-drag]').forEach(h => {
+      h.onmousedown = e => {
+        let card = h.closest('.pcard');
+        let stX = e.clientX, stY = e.clientY;
+        let startL = parseInt(card.style.left) || 0, startT = parseInt(card.style.top) || 0;
+        card.style.zIndex = 999;
+        function onMove(ev) {
+          card.style.left = (startL + ev.clientX - stX) + 'px';
+          card.style.top = (startT + ev.clientY - stY) + 'px';
+        }
+        function onUp() { card.style.zIndex = ''; document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      };
+    });
+    
+    // Resize handlers
+    document.querySelectorAll('[data-resize]').forEach(h => {
+      h.onmousedown = e => {
+        let card = h.closest('.pcard');
+        e.stopPropagation(); e.preventDefault();
+        let stX = e.clientX, stY = e.clientY;
+        let startW = parseInt(card.style.width) || card.offsetWidth, startH = parseInt(card.style.height) || card.offsetHeight;
+        card.style.zIndex = 999;
+        function onMove(ev) {
+          card.style.width = Math.max(180, startW + ev.clientX - stX) + 'px';
+          card.style.height = Math.max(100, startH + ev.clientY - stY) + 'px';
+          fitIframe(card.querySelector('iframe'));
+        }
+        function onUp() { card.style.zIndex = ''; document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      };
+    });
+    
+    renderState();
+  }
+  
+  initPresenter();
+</script>
+</body>
+</html>

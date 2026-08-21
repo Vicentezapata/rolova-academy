@@ -1,0 +1,21 @@
+window.speakerNotes = {
+  "0": "Bienvenidos a la última unidad. Hoy vamos a unir todas las piezas del rompecabezas Frontend para entregar un producto profesional, seguro y rápido para SERCOTEC.",
+  "1": "Esta agenda cubre paso a paso los 13 indicadores de la rúbrica de evaluación sumativa.",
+  "2": "Para construir algo útil, primero debemos entender el negocio y organizar nuestro repositorio.",
+  "3": "No es una simple página estática. Deben conectar el Frontend con datos dinámicos, es decir, preparar el terreno para el CMS.",
+  "4": "Si el profesor entra al Github y ve un solo commit gigante llamado 'proyecto final', tendrán 0 puntos en el Indicador 6.",
+  "5": "No olviden incluir la documentación. Sin ella, el proyecto no es replicable y reprueba el Indicador 12.",
+  "6": "Pasemos a escribir el código de las vistas exigidas por el cliente.",
+  "7": "Esto resuelve la petición número 1 de la evaluación. La tarjeta es un componente presentacional.",
+  "8": "Les recomiendo instalar 'swiper' vía npm. Es profesional y móvil-first.",
+  "9": "Un diseño hermoso que nadie puede leer es un mal diseño. Revisen el contraste.",
+  "10": "La rúbrica exige que 'Nosotros', 'Servicios' y 'FAQ' vengan desde una API.",
+  "11": "El evaluador les pedirá en persona que expliquen la diferencia entre API y Endpoint. Esta diapositiva es su salvavidas.",
+  "12": "Este es un custom hook. Exportan los datos y el componente de la vista simplemente hace el `.map()` que vimos en la U2.",
+  "13": "Cualquiera puede hacer una página, pero pocos hacen páginas rápidas y seguras.",
+  "14": "Convertir todas las imágenes de SERCOTEC a .webp o .avif. Es un truco rápido que asombrará al evaluador.",
+  "15": "Si implementan el paquete react-google-recaptcha, aseguran la nota perfecta en el Indicador 11 de seguridad.",
+  "16": "El código está listo, ahora a documentar y reflexionar sobre nuestro trabajo como equipo.",
+  "17": "La rúbrica evalúa su capacidad crítica. Agreguen esto al documento Word final.",
+  "18": "¡Con esto finalizamos la asignatura de Desarrollo Frontend! Ha sido un placer acompañarlos. Éxito en su entrega."
+};

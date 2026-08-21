@@ -1,0 +1,1102 @@
+{
+  "pack": "fresh_green",
+  "title": "Unidad 1 — Fundamentos de Programación y Manipulación de Datos",
+  "slides": [
+    {
+      "archetype": "cover",
+      "title": "Unidad 1",
+      "notes": "Bienvenidos a la Unidad 1. Aquí comenzaremos a construir las bases prácticas de programación orientadas a la manipulación de datos en Python.",
+      "slots": {
+        "EYEBROW": "UNIDAD 1",
+        "TITLE": "Fundamentos y<br>Manipulación",
+        "SUBTITLE": "Programación para la Ciencia de Datos",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          {
+            "label": "22 Horas",
+            "accent": "var(--a1)"
+          },
+          {
+            "label": "10% Ponderación",
+            "accent": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "title": "Mapa de la Sesión",
+      "notes": "Nuestra ruta para hoy cubre desde un repaso de nuestros objetivos hasta el desarrollo de un caso logístico real con datos de transporte.",
+      "slots": {
+        "TAG_LEFT": "Unidad 1",
+        "TITLE": "Mapa de la Sesión",
+        "TAG_RIGHT": "S3",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          {
+            "num": "01",
+            "icon": "qhsqomla",
+            "title": "Repaso U0",
+            "desc": "Competencias y Metas.",
+            "chips": ""
+          },
+          {
+            "num": "02",
+            "icon": "yyecauzv",
+            "title": "Bases Python",
+            "desc": "Tipos y Estructuras.",
+            "chips": ""
+          },
+          {
+            "num": "03",
+            "icon": "wzpjhhhq",
+            "title": "Control",
+            "desc": "Condicionales y Bucles.",
+            "chips": ""
+          },
+          {
+            "num": "04",
+            "icon": "qgcohzrn",
+            "title": "Funciones",
+            "desc": "Modularidad.",
+            "chips": ""
+          },
+          {
+            "num": "05",
+            "icon": "gqdyesfu",
+            "title": "Ecosistema",
+            "desc": "Pandas y Matplotlib.",
+            "chips": ""
+          },
+          {
+            "num": "06",
+            "icon": "dxjqoygy",
+            "title": "Caso Práctico",
+            "desc": "Demanda de Buses.",
+            "chips": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 1: Conectando con la Unidad 0",
+      "notes": "Recordemos brevemente cómo encaja esta unidad en el panorama general de la asignatura.",
+      "slots": {
+        "PART_LABEL": "Bloque 1",
+        "TITLE": "Conectando con la Unidad 0",
+        "SUBTITLE": "Repaso del Programa y las Metas",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Reglas del juego"
+          },
+          {
+            "label": "1.2",
+            "text": "Competencia Global"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "metrics",
+      "title": "Recordatorio de Evaluación",
+      "notes": "La evaluación de esta unidad es el 10% de su nota final y se basa en la entrega de un script Python documentado.",
+      "slots": {
+        "TAG_LEFT": "Repaso",
+        "TITLE": "El Peso de la Unidad 1",
+        "TAG_RIGHT": "U1",
+        "LEAD": "Esta unidad sienta las bases lógicas. Su evaluación es práctica y temprana.",
+        "COLS": "3",
+        "SOURCE": "Programa de Asignatura 2025",
+        "METRICS": [
+          {
+            "label": "Horas Totales U1",
+            "value": "22",
+            "unit": "h",
+            "desc": "Dedicación esperada.",
+            "pct": "30%"
+          },
+          {
+            "label": "Ponderación",
+            "value": "10",
+            "unit": "%",
+            "desc": "De la nota final de la asignatura.",
+            "pct": "10%"
+          },
+          {
+            "label": "Metodología",
+            "value": "ABP",
+            "unit": "",
+            "desc": "Aprendizaje Basado en Problemas.",
+            "pct": "100%"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quote",
+      "title": "Competencia Global",
+      "notes": "Todo lo que veamos de condicionales, bucles y pandas está orientado a lograr esta competencia.",
+      "slots": {
+        "QUOTE": "Codificar secuencias lógicas de algoritmos para el tratamiento de datos, abordando datos de entrada, operaciones, condicionantes y datos de salida.",
+        "AUTHOR": "Competencia U1",
+        "ROLE": "Nivel de Dominio: 5",
+        "CONTEXT_LABEL": "OBJETIVO",
+        "CONTEXT": "Automatizar procesos de limpieza y transformación."
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 2: Bases de Programación en Python",
+      "notes": "Comenzaremos con la sintaxis fundamental y cómo Python guarda la información en memoria.",
+      "slots": {
+        "PART_LABEL": "Bloque 2",
+        "TITLE": "Bases de Programación",
+        "SUBTITLE": "Sintaxis, tipos y estructuras de datos.",
+        "AGENDA": [
+          {
+            "label": "2.1",
+            "text": "Tipos Primitivos"
+          },
+          {
+            "label": "2.2",
+            "text": "Estructuras Nativas"
+          },
+          {
+            "label": "2.3",
+            "text": "Sintaxis e Indentación"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Tipos de datos básicos",
+      "notes": "Toda la información del mundo real se traduce a estos tipos primitivos.",
+      "slots": {
+        "TAG_LEFT": "Bases",
+        "TITLE": "Traduciendo el Mundo a Datos",
+        "TAG_RIGHT": "U1",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "int / float",
+            "title": "Numéricos",
+            "body": "Enteros (ej. 2025) y decimales (ej. 3.14). Para cálculos, edades, precios.",
+            "note_label": "USO",
+            "note": "Operaciones matemáticas"
+          },
+          {
+            "badge": "str",
+            "title": "Cadenas (Strings)",
+            "body": "Texto delimitado por comillas ('Hola', \"Santiago\"). Permite concatenar y buscar.",
+            "note_label": "USO",
+            "note": "Categorías, nombres"
+          },
+          {
+            "badge": "bool",
+            "title": "Booleanos",
+            "body": "Valores lógicos True o False. Esenciales para tomar decisiones y filtrar.",
+            "note_label": "USO",
+            "note": "Condiciones"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "feature-matrix",
+      "title": "Estructuras Nativas",
+      "notes": "Cuando un dato aislado no basta, usamos colecciones. Aquí comparamos listas, tuplas y diccionarios.",
+      "slots": {
+        "TAG_LEFT": "Estructuras",
+        "TITLE": "Agrupando Múltiples Valores",
+        "TAG_RIGHT": "U1",
+        "LEAD": "Colecciones integradas en Python para organizar datos en memoria.",
+        "HEADERS": "<th>Estructura</th><th>Mutable</th><th class=\"best\">Ordenada</th><th>Caso de Uso</th>",
+        "NOTE_LABEL": "CLAVE",
+        "NOTE": "Las listas son el caballo de batalla, pero los diccionarios permiten búsquedas ultrarrápidas.",
+        "ROWS": [
+          {
+            "cells": "<td><b>Lista [ ]</b></td><td><span class=\"mk yes\">✓</span></td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td>Colecciones variables (ej. serie de temperaturas)</td>"
+          },
+          {
+            "cells": "<td><b>Tupla ( )</b></td><td><span class=\"mk no\">✗</span></td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td>Colecciones fijas (ej. coordenadas lat/lon)</td>"
+          },
+          {
+            "cells": "<td><b>Diccionario { }</b></td><td><span class=\"mk yes\">✓</span></td><td class=\"best\"><span class=\"mk part\">~</span></td><td>Pares clave-valor (ej. 'Santiago': 7100000)</td>"
+          },
+          {
+            "cells": "<td><b>String \" \"</b></td><td><span class=\"mk no\">✗</span></td><td class=\"best\"><span class=\"mk yes\">✓</span></td><td>Secuencia inmutable de caracteres</td>"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Sintaxis e Indentación",
+      "notes": "En Python la limpieza visual es obligatoria. No hay llaves, solo espacios.",
+      "slots": {
+        "TAG_LEFT": "Sintaxis",
+        "TITLE": "Legibilidad por Diseño",
+        "TAG_RIGHT": "U1",
+        "SPLIT": "1fr 1.3fr",
+        "LEAD": "El bloque lógico se define estrictamente por su nivel de sangría (indentación).",
+        "CALLOUT_LABEL": "ATENCIÓN",
+        "CALLOUT": "Python es case-sensitive. 'Dato' y 'dato' son variables distintas.",
+        "FILENAME": "sintaxis_basica.py",
+        "CODE": "<span class=\"c-cm\"># Ejemplo de variables y bloques</span>\n<span class=\"c-kw\">comuna</span> = <span class=\"c-str\">\"Maipú\"</span>\n<span class=\"c-kw\">validaciones</span> = <span class=\"c-num\">80000</span>\n\n<span class=\"c-kw\">if</span> validaciones > <span class=\"c-num\">50000</span>:\n    <span class=\"c-fn\">print</span>(<span class=\"c-str\">\"Alta demanda en\"</span>, comuna)\n<span class=\"c-kw\">else</span>:\n    <span class=\"c-fn\">print</span>(<span class=\"c-str\">\"Demanda normal\"</span>)",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Tipado dinámico: no se declara el tipo (int, str)."
+          },
+          {
+            "n": "2",
+            "text": "Dos puntos (:) abren un bloque condicional."
+          },
+          {
+            "n": "3",
+            "text": "Indentación de 4 espacios obligatoria."
+          },
+          {
+            "n": "4",
+            "text": "Comentarios con símbolo # ignorados por el intérprete."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Compruebo mi aprendizaje - Bases",
+      "notes": "Veamos si comprendimos la inmutabilidad.",
+      "slots": {
+        "TAG_LEFT": "Verificación",
+        "TITLE": "Mutabilidad de Colecciones",
+        "TAG_RIGHT": "U1",
+        "BADGE": "Pregunta",
+        "QUESTION": "Si intentas reasignar el primer elemento de una tupla (ej: mi_tupla[0] = 5), ¿Qué sucede?",
+        "COLS": "1",
+        "EXPLANATION_LABEL": "Respuesta",
+        "EXPLANATION": "Las tuplas son inmutables. Una vez creadas, sus elementos no pueden ser modificados. Arrojará TypeError.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "El elemento se actualiza silenciosamente.",
+            "correct": ""
+          },
+          {
+            "key": "B",
+            "text": "Python arroja un error (TypeError) por inmutabilidad.",
+            "correct": "ok"
+          },
+          {
+            "key": "C",
+            "text": "Se crea una nueva tupla automáticamente en memoria.",
+            "correct": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 3: Estructuras de Control de Flujo",
+      "notes": "Pasamos a la toma de decisiones lógicas y la repetición de tareas.",
+      "slots": {
+        "PART_LABEL": "Bloque 3",
+        "TITLE": "Control de Flujo",
+        "SUBTITLE": "If, else, for y while.",
+        "AGENDA": [
+          {
+            "label": "3.1",
+            "text": "Condicionales (Decisiones)"
+          },
+          {
+            "label": "3.2",
+            "text": "Bucles (Repeticiones)"
+          },
+          {
+            "label": "3.3",
+            "text": "Control fino (break/continue)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Condicionales Múltiples",
+      "notes": "A veces necesitamos más de dos opciones (True/False). Para eso usamos elif.",
+      "slots": {
+        "TAG_LEFT": "Decisiones",
+        "TITLE": "Anidando Lógica con elif",
+        "TAG_RIGHT": "U1",
+        "SPLIT": "1fr 1.2fr",
+        "LEAD": "if / elif / else permite evaluar múltiples condiciones en cascada.",
+        "CALLOUT_LABEL": "LÓGICA",
+        "CALLOUT": "Se ejecuta el primer bloque que evalúe como True, ignorando el resto.",
+        "FILENAME": "condicionales.py",
+        "CODE": "<span class=\"c-kw\">nota</span> = <span class=\"c-num\">6.2</span>\n\n<span class=\"c-kw\">if</span> nota < <span class=\"c-num\">4.0</span>:\n    <span class=\"c-fn\">print</span>(<span class=\"c-str\">\"Reprobado\"</span>)\n<span class=\"c-kw\">elif</span> nota >= <span class=\"c-num\">6.0</span>:\n    <span class=\"c-fn\">print</span>(<span class=\"c-str\">\"Aprobado con distinción\"</span>)\n<span class=\"c-kw\">else</span>:\n    <span class=\"c-fn\">print</span>(<span class=\"c-str\">\"Aprobado\"</span>)",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Evalúa nota < 4.0 (False)."
+          },
+          {
+            "n": "2",
+            "text": "Salta al elif y evalúa nota >= 6.0 (True)."
+          },
+          {
+            "n": "3",
+            "text": "Imprime distinción y finaliza la cascada."
+          },
+          {
+            "n": "4",
+            "text": "El bloque else actúa como captura por defecto."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "Bucles: For vs While",
+      "notes": "Compararemos el ciclo iterativo por excelencia (for) con el condicional (while).",
+      "slots": {
+        "TAG_LEFT": "Iteración",
+        "TITLE": "Eligiendo el Bucle Correcto",
+        "TAG_RIGHT": "U1",
+        "BAD_TITLE": "While (Por Condición)",
+        "BAD_SNIPPET": "<span class=\"c-kw\">while</span> fondos < <span class=\"c-num\">2M</span>:\n    fondos *= <span class=\"c-num\">1.05</span>",
+        "GOOD_TITLE": "For (Por Colección)",
+        "GOOD_SNIPPET": "<span class=\"c-kw\">for</span> comuna <span class=\"c-kw\">in</span> lista:\n    <span class=\"c-fn\">print</span>(comuna)",
+        "WHY_LABEL": "EN CIENCIA DE DATOS",
+        "WHY": "El 95% de las veces usarás <b>for</b>, ya que normalmente procesamos colecciones (filas, arrays) de tamaño conocido.",
+        "BAD_POINTS": [
+          {
+            "text": "Ejecuta mientras una condición sea True."
+          },
+          {
+            "text": "Riesgo alto de bucles infinitos."
+          },
+          {
+            "text": "Útil para converger o leer streams."
+          },
+          {
+            "text": "Menos usado en análisis tabular."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Itera sobre secuencias (listas, tuplas)."
+          },
+          {
+            "text": "Seguro y finito por diseño."
+          },
+          {
+            "text": "Se integra con range() y enumerate()."
+          },
+          {
+            "text": "El estándar para recorrer datasets a mano."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Control Fino en Bucles",
+      "notes": "Break y Continue nos permiten optimizar o saltar lógica innecesaria dentro de un bucle.",
+      "slots": {
+        "TAG_LEFT": "Control",
+        "TITLE": "Saltos y Fugas (break / continue)",
+        "TAG_RIGHT": "U1",
+        "KICKER": "OPTIMIZACIÓN",
+        "CODE_TITLE": "Saltando registros no deseados",
+        "CODE": "<span class=\"c-kw\">for</span> lluvia <span class=\"c-kw\">in</span> precipitaciones:\n    <span class=\"c-kw\">if</span> lluvia == <span class=\"c-num\">0</span>:\n        <span class=\"c-kw\">continue</span>  <span class=\"c-cm\"># Salta días sin lluvia</span>\n    \n    dias_lluviosos += <span class=\"c-num\">1</span>\n    <span class=\"c-kw\">if</span> dias_lluviosos == <span class=\"c-num\">5</span>:\n        <span class=\"c-fn\">print</span>(<span class=\"c-str\">\"5 días superados\"</span>)\n        <span class=\"c-kw\">break</span>  <span class=\"c-cm\"># Termina el bucle completo</span>",
+        "PANEL_TITLE": "Mecánica",
+        "WHY_TITLE": "Eficiencia",
+        "WHY": "Ahorra ciclos de CPU al no procesar el resto del dataset si ya no es necesario.",
+        "CRITERIA": [
+          {
+            "letter": "C",
+            "name": "Continue",
+            "meta": "Salta a la siguiente iteración.",
+            "highlight": ""
+          },
+          {
+            "letter": "B",
+            "name": "Break",
+            "meta": "Destruye el bucle y sale.",
+            "highlight": "hi"
+          },
+          {
+            "letter": "O",
+            "name": "Optimización",
+            "meta": "Evita procesamiento redundante.",
+            "highlight": ""
+          },
+          {
+            "letter": "L",
+            "name": "Legibilidad",
+            "meta": "Reduce la anidación excesiva.",
+            "highlight": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 4: Funciones",
+      "notes": "Cómo empaquetar código para que sea reutilizable y mantenible.",
+      "slots": {
+        "PART_LABEL": "Bloque 4",
+        "TITLE": "Funciones y Modularidad",
+        "SUBTITLE": "Reutilizando código para limpiar datos.",
+        "AGENDA": [
+          {
+            "label": "4.1",
+            "text": "Definición y Llamada"
+          },
+          {
+            "label": "4.2",
+            "text": "Parámetros y Retorno"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Anatomía de una Función",
+      "notes": "Desglosaremos las partes clave de una definición de función en Python.",
+      "slots": {
+        "TAG_LEFT": "Modularidad",
+        "TITLE": "Empaquetando la Lógica",
+        "TAG_RIGHT": "U1",
+        "SPEC_TITLE": "def limpiar_negativos(lista):",
+        "FIELDS": [
+          {
+            "key": "def",
+            "value": "Palabra reservada para definir función",
+            "highlight": ""
+          },
+          {
+            "key": "nombre_funcion",
+            "value": "Identificador descriptivo (snake_case)",
+            "highlight": ""
+          },
+          {
+            "key": "parámetros",
+            "value": "Datos de entrada entre paréntesis",
+            "highlight": "hi"
+          },
+          {
+            "key": "docstring",
+            "value": "Cadena de documentación entre triple comilla",
+            "highlight": ""
+          },
+          {
+            "key": "return",
+            "value": "Devuelve el resultado final",
+            "highlight": "hi"
+          }
+        ],
+        "NOTES": [
+          {
+            "n": "1",
+            "title": "Alcance (Scope)",
+            "text": "Las variables dentro de def son locales."
+          },
+          {
+            "n": "2",
+            "title": "None",
+            "text": "Si no hay return, devuelve None por defecto."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Por qué usar funciones",
+      "notes": "Justificamos su uso para preparar mentalmente el trabajo modular que pide la U1.",
+      "slots": {
+        "TAG_LEFT": "Beneficios",
+        "TITLE": "El Valor de la Modularidad",
+        "TAG_RIGHT": "U1",
+        "LEAD": "No escribas un script gigantesco (Spaghetti Code). Divide y vencerás.",
+        "CALLOUTS": [
+          {
+            "kind": "tip",
+            "icon": "lhjllvga",
+            "title": "Reutilización",
+            "text": "Llama la función múltiples veces con distintos datasets en lugar de copiar/pegar código."
+          },
+          {
+            "kind": "info",
+            "icon": "hwwxhzgs",
+            "title": "Consistencia",
+            "text": "Si aplicas limpiar_datos(df) garantizas que todos los datos pasaron exactamente por las mismas reglas."
+          },
+          {
+            "kind": "note",
+            "icon": "pithnlch",
+            "title": "Legibilidad",
+            "text": "Es más fácil leer 'procesar_archivo()' que 50 líneas de operaciones detalladas."
+          },
+          {
+            "kind": "warn",
+            "icon": "msoeawqm",
+            "title": "Testing",
+            "text": "Una función pequeña y aislada es infinitamente más fácil de probar y depurar."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 5: Ecosistema y Pandas",
+      "notes": "El plato fuerte para la ciencia de datos tabulares.",
+      "slots": {
+        "PART_LABEL": "Bloque 5",
+        "TITLE": "Ecosistema para Datos",
+        "SUBTITLE": "NumPy, Pandas y Matplotlib en acción.",
+        "AGENDA": [
+          {
+            "label": "5.1",
+            "text": "El Ecosistema (Librerías)"
+          },
+          {
+            "label": "5.2",
+            "text": "Pandas: DataFrames"
+          },
+          {
+            "label": "5.3",
+            "text": "Visualización Básica"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "Las Tres Grandes Librerías",
+      "notes": "Son el estándar de la industria en Python.",
+      "slots": {
+        "TAG_LEFT": "Librerías",
+        "TITLE": "Herramientas Especializadas",
+        "TAG_RIGHT": "U1",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "NumPy",
+            "title": "Arrays y Matrices",
+            "body": "Operaciones matemáticas vectorizadas ultra rápidas. Base de casi todo el ecosistema numérico.",
+            "note_label": "TIPO",
+            "note": "Computación numérica"
+          },
+          {
+            "badge": "Pandas",
+            "title": "DataFrames",
+            "body": "Manipulación de tablas (filas y columnas). Permite cargar CSVs, agrupar, filtrar y limpiar datos con pocas líneas.",
+            "note_label": "TIPO",
+            "note": "Análisis tabular"
+          },
+          {
+            "badge": "Matplotlib",
+            "title": "Visualización",
+            "body": "Creación de gráficos de barras, líneas y dispersión para descubrir y comunicar patrones en los datos.",
+            "note_label": "TIPO",
+            "note": "Gráficos estáticos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "Flujo de Trabajo en Pandas",
+      "notes": "Mostramos cómo se ve un script típico de análisis de datos de principio a fin.",
+      "slots": {
+        "TAG_LEFT": "Procesos",
+        "TITLE": "El Ciclo de Vida del Dato",
+        "TAG_RIGHT": "U1",
+        "LEAD": "Pasos estructurados para procesar un CSV hasta obtener un insight valioso.",
+        "COLS": "5",
+        "STEPS": [
+          {
+            "n": "01",
+            "phase": "Carga",
+            "title": "read_csv",
+            "desc": "Llevar archivo a DataFrame.",
+            "output": "Datos en memoria"
+          },
+          {
+            "n": "02",
+            "phase": "Exploración",
+            "title": "info() / head()",
+            "desc": "Entender tipos y nulos.",
+            "output": "Diagnóstico inicial"
+          },
+          {
+            "n": "03",
+            "phase": "Limpieza",
+            "title": "dropna / fillna",
+            "desc": "Manejo de inconsistencias.",
+            "output": "Dataset confiable"
+          },
+          {
+            "n": "04",
+            "phase": "Análisis",
+            "title": "Filtros y Agregación",
+            "desc": "Cruces y nuevas métricas.",
+            "output": "Resultados numéricos"
+          },
+          {
+            "n": "05",
+            "phase": "Salida",
+            "title": "Visualización",
+            "desc": "Gráficos interpretables.",
+            "output": "Reporte final"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "bento",
+      "title": "Operaciones Clave de Pandas",
+      "notes": "Algunos métodos críticos mostrados en formato mosaico.",
+      "slots": {
+        "TAG_LEFT": "Cheatsheet",
+        "TITLE": "Métodos Fundamentales de Pandas",
+        "TAG_RIGHT": "U1",
+        "TILES": [
+          {
+            "variant": "solid",
+            "col": "1 / 4",
+            "row": "1 / 3",
+            "icon": "qhsqomla",
+            "tag": "EXPLORACIÓN",
+            "stat": "",
+            "unit": "",
+            "title": "df.info()",
+            "body": "Muestra filas, tipos de columnas y conteo de valores nulos.",
+            "foot": ""
+          },
+          {
+            "variant": "outline",
+            "col": "4 / 7",
+            "row": "1 / 4",
+            "icon": "yyecauzv",
+            "tag": "AGREGACIÓN",
+            "stat": "",
+            "unit": "",
+            "title": "df.groupby()",
+            "body": "Agrupa filas según valores de una categoría para aplicar sum(), mean(), etc.",
+            "foot": ""
+          },
+          {
+            "variant": "card",
+            "col": "1 / 4",
+            "row": "3 / 7",
+            "icon": "wzpjhhhq",
+            "tag": "SELECCIÓN",
+            "stat": "",
+            "unit": "",
+            "title": "Filtros Booleanos",
+            "body": "df[df['poblacion'] > 1000] extrae solo el subconjunto de filas que cumplen.",
+            "foot": ""
+          },
+          {
+            "variant": "solid",
+            "col": "4 / 7",
+            "row": "4 / 7",
+            "icon": "qgcohzrn",
+            "tag": "ORDENAMIENTO",
+            "stat": "",
+            "unit": "",
+            "title": "sort_values()",
+            "body": "Organiza los datos. Ej: ascending=False para ver el Top 3.",
+            "foot": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "chart-bars",
+      "title": "Visualización Básica",
+      "notes": "Matplotlib permite ilustrar resultados de forma contundente.",
+      "slots": {
+        "TAG_LEFT": "Matplotlib",
+        "TITLE": "Disparidad de Población (Ejemplo)",
+        "TAG_RIGHT": "U1",
+        "LEAD": "El cerebro procesa la altura de las barras más rápido que una tabla densa de números.",
+        "COLS": "6",
+        "SCALE_TOP": "7.1M",
+        "SCALE_MID": "3.5M",
+        "SCALE_BASE": "0",
+        "READ_LABEL": "IMPACTO",
+        "READ": "Una tabla es útil, pero un gráfico expone outliers inmediatamente.",
+        "SOURCE": "Datos referenciales de regiones",
+        "BARS": [
+          {
+            "label": "RM",
+            "sub": "Centro",
+            "value": "7100000",
+            "unit": "",
+            "tone": ""
+          },
+          {
+            "label": "Valp.",
+            "sub": "Centro",
+            "value": "1800000",
+            "unit": "",
+            "tone": "alt"
+          },
+          {
+            "label": "Biobío",
+            "sub": "Sur",
+            "value": "1550000",
+            "unit": "",
+            "tone": "alt"
+          },
+          {
+            "label": "Arauc.",
+            "sub": "Sur",
+            "value": "1000000",
+            "unit": "",
+            "tone": "mute"
+          },
+          {
+            "label": "Atacama",
+            "sub": "Norte",
+            "value": "300000",
+            "unit": "",
+            "tone": "mute"
+          },
+          {
+            "label": "Aysén",
+            "sub": "Sur",
+            "value": "110000",
+            "unit": "",
+            "tone": "warn"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Compruebo mi aprendizaje - Pandas",
+      "notes": "Pequeña prueba sobre entrada de datos.",
+      "slots": {
+        "TAG_LEFT": "Revisión",
+        "TITLE": "Carga de Datos",
+        "TAG_RIGHT": "U1",
+        "BADGE": "Pregunta",
+        "QUESTION": "¿Cuál es la función estándar en Pandas para cargar un archivo tabular separado por comas?",
+        "COLS": "1",
+        "EXPLANATION_LABEL": "Respuesta",
+        "EXPLANATION": "pd.read_csv() lee directamente un CSV y lo convierte en un DataFrame estructurado.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "pd.open_file('archivo.csv')",
+            "correct": ""
+          },
+          {
+            "key": "B",
+            "text": "pd.read_csv('archivo.csv')",
+            "correct": "ok"
+          },
+          {
+            "key": "C",
+            "text": "pandas.load_data('archivo.csv')",
+            "correct": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 6: Caso Práctico",
+      "notes": "Llevaremos todo lo aprendido a un ejercicio realista enfocado en el sector público (Transportes).",
+      "slots": {
+        "PART_LABEL": "Bloque 6",
+        "TITLE": "Proyecto: Demanda de Buses",
+        "SUBTITLE": "Rehabilitación de Espacio Público.",
+        "AGENDA": [
+          {
+            "label": "6.1",
+            "text": "Contexto y Diccionario"
+          },
+          {
+            "label": "6.2",
+            "text": "Desafíos de Limpieza"
+          },
+          {
+            "label": "6.3",
+            "text": "Cálculos y Priorización"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Contexto del Caso",
+      "notes": "El caso requiere analizar datos Bip! para proponer refuerzos de flota.",
+      "slots": {
+        "TAG_LEFT": "El Caso",
+        "TITLE": "Rehabilitación de Espacio Público",
+        "TAG_RIGHT": "U1",
+        "SPEC_TITLE": "Misión del Futuro Científico de Datos",
+        "FIELDS": [
+          {
+            "key": "Organismo",
+            "value": "Ministerio de Transportes (Unidad de Planificación)",
+            "highlight": ""
+          },
+          {
+            "key": "Objetivo",
+            "value": "Priorizar refuerzo de buses en horas punta",
+            "highlight": "hi"
+          },
+          {
+            "key": "Dataset",
+            "value": "Validaciones diarias de tarjetas Bip! (1000 filas)",
+            "highlight": ""
+          },
+          {
+            "key": "Entregable",
+            "value": "Script documentado con salidas limpias e interpretables",
+            "highlight": ""
+          },
+          {
+            "key": "Etapas",
+            "value": "Lectura → Limpieza → Análisis → Visualización",
+            "highlight": ""
+          }
+        ],
+        "NOTES": [
+          {
+            "n": "1",
+            "title": "Realidad",
+            "text": "Los datos crudos nunca vienen perfectos."
+          },
+          {
+            "n": "2",
+            "title": "Impacto",
+            "text": "La priorización debe ser objetiva y justificada."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "table",
+      "title": "Diccionario y Muestra de Datos",
+      "notes": "Comprender la forma de las columnas es el paso 0 de cualquier análisis.",
+      "slots": {
+        "TAG_LEFT": "El Caso",
+        "TITLE": "Estructura del Archivo CSV",
+        "TAG_RIGHT": "U1",
+        "LEAD": "El archivo demanda_buses_amb.csv posee las siguientes columnas.",
+        "HEADERS": "<th>fecha</th><th>comuna</th><th>validaciones</th><th>buses_operativos</th><th>dia</th>",
+        "NOTE_LABEL": "META",
+        "NOTE": "A partir de 'validaciones' y 'buses_operativos' deberemos calcular indicadores de saturación.",
+        "ROWS": [
+          {
+            "cells": "<td>01/08/2025</td><td>Santiago</td><td>35795</td><td>420</td><td><span class=\"st-pill st-now\">Laboral</span></td>"
+          },
+          {
+            "cells": "<td>01/08/2025</td><td>Maipú</td><td>96820</td><td>764</td><td><span class=\"st-pill st-now\">Laboral</span></td>"
+          },
+          {
+            "cells": "<td>01/08/2025</td><td>Ñuñoa</td><td>64131</td><td>280</td><td><span class=\"st-pill st-now\">Laboral</span></td>"
+          },
+          {
+            "cells": "<td>02/08/2025</td><td>Las Condes</td><td>30658</td><td>660</td><td><span class=\"st-pill st-later\">Sábado</span></td>"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "callouts",
+      "title": "Desafíos de Calidad de Datos",
+      "notes": "Los datos tienen inconsistencias que el script debe solucionar.",
+      "slots": {
+        "TAG_LEFT": "Limpieza",
+        "TITLE": "Problemas Habituales a Resolver",
+        "TAG_RIGHT": "U1",
+        "LEAD": "No podemos analizar directamente. Debemos programar soluciones para:",
+        "CALLOUTS": [
+          {
+            "kind": "danger",
+            "icon": "msoeawqm",
+            "title": "Valores Nulos",
+            "text": "Filas con datos faltantes. Deberás decidir si rellenar o descartar."
+          },
+          {
+            "kind": "warn",
+            "icon": "pithnlch",
+            "title": "Inconsistencias de Texto",
+            "text": "Comunas escritas diferente ('Ñuñoa' vs 'Nunoa'). Requiere estandarización."
+          },
+          {
+            "kind": "info",
+            "icon": "lhjllvga",
+            "title": "Filtrado Focalizado",
+            "text": "Se requiere separar días 'Laborales' de los fines de semana para el cálculo correcto."
+          },
+          {
+            "kind": "tip",
+            "icon": "hwwxhzgs",
+            "title": "Categorización Lógica",
+            "text": "Será necesario crear rangos lógicos (Alta/Media/Baja) mediante condicionales."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Cálculos y Priorización (Laboratorio)",
+      "notes": "Este es el núcleo de la evaluación. Transformar variables en categorías.",
+      "slots": {
+        "TAG_LEFT": "Laboratorio",
+        "TITLE": "Calculando la Presión Operativa",
+        "TAG_RIGHT": "U1",
+        "ICON": "wzpjhhhq",
+        "ACTIVITY_NAME": "Ejercicio Central",
+        "INSTRUCTIONS": "Construye una nueva variable (ej. validaciones / buses) y clasifícala usando if/elif/else para determinar dónde enviar refuerzos.",
+        "COLS": "3",
+        "META": [
+          {
+            "label": "Pandas Vectorizado"
+          },
+          {
+            "label": "Estructuras Lógicas"
+          },
+          {
+            "label": "Gráfico Resultante"
+          }
+        ],
+        "CASES": [
+          {
+            "num": "1",
+            "title": "Presión Alta",
+            "desc": "Ratio > 200 validaciones por bus.",
+            "challenge_label": "ACCIÓN",
+            "challenge": "Prioridad Máxima de Refuerzo."
+          },
+          {
+            "num": "2",
+            "title": "Presión Media",
+            "desc": "Ratio entre 170 y 200.",
+            "challenge_label": "ACCIÓN",
+            "challenge": "Monitoreo y Ajustes Leves."
+          },
+          {
+            "num": "3",
+            "title": "Presión Baja",
+            "desc": "Ratio < 170.",
+            "challenge_label": "ACCIÓN",
+            "challenge": "Operación Adecuada."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quote",
+      "title": "Resultado y Toma de Decisiones",
+      "notes": "El script debe emitir una recomendación basada en los datos limpios.",
+      "slots": {
+        "QUOTE": "Una gráfica de barras ordenada por presión operativa revelará instantáneamente qué comunas sufren de sobredemanda en días laborales.",
+        "AUTHOR": "El Valor de los Datos",
+        "ROLE": "Informe Ejecutivo",
+        "CONTEXT_LABEL": "CONCLUSIÓN",
+        "CONTEXT": "Los scripts transforman ruido en políticas públicas."
+      }
+    },
+    {
+      "archetype": "resources",
+      "title": "Recursos",
+      "notes": "Cierre con lecturas y material anexo de la plataforma.",
+      "slots": {
+        "TAG_LEFT": "Bibliografía",
+        "TITLE": "Material Complementario",
+        "TAG_RIGHT": "U1",
+        "LIST_TITLE": "Lecturas y Enlaces",
+        "QR_LABEL": "ESCANEAR",
+        "QR_DATA": "https%3A%2F%2Fpandas.pydata.org%2Fdocs%2Fuser_guide%2F10min.html",
+        "QR_ALT": "QR Pandas",
+        "QR_CAPTION": "10 Minutos con Pandas",
+        "NEXT_LABEL": "Siguiente paso",
+        "NEXT": "Desarrollar la Evaluación U1.",
+        "RESOURCES": [
+          {
+            "icon": "hwwxhzgs",
+            "title": "Cuaderno de Ejercitación",
+            "desc": "Aplicación guiada paso a paso.",
+            "url": "EVA IPSS"
+          },
+          {
+            "icon": "yyecauzv",
+            "title": "Tutorial Pandas",
+            "desc": "10 minutos para pandas.",
+            "url": "pandas.pydata.org"
+          },
+          {
+            "icon": "qgcohzrn",
+            "title": "Matplotlib",
+            "desc": "Documentación oficial.",
+            "url": "matplotlib.org"
+          },
+          {
+            "icon": "dxjqoygy",
+            "title": "Introducción a Python",
+            "desc": "López & Rojas (2021).",
+            "url": "Biblioteca Digital"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "title": "Cierre",
+      "notes": "Despedida.",
+      "slots": {
+        "TAG_LEFT": "Cierre",
+        "TITLE": "Fin de la Unidad 1",
+        "TAG_RIGHT": "S3",
+        "ICON": "wzpjhhhq",
+        "HERO_TITLE": "¡Listos para Evaluar!",
+        "HERO_TEXT": "Poseen las bases teóricas y el contexto del caso. Es hora de programar.",
+        "LEFT_PANEL_TITLE": "Síntesis",
+        "RIGHT_PANEL_TITLE": "Próximos Pasos",
+        "NEXT_LABEL": "ACCIÓN",
+        "NEXT": "Comenzar el desarrollo en Python.",
+        "TAKEAWAYS": [
+          {
+            "n": "1",
+            "text": "Dominio de sintaxis y tipos nativos."
+          },
+          {
+            "n": "2",
+            "text": "Lógica firme con if, for y funciones."
+          },
+          {
+            "n": "3",
+            "text": "Pandas es el pilar de la ciencia de datos."
+          }
+        ],
+        "NEXT_STEPS": [
+          {
+            "n": "1",
+            "text": "Instalar librerías localmente."
+          },
+          {
+            "n": "2",
+            "text": "Avanzar en el Cuaderno de Ejercitación."
+          },
+          {
+            "n": "3",
+            "text": "Completar la Evaluación U1."
+          }
+        ]
+      }
+    }
+  ]
+}

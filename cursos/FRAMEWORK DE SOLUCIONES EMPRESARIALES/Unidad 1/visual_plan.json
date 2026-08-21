@@ -1,0 +1,971 @@
+{
+  "pack": "botanic_forest",
+  "title": "Unidad 1 y 2 — Fundamentos J2EE y Arquitectura Spring MVC",
+  "slides": [
+    {
+      "archetype": "cover",
+      "slots": {
+        "EYEBROW": "UNIDAD 1 Y 2",
+        "TITLE": "De Cero a Spring MVC",
+        "SUBTITLE": "Un viaje absoluto desde qué es Java en la web hasta dominar la arquitectura moderna de Spring Boot.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          {
+            "label": "Java Web",
+            "accent": "a1"
+          },
+          {
+            "label": "J2EE",
+            "accent": "a2"
+          },
+          {
+            "label": "Spring MVC",
+            "accent": "a3"
+          }
+        ]
+      },
+      "speaker_notes": "Bienvenidos a este recorrido profundo. Asumiremos que no sabes nada de Java en la web y terminaremos entendiendo por qué Spring gobierna el mercado mundial."
+    },
+    {
+      "archetype": "toc",
+      "slots": {
+        "TAG_LEFT": "AGENDA",
+        "TITLE": "Mapa del Curso",
+        "TAG_RIGHT": "Ruta",
+        "ROWS": "2",
+        "COLS": "4",
+        "ITEMS": [
+          {
+            "num": "00",
+            "icon": "egiwmiit",
+            "title": "¿Qué es Java?",
+            "desc": "Bases del lenguaje.",
+            "chips": ""
+          },
+          {
+            "num": "01",
+            "icon": "usownftb",
+            "title": "Bases Web",
+            "desc": "Servidores y J2EE.",
+            "chips": ""
+          },
+          {
+            "num": "02",
+            "icon": "lzgmgrnn",
+            "title": "Servlets",
+            "desc": "Obreros de la web.",
+            "chips": ""
+          },
+          {
+            "num": "03",
+            "icon": "qhgmphtg",
+            "title": "Magia JSP",
+            "desc": "HTML Dinámico.",
+            "chips": ""
+          },
+          {
+            "num": "04",
+            "icon": "dxjqoygy",
+            "title": "Nace Spring",
+            "desc": "Inversión de Control.",
+            "chips": ""
+          },
+          {
+            "num": "05",
+            "icon": "msoeawqm",
+            "title": "Dependencias",
+            "desc": "La magia de DI.",
+            "chips": ""
+          },
+          {
+            "num": "06",
+            "icon": "egiwmiit",
+            "title": "Spring MVC",
+            "desc": "El Patrón Arquitectónico.",
+            "chips": ""
+          },
+          {
+            "num": "07",
+            "icon": "usownftb",
+            "title": "Controladores",
+            "desc": "Rutas y Datos.",
+            "chips": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 0",
+        "TITLE": "¿Qué es Java y por qué lo usamos en la Web?",
+        "SUBTITLE": "Antes de construir una casa, debemos conocer los ladrillos.",
+        "AGENDA": [
+          {
+            "label": "0.1",
+            "text": "El lenguaje Java en palabras simples"
+          },
+          {
+            "label": "0.2",
+            "text": "Por qué es el rey corporativo"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "LENGUAJE",
+        "TITLE": "Los Pilares de Java",
+        "TAG_RIGHT": "0.1",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "1",
+            "title": "Compilado",
+            "body": "Java no se ejecuta leyendo el código en vivo. Primero se traduce a 'Bytecode', un idioma que la máquina entiende rapidísimo.",
+            "note_label": "Beneficio:",
+            "note": "Velocidad extrema."
+          },
+          {
+            "badge": "2",
+            "title": "Multiplataforma",
+            "body": "Su famoso lema: 'Escribe una vez, ejecuta donde sea'. Funciona igual en Windows, Linux o Mac gracias a la Máquina Virtual de Java (JVM).",
+            "note_label": "Beneficio:",
+            "note": "Portabilidad total."
+          },
+          {
+            "badge": "3",
+            "title": "Orientado a Objetos",
+            "body": "Todo en Java es un objeto que interactúa con otros (Ej: Objeto Usuario interactúa con Objeto Carrito).",
+            "note_label": "Beneficio:",
+            "note": "Organización perfecta."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quote",
+      "slots": {
+        "QUOTE": "\"Java no se hizo para hacer páginas web bonitas, se hizo para procesar millones de transacciones bancarias sin fallar jamás.\"",
+        "AUTHOR": "Sabiduría Corporativa",
+        "ROLE": "Arquitectos de Software",
+        "CONTEXT_LABEL": "Por qué Java:",
+        "CONTEXT": "Cuando Netflix, Amazon o un Banco operan, no confían su lógica pesada a lenguajes frágiles. Usan la robustez de Java."
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 1",
+        "TITLE": "De la consola a Internet",
+        "SUBTITLE": "¿Cómo metemos este poderoso lenguaje en una página web?",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Páginas estáticas vs Dinámicas"
+          },
+          {
+            "label": "1.2",
+            "text": "¿Qué es J2EE y un Contenedor Web?"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "slots": {
+        "TAG_LEFT": "HISTORIA",
+        "TITLE": "Web Estática vs Dinámica",
+        "TAG_RIGHT": "1.1",
+        "LEFT_LABEL": "EL PASADO",
+        "LEFT_TITLE": "Web Estática (HTML Puro)",
+        "LEFT_BODY": "El servidor busca un archivo HTML en el disco duro y se lo entrega al usuario. Siempre es el mismo contenido para todos.",
+        "LEFT_EXAMPLE": "Sitios informativos, blogs de los 90s.",
+        "LEFT_POINTS": [
+          {
+            "text": "Carga muy rápida."
+          },
+          {
+            "text": "No tiene usuarios ni carritos."
+          },
+          {
+            "text": "Sin bases de datos."
+          }
+        ],
+        "RIGHT_LABEL": "EL PRESENTE",
+        "RIGHT_TITLE": "Web Dinámica (Java Web)",
+        "RIGHT_BODY": "Un programa Java se ejecuta en el servidor. Lee la base de datos, revisa quién eres, y *construye/dibuja* el HTML a tu medida antes de enviártelo.",
+        "RIGHT_EXAMPLE": "Netflix, Amazon, Homebanking.",
+        "RIGHT_POINTS": [
+          {
+            "text": "Responde según el usuario autenticado."
+          },
+          {
+            "text": "Conecta con Bases de Datos."
+          },
+          {
+            "text": "Requiere 'poder de cómputo' extra."
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "Lógica"
+          },
+          {
+            "text": "Backend"
+          }
+        ],
+        "VS_LABEL": "VS"
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "ECOSISTEMA",
+        "TITLE": "El nacimiento de J2EE",
+        "TAG_RIGHT": "1.2",
+        "COLS": "2",
+        "CARDS": [
+          {
+            "badge": "EE",
+            "title": "Java Enterprise Edition (J2EE)",
+            "body": "Es una colección de 'Reglas' y herramientas creadas sobre Java para permitirle conectarse a bases de datos y contestar a peticiones Web de forma oficial.",
+            "note_label": "Significado",
+            "note": "Java nivel Empresarial."
+          },
+          {
+            "badge": "Server",
+            "title": "El Servidor Web (Tomcat)",
+            "body": "Java por sí solo no entiende qué es Internet. Necesita un programa externo, como Apache Tomcat, que abra el puerto de red y ponga a trabajar a tu código Java.",
+            "note_label": "Rol",
+            "note": "Orquestador Web."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "slots": {
+        "TAG_LEFT": "ACTIVACIÓN",
+        "TITLE": "Comprobación de Conocimiento",
+        "TAG_RIGHT": "1.3",
+        "BADGE": "01",
+        "QUESTION": "Si quiero que mi sitio web reconozca si un usuario es 'Premium' o 'Gratuito' consultando una base de datos para mostrarle videos diferentes, necesito...",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Respuesta correcta:",
+        "EXPLANATION": "Al requerir lectura de bases de datos y evaluación de lógica (saber si es Premium), el HTML final no existe de antemano; es generado al vuelo por la lógica de Backend. Esto es Web Dinámica.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Una página Web Estática (HTML muy grande).",
+            "correct": "false"
+          },
+          {
+            "key": "B",
+            "text": "Una Web Dinámica respaldada por un servidor Backend (como Java).",
+            "correct": "true"
+          },
+          {
+            "key": "C",
+            "text": "Instalar el compilador Java en el PC del usuario.",
+            "correct": "false"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 2",
+        "TITLE": "El Servlet: El obrero de Java",
+        "SUBTITLE": "La pieza de código que atiende tus clicks en internet.",
+        "AGENDA": [
+          {
+            "label": "2.1",
+            "text": "El concepto de Servlet"
+          },
+          {
+            "label": "2.2",
+            "text": "Ciclo de vida biológico"
+          },
+          {
+            "label": "2.3",
+            "text": "JSP: Invirtiendo los papeles"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "FUNDAMENTO",
+        "TITLE": "¿Qué demonios es un Servlet?",
+        "TAG_RIGHT": "2.1",
+        "GHOST": "SERVLET",
+        "KICKER": "EL INTERMEDIARIO",
+        "PRINCIPLE": "Una clase Java que vive dentro del Servidor Tomcat y que sabe escuchar cuando un usuario entra a tu página.",
+        "PRINCIPLE_BODY": "Un Servlet no es más que un pedazo de código Java normal, pero que obedece las órdenes de la web. Cuando tú entras a 'www.tienda.com/comprar', el servidor Tomcat busca al Servlet encargado de la palabra '/comprar', lo despierta y lo pone a trabajar.",
+        "LIST_TITLE": "Sus 3 funciones vitales:",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "1. Escuchar",
+            "text": "Recibe los datos secretos que mandó el cliente al hacer click (Request)."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "2. Procesar",
+            "text": "Hace la matemática o inserta la tarjeta en la BD (Business Logic)."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "3. Responder",
+            "text": "Escribe el texto HTML de respuesta hacia el navegador (Response)."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "color": "var(--ok)",
+            "tag": "GET",
+            "value": "doGet()",
+            "label": "Pedir",
+            "desc": "Solicitar ver una web."
+          },
+          {
+            "color": "var(--err)",
+            "tag": "POST",
+            "value": "doPost()",
+            "label": "Enviar",
+            "desc": "Subir el registro."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "slots": {
+        "TAG_LEFT": "TEORÍA",
+        "TITLE": "La Biología de un Servlet",
+        "TAG_RIGHT": "2.2",
+        "LEAD": "El Contenedor (Tomcat) controla cuándo nace y cuándo muere.",
+        "COLS": "3",
+        "STEPS": [
+          {
+            "n": "01",
+            "phase": "Nacimiento",
+            "title": "init()",
+            "desc": "Se ejecuta 1 sola vez en la vida. Ideal para abrir conexión a BD.",
+            "output": "Instanciado"
+          },
+          {
+            "n": "02",
+            "phase": "Juventud",
+            "title": "service()",
+            "desc": "Ejecutado mil veces por segundo. Atiende las peticiones concurrentes.",
+            "output": "Trabajando"
+          },
+          {
+            "n": "03",
+            "phase": "Muerte",
+            "title": "destroy()",
+            "desc": "Antes de que se apague el servidor, cierra las conexiones suavemente.",
+            "output": "Borrado"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "slots": {
+        "TAG_LEFT": "CÓDIGO",
+        "TITLE": "El dolor del Servlet puro",
+        "TAG_RIGHT": "2.3",
+        "KICKER": "CÓDIGO SPAGHETTI",
+        "CODE_TITLE": "HolaServlet.java",
+        "CODE": "public class HolaServlet extends HttpServlet {\n    protected void doGet(HttpServletRequest request, HttpServletResponse response) {\n        PrintWriter out = response.getWriter();\n        out.println(\"&lt;html&gt;\");\n        out.println(\"  &lt;body&gt;\");\n        out.println(\"    &lt;h1&gt;Hola \" + request.getParameter(\"nombre\") + \"&lt;/h1&gt;\");\n        out.println(\"  &lt;/body&gt;\");\n        out.println(\"&lt;/html&gt;\");\n    }\n}",
+        "PANEL_TITLE": "Imprimir HTML desde Java",
+        "WHY_TITLE": "¿Notas el caos?",
+        "WHY": "Poner etiquetas HTML dentro de comillas (Strings) de Java es terrible. Si el diseñador gráfico quiere cambiar un color o mover un div, ¡el programador debe editar el Java y recompilar toda la aplicación!",
+        "CRITERIA": [
+          {
+            "letter": "1",
+            "name": "Extends",
+            "meta": "Herencia",
+            "highlight": "Ata tu clase al ecosistema primitivo."
+          },
+          {
+            "letter": "2",
+            "name": "println",
+            "meta": "Salida",
+            "highlight": "Escritura de pantalla línea por línea."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "slots": {
+        "TAG_LEFT": "EVOLUCIÓN",
+        "TITLE": "JSP: El Parche Visual",
+        "TAG_RIGHT": "2.4",
+        "LEFT_LABEL": "SERVLET",
+        "LEFT_TITLE": "Java que imprime HTML",
+        "LEFT_BODY": "Diseñado para lógica compleja de negocios. Pésimo para armar diseño visual.",
+        "LEFT_EXAMPLE": "out.println(\"<h1>\");",
+        "LEFT_POINTS": [
+          {
+            "text": "Difícil de estilizar."
+          },
+          {
+            "text": "Requiere recompilar Java."
+          }
+        ],
+        "RIGHT_LABEL": "JSP",
+        "RIGHT_TITLE": "HTML que embebe Java",
+        "RIGHT_BODY": "Un archivo parecido a HTML pero que permite inyectar variables de Java usando la sintaxis <% %>.",
+        "RIGHT_EXAMPLE": "<h1>Hola <%= user %></h1>",
+        "RIGHT_POINTS": [
+          {
+            "text": "Fácil para el equipo de diseño."
+          },
+          {
+            "text": "Se convierte mágicamente en Servlet por debajo."
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "Vistas"
+          }
+        ],
+        "VS_LABEL": "VS"
+      }
+    },
+    {
+      "archetype": "activity",
+      "slots": {
+        "TAG_LEFT": "DINÁMICA",
+        "TITLE": "¿Quién hace el trabajo duro?",
+        "TAG_RIGHT": "2.5",
+        "ICON": "lzgmgrnn",
+        "ACTIVITY_NAME": "Separando Intereses",
+        "INSTRUCTIONS": "En un equipo serio, separamos la lógica (Servlets) del diseño (JSP). Define dónde codificarías cada una de estas 4 tareas.",
+        "COLS": "2",
+        "META": [
+          {
+            "label": "Arquitectura Limpia"
+          },
+          {
+            "label": "Trabajo en equipo"
+          }
+        ],
+        "CASES": [
+          {
+            "num": "1",
+            "title": "Validar Contraseña",
+            "desc": "Comprobar el hash secreto en la Base de Datos.",
+            "challenge_label": "Decisión:",
+            "challenge": "¿Servlet (Lógica) o JSP (Vista)?"
+          },
+          {
+            "num": "2",
+            "title": "Botón Rojo brillante",
+            "desc": "Diseñar los colores CSS de un botón de compra.",
+            "challenge_label": "Decisión:",
+            "challenge": "¿Servlet (Lógica) o JSP (Vista)?"
+          },
+          {
+            "num": "3",
+            "title": "Cobro Bancario",
+            "desc": "Conectarse a la API de Transbank.",
+            "challenge_label": "Decisión:",
+            "challenge": "¿Servlet (Lógica) o JSP (Vista)?"
+          },
+          {
+            "num": "4",
+            "title": "Tabla de Clientes",
+            "desc": "Estructurar las celdas (<tr> <td>) para mostrar 10 filas.",
+            "challenge_label": "Decisión:",
+            "challenge": "¿Servlet (Lógica) o JSP (Vista)?"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 3",
+        "TITLE": "El Milagro de Spring Framework",
+        "SUBTITLE": "Reescribiendo las reglas de cómo desarrollamos software empresarial.",
+        "AGENDA": [
+          {
+            "label": "3.1",
+            "text": "El problema clásico de instanciar"
+          },
+          {
+            "label": "3.2",
+            "text": "IoC (Inversión de Control)"
+          },
+          {
+            "label": "3.3",
+            "text": "Inyección de Dependencias (DI)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "PROBLEMA",
+        "TITLE": "El Infierno de las Dependencias",
+        "TAG_RIGHT": "3.1",
+        "BAD_TITLE": "Acoplamiento Duro (Malo)",
+        "BAD_SNIPPET": "public class Carrito {\n   // Yo mismo decido y construyo mi BD\n   private BD bd = new MySQL();\n}",
+        "GOOD_TITLE": "Desacoplado (Spring)",
+        "GOOD_SNIPPET": "public class Carrito {\n   // Solo digo que necesito una BD.\n   @Autowired\n   private BD bd;\n}",
+        "WHY_LABEL": "La palabra prohibida: NEW",
+        "WHY": "Si tú usas 'new' en tu código, atas de por vida tu clase Carrito a 'MySQL'. Si la empresa decide migrar a Oracle, debes buscar y reemplazar 'new MySQL()' en mil archivos. Además, ¡es imposible falsearlo para hacer Testing automatizado!",
+        "BAD_POINTS": [
+          {
+            "text": "Código rígido."
+          },
+          {
+            "text": "Imposible testear aislado."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Clases independientes."
+          },
+          {
+            "text": "Mantenimiento infinito."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "CORE",
+        "TITLE": "Inversión de Control (IoC)",
+        "TAG_RIGHT": "3.2",
+        "GHOST": "IoC",
+        "KICKER": "PRINCIPIO DE HOLLYWOOD",
+        "PRINCIPLE": "\"No nos llames a nosotros, nosotros te llamaremos\"",
+        "PRINCIPLE_BODY": "Spring actúa como un director mágico (Contenedor IoC). Tú le dices 'Soy una guitarra, necesito unas cuerdas'. Spring irá al almacén, buscará las mejores cuerdas y te las pondrá sin que tú hagas esfuerzo. El control absoluto ya no lo tienes tú, lo tiene Spring.",
+        "LIST_TITLE": "Beneficios directos:",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Global",
+            "text": "Spring inicia y vigila todos los objetos desde arriba."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Intercambio",
+            "text": "Puedes cambiar la BD sin tocar la lógica principal."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Testing Seguro",
+            "text": "Spring puede inyectarte una base de datos 'falsa' para que las pruebas no borren nada real."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "color": "var(--err)",
+            "tag": "Sin IoC",
+            "value": "Tú Buscas",
+            "label": "Pull",
+            "desc": "Vas, construyes e inicializas tus requerimientos."
+          },
+          {
+            "color": "var(--ok)",
+            "tag": "Con IoC",
+            "value": "Te Dan",
+            "label": "Push",
+            "desc": "Spring detecta qué te falta y te lo suministra."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "MECANISMOS",
+        "TITLE": "¿Cómo inyecto una dependencia?",
+        "TAG_RIGHT": "3.3",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "1",
+            "title": "Por Constructor",
+            "body": "Pides las dependencias en los paréntesis de tu clase. Si Spring no las tiene listas, el servidor se rehúsa a encender.",
+            "note_label": "Ranking",
+            "note": "Altamente Recomendado."
+          },
+          {
+            "badge": "2",
+            "title": "Por Setter",
+            "body": "Un método 'setBaseDatos()' que Spring manda a llamar después de nacer.",
+            "note_label": "Uso",
+            "note": "Solo variables opcionales."
+          },
+          {
+            "badge": "3",
+            "title": "Por Atributo",
+            "body": "Le pones @Autowired directamente a la variable privada y la reflexión de Java viola el estado privado para inyectarla.",
+            "note_label": "Práctico",
+            "note": "Útil para prototipos rápidos."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "slots": {
+        "TAG_LEFT": "PRÁCTICA",
+        "TITLE": "Anotaciones: La magia visual",
+        "TAG_RIGHT": "3.4",
+        "KICKER": "AUTO-SCANNING",
+        "CODE_TITLE": "Robot.java",
+        "CODE": "import org.springframework.stereotype.Component;\nimport org.springframework.beans.factory.annotation.Autowired;\n\n// Le decimos a Spring: \"Por favor, sé tú el dueño de esto\"\n@Component\npublic class Robot {\n    \n    // Le pedimos a Spring: \"Inserta un Motor aquí\"\n    @Autowired\n    private Motor miMotor;\n    \n    public void caminar() {\n        miMotor.encender();\n    }\n}",
+        "PANEL_TITLE": "Dos líneas lo cambian todo",
+        "WHY_TITLE": "¿Qué es un Bean?",
+        "WHY": "En jerga corporativa, a cualquier clase que lleve `@Component` y sea custodiada por el Contenedor IoC de Spring, se le llama cariñosamente 'Spring Bean'.",
+        "CRITERIA": [
+          {
+            "letter": "1",
+            "name": "@Component",
+            "meta": "Registro",
+            "highlight": "Ficha de inscripción en el registro de Spring."
+          },
+          {
+            "letter": "2",
+            "name": "@Autowired",
+            "meta": "Alambre mágico",
+            "highlight": "Orden de conectar dos Beans entre sí."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "slots": {
+        "TAG_LEFT": "ACTIVIDAD",
+        "TITLE": "A jugar con fuego",
+        "TAG_RIGHT": "3.5",
+        "BADGE": "¿?",
+        "QUESTION": "Pongo un @Autowired sobre una variable de tipo `Motor` pero nunca le puse @Component a la clase `Motor` original. ¿Qué pasará cuando encienda la aplicación web?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Respuesta correcta:",
+        "EXPLANATION": "Spring intenta inyectar el Motor, escanea todo su contenedor, no encuentra nada registrado con ese nombre y lanza una excepción fatal que bloquea todo el arranque del servidor.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Spring es listo e ignora el error, dejando la variable nula.",
+            "correct": "false"
+          },
+          {
+            "key": "B",
+            "text": "Spring usará la vieja palabra 'new' por defecto.",
+            "correct": "false"
+          },
+          {
+            "key": "C",
+            "text": "Explosión total (Excepción NoSuchBeanDefinition).",
+            "correct": "true"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 4",
+        "TITLE": "Spring Web MVC",
+        "SUBTITLE": "La joya de la corona que estructuró internet.",
+        "AGENDA": [
+          {
+            "label": "4.1",
+            "text": "Patrón Arquitectónico M-V-C"
+          },
+          {
+            "label": "4.2",
+            "text": "DispatcherServlet (El portero del club)"
+          },
+          {
+            "label": "4.3",
+            "text": "Construyendo tu primer @Controller"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "Modelo - Vista - Controlador",
+        "TAG_RIGHT": "4.1",
+        "SPLIT": "50",
+        "DIAGRAM": "flowchart LR\n    U((Navegador)) -->|Click URL| C[Controlador]\n    C <-->|Pide Data| M[(Modelo / BD)]\n    C -->|Entrega Datos| V[Vista HTML]\n    V -->|Renderiza Visual| U",
+        "SIDE_TITLE": "Orden Absoluto",
+        "LEAD": "Spring MVC te obliga a que cada archivo haga solo 1 cosa perfecta.",
+        "STEPS": [
+          {
+            "n": "M",
+            "name": "Modelo",
+            "text": "Cerebro. Clases Java con matemáticas pesadas o BD."
+          },
+          {
+            "n": "V",
+            "name": "Vista",
+            "text": "Belleza. Pantallas gráficas usando HTML, CSS, Angular o React."
+          },
+          {
+            "n": "C",
+            "name": "Controlador",
+            "text": "Gerente. Recibe la queja, busca el archivo correcto y lo envía."
+          }
+        ],
+        "NOTE_LABEL": "Ventaja Competitiva:",
+        "NOTE": "Puedes cambiar todo el diseño gráfico (Vista) sin que el programador Backend (Modelo) deba modificar una sola letra."
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "FRONT-CONTROLLER",
+        "TITLE": "El DispatcherServlet (El Rey)",
+        "TAG_RIGHT": "4.2",
+        "COLS": "3",
+        "CARDS": [
+          {
+            "badge": "01",
+            "title": "Punto de Entrada Único",
+            "body": "En J2EE antiguo se creaban 100 Servlets distintos. Spring dice: NO. Habrá un solo Mega-Servlet que atienda TODAS las visitas a nuestro sitio.",
+            "note_label": "Rol",
+            "note": "Front Controller."
+          },
+          {
+            "badge": "02",
+            "title": "Delegación",
+            "body": "El Dispatcher lee la URL '/comprar', mira su cuaderno de mapeos, y lo deriva a una pequeña clasecita @Controller tuya para que ella se encargue.",
+            "note_label": "Direccionador",
+            "note": "Handler Mapping."
+          },
+          {
+            "badge": "03",
+            "title": "El Pintor Final",
+            "body": "Tu Controlador retorna un simple texto 'pantalla5'. El Dispatcher llama a su ViewResolver para buscar el .jsp real, pintarlo y despacharlo por la red.",
+            "note_label": "Ensamblador",
+            "note": "View Resolver."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "CONTROLADOR",
+        "TITLE": "Tu primer @Controller Real",
+        "TAG_RIGHT": "4.3",
+        "SPLIT": "50",
+        "LEAD": "Es asombrosamente sencillo comparado con un Servlet antiguo.",
+        "CALLOUT_LABEL": "Magia pura",
+        "CALLOUT": "El objeto 'Model' es inyectado por Spring para que le metas variables que el diseñador web (JSP) podrá imprimir con facilidad.",
+        "FILENAME": "BienvenidaController.java",
+        "CODE": "import org.springframework.stereotype.Controller;\nimport org.springframework.web.bind.annotation.RequestMapping;\nimport org.springframework.web.bind.annotation.RequestMethod;\nimport org.springframework.ui.Model;\n\n@Controller\npublic class BienvenidaController {\n\n    @RequestMapping(value = \"/tienda\", method = RequestMethod.GET)\n    public String cargar(Model model) {\n        // Metemos una variable para el HTML\n        model.addAttribute(\"cliente_frecuente\", true);\n        \n        // Retornamos el nombre del HTML que queremos mostrar\n        return \"index_principal\";\n    }\n}",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "@Controller avisa que atiende a la red."
+          },
+          {
+            "n": "02",
+            "text": "@RequestMapping pega una URL al método."
+          },
+          {
+            "n": "03",
+            "text": "El Model pasa los datos hacia tu HTML."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "RUTAS",
+        "TITLE": "Rutas Feas vs Hermosas (REST)",
+        "TAG_RIGHT": "4.4",
+        "BAD_TITLE": "@RequestParam (Old-School)",
+        "BAD_SNIPPET": "// Se ve así: /producto?codigo=99\n@RequestMapping(\"/producto\")\npublic String ver(@RequestParam(\"codigo\") int c) {\n    return \"vista\";\n}",
+        "GOOD_TITLE": "@PathVariable (Moderno)",
+        "GOOD_SNIPPET": "// Se ve así: /producto/99\n@RequestMapping(\"/producto/{codigo}\")\npublic String ver(@PathVariable int codigo) {\n    return \"vista\";\n}",
+        "WHY_LABEL": "Query Strings vs URLs Semánticas",
+        "WHY": "El parámetro tradicional (RequestParam) fue creado para los envíos de formularios. Hoy en día, @PathVariable permite crear URLs limpias e intuitivas, lo cual es excelente para Google (SEO) y es la regla de oro para crear APIs RESTful modernas.",
+        "BAD_POINTS": [
+          {
+            "text": "Uso excesivo de símbolos ? y &."
+          },
+          {
+            "text": "Aspecto primitivo y sucio."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Mejora brutal de SEO."
+          },
+          {
+            "text": "Estructura REST real."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "comparison",
+      "slots": {
+        "TAG_LEFT": "RESPUESTAS",
+        "TITLE": "Devolver HTML vs Devolver JSON",
+        "TAG_RIGHT": "4.5",
+        "LEFT_LABEL": "TRADICIONAL",
+        "LEFT_TITLE": "Server-Side Rendering (Views)",
+        "LEFT_BODY": "El servidor Java mezcla el HTML y te entrega la página completa visualmente ya terminada.",
+        "LEFT_EXAMPLE": "return \"pagina_login\";",
+        "LEFT_POINTS": [
+          {
+            "text": "Típico en foros y blogs."
+          },
+          {
+            "text": "Recarga toda la pestaña al clickear."
+          },
+          {
+            "text": "Necesita plantillas JSP/Thymeleaf."
+          }
+        ],
+        "RIGHT_LABEL": "MODERNO (APIS)",
+        "RIGHT_TITLE": "@ResponseBody (JSON Puro)",
+        "RIGHT_BODY": "El servidor ignora los diseños y te escupe los datos en formato crudo. Tu app React o de Android se encarga de pintarlo bonito.",
+        "RIGHT_EXAMPLE": "{\"user\": \"vicente\", \"edad\": 25}",
+        "RIGHT_POINTS": [
+          {
+            "text": "Velocidad ridículamente alta."
+          },
+          {
+            "text": "Pantallas súper dinámicas (SPAs)."
+          },
+          {
+            "text": "El estándar de oro hoy (REST API)."
+          }
+        ],
+        "RIGHT_TAGS": [
+          {
+            "text": "REST"
+          },
+          {
+            "text": "API"
+          }
+        ],
+        "VS_LABEL": "VS"
+      }
+    },
+    {
+      "archetype": "closing",
+      "slots": {
+        "TAG_LEFT": "SÍNTESIS",
+        "TITLE": "El Fin del Principio",
+        "TAG_RIGHT": "FINAL",
+        "ICON": "qhgmphtg",
+        "HERO_TITLE": "De Servlets al infinito MVC",
+        "HERO_TEXT": "Has aprendido cómo la web ha evolucionado desde torpes Servlets imprimiendo HTML, hasta la magia de Spring Framework con su Inyección de Dependencias, logrando un código limpio, desacoplado y profesional.",
+        "LEFT_PANEL_TITLE": "LO QUE YA SABES",
+        "RIGHT_PANEL_TITLE": "TU PRÓXIMO RETO",
+        "NEXT_LABEL": "Siguiente Escalón",
+        "NEXT": "Aprender a conectar nuestro maravilloso Backend con una Base de Datos real usando JPA.",
+        "TAKEAWAYS": [
+          {
+            "n": "1",
+            "text": "Java Web crea respuestas dinámicas."
+          },
+          {
+            "n": "2",
+            "text": "El Servlet recibe, el JSP diseña."
+          },
+          {
+            "n": "3",
+            "text": "Spring usa IoC para controlar todo."
+          },
+          {
+            "n": "4",
+            "text": "MVC separa nuestro caos en bloques perfectos."
+          }
+        ],
+        "NEXT_STEPS": [
+          {
+            "n": "1",
+            "text": "Capa de Datos (DAO)."
+          },
+          {
+            "n": "2",
+            "text": "Inyectar dependencias con Hibernate."
+          },
+          {
+            "n": "3",
+            "text": "Tu primera API RESTful de verdad."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "slots": {
+        "TAG_LEFT": "MATERIAL",
+        "TITLE": "Para Seguir Explorando",
+        "TAG_RIGHT": "RECURSOS",
+        "LIST_TITLE": "Documentación Oficial y Guías",
+        "QR_LABEL": "ESCANEA PARA LEER MÁS",
+        "QR_DATA": "https://spring.io/guides",
+        "QR_ALT": "Código QR hacia Spring Guides",
+        "QR_CAPTION": "Guías rápidas oficiales de Spring",
+        "NEXT_LABEL": "Recomendación",
+        "NEXT": "Guarda estos enlaces en tus favoritos.",
+        "RESOURCES": [
+          {
+            "icon": "egiwmiit",
+            "title": "Spring Framework Docs",
+            "desc": "Documentación oficial sobre IoC y DI.",
+            "url": "https://docs.spring.io/"
+          },
+          {
+            "icon": "usownftb",
+            "title": "Baeldung - Spring Tutorial",
+            "desc": "El mejor blog para aprender Spring paso a paso.",
+            "url": "https://www.baeldung.com/"
+          },
+          {
+            "icon": "qhgmphtg",
+            "title": "Java EE API",
+            "desc": "Para entender a fondo la clase HttpServlet.",
+            "url": "https://javaee.github.io/javaee-spec/"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "cover",
+      "slots": {
+        "EYEBROW": "FIN DE LA UNIDAD",
+        "TITLE": "¡Muchas Gracias!",
+        "SUBTITLE": "¿Hay alguna pregunta sobre el ecosistema Java o Spring Framework?",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          {
+            "label": "Q&A",
+            "accent": "a1"
+          }
+        ]
+      },
+      "speaker_notes": "Agradecer a los estudiantes y abrir espacio para dudas y consultas."
+    }
+  ]
+}

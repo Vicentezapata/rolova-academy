@@ -1,0 +1,276 @@
+{
+  "pack": "chrome_y2k",
+  "title": "Unidad 4 — React Nivel Avanzado: Estado, Rendimiento y Testing",
+  "slides": [
+    {
+      "archetype": "cover",
+      "slots": {
+        "EYEBROW": "DESARROLLO FRONTEND AVANZADO",
+        "TITLE": "React Nivel Avanzado: Estado, Rendimiento y Testing",
+        "SUBTITLE": "Lleva tus aplicaciones al estándar de la industria. Domina el estado global, optimiza el rendimiento y asegura la calidad del código mediante testing profesional.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          { "label": "CONTEXT API", "accent": "a1" },
+          { "label": "PERFORMANCE", "accent": "a2" },
+          { "label": "TESTING", "accent": "a3" }
+        ]
+      },
+      "speaker_notes": "Bienvenidos a la Unidad 4. En esta sesión daremos el salto cualitativo desde crear interfaces funcionales a construir arquitecturas de grado empresarial."
+    },
+    {
+      "archetype": "toc",
+      "slots": {
+        "TAG_LEFT": "AGENDA",
+        "TITLE": "¿Qué aprenderemos hoy?",
+        "TAG_RIGHT": "U4",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          { "num": "01", "icon": "egiwmiit", "title": "Hooks Avanzados", "desc": "useRef y la construcción de Custom Hooks.", "chips": "" },
+          { "num": "02", "icon": "dxjqoygy", "title": "Estado Global", "desc": "Context API y solución al Prop Drilling.", "chips": "" },
+          { "num": "03", "icon": "msoeawqm", "title": "Data Fetching", "desc": "Consumo moderno de APIs con Axios y Caché.", "chips": "" },
+          { "num": "04", "icon": "lupuorrc", "title": "Performance", "desc": "React.memo, useMemo y useCallback.", "chips": "" },
+          { "num": "05", "icon": "usownftb", "title": "Testing Unitario", "desc": "Pruebas de componentes con Vitest y RTL.", "chips": "" },
+          { "num": "06", "icon": "gqdnbnwt", "title": "Mejores Prácticas", "desc": "Arquitectura limpia y despliegue continuo.", "chips": "" }
+        ]
+      },
+      "speaker_notes": "Este es el recorrido para convertirse en desarrolladores Frontend Senior."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 1",
+        "TITLE": "Hooks Avanzados y Custom Hooks",
+        "SUBTITLE": "Más allá de useState y useEffect: Manipulando el DOM directamente y encapsulando lógica compleja.",
+        "AGENDA": [
+          { "label": "1.1", "text": "useRef: Acceso al DOM" },
+          { "label": "1.2", "text": "useRef: Variables Mutables" },
+          { "label": "1.3", "text": "Creando Custom Hooks" }
+        ]
+      },
+      "speaker_notes": "Comenzaremos explorando useRef y cómo podemos crear nuestros propios hooks para reutilizar código."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "HOOKS",
+        "TITLE": "El poder de useRef",
+        "TAG_RIGHT": "1.1",
+        "SPLIT": "50",
+        "LEAD": "A diferencia de `useState`, `useRef` permite mantener un valor mutable que **NO** provoca un re-renderizado cuando cambia.",
+        "CALLOUT_LABEL": "Casos de Uso",
+        "CALLOUT": "Se utiliza principalmente para acceder a elementos del DOM directamente (ej: enfocar un input) o guardar IDs de temporizadores.",
+        "FILENAME": "src/components/FocusInput.jsx",
+        "CODE": "import { useRef } from 'react';\n\nconst FocusInput = () => {\n  const inputRef = useRef(null);\n\n  const handleFocus = () => {\n    // Acceso directo a la API del DOM\n    inputRef.current.focus();\n    inputRef.current.style.border = '2px solid cyan';\n  };\n\n  return (\n    <div>\n      <input ref={inputRef} type=\"text\" />\n      <button onClick={handleFocus}>Enfocar</button>\n    </div>\n  );\n};",
+        "STEPS": [
+          { "n": "01", "text": "Inicializamos el ref con `null`." },
+          { "n": "02", "text": "Conectamos el ref al atributo `ref` del elemento JSX." },
+          { "n": "03", "text": "Accedemos al nodo real mediante `.current`." }
+        ]
+      },
+      "speaker_notes": "useRef es nuestra 'escotilla de escape' hacia el DOM real cuando React no es suficiente."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "Construyendo un Custom Hook",
+        "TAG_RIGHT": "1.2",
+        "SPLIT": "40",
+        "LEAD": "Un Custom Hook es simplemente una función JavaScript que empieza con la palabra `use` y llama a otros Hooks.",
+        "CALLOUT_LABEL": "DRY Principle",
+        "CALLOUT": "Don't Repeat Yourself. Si notas que copias y pegas la misma lógica de useEffect, conviértela en un Hook.",
+        "FILENAME": "src/hooks/useFetch.js",
+        "CODE": "export const useFetch = (url) => {\n  const [data, setData] = useState(null);\n  const [loading, setLoading] = useState(true);\n\n  useEffect(() => {\n    setLoading(true);\n    fetch(url)\n      .then(res => res.json())\n      .then(data => {\n        setData(data);\n        setLoading(false);\n      });\n  }, [url]);\n\n  return { data, loading };\n};",
+        "STEPS": [
+          { "n": "01", "text": "Definimos los estados internos del Hook." },
+          { "n": "02", "text": "Ejecutamos la lógica de petición cada vez que cambia la URL." },
+          { "n": "03", "text": "Retornamos un objeto (o array) con los valores que el componente necesita." }
+        ]
+      },
+      "speaker_notes": "Crear tus propios hooks es el primer paso hacia una arquitectura de código verdaderamente reutilizable y limpia."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 2",
+        "TITLE": "Manejo de Estado Global",
+        "SUBTITLE": "Resolviendo el problema del Prop Drilling mediante React Context API.",
+        "AGENDA": [
+          { "label": "2.1", "text": "El Anti-patrón: Prop Drilling" },
+          { "label": "2.2", "text": "Context API: Provider y Consumer" },
+          { "label": "2.3", "text": "Cuándo usar Context vs Zustand" }
+        ]
+      },
+      "speaker_notes": "A medida que nuestras aplicaciones crecen, pasar propiedades de padres a hijos se vuelve insostenible."
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "El problema del Prop Drilling",
+        "TAG_RIGHT": "2.1",
+        "BAD_TITLE": "Prop Drilling (Malo)",
+        "BAD_SNIPPET": "<App user={user}>\n  <Header user={user}>\n    <Nav user={user}>\n      <ProfileAvatar user={user} />\n    </Nav>\n  </Header>\n</App>",
+        "GOOD_TITLE": "Context API (Bueno)",
+        "GOOD_SNIPPET": "<UserProvider value={user}>\n  <App>\n    <Header>\n      <Nav>\n        <ProfileAvatar /> {/* Accede directo al context */}\n      </Nav>\n    </Header>\n  </App>\n</UserProvider>",
+        "WHY_LABEL": "El Problema",
+        "WHY": "Pasar props a través de múltiples niveles de componentes que no los necesitan (solo para dárselos a un nieto) ensucia el código y dificulta la refactorización.",
+        "BAD_POINTS": [
+          { "text": "Componentes acoplados a props innecesarios." },
+          { "text": "Dificulta reutilizar componentes." }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Inyección de dependencias limpia." },
+          { "text": "Los componentes solo consumen lo que necesitan." }
+        ]
+      },
+      "speaker_notes": "El Prop Drilling es el mayor enemigo de la mantenibilidad en React."
+    },
+    {
+      "archetype": "code-criteria",
+      "slots": {
+        "TAG_LEFT": "CONTEXT",
+        "TITLE": "Implementando Context API",
+        "TAG_RIGHT": "2.2",
+        "KICKER": "FLUJO DE DATOS",
+        "CODE_TITLE": "src/context/ThemeContext.jsx",
+        "CODE": "import { createContext, useContext, useState } from 'react';\n\n// 1. Crear el Contexto\nconst ThemeContext = createContext();\n\n// 2. Crear el Provider\nexport const ThemeProvider = ({ children }) => {\n  const [theme, setTheme] = useState('dark');\n  \n  const toggleTheme = () => \n    setTheme(t => t === 'dark' ? 'light' : 'dark');\n\n  return (\n    <ThemeContext.Provider value={{ theme, toggleTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n};\n\n// 3. Custom Hook de Consumo\nexport const useTheme = () => useContext(ThemeContext);",
+        "PANEL_TITLE": "Pasos para Context",
+        "WHY_TITLE": "¿Por qué encapsular el useContext?",
+        "WHY": "Crear un custom hook `useTheme` evita tener que importar `ThemeContext` y `useContext` en cada archivo. Mejora la limpieza y prevención de errores.",
+        "CRITERIA": [
+          { "letter": "1", "name": "createContext", "meta": "Inicializa", "highlight": "El almacén" },
+          { "letter": "2", "name": "Provider", "meta": "Envuelve", "highlight": "La App" },
+          { "letter": "3", "name": "useContext", "meta": "Lee", "highlight": "El valor" }
+        ]
+      },
+      "speaker_notes": "Esta es la estructura profesional para implementar un Contexto. Proveedor por fuera, custom hook por dentro."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 3",
+        "TITLE": "Optimización y Rendimiento",
+        "SUBTITLE": "Haciendo que tu aplicación corra a 60 FPS evitando re-renders costosos.",
+        "AGENDA": [
+          { "label": "3.1", "text": "El ciclo de Renderizado" },
+          { "label": "3.2", "text": "React.memo" },
+          { "label": "3.3", "text": "useMemo (Cálculos pesados)" },
+          { "label": "3.4", "text": "useCallback (Funciones estables)" }
+        ]
+      },
+      "speaker_notes": "En aplicaciones empresariales, un mal manejo del rendimiento puede congelar el navegador del cliente."
+    },
+    {
+      "archetype": "timeline",
+      "slots": {
+        "TAG_LEFT": "RENDIMIENTO",
+        "TITLE": "Herramientas de Memorización",
+        "TAG_RIGHT": "3.1",
+        "LEAD": "React re-renderiza un componente hijo cada vez que el padre se renderiza. Podemos detener este flujo si las props no han cambiado usando memorización (caché).",
+        "COLS": "3",
+        "STEPS": [
+          { "n": "01", "phase": "Componentes", "title": "React.memo()", "desc": "Envuelve un componente. Solo se re-renderizará si sus Props cambian de valor explícitamente.", "output": "Memoriza UI" },
+          { "n": "02", "phase": "Cálculos", "title": "useMemo()", "desc": "Guarda el resultado de una función costosa (ej: iterar 10,000 elementos) para no recalcularla en cada render.", "output": "Memoriza Valor" },
+          { "n": "03", "phase": "Funciones", "title": "useCallback()", "desc": "Evita que una función se recree en memoria. Útil cuando pasas funciones como Props a componentes memorizados.", "output": "Memoriza Función" }
+        ]
+      },
+      "speaker_notes": "Cuidado con la memorización prematura. Úsenla solo cuando demuestren con el Profiler que hay un problema de rendimiento."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "PERFORMANCE",
+        "TITLE": "Aplicando useMemo y useCallback",
+        "TAG_RIGHT": "3.2",
+        "SPLIT": "50",
+        "LEAD": "Mantenemos la identidad referencial de los valores para evitar re-renders en componentes hijos puros.",
+        "CALLOUT_LABEL": "Regla de Oro",
+        "CALLOUT": "El array de dependencias en useMemo y useCallback funciona igual que en useEffect: si un valor cambia, la caché se invalida.",
+        "FILENAME": "src/components/Dashboard.jsx",
+        "CODE": "import { useState, useMemo, useCallback } from 'react';\n\nconst Dashboard = ({ usuarios }) => {\n  const [query, setQuery] = useState('');\n\n  // 1. Evita filtrar miles de usuarios en cada tipeo\n  const filtrados = useMemo(() => {\n    return usuarios.filter(u => u.name.includes(query));\n  }, [usuarios, query]); // <-- Dependencias\n\n  // 2. Mantiene la misma firma de memoria\n  const handleDelete = useCallback((id) => {\n    console.log(\"Eliminando\", id);\n  }, []);\n\n  return (\n    <DataGrid \n      data={filtrados} \n      onDelete={handleDelete} \n    />\n  );\n};",
+        "STEPS": [
+          { "n": "01", "text": "useMemo procesa la lista solo cuando 'usuarios' o 'query' cambian." },
+          { "n": "02", "text": "useCallback asegura que handleDelete sea exactamente la misma función en memoria en cada render." }
+        ]
+      },
+      "speaker_notes": "Sin useCallback, DataGrid (si estuviera memorizado con React.memo) se re-renderizaría de todas formas porque la función handleDelete sería un nuevo objeto en memoria."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 4",
+        "TITLE": "Testing y Depuración",
+        "SUBTITLE": "Asegurando la calidad del código mediante pruebas automatizadas.",
+        "AGENDA": [
+          { "label": "4.1", "text": "Por qué hacemos Testing" },
+          { "label": "4.2", "text": "Jest y Vitest" },
+          { "label": "4.3", "text": "React Testing Library" },
+          { "label": "4.4", "text": "Mocking de Eventos y APIs" }
+        ]
+      },
+      "speaker_notes": "Código sin tests es código heredado (legacy code) desde el momento en que se escribe."
+    },
+    {
+      "archetype": "bento",
+      "slots": {
+        "TAG_LEFT": "TESTING",
+        "TITLE": "Ecosistema de Pruebas",
+        "TAG_RIGHT": "4.1",
+        "TILES": [
+          { "variant": "accent", "col": "1 / 4", "row": "1 / 4", "icon": "usownftb", "tag": "CORREDOR", "stat": "", "unit": "", "title": "Vitest / Jest", "body": "Es el Test Runner. Provee el entorno de ejecución, aserciones (`expect(x).toBe(y)`) y capacidades para 'burlarse' (mock) de módulos enteros.", "foot": "" },
+          { "variant": "feature", "col": "4 / 7", "row": "1 / 4", "icon": "egiwmiit", "tag": "DOM", "stat": "", "unit": "", "title": "React Testing Library", "body": "Librería de utilidades para renderizar componentes en un DOM virtual y simular interacciones de usuario de manera accesible.", "foot": "" },
+          { "variant": "outline", "col": "1 / 7", "row": "4 / 6", "icon": "msoeawqm", "tag": "FILOSOFÍA", "stat": "", "unit": "", "title": "Testea Comportamiento, No Implementación", "body": "No pruebes que un estado interno cambió. Prueba que al hacer click en el botón, el mensaje de éxito aparece en la pantalla.", "foot": "" }
+        ]
+      },
+      "speaker_notes": "React Testing Library (RTL) nos fuerza a escribir tests desde la perspectiva del usuario final."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "RTL",
+        "TITLE": "Escribiendo tu primer Test",
+        "TAG_RIGHT": "4.2",
+        "SPLIT": "50",
+        "LEAD": "Estructura AAA: Arrange (Preparar), Act (Actuar), Assert (Comprobar).",
+        "CALLOUT_LABEL": "Simulación",
+        "CALLOUT": "Usamos `userEvent` en lugar de `fireEvent` porque simula con mayor fidelidad las interacciones reales del navegador.",
+        "FILENAME": "src/components/Counter.test.jsx",
+        "CODE": "import { render, screen } from '@testing-library/react';\nimport userEvent from '@testing-library/user-event';\nimport Counter from './Counter';\n\ntest('incrementa el contador al hacer click', async () => {\n  // 1. Arrange (Preparar)\n  render(<Counter initial={0} />);\n  \n  const button = screen.getByRole('button', { name: /sumar/i });\n  const result = screen.getByText(/total: 0/i);\n\n  // 2. Act (Actuar)\n  await userEvent.click(button);\n\n  // 3. Assert (Comprobar)\n  expect(screen.getByText(/total: 1/i)).toBeInTheDocument();\n});",
+        "STEPS": [
+          { "n": "01", "text": "Renderizamos el componente de forma aislada." },
+          { "n": "02", "text": "Buscamos los elementos usando selectores accesibles (getByRole)." },
+          { "n": "03", "text": "Simulamos un click asíncrono y verificamos el resultado visual." }
+        ]
+      },
+      "speaker_notes": "Con esto aseguramos que cualquier cambio futuro en el código no rompa la funcionalidad principal de la aplicación."
+    },
+    {
+      "archetype": "closing",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "El Siguiente Nivel",
+        "TAG_RIGHT": "FINAL",
+        "ICON": "qhgmphtg",
+        "HERO_TITLE": "React Listo para Producción",
+        "HERO_TEXT": "Has dominado el estado global, optimizado el rendimiento y asegurado la calidad del código. Estás listo para escalar cualquier aplicación.",
+        "LEFT_PANEL_TITLE": "REQUISITOS AVANZADOS",
+        "RIGHT_PANEL_TITLE": "COMANDOS DE TEST",
+        "NEXT_LABEL": "Desafío",
+        "NEXT": "Implementa Redux o Zustand en tu proyecto",
+        "TAKEAWAYS": [
+          { "n": "1", "text": "El Prop Drilling tiene solución con Context." },
+          { "n": "2", "text": "No memorices sin medir el rendimiento antes." },
+          { "n": "3", "text": "Testea comportamientos, no código interno." }
+        ],
+        "NEXT_STEPS": [
+          { "n": "1", "text": "npm run test" },
+          { "n": "2", "text": "npm run build" },
+          { "n": "3", "text": "Despliegue a Vercel/Netlify" }
+        ]
+      },
+      "speaker_notes": "Felicidades. Ahora tienen las habilidades para postularse como Desarrolladores Frontend en entornos profesionales de alta exigencia."
+    }
+  ]
+}

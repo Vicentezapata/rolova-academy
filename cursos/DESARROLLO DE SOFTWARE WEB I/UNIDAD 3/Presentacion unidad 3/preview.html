@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -49,7 +49,8 @@
   }
   
   .slide-wrap {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
@@ -70,7 +71,8 @@
     height: calc(100vh - 60px);
   }
   .stage.overview .slide-wrap {
-    display: block !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
     position: relative;
     width: 256px; height: 144px;
     cursor: pointer;
@@ -190,11 +192,13 @@
   function show(idx) {
     document.querySelectorAll('.slide-wrap').forEach((el, i) => {
       if (isOverview) {
-        el.style.display = 'block';
+        el.style.opacity = '1';
+        el.style.pointerEvents = 'auto';
         if (i === idx) el.classList.add('active');
         else el.classList.remove('active');
       } else {
-        el.style.display = i === idx ? 'block' : 'none';
+        el.style.opacity = i === idx ? '1' : '0';
+        el.style.pointerEvents = i === idx ? 'auto' : 'none';
         el.classList.remove('active');
       }
     });
@@ -324,7 +328,7 @@
 <script>
   // Add variables directly to window from parent
   window.idx = 0;
-  window.total = 34;
+  window.total = 25;
   window.speakerNotes = window.opener.speakerNotes;
   
   function initPresenter() {

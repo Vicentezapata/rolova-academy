@@ -1,0 +1,1376 @@
+{
+  "pack": "cyberpunk_neon",
+  "title": "Unidad 2 — Construyendo la Web Moderna: React, UI y Usuarios",
+  "slides": [
+    {
+      "archetype": "cover",
+      "slots": {
+        "EYEBROW": "DESARROLLO FRONTEND AVANZADO",
+        "TITLE": "Construyendo la Web Moderna: React, UI y Usuarios",
+        "SUBTITLE": "Aprende a construir aplicaciones interactivo y supérate rediseñando el sitio web municipal. Abordaremos eventos, DOM, validaciones, patrones de diseño y frameworks.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          {
+            "label": "EVALUACIÓN SUMATIVA 2",
+            "accent": "a1"
+          },
+          {
+            "label": "REACT + MUI",
+            "accent": "a2"
+          },
+          {
+            "label": "UI / UX RESPONSIVO",
+            "accent": "a3"
+          }
+        ]
+      },
+      "speaker_notes": "Bienvenidos a la Unidad 2. Hoy no solo aprenderemos la teoría, sino que la aplicaremos directamente a su próximo proyecto evaluado: el rediseño del sitio web de la Municipalidad de Cholchol."
+    },
+    {
+      "archetype": "toc",
+      "slots": {
+        "TAG_LEFT": "AGENDA",
+        "TITLE": "¿Qué aprenderemos hoy?",
+        "TAG_RIGHT": "U2",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          {
+            "num": "01",
+            "icon": "dxjqoygy",
+            "title": "Diseño UX/UI",
+            "desc": "Principios centrados en el usuario y accesibilidad.",
+            "chips": ""
+          },
+          {
+            "num": "02",
+            "icon": "msoeawqm",
+            "title": "Proyecto Final",
+            "desc": "Contexto y requerimientos del rediseño municipal.",
+            "chips": ""
+          },
+          {
+            "num": "03",
+            "icon": "qhgmphtg",
+            "title": "Arquitectura",
+            "desc": "Vite, Git, y convenciones de código profesional.",
+            "chips": ""
+          },
+          {
+            "num": "04",
+            "icon": "wxnxiano",
+            "title": "React Core",
+            "desc": "Componentes, patrones, props, estado y eventos.",
+            "chips": ""
+          },
+          {
+            "num": "05",
+            "icon": "nocovwne",
+            "title": "Formularios",
+            "desc": "Validaciones en tiempo real y modificación dinámica.",
+            "chips": ""
+          },
+          {
+            "num": "06",
+            "icon": "gqdnbnwt",
+            "title": "Frameworks UI",
+            "desc": "Diseño responsivo, useEffect y consumo de APIs.",
+            "chips": ""
+          }
+        ]
+      },
+      "speaker_notes": "Esta es la ruta crítica para aprobar su evaluación sumativa con máxima nota."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 1",
+        "TITLE": "Diseño Centrado en el Usuario",
+        "SUBTITLE": "El código más perfecto no sirve de nada si el usuario no puede utilizar la interfaz. (CE5, CE6)",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "El Problema del Aprendizaje"
+          },
+          {
+            "label": "1.2",
+            "text": "El Panal de UX"
+          },
+          {
+            "label": "1.3",
+            "text": "Fases UCD"
+          },
+          {
+            "label": "1.4",
+            "text": "Accesibilidad (WCAG)"
+          }
+        ]
+      },
+      "speaker_notes": "Comenzaremos con la teoría detrás de una interfaz verdaderamente útil."
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "MARCO TEÓRICO",
+        "TITLE": "Enseñar programación en el siglo XXI",
+        "TAG_RIGHT": "1.1",
+        "GHOST": "21",
+        "KICKER": "EL PROBLEMA DEL APRENDIZAJE PASIVO",
+        "PRINCIPLE": "La codificación interactiva desde el primer minuto supera la ilusión de competencia.",
+        "PRINCIPLE_BODY": "Los tutoriales pasivos generan una falsa confianza. El estudiante entiende mientras observa, pero se bloquea al abrir el editor. La tasa de abandono es alta cuando la práctica llega demasiado tarde.",
+        "LIST_TITLE": "Principios Didácticos Aplicados",
+        "FACTORS": [
+          {
+            "name": "Aprendizaje Activo",
+            "text": "Codificar junto al instructor desde el arranque.",
+            "color": "a1"
+          },
+          {
+            "name": "Accesibilidad",
+            "text": "Evitar jerga innecesaria en etapas iniciales.",
+            "color": "a2"
+          },
+          {
+            "name": "Utilidad",
+            "text": "Al final del taller, tendrán herramientas para aprobar su examen.",
+            "color": "a3"
+          }
+        ],
+        "EXAMPLES": []
+      },
+      "speaker_notes": "Nuestro marco pedagógico se basa en ensuciarnos las manos rápido."
+    },
+    {
+      "archetype": "bento",
+      "slots": {
+        "TAG_LEFT": "UX",
+        "TITLE": "El Panal de UX de Peter Morville",
+        "TAG_RIGHT": "1.2",
+        "TILES": [
+          {
+            "variant": "",
+            "col": "1 / 3",
+            "row": "1 / 3",
+            "icon": "egiwmiit",
+            "tag": "UCD",
+            "stat": "",
+            "unit": "",
+            "title": "Útil",
+            "body": "Satisface necesidades reales.",
+            "foot": ""
+          },
+          {
+            "variant": "outline",
+            "col": "3 / 5",
+            "row": "1 / 3",
+            "icon": "dxjqoygy",
+            "tag": "UX",
+            "stat": "",
+            "unit": "",
+            "title": "Usable",
+            "body": "Intuitivo y baja curva de aprendizaje.",
+            "foot": ""
+          },
+          {
+            "variant": "accent",
+            "col": "5 / 7",
+            "row": "1 / 3",
+            "icon": "lupuorrc",
+            "tag": "EMOCIÓN",
+            "stat": "",
+            "unit": "",
+            "title": "Deseable",
+            "body": "Apelación estética y emocional.",
+            "foot": ""
+          },
+          {
+            "variant": "outline",
+            "col": "1 / 4",
+            "row": "3 / 5",
+            "icon": "msoeawqm",
+            "tag": "NAVEGACIÓN",
+            "stat": "",
+            "unit": "",
+            "title": "Encontrable",
+            "body": "Si el usuario no lo encuentra, no existe.",
+            "foot": ""
+          },
+          {
+            "variant": "feature",
+            "col": "4 / 7",
+            "row": "3 / 5",
+            "icon": "usownftb",
+            "tag": "WCAG",
+            "stat": "",
+            "unit": "",
+            "title": "Accesible",
+            "body": "Inclusivo para todos, cumple WCAG.",
+            "foot": ""
+          },
+          {
+            "variant": "",
+            "col": "1 / 4",
+            "row": "5 / 7",
+            "icon": "egiwmiit",
+            "tag": "TRUST",
+            "stat": "",
+            "unit": "",
+            "title": "Creíble",
+            "body": "Genera confianza en la marca.",
+            "foot": ""
+          },
+          {
+            "variant": "outline",
+            "col": "4 / 7",
+            "row": "5 / 7",
+            "icon": "gqdnbnwt",
+            "tag": "ROI",
+            "stat": "",
+            "unit": "",
+            "title": "Valioso",
+            "body": "Entrega valor real a todos.",
+            "foot": ""
+          }
+        ]
+      },
+      "speaker_notes": "Peter Morville establece siete facetas para que una interfaz, como la de la municipalidad, sea excelente."
+    },
+    {
+      "archetype": "timeline",
+      "slots": {
+        "TAG_LEFT": "PROCESO",
+        "TITLE": "Las 4 fases del proceso UCD",
+        "TAG_RIGHT": "1.3",
+        "LEAD": "El Diseño Centrado en el Usuario no es lineal, sino que se basa en ciclos iterativos de retroalimentación donde el usuario final es el actor más importante.",
+        "COLS": "4",
+        "STEPS": [
+          {
+            "n": "01",
+            "phase": "Investigación",
+            "title": "Descubrir",
+            "desc": "Observación de campo, entrevistas y mapeo de empatía.",
+            "output": "Empatía"
+          },
+          {
+            "n": "02",
+            "phase": "Síntesis",
+            "title": "Definir",
+            "desc": "Convertir hallazgos en perfiles de usuario y requisitos.",
+            "output": "Personas"
+          },
+          {
+            "n": "03",
+            "phase": "Ideación",
+            "title": "Diseñar",
+            "desc": "Generar prototipos rápidos, wireframes y maquetas.",
+            "output": "Prototipo"
+          },
+          {
+            "n": "04",
+            "phase": "Validación",
+            "title": "Evaluar",
+            "desc": "Pruebas reales para rediseñar iterativamente.",
+            "output": "Métricas"
+          }
+        ]
+      },
+      "speaker_notes": "Recuerden: Diseñar no es un proceso de una sola pasada. Para el municipio de Cholchol, investiguen a los vecinos primero."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "ACCESIBILIDAD",
+        "TITLE": "Principio UI/UX: Accesibilidad (CE4)",
+        "TAG_RIGHT": "1.4",
+        "SPLIT": "50",
+        "LEAD": "El sitio de la municipalidad debe ser para TODOS. Usar etiquetas semánticas y ARIA es obligatorio.",
+        "CALLOUT_LABEL": "Navegación",
+        "CALLOUT": "El sitio debe poder navegarse completamente usando solo la tecla `Tab` del teclado.",
+        "FILENAME": "src/components/Navigation.jsx",
+        "CODE": "&lt;header role=\"banner\"&gt;\n  &lt;nav aria-label=\"Navegación Principal\"&gt;\n    &lt;ul&gt;\n      &lt;li&gt;\n        &lt;a href=\"/\" aria-current=\"page\"&gt;\n          Inicio\n        &lt;/a&gt;\n      &lt;/li&gt;\n      &lt;li&gt;\n        &lt;img src=\"logo.png\" alt=\"Escudo de Cholchol\" /&gt;\n      &lt;/li&gt;\n    &lt;/ul&gt;\n  &lt;/nav&gt;\n&lt;/header&gt;",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "Etiquetas semánticas: <header>, <nav>, <ul>."
+          },
+          {
+            "n": "02",
+            "text": "Atributos ARIA (aria-label) para lectores de pantalla."
+          },
+          {
+            "n": "03",
+            "text": "Propiedad alt='...' indispensable en cada imagen."
+          }
+        ]
+      },
+      "speaker_notes": "Accesibilidad no es opcional. CE4 lo exige: etiquetas semánticas, navegación por teclado y contraste de colores."
+    },
+    {
+      "archetype": "quote",
+      "slots": {
+        "TAG_LEFT": "UX RESEARCH",
+        "QUOTE": "Asumir que conoces a tu usuario sin investigarlo es el camino más rápido para construir el producto equivocado perfectamente.",
+        "TAG_RIGHT": "TESTIMONIO",
+        "AUTHOR": "Agency UX Researcher",
+        "ROLE": "Experto en Comportamiento del Usuario"
+      },
+      "speaker_notes": "Como UX Researcher, he visto fracasar productos porque se basaron en suposiciones. Investigar metodológicamente es la única forma de validar decisiones de diseño."
+    },
+    {
+      "archetype": "timeline",
+      "slots": {
+        "TAG_LEFT": "METODOLOGÍA",
+        "TITLE": "El Proceso Formal de UX Research",
+        "TAG_RIGHT": "1.5",
+        "LEAD": "Para hacer un buen UX/UI, no empezamos diseñando. Empezamos investigando mediante un proceso riguroso basado en datos empíricos.",
+        "COLS": "4",
+        "STEPS": [
+          {
+            "n": "01",
+            "phase": "Planificación",
+            "title": "Preguntas",
+            "desc": "Definir qué queremos aprender y qué métricas de éxito (KPIs) usaremos.",
+            "output": "Research Plan"
+          },
+          {
+            "n": "02",
+            "phase": "Recolección",
+            "title": "Datos",
+            "desc": "Entrevistas, encuestas y pruebas de usabilidad con usuarios reales.",
+            "output": "Raw Data"
+          },
+          {
+            "n": "03",
+            "phase": "Síntesis",
+            "title": "Patrones",
+            "desc": "Análisis temático y estadístico para encontrar barreras y fricciones comunes.",
+            "output": "Insights"
+          },
+          {
+            "n": "04",
+            "phase": "Acción",
+            "title": "Recomendaciones",
+            "desc": "Traducción de hallazgos en cambios directos de diseño o arquitectura.",
+            "output": "Roadmap"
+          }
+        ]
+      },
+      "speaker_notes": "Este es el flujo de trabajo de una agencia experta: de la pregunta de investigación a la recomendación implementable."
+    },
+    {
+      "archetype": "bento",
+      "slots": {
+        "TAG_LEFT": "ENTREGABLES",
+        "TITLE": "Herramientas del UX Researcher",
+        "TAG_RIGHT": "1.6",
+        "TILES": [
+          {
+            "variant": "accent",
+            "col": "1 / 3",
+            "row": "1 / 3",
+            "icon": "egiwmiit",
+            "tag": "EMPATÍA",
+            "stat": "",
+            "unit": "",
+            "title": "User Personas",
+            "body": "Arquetipos basados en datos demográficos y conductuales reales.",
+            "foot": ""
+          },
+          {
+            "variant": "",
+            "col": "3 / 5",
+            "row": "1 / 3",
+            "icon": "msoeawqm",
+            "tag": "FLUJO",
+            "stat": "",
+            "unit": "",
+            "title": "Journey Maps",
+            "body": "Mapeo de emociones y puntos de fricción durante el uso.",
+            "foot": ""
+          },
+          {
+            "variant": "outline",
+            "col": "5 / 7",
+            "row": "1 / 3",
+            "icon": "usownftb",
+            "tag": "WCAG",
+            "stat": "",
+            "unit": "",
+            "title": "Auditorías de Accesibilidad",
+            "body": "Garantizar diseño inclusivo para todos los usuarios.",
+            "foot": ""
+          },
+          {
+            "variant": "feature",
+            "col": "1 / 4",
+            "row": "3 / 5",
+            "icon": "dxjqoygy",
+            "tag": "TESTEO",
+            "stat": "",
+            "unit": "",
+            "title": "Pruebas de Usabilidad",
+            "body": "Observar a usuarios intentando completar tareas específicas (A/B Testing).",
+            "foot": ""
+          },
+          {
+            "variant": "",
+            "col": "4 / 7",
+            "row": "3 / 5",
+            "icon": "gqdnbnwt",
+            "tag": "DATA",
+            "stat": "",
+            "unit": "",
+            "title": "Análisis Heurístico",
+            "body": "Validación de la interfaz contra principios probados (Heurísticas de Nielsen).",
+            "foot": ""
+          }
+        ]
+      },
+      "speaker_notes": "Estos son los entregables que un UX Researcher proporciona al equipo de desarrollo para asegurar un producto exitoso."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 2",
+        "TITLE": "Fundamentos Web Clásicos",
+        "SUBTITLE": "Antes de los frameworks modernos, la web se sostenía sobre la trinidad: HTML, CSS y JS.",
+        "AGENDA": [
+          {
+            "label": "2.1",
+            "text": "La Trinidad Web"
+          },
+          {
+            "label": "2.2",
+            "text": "HTML: Semántica"
+          },
+          {
+            "label": "2.3",
+            "text": "CSS: Estilos y Flexbox"
+          },
+          {
+            "label": "2.4",
+            "text": "Bootstrap: Utilidades"
+          }
+        ]
+      },
+      "speaker_notes": "Haremos un repaso rápido de los fundamentos indispensables que sostienen la web."
+    },
+    {
+      "archetype": "bento",
+      "slots": {
+        "TAG_LEFT": "ECOSISTEMA",
+        "TITLE": "La Trinidad Web",
+        "TAG_RIGHT": "2.1",
+        "TILES": [
+          {
+            "variant": "accent",
+            "col": "1 / 4",
+            "row": "1 / 4",
+            "icon": "egiwmiit",
+            "tag": "ESTRUCTURA",
+            "stat": "",
+            "unit": "",
+            "title": "HTML5",
+            "body": "El esqueleto semántico. Define el contenido, accesibilidad y jerarquía (DOM) de la información en el navegador.",
+            "foot": ""
+          },
+          {
+            "variant": "feature",
+            "col": "4 / 7",
+            "row": "1 / 4",
+            "icon": "dxjqoygy",
+            "tag": "ESTÉTICA",
+            "stat": "",
+            "unit": "",
+            "title": "CSS3",
+            "body": "El aspecto visual. Se encarga de colores, tipografías, grillas, animaciones y responsividad (media queries).",
+            "foot": ""
+          },
+          {
+            "variant": "outline",
+            "col": "1 / 7",
+            "row": "4 / 6",
+            "icon": "msoeawqm",
+            "tag": "COMPORTAMIENTO",
+            "stat": "",
+            "unit": "",
+            "title": "JavaScript (JS)",
+            "body": "El cerebro de la página. Convierte documentos estáticos en aplicaciones interactivas, maneja eventos, peticiones a red (APIs) y manipulación del DOM.",
+            "foot": ""
+          }
+        ]
+      },
+      "speaker_notes": "Nunca confundan sus roles: HTML para significado, CSS para presentación, y JS para acción."
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "HTML",
+        "TITLE": "HTML Semántico vs. Genérico",
+        "TAG_RIGHT": "2.2",
+        "BAD_TITLE": "Sopa de Divs",
+        "BAD_SNIPPET": "&lt;div class=\"header\"&gt;\n  &lt;div class=\"nav\"&gt;\n    &lt;span&gt;Inicio&lt;/span&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n&lt;div class=\"article\"&gt;\n  &lt;div class=\"title\"&gt;Noticia&lt;/div&gt;\n&lt;/div&gt;",
+        "GOOD_TITLE": "HTML Semántico",
+        "GOOD_SNIPPET": "&lt;header&gt;\n  &lt;nav&gt;\n    &lt;a href=\"/\"&gt;Inicio&lt;/a&gt;\n  &lt;/nav&gt;\n&lt;/header&gt;\n&lt;article&gt;\n  &lt;h1&gt;Noticia&lt;/h1&gt;\n&lt;/article&gt;",
+        "WHY_LABEL": "Beneficios",
+        "WHY": "El código semántico mejora el SEO y es obligatorio para la accesibilidad (lectores de pantalla).",
+        "BAD_POINTS": [
+          {
+            "text": "Difícil de mantener."
+          },
+          {
+            "text": "Los bots no entienden el contenido."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Estructura clara y autoexplicativa."
+          },
+          {
+            "text": "Rankea mejor en Google."
+          }
+        ]
+      },
+      "speaker_notes": "Una sopa de divs funciona visualmente, pero rompe las reglas de accesibilidad que exige el Criterio 4 de su rúbrica."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "CSS",
+        "TITLE": "El Poder de Flexbox",
+        "TAG_RIGHT": "2.3",
+        "SPLIT": "50",
+        "LEAD": "CSS Flexbox nos permite alinear elementos de manera predecible en una o dos dimensiones.",
+        "CALLOUT_LABEL": "Tip",
+        "CALLOUT": "Olvídate de `float` y `clearfix`. Usa siempre `display: flex` para alinear menús y tarjetas.",
+        "FILENAME": "styles.css",
+        "CODE": ".nav-container {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 1rem;\n}\n\n.nav-links {\n  display: flex;\n  gap: 20px;\n}",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "display: flex activa el modelo flexible."
+          },
+          {
+            "n": "02",
+            "text": "justify-content separa los elementos en el eje principal."
+          },
+          {
+            "n": "03",
+            "text": "gap maneja el espaciado interno sin usar márgenes manuales."
+          }
+        ]
+      },
+      "speaker_notes": "Flexbox es su mejor amigo para maquetar barras de navegación y grillas simples."
+    },
+    {
+      "archetype": "feature-matrix",
+      "slots": {
+        "TAG_LEFT": "BOOTSTRAP",
+        "TITLE": "CSS Nativo vs Bootstrap",
+        "TAG_RIGHT": "2.4",
+        "LEAD": "Bootstrap abstrae la complejidad de CSS en clases utilitarias listas para usar.",
+        "HEADERS": "<th>Característica</th><th>Vanilla CSS</th><th class=\"best\">Bootstrap</th>",
+        "NOTE_LABEL": "Ventaja Competitiva:",
+        "NOTE": "Bootstrap te permite armar layouts en un 10% del tiempo, aunque sacrificas un poco de personalización extrema.",
+        "ROWS": [
+          {
+            "cells": "<td>Botón Primario</td><td>.btn { background: blue; padding... }</td><td class=\"best\">class=\"btn btn-primary\"</td>"
+          },
+          {
+            "cells": "<td>Sistema de Grillas</td><td>display: flex, calc(100% / 3)</td><td class=\"best\">class=\"row\" y \"col-md-4\"</td>"
+          },
+          {
+            "cells": "<td>Márgenes</td><td>margin-top: 2rem;</td><td class=\"best\">class=\"mt-4\"</td>"
+          },
+          {
+            "cells": "<td>Componentes</td><td>Programar menú colapsable en JS</td><td class=\"best\">Navbar ya incluye lógica JS</td>"
+          }
+        ]
+      },
+      "speaker_notes": "Si necesitan velocidad, Bootstrap es ideal. Por eso se permite usarlo en su evaluación."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 2",
+        "TITLE": "El Proyecto: Rediseño Municipal",
+        "SUBTITLE": "Revisemos las instrucciones y Criterios de Evaluación (CE) para su proyecto formativo.",
+        "AGENDA": [
+          {
+            "label": "2.1",
+            "text": "El Caso de Estudio"
+          },
+          {
+            "label": "2.2",
+            "text": "Requisitos Generales"
+          },
+          {
+            "label": "2.3",
+            "text": "Entregables Finales"
+          }
+        ]
+      },
+      "speaker_notes": "Analicemos el caso evaluado: La municipalidad de Cholchol."
+    },
+    {
+      "archetype": "callouts",
+      "slots": {
+        "TAG_LEFT": "PROYECTO",
+        "TITLE": "Rediseño Municipalidad de Cholchol",
+        "TAG_RIGHT": "2.1",
+        "LEAD": "La municipalidad requiere una actualización urgente de su página 'Home' para mejorar la imagen institucional y experiencia móvil.",
+        "CALLOUTS": [
+          {
+            "kind": "danger",
+            "icon": "inrunzby",
+            "title": "Problemas Actuales",
+            "text": "Falta de responsividad (no se ve bien en móviles), escasa interactividad y diseño visual obsoleto."
+          },
+          {
+            "kind": "note",
+            "icon": "msoeawqm",
+            "title": "El Objetivo",
+            "text": "Reconstruir la página de inicio aplicando mejores prácticas frontend con el Framework elegido (Bootstrap, MUI o Materialize)."
+          },
+          {
+            "kind": "tip",
+            "icon": "wxnxiano",
+            "title": "Grupos de Trabajo",
+            "text": "El proyecto se desarrollará en grupos de 2 a 3 integrantes, subiendo el código a GitHub/GitLab."
+          }
+        ]
+      },
+      "speaker_notes": "Si van a la web actual, notarán lo anticuada que está. Su labor es traerla a la era moderna."
+    },
+    {
+      "archetype": "feature-matrix",
+      "slots": {
+        "TAG_LEFT": "EVALUACIÓN",
+        "TITLE": "Mapeo de la Rúbrica",
+        "TAG_RIGHT": "2.2",
+        "LEAD": "Para lograr el 100%, la entrega debe resolver obligatoriamente estos criterios.",
+        "HEADERS": "<th>Criterio</th><th>Exigencia</th><th class=\"best\">Solución Tecnológica</th>",
+        "NOTE_LABEL": "A tener en cuenta:",
+        "NOTE": "El incumplimiento de CE1 o CE2 resta gran parte del puntaje práctico.",
+        "ROWS": [
+          {
+            "cells": "<td>CE1: Interactividad</td><td>Al menos 3 eventos identificables en el DOM.</td><td class=\"best\"><code>onClick</code>, <code>onMouseOver</code>, <code>onSubmit</code></td>"
+          },
+          {
+            "cells": "<td>CE2: Validaciones</td><td>Formulario de Contacto.</td><td class=\"best\"><code>useState</code> y validación <code>onSubmit</code></td>"
+          },
+          {
+            "cells": "<td>CE3: Mutar el DOM</td><td>Agregar/eliminar contenido dinámico.</td><td class=\"best\">Mapeo de Arrays (<code>.map</code> y <code>.filter</code>)</td>"
+          },
+          {
+            "cells": "<td>CE4: Responsividad</td><td>Debe verse perfecto en dispositivos.</td><td class=\"best\">Framework UI Grid y etiquetas ARIA.</td>"
+          }
+        ]
+      },
+      "speaker_notes": "Esta tabla es su lista de chequeo de la evaluación."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 3",
+        "TITLE": "Arquitectura y Convenciones",
+        "SUBTITLE": "Organización del código para escalar. Cubriendo Criterios de Evaluación CE7 y CE8.",
+        "AGENDA": [
+          {
+            "label": "3.1",
+            "text": "Herramientas: VS Code y Vite"
+          },
+          {
+            "label": "3.2",
+            "text": "Nomenclatura (Snake vs Pascal)"
+          },
+          {
+            "label": "3.3",
+            "text": "Atomic Design y Carpetas"
+          },
+          {
+            "label": "3.4",
+            "text": "Smart vs Dumb Components"
+          }
+        ]
+      },
+      "speaker_notes": "Una aplicación bien estructurada te regala puntaje en CE7 y CE8."
+    },
+    {
+      "archetype": "feature-matrix",
+      "slots": {
+        "TAG_LEFT": "ENTORNO",
+        "TITLE": "Visual Studio vs. VS Code",
+        "TAG_RIGHT": "3.1",
+        "LEAD": "Existe confusión entre ambas herramientas. Son paradigmas de desarrollo radicalmente distintos.",
+        "HEADERS": "<th>Característica</th><th>Visual Studio (IDE)</th><th class=\"best\">VS Code (Editor)</th>",
+        "NOTE_LABEL": "Decisión:",
+        "NOTE": "Utilizaremos **VS Code**. Su ligereza y soporte nativo para JS/JSX eliminan fricciones.",
+        "ROWS": [
+          {
+            "cells": "<td>Clasificación</td><td>IDE monolítico</td><td class=\"best\">Editor extensible</td>"
+          },
+          {
+            "cells": "<td>Peso e instalación</td><td>Varios GB</td><td class=\"best\">~200 MB</td>"
+          },
+          {
+            "cells": "<td>Soporte destacado</td><td>C#, .NET, Azure</td><td class=\"best\">JS, TypeScript, JSX</td>"
+          },
+          {
+            "cells": "<td>Uso en React</td><td>No recomendado</td><td class=\"best\">Estándar de la industria</td>"
+          }
+        ]
+      },
+      "speaker_notes": "Usaremos VS Code, Prettier y ES7+ React Snippets."
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "CONVENCIONES",
+        "TITLE": "Reglas de Nomenclatura (CE8)",
+        "TAG_RIGHT": "3.2",
+        "BAD_TITLE": "Caos Común",
+        "BAD_SNIPPET": "// Archivos:\nheader-final2.jsx\nmiScript.js\nEvax Juan Perez.pdf\n\n// Variables / Funciones:\nlet X = true;\nconst bot123 = () =&gt; {};",
+        "GOOD_TITLE": "Convención Profesional",
+        "GOOD_SNIPPET": "// Componentes React (PascalCase):\nHeaderNavigation.jsx\n\n// Entregable Evaluación (Snake_case):\neva2_perez_juan_martinez.pdf\n\n// Funciones/Estados (camelCase):\nconst isMobile = true;\nconst handleSubmit = () =&gt; {};",
+        "WHY_LABEL": "Exigencia CE8",
+        "WHY": "Nombres significativos y convenciones de codificación claras garantizan coherencia y legibilidad.",
+        "BAD_POINTS": [
+          {
+            "text": "Imposible de leer para el equipo."
+          },
+          {
+            "text": "Reprueba los requisitos de entrega."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Auto-explicativo (Clean Code)."
+          },
+          {
+            "text": "Cumple los estándares exigidos."
+          }
+        ]
+      },
+      "speaker_notes": "El nombre del archivo que suban DEBE ser en snake_case como indica la rúbrica. Los componentes en PascalCase."
+    },
+    {
+      "archetype": "code-criteria",
+      "slots": {
+        "TAG_LEFT": "DIRECTORIOS",
+        "TITLE": "Estructura Base del Framework (CE7)",
+        "TAG_RIGHT": "3.3",
+        "KICKER": "ATOMIC DESIGN",
+        "CODE_TITLE": "Jerarquía src/",
+        "CODE": "src/\n├── assets/       # Imágenes (Logo Cholchol)\n├── components/ \n│   ├── ui/       # Componentes visuales genéricos\n│   ├── layout/   # Header, Footer, Sidebar\n│   └── forms/    # ContactForm\n├── hooks/        # Lógica compartida\n├── data/         # Mock data o servicios API\n├── styles/       # Variables CSS globales\n├── App.jsx       # Componente Orquestador\n└── main.jsx      # Anclaje al DOM (Raíz)",
+        "PANEL_TITLE": "Comandos CLI (Vite)",
+        "WHY_TITLE": "¿Por qué esta arquitectura?",
+        "WHY": "React no impone estructura. Dividir el código de esta forma cumple de inmediato el Criterio CE7 (Organización y Escalabilidad).",
+        "CRITERIA": [
+          {
+            "letter": "A",
+            "name": "npm create",
+            "meta": "Genera",
+            "highlight": "Vite React"
+          },
+          {
+            "letter": "B",
+            "name": "mkdir -p",
+            "meta": "Crea la red",
+            "highlight": "de carpetas"
+          },
+          {
+            "letter": "C",
+            "name": "npm install",
+            "meta": "Resuelve las",
+            "highlight": "dependencias"
+          }
+        ]
+      },
+      "speaker_notes": "Si entregan todo el código aglomerado en App.jsx, pierden el puntaje del CE7. Dividan sus archivos."
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "Patrón Smart / Dumb Components (CE7)",
+        "TAG_RIGHT": "3.4",
+        "COLS": "2",
+        "CARDS": [
+          {
+            "badge": "qhgmphtg",
+            "title": "Smart (Contenedores)",
+            "body": "Administran el estado (State), hacen llamadas a APIs, y contienen la lógica de negocio. Saben CÓMO funcionan las cosas. Ej: `NewsContainer`.",
+            "note_label": "Regla",
+            "note": "Orquestan la data."
+          },
+          {
+            "badge": "wxnxiano",
+            "title": "Dumb (Presentacionales)",
+            "body": "Solo reciben Props (variables) y emiten eventos hacia arriba. Su único trabajo es pintar la UI de forma bonita. Ej: `NewsCard`.",
+            "note_label": "Regla",
+            "note": "Solo muestran UI."
+          }
+        ]
+      },
+      "speaker_notes": "Separar la lógica visual de la lógica de negocio es una práctica top-tier en React."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 4",
+        "TITLE": "React Core y Modificación del DOM",
+        "SUBTITLE": "Domina la base de React: Componentes, Props, Estado y Modificación dinámica del contenido (CE3).",
+        "AGENDA": [
+          {
+            "label": "4.1",
+            "text": "DOM Virtual vs Real"
+          },
+          {
+            "label": "4.2",
+            "text": "Componente Funcional"
+          },
+          {
+            "label": "4.3",
+            "text": "Props vs State"
+          },
+          {
+            "label": "4.4",
+            "text": "Renderizado Dinámico (.map)"
+          },
+          {
+            "label": "4.5",
+            "text": "Modificar DOM (.filter) [CE3]"
+          }
+        ]
+      },
+      "speaker_notes": "Aquí entramos en materia densa: el DOM Virtual, inmutabilidad y renderizado condicional."
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "DOM Real vs. DOM Virtual",
+        "TAG_RIGHT": "4.1",
+        "BAD_TITLE": "DOM Imperativo (Vanilla JS)",
+        "BAD_SNIPPET": "const el = document.getElementById('noticia');\nel.textContent = 'Cholchol de fiesta';\nel.style.color = 'blue';",
+        "GOOD_TITLE": "DOM Declarativo (React JSX)",
+        "GOOD_SNIPPET": "function Noticia({ titulo }) {\n  return (\n    &lt;h1 style={{ color: 'blue' }}&gt;{titulo}&lt;/h1&gt;\n  );\n}",
+        "WHY_LABEL": "La Clave",
+        "WHY": "El algoritmo de reconciliación (diffing) en React actualiza solo lo estrictamente necesario en el DOM real.",
+        "BAD_POINTS": [
+          {
+            "text": "El desarrollador dicta el 'Cómo'."
+          },
+          {
+            "text": "Costoso computacionalmente."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "El desarrollador describe el 'Qué'."
+          },
+          {
+            "text": "Actualización eficiente en memoria."
+          }
+        ]
+      },
+      "speaker_notes": "Modificar el DOM real es lento. React usa un clon en memoria para hacer los cálculos súper rápidos."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "SINTAXIS",
+        "TITLE": "Anatomía de un Componente Funcional",
+        "TAG_RIGHT": "4.2",
+        "SPLIT": "50",
+        "LEAD": "Las interfaces se dividen en funciones puras de JS que retornan JSX.",
+        "CALLOUT_LABEL": "Obligatorio",
+        "CALLOUT": "Todo componente **debe iniciar con Mayúscula** (PascalCase) en React para diferenciarlo de etiquetas HTML estándar.",
+        "FILENAME": "src/components/ui/PrimaryButton.jsx",
+        "CODE": "const PrimaryButton = ({ texto, accion }) =&gt; {\n\n  // 1. Lógica interna de JS puro\n  const handleClick = () =&gt; {\n    console.log(\"Botón clickeado\");\n    accion();\n  };\n\n  // 2. Retorno JSX (HTML dentro de JS)\n  return (\n    &lt;button onClick={handleClick} className=\"btn\"&gt;\n      {texto}\n    &lt;/button&gt;\n  );\n};\nexport default PrimaryButton;",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "Props ('texto', 'accion') se desestructuran."
+          },
+          {
+            "n": "02",
+            "text": "Lógica JS ocurre antes del return."
+          },
+          {
+            "n": "03",
+            "text": "Se retorna un único elemento raíz JSX."
+          }
+        ]
+      },
+      "speaker_notes": "Un componente es solo una función JS que retorna HTML (JSX)."
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "FLUJO DE DATOS",
+        "TITLE": "Props vs. State",
+        "TAG_RIGHT": "4.3",
+        "BAD_TITLE": "Props (De Arriba a Abajo)",
+        "BAD_SNIPPET": "&lt;WeatherCard\n  ciudad=\"Cholchol\"\n  temperatura={18}\n/&gt;",
+        "GOOD_TITLE": "State (Memoria del Componente)",
+        "GOOD_SNIPPET": "const [temp, setTemp] = useState(18);\n\n// Modificamos el estado:\nsetTemp(22);",
+        "WHY_LABEL": "Regla de Oro",
+        "WHY": "La coreografía de datos es **unidireccional**. Un componente hijo no puede mutar directamente las Props que recibe.",
+        "BAD_POINTS": [
+          {
+            "text": "Valores inmutables de solo lectura."
+          },
+          {
+            "text": "Vienen inyectados desde el padre."
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Memoria dinámica, mutable (con setter)."
+          },
+          {
+            "text": "Gatilla un re-renderizado visual."
+          }
+        ]
+      },
+      "speaker_notes": "Si necesitan que un valor visual cambie en tiempo real, NECESITAN usar `useState`."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "ITERACIÓN",
+        "TITLE": "Pintar DOM Dinámico con .map()",
+        "TAG_RIGHT": "4.4",
+        "SPLIT": "50",
+        "LEAD": "En lugar de copiar y pegar HTML repetidamente, iteramos un Array de datos.",
+        "CALLOUT_LABEL": "Key",
+        "CALLOUT": "La prop `key` es obligatoria; ayuda a React a identificar exactamente qué elemento del DOM cambió.",
+        "FILENAME": "src/components/NewsGrid.jsx",
+        "CODE": "const NewsGrid = ({ noticias }) =&gt; {\n  if (!noticias.length) return &lt;p&gt;No hay noticias&lt;/p&gt;;\n\n  return (\n    &lt;div className=\"grid-container\"&gt;\n      {\n        noticias.map((noticia) =&gt; (\n          &lt;div key={noticia.id} className=\"card\"&gt;\n            &lt;h3&gt;{noticia.titulo}&lt;/h3&gt;\n            &lt;p&gt;{noticia.resumen}&lt;/p&gt;\n          &lt;/div&gt;\n        ))\n      }\n    &lt;/div&gt;\n  );\n};",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "Validación temprana (Early Return) si no hay data."
+          },
+          {
+            "n": "02",
+            "text": ".map() itera la colección inyectando bloques dinámicos."
+          },
+          {
+            "n": "03",
+            "text": "Prop key debe ser un ID único y constante."
+          }
+        ]
+      },
+      "speaker_notes": "Siempre manejen estados vacíos. React adora los `.map()` para construir listas visuales."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "CE3",
+        "TITLE": "Mutar el DOM (Eliminar elemento)",
+        "TAG_RIGHT": "4.5",
+        "SPLIT": "40",
+        "LEAD": "El Criterio CE3 exige que puedas eliminar contenido del DOM de manera dinámica usando eventos.",
+        "CALLOUT_LABEL": "Inmutabilidad",
+        "CALLOUT": "Nunca muten el array directamente. Usen el método `.filter()` para devolver una versión nueva del array sin el elemento.",
+        "FILENAME": "src/components/AlertBoard.jsx",
+        "CODE": "const AlertBoard = () =&gt; {\n  const [alertas, setAlertas] = useState([\n    { id: 1, text: \"Corte de Agua a las 15:00 hrs.\" }\n  ]);\n\n  // Lógica para ELIMINAR elemento del DOM\n  const handleCerrar = (idCerrar) =&gt; {\n    const filtradas = alertas.filter(a =&gt; a.id !== idCerrar);\n    setAlertas(filtradas); // Re-render sin la alerta\n  };\n\n  return (\n    &lt;div&gt;\n      {alertas.map(alerta =&gt; (\n        &lt;div key={alerta.id} className=\"alert-box\"&gt;\n          &lt;span&gt;{alerta.text}&lt;/span&gt;\n          &lt;button onClick={() =&gt; handleCerrar(alerta.id)}&gt;\n            X\n          &lt;/button&gt;\n        &lt;/div&gt;\n      ))}\n    &lt;/div&gt;\n  );\n};",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "Estado inicial contiene el listado de alertas."
+          },
+          {
+            "n": "02",
+            "text": ".filter() descarta el ID seleccionado creando un array nuevo."
+          },
+          {
+            "n": "03",
+            "text": "El estado se actualiza, y React borra el elemento del DOM mágicamente."
+          }
+        ]
+      },
+      "speaker_notes": "Esto resuelve de manera perfecta la exigencia CE3 de agregar/eliminar contenido dinámico."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 5",
+        "TITLE": "Interactividad y Formularios",
+        "SUBTITLE": "Manejo de eventos de ratón/teclado y validación robusta de formularios (CE1 y CE2).",
+        "AGENDA": [
+          {
+            "label": "5.1",
+            "text": "Los 3 Eventos Clave (CE1)"
+          },
+          {
+            "label": "5.2",
+            "text": "Formulario Controlado"
+          },
+          {
+            "label": "5.3",
+            "text": "Validación (Email / Vacíos)"
+          },
+          {
+            "label": "5.4",
+            "text": "Feedback de Error en UI"
+          }
+        ]
+      },
+      "speaker_notes": "La interactividad y las validaciones de contacto representan la parte más jugosa de su nota."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "CE1",
+        "TITLE": "Requisito: Tres Eventos Distintos",
+        "TAG_RIGHT": "5.1",
+        "SPLIT": "50",
+        "LEAD": "El Criterio CE1 pide explícitamente 3 interacciones. React inyecta los listeners directamente en el JSX.",
+        "CALLOUT_LABEL": "Nomenclatura",
+        "CALLOUT": "Los handlers en React inician con la palabra `handle` (ej. `handleClick`). Los eventos JSX inician con `on` (`onClick`).",
+        "FILENAME": "src/components/InteractiveWidget.jsx",
+        "CODE": "const InteractiveWidget = () =&gt; {\n  const [hover, setHover] = useState(false);\n\n  // Evento 1: Click\n  const handleAceptar = () =&gt; alert(\"¡Trámite Iniciado!\");\n\n  // Evento 2 &amp; 3: Hover in / Hover out\n  const handleEntrar = () =&gt; setHover(true);\n  const handleSalir = () =&gt; setHover(false);\n\n  return (\n    &lt;div \n      onMouseOver={handleEntrar} \n      onMouseOut={handleSalir}\n      style={{ background: hover ? \"#ccc\" : \"#fff\" }}\n    &gt;\n      &lt;h4&gt;Trámites Online&lt;/h4&gt;\n      &lt;button onClick={handleAceptar}&gt;Ir&lt;/button&gt;\n    &lt;/div&gt;\n  );\n};",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "Estado local controla si el ratón está encima o no."
+          },
+          {
+            "n": "02",
+            "text": "onMouseOver y onMouseOut gatillan el hover dinámico (Evento 1 y 2)."
+          },
+          {
+            "n": "03",
+            "text": "onClick gatilla la alerta final (Evento 3)."
+          }
+        ]
+      },
+      "speaker_notes": "Implementando este componente ya tienen sus 3 eventos necesarios para cumplir el CE1."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "CE2",
+        "TITLE": "Formulario de Contacto (Estado)",
+        "TAG_RIGHT": "5.2",
+        "SPLIT": "50",
+        "LEAD": "Para el CE2, necesitamos Nombre, Correo y Mensaje. Usaremos un solo objeto de estado para agrupar los datos.",
+        "CALLOUT_LABEL": "Controlled Inputs",
+        "CALLOUT": "En React, los inputs deben ser 'controlados': su atributo `value` está atado al estado, y su `onChange` lo actualiza al instante.",
+        "FILENAME": "src/components/ContactForm.jsx",
+        "CODE": "const [form, setForm] = useState({\n  nombre: '', correo: '', mensaje: ''\n});\n\nconst handleChange = (e) =&gt; {\n  const { name, value } = e.target;\n  // Clonar objeto y pisar la propiedad modificada\n  setForm({ ...form, [name]: value });\n};\n\nreturn (\n  &lt;form&gt;\n    &lt;input \n      name=\"nombre\" \n      value={form.nombre} \n      onChange={handleChange} \n    /&gt;\n    {/* Igual para correo y mensaje... */}\n  &lt;/form&gt;\n);",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "Estado inicial vacío para cada campo."
+          },
+          {
+            "n": "02",
+            "text": "El atributo `name` del HTML debe coincidir con la llave del estado."
+          },
+          {
+            "n": "03",
+            "text": "Spread operator `...form` preserva el estado de los otros campos al tipear."
+          }
+        ]
+      },
+      "speaker_notes": "Este es el esqueleto de un formulario dinámico."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "CE2",
+        "TITLE": "Validación de Campos (Submit)",
+        "TAG_RIGHT": "5.3",
+        "SPLIT": "40",
+        "LEAD": "Al apretar Enviar (`onSubmit`), debemos detener el flujo (`e.preventDefault()`), validar vacíos y formato de correo.",
+        "CALLOUT_LABEL": "Regex Correo",
+        "CALLOUT": "La expresión regular evalúa si el string tiene un `@` y un dominio válido.",
+        "FILENAME": "src/components/ContactForm.jsx",
+        "CODE": "const [error, setError] = useState('');\nconst [success, setSuccess] = useState(false);\n\nconst handleSubmit = (e) =&gt; {\n  e.preventDefault(); // Evitar recarga de página\n  \n  // 1. Validar Vacíos\n  if (!form.nombre || !form.correo || !form.mensaje) {\n    setError('Todos los campos son obligatorios');\n    return;\n  }\n\n  // 2. Validar Correo (Expresión Regular Simple)\n  const regex = /^\\S+@\\S+\\.\\S+$/;\n  if (!regex.test(form.correo)) {\n    setError('El formato del correo es inválido');\n    return;\n  }\n\n  // 3. Flujo Correcto\n  setError('');\n  setSuccess(true);\n  console.log(\"Enviado al Municipio:\", form);\n};",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "e.preventDefault() es vital para aplicaciones Single-Page."
+          },
+          {
+            "n": "02",
+            "text": "Early Returns abortan la operación si algo falla, seteando el error."
+          },
+          {
+            "n": "03",
+            "text": "Si llega al final, cambia el estado a 'Success'."
+          }
+        ]
+      },
+      "speaker_notes": "Aquí está la lógica robusta de validación que exige el evaluador."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "UX UI",
+        "TITLE": "Mostrar Feedback Visual",
+        "TAG_RIGHT": "5.4",
+        "SPLIT": "50",
+        "LEAD": "La validación debe ser visible para el ciudadano (CE2 / CE5). Mostramos las alertas dinámicamente usando Renderizado Condicional (`&&`).",
+        "CALLOUT_LABEL": "UX Correcto",
+        "CALLOUT": "El error se pinta en rojo, el éxito en verde. Claridad cognitiva.",
+        "FILENAME": "src/components/ContactForm.jsx",
+        "CODE": "return (\n  &lt;form onSubmit={handleSubmit}&gt;\n    \n    {/* Inputs omitidos */}\n\n    {/* Mensaje de Error Condicional */}\n    {error &amp;&amp; (\n       &lt;div className=\"error-box\" style={{ color: 'red' }}&gt;\n         {error}\n       &lt;/div&gt;\n    )}\n\n    {/* Mensaje de Éxito Condicional */}\n    {success &amp;&amp; (\n       &lt;div className=\"success-box\" style={{ color: 'green' }}&gt;\n         ¡Solicitud enviada con éxito!\n       &lt;/div&gt;\n    )}\n\n    &lt;button type=\"submit\"&gt;Enviar Solicitud&lt;/button&gt;\n  &lt;/form&gt;\n);",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "Evento onSubmit anclado a la etiqueta <form> (no al botón)."
+          },
+          {
+            "n": "02",
+            "text": "El botón debe tener type='submit'."
+          },
+          {
+            "n": "03",
+            "text": "La sintaxis `condicion && <JSX>` dibuja el elemento solo si la condición es verdadera."
+          }
+        ]
+      },
+      "speaker_notes": "Con estos 3 fragmentos de código, tienen asegurado el 100% en el CE2 de formularios."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 6",
+        "TITLE": "Ciclo de Vida y Frameworks UI",
+        "SUBTITLE": "Gestión asíncrona al cargar componentes (CE8) y adopción de un sistema de diseño robusto y responsivo (CE4).",
+        "AGENDA": [
+          {
+            "label": "6.1",
+            "text": "Ciclo de Vida (useEffect)"
+          },
+          {
+            "label": "6.2",
+            "text": "Simular carga API"
+          },
+          {
+            "label": "6.3",
+            "text": "Frameworks: MUI vs Bootstrap"
+          },
+          {
+            "label": "6.4",
+            "text": "Sistema Responsivo (Grillas)"
+          }
+        ]
+      },
+      "speaker_notes": "Último bloque: Datos al vuelo y un envoltorio estético profesional."
+    },
+    {
+      "archetype": "timeline",
+      "slots": {
+        "TAG_LEFT": "HOOKS",
+        "TITLE": "Ciclo de Vida del Componente (CE8)",
+        "TAG_RIGHT": "6.1",
+        "LEAD": "El hook `useEffect` permite interceptar las tres etapas clave de existencia de un componente React.",
+        "COLS": "3",
+        "STEPS": [
+          {
+            "n": "01",
+            "phase": "Mounting",
+            "title": "Nacimiento",
+            "desc": "El componente se inserta en el DOM. Momento ideal para pedir datos a una API externa o servidor.",
+            "output": "useEffect(..., [])"
+          },
+          {
+            "n": "02",
+            "phase": "Updating",
+            "title": "Actualización",
+            "desc": "Cambió un prop o el estado. React recalcula el Virtual DOM y repinta solo el nodo afectado.",
+            "output": "useEffect(..., [dependencia])"
+          },
+          {
+            "n": "03",
+            "phase": "Unmounting",
+            "title": "Muerte",
+            "desc": "El componente se elimina del DOM. Momento crítico para limpiar memorias o 'setIntervals'.",
+            "output": "return () => clear()"
+          }
+        ]
+      },
+      "speaker_notes": "El evaluador buscará que entiendan cómo cargar datos AL INICIAR el componente."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "ASINCRONÍA",
+        "TITLE": "Carga Inicial (Mounting)",
+        "TAG_RIGHT": "6.2",
+        "SPLIT": "50",
+        "LEAD": "Al entrar a la portada de Cholchol, pediremos datos asíncronos simulados dentro del useEffect.",
+        "CALLOUT_LABEL": "Peligro CE8",
+        "CALLOUT": "Un `useEffect` SIN dependencias `[]` generará un **bucle infinito de peticiones** que colapsará la pestaña y desaprobará la métrica.",
+        "FILENAME": "src/pages/Home.jsx",
+        "CODE": "const Home = () =&gt; {\n  const [loading, setLoading] = useState(true);\n  const [datos, setDatos] = useState([]);\n\n  // Se ejecuta UNA SOLA VEZ al renderizar\n  useEffect(() =&gt; {\n    setTimeout(() =&gt; {\n      setDatos([{ id: 1, text: \"Día del patrimonio\" }]);\n      setLoading(false);\n    }, 1500);\n  }, []); // &lt;-- Array vacío crítico\n\n  if (loading) return &lt;p&gt;Cargando portal...&lt;/p&gt;;\n  return &lt;NewsList data={datos} /&gt;;\n};",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "Estado inicial en `loading = true`."
+          },
+          {
+            "n": "02",
+            "text": "El array vacío de dependencias garantiza que solo ocurra en el Mounting."
+          },
+          {
+            "n": "03",
+            "text": "Early return pinta el Loading temporalmente."
+          }
+        ]
+      },
+      "speaker_notes": "Esto demuestra manejo del ciclo de vida asíncrono."
+    },
+    {
+      "archetype": "feature-matrix",
+      "slots": {
+        "TAG_LEFT": "FRAMEWORKS",
+        "TITLE": "Elección de Framework (CE4)",
+        "TAG_RIGHT": "6.3",
+        "LEAD": "Las librerías UI garantizan responsividad y encapsulan la complejidad CSS.",
+        "HEADERS": "<th>Criterio</th><th>Bootstrap</th><th class=\"best\">Material UI (MUI)</th>",
+        "NOTE_LABEL": "Ambas son válidas:",
+        "NOTE": "La rúbrica te permite elegir. Recomendamos **MUI** por su profunda integración con React, o **Bootstrap** si buscas simplicidad pura.",
+        "ROWS": [
+          {
+            "cells": "<td>Naturaleza</td><td>Clases CSS en JSX (ej: `className='btn'`)</td><td class=\"best\">Componentes React (ej: `<Button>`)</td>"
+          },
+          {
+            "cells": "<td>Curva Aprendizaje</td><td>Baja</td><td class=\"best\">Alta (Arquitectura CSS-in-JS)</td>"
+          },
+          {
+            "cells": "<td>Responsividad</td><td>Clases `col-md-6`</td><td class=\"best\">Propiedades `xs={12} md={6}`</td>"
+          },
+          {
+            "cells": "<td>Aceptado CE4</td><td>Sí, usando librería react-bootstrap</td><td class=\"best\">Sí, integración nativa de Google</td>"
+          }
+        ]
+      },
+      "speaker_notes": "Cualquiera que elijan está bien, siempre que la utilicen coherentemente."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "RESPONSIVE",
+        "TITLE": "Diseño Fluido y Semántico (CE4, CE5)",
+        "TAG_RIGHT": "6.4",
+        "SPLIT": "50",
+        "LEAD": "Construir en Layouts modulares asegura perfecta visión en móviles y escritorio.",
+        "CALLOUT_LABEL": "Semántica Visual",
+        "CALLOUT": "Las etiquetas semánticas `<article>` y `<section>` fortalecen el SEO municipal.",
+        "FILENAME": "src/components/MunicipalityServices.jsx (MUI)",
+        "CODE": "&lt;section aria-label=\"Servicios Municipales\"&gt;\n  &lt;Grid container spacing={3}&gt;\n    \n    {/* 100% Ancho en Móvil (xs=12), \n        Mitad en Desktop (md=6) */}\n    &lt;Grid item xs={12} md={6}&gt;\n      &lt;article className=\"service-card\"&gt;\n        &lt;h3&gt;Permisos de Circulación&lt;/h3&gt;\n        &lt;p&gt;Pague online de forma segura.&lt;/p&gt;\n        &lt;Button variant=\"contained\"&gt;Ir al pago&lt;/Button&gt;\n      &lt;/article&gt;\n    &lt;/Grid&gt;\n\n  &lt;/Grid&gt;\n&lt;/section&gt;",
+        "STEPS": [
+          {
+            "n": "01",
+            "text": "Atributos semánticos como `aria-label` apoyan lectores."
+          },
+          {
+            "n": "02",
+            "text": "`Grid container` estructura una cuadrícula flexible."
+          },
+          {
+            "n": "03",
+            "text": "`xs=12 md=6` controla los quiebres de responsividad dinámicamente."
+          }
+        ]
+      },
+      "speaker_notes": "Esta es la clave para que la página no se vea aplastada en un celular."
+    },
+    {
+      "archetype": "anatomy",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "Resumen: La App Entregable",
+        "TAG_RIGHT": "6.5",
+        "SPEC_TITLE": "Árbol de componentes para el Rediseño de Cholchol",
+        "FIELDS": [
+          {
+            "key": "Header / Footer",
+            "value": "Componentes Dumb semánticos accesibles por teclado (CE4).",
+            "highlight": ""
+          },
+          {
+            "key": "Home.jsx",
+            "value": "Página Principal (Smart). Invoca useEffect y carga las noticias (CE8).",
+            "highlight": "Orquestador"
+          },
+          {
+            "key": "ContactForm",
+            "value": "Aplica validaciones de estado y maneja onSubmit (CE2).",
+            "highlight": "Validado"
+          },
+          {
+            "key": "NewsList",
+            "value": "Mapea noticias y permite eliminar dinámicamente (CE3).",
+            "highlight": ""
+          },
+          {
+            "key": "Botones / Tarjetas",
+            "value": "Inyectan eventos onMouseOver y onClick de interactividad (CE1).",
+            "highlight": ""
+          }
+        ],
+        "NOTES": [
+          {
+            "n": "1",
+            "title": "Coherencia de Estilos",
+            "text": "Mantengan las tipografías limpias y los botones grandes y cliqueables (CE6)."
+          }
+        ]
+      },
+      "speaker_notes": "Si estructuran su proyecto de esta forma, tienen la máxima calificación garantizada."
+    },
+    {
+      "archetype": "closing",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "Empaquetado Final",
+        "TAG_RIGHT": "FINAL",
+        "ICON": "lupuorrc",
+        "HERO_TITLE": "¡A codificar!",
+        "HERO_TEXT": "Tienen el marco teórico, el conocimiento técnico y el código base para crear una plataforma municipal moderna, responsiva e interactiva.",
+        "LEFT_PANEL_TITLE": "REQUISITOS ENTREGA",
+        "RIGHT_PANEL_TITLE": "COMANDOS DE REPO",
+        "NEXT_LABEL": "Éxito Formativo",
+        "NEXT": "¡A por el 100% de la Rúbrica!",
+        "TAKEAWAYS": [
+          {
+            "n": "1",
+            "text": "Repositorio Público (Github/GitLab)."
+          },
+          {
+            "n": "2",
+            "text": "Documento Word con capturas explicadas."
+          },
+          {
+            "n": "3",
+            "text": "Archivo renombrado: `evax_apellido_...pdf`"
+          }
+        ],
+        "NEXT_STEPS": [
+          {
+            "n": "1",
+            "text": "git add ."
+          },
+          {
+            "n": "2",
+            "text": "git commit -m 'feat: Final'"
+          },
+          {
+            "n": "3",
+            "text": "git push"
+          }
+        ]
+      },
+      "speaker_notes": "¡Excelente trabajo! Manos a la obra, el municipio los necesita."
+    }
+  ]
+}

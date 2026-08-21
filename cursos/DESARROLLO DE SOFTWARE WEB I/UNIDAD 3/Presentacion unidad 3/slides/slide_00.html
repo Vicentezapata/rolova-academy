@@ -19,6 +19,7 @@
       fontFamily: 'Inter' 
     }
   });
+  setTimeout(async () => { try { await mermaid.run({ querySelector: '.mermaid' }); } catch(e){} }, 200);
 </script>
 <style>
 :root {
@@ -90,7 +91,7 @@ code{background: rgba(224, 122, 62, 0.15); border: 1px solid rgba(224, 122, 62, 
 
 <div class="slide cover"><div class="slide-inner">
     <div class="cover-badge"><span class="bdot"></span>Desarrollo de Software Web I &middot; Unidad 3</div>
-    <lord-icon src="https://cdn.lordicon.com/qhgmpzfs.json" trigger="loop" delay="2000" colors="primary:#6b4423,secondary:#e07a3e" style="width:120px;height:120px;margin-bottom:1rem;"></lord-icon>
+    <i data-lucide="layers" style="width:120px;height:120px;margin-bottom:1rem;; color: var(--p);"></i>
     <h1 class="cover-title">APIs Avanzadas y<br><span class="gradient-text">Despliegue Serverless</span></h1>
     <p class="cover-sub">Recursos API, Sanctum, Supabase y Vercel</p>
     </div></div>

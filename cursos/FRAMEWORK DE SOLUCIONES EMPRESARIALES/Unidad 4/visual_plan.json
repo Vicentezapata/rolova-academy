@@ -1,0 +1,859 @@
+{
+  "pack": "botanic_forest",
+  "slides": [
+    {
+      "archetype": "cover",
+      "slots": {
+        "EYEBROW": "Unidad 4",
+        "TITLE": "React Intermedio y Avanzado",
+        "SUBTITLE": "Construyendo el puente hacia el desarrollo Full-Stack: Consumiendo nuestro Backend Spring Boot con un Frontend moderno y reactivo.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          {
+            "label": "Framework de Soluciones Empresariales",
+            "accent": "a1"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "slots": {
+        "TAG_LEFT": "AGENDA",
+        "TITLE": "Agenda de la Unidad",
+        "TAG_RIGHT": "Ruta",
+        "ROWS": "2",
+        "COLS": "4",
+        "ITEMS": [
+          {
+            "num": "01",
+            "icon": "egiwmiit",
+            "title": "Parte 1",
+            "desc": "",
+            "chips": ""
+          },
+          {
+            "num": "02",
+            "icon": "egiwmiit",
+            "title": "Parte 2",
+            "desc": "",
+            "chips": ""
+          },
+          {
+            "num": "03",
+            "icon": "egiwmiit",
+            "title": "Parte 3",
+            "desc": "",
+            "chips": ""
+          },
+          {
+            "num": "04",
+            "icon": "egiwmiit",
+            "title": "Parte 4",
+            "desc": "",
+            "chips": ""
+          },
+          {
+            "num": "05",
+            "icon": "egiwmiit",
+            "title": "Parte 5",
+            "desc": "",
+            "chips": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "El Fin del Monolito",
+        "TAG_RIGHT": "1.1",
+        "GHOST": "PRINCIPIO",
+        "KICKER": "De las Vistas en Servidor (JSP) a las Single Page Applications (SPA)",
+        "PRINCIPLE": "Antes, Java generaba el HTML mezclando datos y etiquetas (JSP). Cada click recargaba toda la página. Hoy, el Backend (Spring Boot) solo entrega datos crudos en formato JSON, y el Frontend (React) dibuja la interfaz en el navegador del usuario.",
+        "PRINCIPLE_BODY": "",
+        "LIST_TITLE": "Beneficios de Desacoplar",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Independencia",
+            "text": "Equipos de Front y Back pueden trabajar separados."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Multicanalidad",
+            "text": "El mismo Backend sirve para Web, iOS y Android."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Experiencia Fluida",
+            "text": "Sin pantallas en blanco al cambiar de vista."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "Ej",
+            "value": "1",
+            "label": "Caso",
+            "desc": "Desc",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "diagram",
+      "slots": {
+        "TAG_LEFT": "DIAGRAMA",
+        "TITLE": "Arquitectura Moderna Cliente-Servidor",
+        "TAG_RIGHT": "1.2",
+        "SPLIT": "1/2",
+        "DIAGRAM": "flowchart LR\n  R[React.js Frontend] <-->|JSON sobre HTTP| S[Spring Boot Backend]\n  S <-->|DAO + JPA| BD[(Base de Datos MySQL)]\n  style R fill:#61dafb,stroke:#333,color:#000\n  style S fill:#6db33f,stroke:#333,color:#fff\n  style BD fill:#f29111,stroke:#333,color:#fff",
+        "SIDE_TITLE": "Pasos",
+        "LEAD": "Cómo se comunican React y Spring Boot usando el Patrón DAO/DTO.",
+        "NOTE_LABEL": "Nota",
+        "NOTE": "Diagrama de flujo.",
+        "STEPS": [
+          {
+            "n": "1",
+            "name": "Inicio",
+            "text": "Comienzo del flujo."
+          },
+          {
+            "n": "2",
+            "name": "Fin",
+            "text": "Fin del flujo."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "slots": {
+        "TAG_LEFT": "LENGUAJE",
+        "TITLE": "El Idioma Universal: JSON",
+        "TAG_RIGHT": "1.3",
+        "KICKER": "Cómo viaja nuestro DTO",
+        "LEAD": "El Transfer Object que creamos en la Unidad 3 es convertido mágicamente a texto puro por Spring.",
+        "CODE": "{\n  \"id\": 105,\n  \"nombreCompleto\": \"Juan Pérez\",\n  \"email\": \"juan@empresa.com\",\n  \"rol\": \"ADMIN\"\n}",
+        "POINTERS": [
+          {
+            "n": "1",
+            "label": "Llaves",
+            "text": "Representan un objeto en JavaScript."
+          },
+          {
+            "n": "2",
+            "label": "Propiedades",
+            "text": "Mismos nombres que los atributos del DTO."
+          },
+          {
+            "n": "3",
+            "label": "Formatos",
+            "text": "Soporta Strings, Números, Booleanos y Arreglos."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "slots": {
+        "TAG_LEFT": "ACTIVACIÓN",
+        "TITLE": "Comprobación de Concepto",
+        "TAG_RIGHT": "1.4",
+        "BADGE": "Pregunta",
+        "QUESTION": "¿Qué viaja principalmente por la red entre nuestra aplicación React y nuestra API en Spring Boot?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Respuesta",
+        "EXPLANATION": "La respuesta correcta está marcada.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Opción correcta",
+            "correct": "true"
+          },
+          {
+            "key": "B",
+            "text": "Opción falsa",
+            "correct": "false"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "BLOQUE 2",
+        "TITLE": "Gestión de Estado Global",
+        "SUBTITLE": "Superando las limitaciones del simple useState y organizando datos a gran escala.",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Conceptos"
+          },
+          {
+            "label": "1.2",
+            "text": "Ejemplos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "EL PROBLEMA",
+        "TITLE": "Prop Drilling: El dolor de cabeza de React",
+        "TAG_RIGHT": "2.1",
+        "GHOST": "PRINCIPIO",
+        "KICKER": "¿Qué es el Prop Drilling?",
+        "PRINCIPLE": "Cuando tienes un dato (como el Usuario Logueado) en el componente Padre, y necesitas pasarlo a un Hijo que está 5 niveles más abajo. Tienes que pasar la variable como 'prop' a través de 4 componentes intermedios que no la necesitan, ensuciando todo tu código.",
+        "PRINCIPLE_BODY": "",
+        "LIST_TITLE": "Consecuencias Negativas",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Código verboso",
+            "text": "Componentes llenos de props inútiles."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Mantenimiento",
+            "text": "Difícil de refactorizar y mover componentes."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Re-renders",
+            "text": "Puede disparar actualizaciones visuales innecesarias."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "Ej",
+            "value": "1",
+            "label": "Caso",
+            "desc": "Desc",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "LA SOLUCIÓN",
+        "TITLE": "Introducción a Context API",
+        "TAG_RIGHT": "2.2",
+        "SPLIT": "1/2",
+        "LEAD": "Context API es el 'agujero de gusano' nativo de React. Permite teletransportar datos desde un Padre directamente a cualquier Hijo, sin importar qué tan profundo esté en el árbol.",
+        "CALLOUT_LABEL": "Nota",
+        "CALLOUT": "Atención",
+        "FILENAME": "codigo.js",
+        "CODE": "",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Revisar el código"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "bento",
+      "slots": {
+        "TAG_LEFT": "ECOSISTEMA",
+        "TITLE": "Comparativa de Gestores de Estado",
+        "TAG_RIGHT": "2.3",
+        "TILES": [
+          {
+            "variant": "accent",
+            "col": "1 / 4",
+            "row": "1 / 3",
+            "icon": "egiwmiit",
+            "tag": "A",
+            "stat": "",
+            "unit": "",
+            "title": "Tile 1",
+            "body": "Cuerpo",
+            "foot": ""
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "MEJORES PRÁCTICAS",
+        "TITLE": "Cuándo usar Estado Local vs Global",
+        "TAG_RIGHT": "2.4",
+        "BAD_TITLE": "",
+        "BAD_SNIPPET": "",
+        "GOOD_TITLE": "",
+        "GOOD_SNIPPET": "",
+        "WHY_LABEL": "",
+        "WHY": "",
+        "BAD_POINTS": [
+          {
+            "text": "Malo"
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Bueno"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "slots": {
+        "TAG_LEFT": "ACTIVACIÓN",
+        "TITLE": "Comprobación de Estado",
+        "TAG_RIGHT": "2.5",
+        "BADGE": "Pregunta",
+        "QUESTION": "¿Cuál es el problema principal que soluciona Context API en React?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Respuesta",
+        "EXPLANATION": "La respuesta correcta está marcada.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Opción correcta",
+            "correct": "true"
+          },
+          {
+            "key": "B",
+            "text": "Opción falsa",
+            "correct": "false"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "BLOQUE 3",
+        "TITLE": "Hooks Personalizados",
+        "SUBTITLE": "Separando la Lógica de Negocio de la Interfaz Visual para un código más limpio.",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Conceptos"
+          },
+          {
+            "label": "1.2",
+            "text": "Ejemplos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "Limpieza de Código",
+        "TAG_RIGHT": "3.1",
+        "GHOST": "PRINCIPIO",
+        "KICKER": "¿Qué es un Custom Hook?",
+        "PRINCIPLE": "Un Custom Hook no es más que una función de JavaScript que empieza con la palabra 'use' (ej. useClientes) y que por dentro utiliza otros Hooks de React (useState, useEffect). Su objetivo es esconder el código feo y complejo fuera de tus Vistas.",
+        "PRINCIPLE_BODY": "",
+        "LIST_TITLE": "Beneficios",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Reusabilidad",
+            "text": "Puedes usar la misma lógica en 5 pantallas distintas."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Testing",
+            "text": "Es más fácil probar una función aislada que toda una pantalla visual."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Legibilidad",
+            "text": "Tu componente JSX queda corto y enfocado en dibujar HTML."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "Ej",
+            "value": "1",
+            "label": "Caso",
+            "desc": "Desc",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "EJEMPLO PRÁCTICO",
+        "TITLE": "Creando nuestro propio Hook",
+        "TAG_RIGHT": "3.2",
+        "SPLIT": "1/2",
+        "LEAD": "Extraigamos toda la lógica de pedir clientes a Spring Boot hacia un archivo independiente.",
+        "CALLOUT_LABEL": "Nota",
+        "CALLOUT": "Atención",
+        "FILENAME": "codigo.js",
+        "CODE": "",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Revisar el código"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "EJEMPLO PRÁCTICO",
+        "TITLE": "Consumiendo el Hook en la Interfaz",
+        "TAG_RIGHT": "3.3",
+        "SPLIT": "1/2",
+        "LEAD": "Observa lo limpio y corto que queda nuestro componente visual. Todo el trabajo pesado lo hace el Custom Hook.",
+        "CALLOUT_LABEL": "Nota",
+        "CALLOUT": "Atención",
+        "FILENAME": "codigo.js",
+        "CODE": "",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Revisar el código"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "REGLAS",
+        "TITLE": "Las 2 Leyes de los Hooks",
+        "TAG_RIGHT": "3.4",
+        "GHOST": "PRINCIPIO",
+        "KICKER": "Restricciones Inquebrantables de React",
+        "PRINCIPLE": "Para que React pueda llevar un registro perfecto del estado interno de los componentes, debes cumplir dos reglas estrictas al usar o crear Hooks.",
+        "PRINCIPLE_BODY": "",
+        "LIST_TITLE": "Reglas de Oro",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Nivel Superior",
+            "text": "Nunca llames a un Hook dentro de ciclos (for/while), condicionales (if) o funciones anidadas. Siempre arriba de todo."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Solo Componentes",
+            "text": "Solo puedes llamar a un Hook desde un Componente Funcional o desde otro Custom Hook."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Nomenclatura",
+            "text": "Los Custom Hooks DEBEN empezar con 'use'."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "Ej",
+            "value": "1",
+            "label": "Caso",
+            "desc": "Desc",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "slots": {
+        "TAG_LEFT": "ACTIVACIÓN",
+        "TITLE": "Comprobación sobre Custom Hooks",
+        "TAG_RIGHT": "3.5",
+        "BADGE": "Pregunta",
+        "QUESTION": "Estás haciendo una petición fetch a Spring Boot. ¿Cuál de los siguientes bloques es INVÁLIDO en React?",
+        "COLS": "2",
+        "EXPLANATION_LABEL": "Respuesta",
+        "EXPLANATION": "La respuesta correcta está marcada.",
+        "OPTIONS": [
+          {
+            "key": "A",
+            "text": "Opción correcta",
+            "correct": "true"
+          },
+          {
+            "key": "B",
+            "text": "Opción falsa",
+            "correct": "false"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "BLOQUE 4",
+        "TITLE": "Rendimiento y Optimización",
+        "SUBTITLE": "Entendiendo los Re-renders y dominando useMemo, useCallback y React.memo.",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Conceptos"
+          },
+          {
+            "label": "1.2",
+            "text": "Ejemplos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "RENDIMIENTO",
+        "TITLE": "El Problema de los Re-Renders",
+        "TAG_RIGHT": "4.1",
+        "GHOST": "PRINCIPIO",
+        "KICKER": "¿Cuándo se dibuja la pantalla?",
+        "PRINCIPLE": "En React, un componente se vuelve a ejecutar (Re-render) cuando cambia su Estado, sus Props, o cuando su componente Padre hace un Re-render. Si el Padre se actualiza, TODOS los hijos se actualizan por defecto, incluso si no cambiaron.",
+        "PRINCIPLE_BODY": "",
+        "LIST_TITLE": "El Impacto",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Lentitud",
+            "text": "Dibuja listas de miles de elementos sin necesidad."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Batería",
+            "text": "Mayor consumo de CPU en dispositivos móviles."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Latencia",
+            "text": "Retrasos al escribir rápido en Inputs."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "Ej",
+            "value": "1",
+            "label": "Caso",
+            "desc": "Desc",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "OPTIMIZACIÓN",
+        "TITLE": "Cortafuegos Visual con React.memo",
+        "TAG_RIGHT": "4.2",
+        "SPLIT": "1/2",
+        "LEAD": "React.memo le dice a un componente hijo: 'Solo vuelve a dibujarte si las propiedades exactas que te pasé han cambiado'.",
+        "CALLOUT_LABEL": "Nota",
+        "CALLOUT": "Atención",
+        "FILENAME": "codigo.js",
+        "CODE": "",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Revisar el código"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "OPTIMIZACIÓN",
+        "TITLE": "useMemo y useCallback",
+        "TAG_RIGHT": "4.3",
+        "SPLIT": "1/2",
+        "LEAD": "useMemo guarda el RESULTADO de un cálculo pesado. useCallback guarda una FUNCIÓN para que no se recree en cada render.",
+        "CALLOUT_LABEL": "Nota",
+        "CALLOUT": "Atención",
+        "FILENAME": "codigo.js",
+        "CODE": "",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Revisar el código"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "ADVERTENCIA",
+        "TITLE": "El Abuso de la Optimización",
+        "TAG_RIGHT": "4.4",
+        "BAD_TITLE": "",
+        "BAD_SNIPPET": "",
+        "GOOD_TITLE": "",
+        "GOOD_SNIPPET": "",
+        "WHY_LABEL": "",
+        "WHY": "",
+        "BAD_POINTS": [
+          {
+            "text": "Malo"
+          }
+        ],
+        "GOOD_POINTS": [
+          {
+            "text": "Bueno"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "INTEGRACIÓN",
+        "TITLE": "Llamadas HTTP Pro: Interceptores",
+        "TAG_RIGHT": "4.5",
+        "SPLIT": "1/2",
+        "LEAD": "¿Cansado de agregar el Token JWT en cada petición a Spring Boot manualemente? Un Interceptor de Axios inyecta el token en las cabeceras automáticamente antes de que la petición salga de React.",
+        "CALLOUT_LABEL": "Nota",
+        "CALLOUT": "Atención",
+        "FILENAME": "codigo.js",
+        "CODE": "",
+        "STEPS": [
+          {
+            "n": "1",
+            "text": "Revisar el código"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "BLOQUE 5",
+        "TITLE": "Laboratorio y Evolución",
+        "SUBTITLE": "Llevando el código a la práctica y trazando tu ruta como Desarrollador Full-Stack.",
+        "AGENDA": [
+          {
+            "label": "1.1",
+            "text": "Conceptos"
+          },
+          {
+            "label": "1.2",
+            "text": "Ejemplos"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "El Flujo Completo Full-Stack",
+        "TAG_RIGHT": "5.1",
+        "LEAD": "Ejemplo práctico: ¿Cómo interactúan React y Spring durante un Inicio de Sesión seguro?",
+        "STEPS": [
+          {
+            "n": "1",
+            "phase": "React",
+            "title": "Envío de Credenciales",
+            "desc": "El usuario llena el formulario. Axios envía un POST JSON con email y password."
+          },
+          {
+            "n": "2",
+            "phase": "Spring Boot",
+            "title": "Validación DAO",
+            "desc": "Spring Security intercepta. El DAO busca el email en MySQL. Valida contraseñas."
+          },
+          {
+            "n": "3",
+            "phase": "Spring Boot",
+            "title": "Firma del Token",
+            "desc": "Si es válido, Java genera un Token JWT (String encriptado) y lo devuelve en JSON."
+          },
+          {
+            "n": "4",
+            "phase": "React",
+            "title": "Almacenamiento",
+            "desc": "React guarda el Token (LocalStorage) y lo envía en cada futura petición al Backend."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "activity",
+      "slots": {
+        "TAG_LEFT": "TALLER",
+        "TITLE": "Laboratorio Práctico Final",
+        "TAG_RIGHT": "5.2",
+        "ICON": "usownftb",
+        "ACTIVITY_NAME": "",
+        "INSTRUCTIONS": "",
+        "COLS": "1",
+        "META": [
+          {
+            "label": "15 min"
+          },
+          {
+            "label": "Individual"
+          }
+        ],
+        "CASES": [
+          {
+            "num": "01",
+            "title": "Paso 1",
+            "desc": "Tarea 1",
+            "challenge_label": "Meta",
+            "challenge": "Completar paso 1."
+          },
+          {
+            "num": "02",
+            "title": "Paso 2",
+            "desc": "Tarea 2",
+            "challenge_label": "Meta",
+            "challenge": "Completar paso 2."
+          },
+          {
+            "num": "03",
+            "title": "Paso 3",
+            "desc": "Tarea 3",
+            "challenge_label": "Meta",
+            "challenge": "Completar paso 3."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "roadmap",
+      "slots": {
+        "TAG_LEFT": "EVOLUCIÓN",
+        "TITLE": "El Camino del Full-Stack",
+        "TAG_RIGHT": "5.3",
+        "LEAD": "Has dominado los cimientos en Java y React. ¿Hacia dónde seguir estudiando?",
+        "STEPS": [
+          {
+            "n": "1",
+            "title": "Frameworks Modernos Frontend",
+            "desc": "Aprender Next.js para mejorar el SEO y Server-Side Rendering (SSR)."
+          },
+          {
+            "n": "2",
+            "title": "Tipado Estricto",
+            "desc": "Migrar todo el frontend a TypeScript para evitar bugs en tiempo de ejecución."
+          },
+          {
+            "n": "3",
+            "title": "Seguridad Avanzada en Java",
+            "desc": "Dominar Spring Security con Roles y OAuth2."
+          },
+          {
+            "n": "4",
+            "title": "Despliegue (DevOps)",
+            "desc": "Empaquetar ambas apps en Docker y subirlas a AWS o Google Cloud."
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "slots": {
+        "TAG_LEFT": "ENLACES",
+        "TITLE": "Recursos Oficiales de React",
+        "TAG_RIGHT": "5.4",
+        "LEAD": "Continúa tu aprendizaje con la documentación oficial.",
+        "LINKS": [
+          {
+            "icon": "📘",
+            "name": "React Dev Docs (Nueva Documentación Oficial)",
+            "desc": "react.dev/learn"
+          },
+          {
+            "icon": "🌐",
+            "name": "Axios HTTP Client",
+            "desc": "axios-http.com"
+          },
+          {
+            "icon": "🗺️",
+            "name": "React Router",
+            "desc": "reactrouter.com"
+          },
+          {
+            "icon": "☕",
+            "name": "Spring Framework + React Guides",
+            "desc": "spring.io/guides"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "slots": {
+        "TAG_LEFT": "REPASO",
+        "TITLE": "Síntesis de la Unidad 4",
+        "TAG_RIGHT": "5.5",
+        "GHOST": "PRINCIPIO",
+        "KICKER": "Lo que dominamos en este nivel avanzado:",
+        "PRINCIPLE": "El desarrollo moderno separó el Front y el Back para siempre, y nosotros hemos aprendido a dominarlos a ambos.",
+        "PRINCIPLE_BODY": "",
+        "LIST_TITLE": "Puntos Clave",
+        "FACTORS": [
+          {
+            "color": "var(--a1)",
+            "name": "Estado Global",
+            "text": "Context API evita la pesadilla de pasar props por doquier."
+          },
+          {
+            "color": "var(--a2)",
+            "name": "Custom Hooks",
+            "text": "Extraen la lógica a archivos limpios y reutilizables."
+          },
+          {
+            "color": "var(--a3)",
+            "name": "Performance",
+            "text": "useMemo, useCallback y memo previenen lentitud."
+          }
+        ],
+        "EXAMPLES": [
+          {
+            "tag": "Ej",
+            "value": "1",
+            "label": "Caso",
+            "desc": "Desc",
+            "color": "var(--a2)"
+          }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "slots": {
+        "TAG_LEFT": "FINAL",
+        "TITLE": "¡Felicidades por completar el curso!",
+        "TAG_RIGHT": "Resumen",
+        "ICON": "egiwmiit",
+        "HERO_TITLE": "¡Felicidades por completar el curso!",
+        "HERO_TEXT": "Has llegado al final de la unidad.",
+        "LEFT_PANEL_TITLE": "Aprendizaje Clave",
+        "RIGHT_PANEL_TITLE": "Próximos Pasos",
+        "NEXT_LABEL": "Siguiente",
+        "NEXT": "Continuar con el curso.",
+        "TAKEAWAYS": [
+          {
+            "n": "1",
+            "text": "Repaso de conceptos."
+          }
+        ],
+        "NEXT_STEPS": [
+          {
+            "n": "1",
+            "text": "Prepararse para evaluación."
+          }
+        ]
+      }
+    }
+  ]
+}

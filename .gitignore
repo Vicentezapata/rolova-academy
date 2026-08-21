@@ -1,0 +1,6 @@
+
+node_modules/
+*.rar
+.DS_Store
+
+.next/

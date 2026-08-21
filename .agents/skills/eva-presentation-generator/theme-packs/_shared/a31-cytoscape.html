@@ -1,0 +1,226 @@
+<!--CSS-->
+.cy-area{position:absolute;left:48px;top:88px;right:48px;bottom:44px;display:flex;flex-direction:column;gap:15px;z-index:10;}
+.cy-canvas{background:var(--inset-bg);border:var(--bw) solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);flex:1;position:relative;overflow:hidden;}
+.cy-btn-group{position:absolute;top:15px;right:15px;display:flex;gap:10px;z-index:20;}
+.cy-btn{background:var(--card-bg);border:var(--bw) solid var(--border);color:var(--text);padding:8px 16px;border-radius:var(--radius-sm, 6px);cursor:pointer;font-family:var(--body);font-size:12px;font-weight:600;box-shadow:var(--shadow);}
+.cy-lead{font-size:14px;color:var(--text-sec);line-height:1.7;}
+<!--BODY-->
+<div class="header">
+  <span class="tag">{{TAG_LEFT}}</span>
+  <span class="h2">{{TITLE}}</span>
+  <span class="tag">{{TAG_RIGHT}}</span>
+</div>
+<div class="divider"></div>
+<div class="cy-area">
+  <p class="cy-lead">{{LEAD}}</p>
+  <div class="cy-canvas">
+    <div id="cy" style="width:100%;height:100%;position:absolute;inset:0;"></div>
+    <div class="cy-btn-group">
+      <button id="cy-expand" class="cy-btn">Expandir Todo</button>
+      <button id="cy-collapse" class="cy-btn">Colapsar Todo</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.23.0/cytoscape.min.js"></script>
+<script src="https://unpkg.com/dagre@0.8.5/dist/dagre.min.js"></script>
+<script src="https://unpkg.com/cytoscape-dagre@2.4.0/cytoscape-dagre.js"></script>
+<script type="module">
+  function initCyDiagram() {
+    var container = document.getElementById('cy');
+    if (!container) return;
+
+    const t = k => getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+    
+    const resolveColor = (val) => {
+      if (val && val.startsWith('var(')) {
+        const varName = val.match(/var\((--[^)]+)\)/);
+        if (varName && varName[1]) {
+          let resolved = t(varName[1]);
+          // Cytoscape ignores alpha in rgba for colors. If it's rgba, try to extract rgb.
+          if (resolved.startsWith('rgba')) {
+            const rgbMatch = resolved.match(/rgba\((\d+,\s*\d+,\s*\d+)/);
+            if (rgbMatch) return `rgb(${rgbMatch[1]})`;
+          }
+          return resolved ? resolved : val;
+        }
+      }
+      return val;
+    };
+
+    const cBg = '#1a1a1a';
+    const cText = '#ffffff';
+    const cBorder = '#444444';
+
+    var rawData = {{CYTO_DATA}};
+
+    var elements = [];
+    rawData.forEach(function(item) {
+      elements.push({ group: 'nodes', data: { id: item.id, label: item.text, type: item.type, bgColor: resolveColor(item.color) || cBg } });
+      if (item.parent) {
+        elements.push({ group: 'edges', data: { source: item.parent, target: item.id } });
+      }
+    });
+
+    var cy = cytoscape({
+      container: container,
+      elements: elements,
+      style: [
+        { selector: 'node', style: {
+          'background-color': cBg,
+          'color': cText,
+          'border-width': '1px',
+          'border-color': cBorder,
+          'content': 'data(label)',
+          'text-valign': 'center',
+          'text-halign': 'center',
+          'text-wrap': 'wrap',
+          'text-max-width': '120px',
+          'font-family': 'Inter, sans-serif',
+          'font-size': '12px',
+          'shape': 'round-rectangle',
+          'width': 'label',
+          'height': 'label',
+          'padding': '12px'
+        }},
+        { selector: 'node[type="root"]', style: {
+          'font-size': '15px',
+          'font-weight': 'bold',
+          'border-width': '2px',
+          'border-color': cText,
+          'padding': '14px'
+        }},
+        { selector: 'node[type="branch"]', style: {
+          'font-size': '14px',
+          'font-weight': '600',
+          'border-color': 'data(bgColor)',
+          'border-width': '2px'
+        }},
+        { selector: 'node[type="leaf"]', style: {
+          'font-size': '11px',
+          'background-color': 'data(bgColor)',
+          'color': '#000',
+          'border-width': '0px'
+        }},
+        { selector: 'edge', style: {
+          'width': 1.5,
+          'line-color': cBorder,
+          'target-arrow-color': cBorder,
+          'target-arrow-shape': 'triangle',
+          'curve-style': 'bezier'
+        }},
+        { selector: ':selected', style: {
+          'border-color': cText,
+          'border-width': '3px'
+        }}
+      ],
+      layout: { name: 'dagre', padding: 30, rankDir: 'LR', spacingFactor: 1.1, rankSep: 60, nodeSep: 20 },
+      minZoom: 0.2, maxZoom: 2.5, boxSelectionEnabled: false
+    });
+
+    var childrenMap = {};
+    rawData.forEach(function(item) {
+      if (item.parent) {
+        if (!childrenMap[item.parent]) childrenMap[item.parent] = [];
+        childrenMap[item.parent].push(item.id);
+      }
+    });
+
+    var collapsed = {};
+    rawData.forEach(function(item) {
+      if (childrenMap[item.id] && item.type !== 'root') {
+        collapsed[item.id] = true;
+      }
+    });
+
+    function applyVisibility() {
+      var visible = { 'root': true, 'code_sec': true, 'secret_sec': true, 'free_sec': true };
+      
+      function walkVisible(nodeId) {
+        var kids = childrenMap[nodeId] || [];
+        kids.forEach(function(kidId) {
+          if (!collapsed[nodeId]) {
+            visible[kidId] = true;
+            walkVisible(kidId);
+          }
+        });
+      }
+      walkVisible('root');
+
+      cy.batch(function() {
+        cy.nodes().forEach(function(n) {
+          n.style('display', visible[n.id()] ? 'element' : 'none');
+        });
+        cy.edges().forEach(function(e) {
+          var src = e.source().id();
+          var tgt = e.target().id();
+          e.style('display', (visible[src] && visible[tgt]) ? 'element' : 'none');
+        });
+        
+        cy.nodes().forEach(function(n) {
+          var nodeId = n.id();
+          var item = rawData.find(d => d.id === nodeId);
+          if (item && childrenMap[nodeId]) {
+            var base = item.text;
+            n.data('label', collapsed[nodeId] ? base + ' [+]' : base + ' [−]');
+          }
+        });
+      });
+    }
+
+    applyVisibility();
+
+    function reLayout() {
+      cy.layout({
+        name: 'dagre', padding: 30, rankDir: 'LR',
+        spacingFactor: 1.1, rankSep: 60, nodeSep: 20,
+        animate: true, animationDuration: 350, animationEasing: 'ease-out'
+      }).run();
+    }
+
+    reLayout();
+
+    function getDescendants(nodeId) {
+      var desc = [];
+      var kids = childrenMap[nodeId] || [];
+      kids.forEach(function(kid) {
+        desc.push(kid);
+        desc = desc.concat(getDescendants(kid));
+      });
+      return desc;
+    }
+
+    cy.on('tap', 'node', function(evt) {
+      var nodeId = evt.target.id();
+      if (childrenMap[nodeId]) {
+        if (collapsed[nodeId]) {
+          collapsed[nodeId] = false;
+        } else {
+          collapsed[nodeId] = true;
+          getDescendants(nodeId).forEach(function(descId) {
+            if (childrenMap[descId]) collapsed[descId] = true;
+          });
+        }
+        applyVisibility();
+        reLayout();
+      }
+    });
+
+    document.getElementById('cy-expand').addEventListener('click', function(e) {
+      e.stopPropagation();
+      Object.keys(collapsed).forEach(k => collapsed[k] = false);
+      applyVisibility();
+      reLayout();
+      cy.fit();
+    });
+    document.getElementById('cy-collapse').addEventListener('click', function(e) {
+      e.stopPropagation();
+      rawData.forEach(item => { if (childrenMap[item.id] && item.type !== 'root') collapsed[item.id] = true; });
+      applyVisibility();
+      reLayout();
+      cy.fit();
+    });
+  }
+
+  setTimeout(initCyDiagram, 100);
+</script>

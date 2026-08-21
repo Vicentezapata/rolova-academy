@@ -19,6 +19,7 @@
       fontFamily: 'Inter' 
     }
   });
+  setTimeout(async () => { try { await mermaid.run({ querySelector: '.mermaid' }); } catch(e){} }, 200);
 </script>
 <style>
 :root {
@@ -93,7 +94,7 @@ code{background: rgba(224, 122, 62, 0.15); border: 1px solid rgba(224, 122, 62, 
     <p class="s-lead"><b>Vercel</b> hospeda Frontend, pero también puede alojar APIs en PHP usando su ecosistema <b>Serverless</b>.</p>
     <div class="cards-grid two">
         <div class="s-card glow">
-            <h3><lord-icon src="https://cdn.lordicon.com/qwwxluoc.json" trigger="hover" style="width:30px;height:30px;margin-right:10px"></lord-icon> ¿Qué es Serverless?</h3>
+            <h3><i data-lucide="cloud" style="width:30px;height:30px;margin-right:10px; color: var(--p);"></i> ¿Qué es Serverless?</h3>
             <p class="text-sm text-muted mt-2">Literalmente "Sin Servidor". Tu código solo "despierta" cuando recibe una petición HTTP, se ejecuta, e inmediatamente muere. Cobran por milisegundo de ejecución.</p>
         </div>
         <div class="s-card">

@@ -19,6 +19,7 @@
       fontFamily: 'Inter' 
     }
   });
+  setTimeout(async () => { try { await mermaid.run({ querySelector: '.mermaid' }); } catch(e){} }, 200);
 </script>
 <style>
 :root {
@@ -92,17 +93,17 @@ code{background: rgba(224, 122, 62, 0.15); border: 1px solid rgba(224, 122, 62, 
     <h2 class="s-title">¿Qué aprenderemos hoy?</h2>
     <div class="cards-grid three">
         <div class="s-card">
-            <div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/qhgmpzfs.json" trigger="hover" colors="primary:#c14d3f,secondary:#e07a3e" style="width:30px;height:30px"></lord-icon></div>
+            <div class="s-card-icon"><i data-lucide="layers" style="width:30px;height:30px; color: var(--p);"></i></div>
             <h3>APIs Profesionales</h3>
             <p class="text-sm text-muted">Aprenderemos a transformar datos, usar Form Requests y aplicar Rate Limiting para evitar ataques DDoS básicos.</p>
         </div>
         <div class="s-card glow">
-            <div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/kjkiqtxg.json" trigger="hover" colors="primary:#c14d3f,secondary:#e07a3e" style="width:30px;height:30px"></lord-icon></div>
+            <div class="s-card-icon"><i data-lucide="check-circle" style="width:30px;height:30px; color: var(--p);"></i></div>
             <h3>Supabase Cloud</h3>
             <p class="text-sm text-muted">Adiós al localhost y a los pendrives. Configuraremos una base de datos PostgreSQL remota y gratuita.</p>
         </div>
         <div class="s-card">
-            <div class="s-card-icon"><lord-icon src="https://cdn.lordicon.com/gqyasiqp.json" trigger="hover" colors="primary:#c14d3f,secondary:#e07a3e" style="width:30px;height:30px"></lord-icon></div>
+            <div class="s-card-icon"><i data-lucide="zap" style="width:30px;height:30px; color: var(--p);"></i></div>
             <h3>Serverless con Vercel</h3>
             <p class="text-sm text-muted">Subiremos nuestro backend de Laravel a Vercel, ejecutándolo dinámicamente sin pagar por servidores dedicados.</p>
         </div>

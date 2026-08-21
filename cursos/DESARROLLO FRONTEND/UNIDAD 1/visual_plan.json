@@ -1,0 +1,543 @@
+{
+  "pack": "cyberpunk_neon",
+  "title": "Unidad 1 — Desarrollo Frontend",
+  "slides": [
+    {
+      "archetype": "cover",
+      "title": "Unidad 1 — Desarrollo Frontend",
+      "notes": "Bienvenidos a la Unidad 1 del curso de Desarrollo Frontend. En esta unidad veremos metodologías sólidas de investigación de UX, el diseño centrado en el usuario, las estructuras de páginas web, y los lenguajes básicos HTML, CSS y JS.",
+      "slots": {
+        "EYEBROW": "DESARROLLO FRONTEND",
+        "TITLE": "Unidad 1: Introducción",
+        "SUBTITLE": "Creando experiencias centradas en el usuario",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          { "label": "UX Research", "accent": "var(--a1)" },
+          { "label": "UI Design", "accent": "var(--a2)" },
+          { "label": "HTML/CSS/JS", "accent": "var(--a1)" }
+        ]
+      }
+    },
+    {
+      "archetype": "toc",
+      "title": "Mapa de la Unidad",
+      "notes": "El mapa de ruta para esta unidad. Pasaremos por diseño UX/UI, investigación, maquetación y lenguajes web.",
+      "slots": {
+        "TAG_LEFT": "UNIDAD 1",
+        "TITLE": "Mapa de la Unidad",
+        "TAG_RIGHT": "U1",
+        "ROWS": "2",
+        "COLS": "2",
+        "ITEMS": [
+          { "num": "01", "icon": "msoeawqm", "title": "UX Research & UI", "desc": "Principios, investigación y diseño centrado en el usuario.", "chips": "" },
+          { "num": "02", "icon": "nocovwne", "title": "Estructuras Web", "desc": "Tipos de páginas y sus arquitecturas.", "chips": "" },
+          { "num": "03", "icon": "qhgmphtg", "title": "Fundamentos Web", "desc": "HTML, CSS y JS para la web moderna.", "chips": "" },
+          { "num": "04", "icon": "kjkiqtxg", "title": "Diseño Responsivo", "desc": "Adaptabilidad a múltiples pantallas.", "chips": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 1: UX / UI",
+      "notes": "Comenzamos con el primer bloque, centrado en cómo construir una experiencia memorable basada en investigación sólida.",
+      "slots": {
+        "PART_LABEL": "BLOQUE 01",
+        "TITLE": "UX Research y Diseño",
+        "SUBTITLE": "Investigación, usabilidad e interfaces efectivas.",
+        "AGENDA": [
+          { "label": "1.1", "text": "Diseño Centrado en el Usuario" },
+          { "label": "1.2", "text": "Metodologías de Investigación UX" },
+          { "label": "1.3", "text": "Pruebas de Usabilidad" }
+        ]
+      }
+    },
+    {
+      "archetype": "principle",
+      "title": "Diseño Centrado en el Usuario (DCU)",
+      "notes": "El Diseño Centrado en el Usuario es una filosofía de diseño que pone al usuario final en el centro del proceso. Fue popularizado por expertos como Donald Norman. Se basa en comprender necesidades, iterar, colaborar y tener un enfoque holístico.",
+      "slots": {
+        "TAG_LEFT": "BLOQUE 1",
+        "TITLE": "El usuario al centro",
+        "TAG_RIGHT": "1.1",
+        "GHOST": "01",
+        "KICKER": "FILOSOFÍA",
+        "PRINCIPLE": "Diseño Centrado en el Usuario",
+        "PRINCIPLE_BODY": "Pone al usuario final en el centro del proceso de diseño. Se basa en comprender necesidades, deseos y limitaciones.",
+        "LIST_TITLE": "Principios Fundamentales",
+        "FACTORS": [
+          { "name": "Empatía", "text": "Comprender al usuario mediante investigación.", "color": "var(--a1)" },
+          { "name": "Iteración", "text": "Prototipar, probar y refinar continuamente.", "color": "var(--a2)" },
+          { "name": "Holístico", "text": "Considerar UI, arquitectura y accesibilidad.", "color": "var(--text)" }
+        ],
+        "EXAMPLES": [
+          { "tag": "EJEMPLO 1", "value": "Airbnb", "label": "Revolución", "desc": "Centrado en anfitriones y huéspedes.", "color": "var(--a1)" },
+          { "tag": "EJEMPLO 2", "value": "Apple", "label": "Simplicidad", "desc": "Foco total en la experiencia.", "color": "var(--a2)" }
+        ]
+      }
+    },
+    {
+      "archetype": "timeline",
+      "title": "Flujo de UX Research",
+      "notes": "El trabajo del UX Researcher sigue etapas metódicas: Planificación, Recolección de datos, Análisis y Recomendaciones.",
+      "slots": {
+        "TAG_LEFT": "METODOLOGÍA",
+        "TITLE": "Proceso de Investigación UX",
+        "TAG_RIGHT": "1.2",
+        "LEAD": "El flujo de trabajo basado en evidencia empírica para validar decisiones de diseño.",
+        "COLS": "4",
+        "STEPS": [
+          { "n": "01", "phase": "Planificar", "title": "Research Plan", "desc": "Definir preguntas clave y elegir métodos (Cuali/Cuanti).", "output": "Protocolos" },
+          { "n": "02", "phase": "Recolectar", "title": "Data Collection", "desc": "Reclutar usuarios, entrevistas y testeo de usabilidad.", "output": "Datos Crudos" },
+          { "n": "03", "phase": "Analizar", "title": "Análisis", "desc": "Mapas de afinidad, análisis temático y estadístico.", "output": "Insights" },
+          { "n": "04", "phase": "Accionar", "title": "Recomendaciones", "desc": "Sugerencias de diseño basadas en datos priorizadas.", "output": "Decisiones" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Anatomía del User Persona",
+      "notes": "Una herramienta clave de UX Research es el User Persona. No es un invento, se basa en datos reales de la recolección.",
+      "slots": {
+        "TAG_LEFT": "HERRAMIENTA",
+        "TITLE": "User Persona basado en datos",
+        "TAG_RIGHT": "UX",
+        "SPEC_TITLE": "Componentes de un Arquetipo Real",
+        "FIELDS": [
+          { "key": "01", "value": "Demografía y Contexto", "highlight": "" },
+          { "key": "02", "value": "Patrones de Comportamiento", "highlight": "hi" },
+          { "key": "03", "value": "Objetivos y Necesidades", "highlight": "" },
+          { "key": "04", "value": "Puntos de Dolor (Pain Points)", "highlight": "hi" },
+          { "key": "05", "value": "Citas Directas y Evidencia", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Comportamiento", "text": "Más importante que la edad es cómo y por qué usan el producto." },
+          { "n": "2", "title": "Pain Points", "text": "Las frustraciones reales detectadas revelan oportunidades de diseño." }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "Buenas vs Malas Prácticas en Testing",
+      "notes": "Las pruebas de usabilidad son clave. Debemos evitar el sesgo y hacer preguntas neutrales.",
+      "slots": {
+        "TAG_LEFT": "TESTING",
+        "TITLE": "Pruebas de Usabilidad",
+        "TAG_RIGHT": "1.3",
+        "BAD_TITLE": "Prácticas Sesgadas",
+        "BAD_SNIPPET": "¿Verdad que este nuevo<br>botón es más fácil de usar?",
+        "GOOD_TITLE": "Prácticas Evidenciadas",
+        "GOOD_SNIPPET": "Por favor, realiza la tarea y<br>piensa en voz alta.",
+        "WHY_LABEL": "Por qué es importante",
+        "WHY": "Las preguntas inducidas generan sesgo de confirmación. Una buena investigación requiere objetividad.",
+        "BAD_POINTS": [
+          { "text": "Hacer preguntas que sugieren la respuesta." },
+          { "text": "Defender el diseño cuando el usuario se frustra." },
+          { "text": "Ignorar la accesibilidad en las pruebas." },
+          { "text": "Basar conclusiones en un solo usuario (N=1)." }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Usar el protocolo de 'Pensar en Voz Alta' (Think-aloud)." },
+          { "text": "Observar el comportamiento, no solo lo que dicen." },
+          { "text": "Testear con usuarios que cumplen criterios de inclusión." },
+          { "text": "Triangular hallazgos con múltiples fuentes de datos." }
+        ]
+      }
+    },
+    {
+      "archetype": "metrics",
+      "title": "Impacto del DCU",
+      "notes": "Implementar Diseño Centrado en el Usuario aporta beneficios medibles: mejora la experiencia, reduce los costos de corrección y aumenta la fidelidad del cliente.",
+      "slots": {
+        "TAG_LEFT": "IMPACTO",
+        "TITLE": "Beneficios medibles",
+        "TAG_RIGHT": "KPI",
+        "LEAD": "El impacto directo de la investigación y diseño centrado en el usuario.",
+        "COLS": "3",
+        "SOURCE": "Fundamentos de DCU",
+        "METRICS": [
+          { "label": "Adopción", "value": "Éxito", "unit": "↑", "desc": "Mejora real en la satisfacción del cliente.", "pct": "80%" },
+          { "label": "Retrabajo", "value": "Ahorro", "unit": "↓", "desc": "Menos cambios post-lanzamiento gracias al testing.", "pct": "60%" },
+          { "label": "Task Success", "value": "Mejora", "unit": "+", "desc": "Aumento en la tasa de finalización de tareas.", "pct": "100%" }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Verificar comprensión UX",
+      "notes": "Pregunta rápida para asegurar la comprensión de la investigación UX.",
+      "slots": {
+        "TAG_LEFT": "REPASO",
+        "TITLE": "Test rápido de UX Research",
+        "TAG_RIGHT": "Q1",
+        "BADGE": "Pregunta 1",
+        "QUESTION": "¿Cuál es la mejor práctica al realizar Pruebas de Usabilidad?",
+        "COLS": "1",
+        "EXPLANATION_LABEL": "Respuesta correcta",
+        "EXPLANATION": "El protocolo Think-aloud permite entender el modelo mental del usuario sin inducir respuestas.",
+        "OPTIONS": [
+          { "key": "A", "text": "Preguntar si les gusta el diseño antes de usarlo.", "correct": "" },
+          { "key": "B", "text": "Explicarles cómo se usa para que no se frustren.", "correct": "" },
+          { "key": "C", "text": "Pedirles que piensen en voz alta mientras intentan una tarea.", "correct": "true" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 2: Estructuras Web",
+      "notes": "Ahora que entendemos la usabilidad, veamos cómo se estructuran físicamente las páginas web dependiendo de su objetivo comercial.",
+      "slots": {
+        "PART_LABEL": "BLOQUE 02",
+        "TITLE": "Estructuras de Páginas Web",
+        "SUBTITLE": "Patrones comunes de arquitectura y contenido.",
+        "AGENDA": [
+          { "label": "2.1", "text": "Páginas de Inicio y Servicios" },
+          { "label": "2.2", "text": "Landing de Captación y Producto" },
+          { "label": "2.3", "text": "Diseño Responsivo" }
+        ]
+      }
+    },
+    {
+      "archetype": "bento",
+      "title": "Tipos de Landing Pages",
+      "notes": "Existen múltiples tipos de páginas según su objetivo: la página de Inicio, la de servicios para detallar oferta, la squeeze page para captar leads y la de producto para e-commerce.",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "Estructuras clásicas",
+        "TAG_RIGHT": "2.1",
+        "TILES": [
+          { "variant": "card", "col": "1 / 4", "row": "1 / 3", "icon": "qhgmphtg", "tag": "Home", "stat": "", "unit": "", "title": "Página de Inicio", "body": "Logotipo, hero image, llamadas a la acción claras y resumen del proyecto.", "foot": "" },
+          { "variant": "card", "col": "4 / 7", "row": "1 / 3", "icon": "nocovwne", "tag": "Servicios", "stat": "", "unit": "", "title": "Página de Servicios", "body": "Beneficios aportados, historias de éxito, formulario y contenido visual.", "foot": "" },
+          { "variant": "stat", "col": "1 / 3", "row": "3 / 5", "icon": "dxjqoygy", "tag": "Squeeze Page", "stat": "Captación", "unit": "", "title": "Formulario", "body": "Título llamativo para captar el email del usuario.", "foot": "" },
+          { "variant": "stat", "col": "3 / 5", "row": "3 / 5", "icon": "gqdnbnwt", "tag": "E-Commerce", "stat": "Producto", "unit": "", "title": "Detalle", "body": "Descripciones, fotos y botón de compra.", "foot": "" },
+          { "variant": "card", "col": "5 / 7", "row": "3 / 5", "icon": "wxnxiano", "tag": "Blog", "stat": "", "unit": "", "title": "Contenido", "body": "Aumentar tiempo de permanencia.", "foot": "" },
+          { "variant": "card", "col": "1 / 7", "row": "5 / 7", "icon": "egiwmiit", "tag": "Gracias", "stat": "", "unit": "", "title": "Página de Gracias", "body": "Agradecimiento post-acción para crear imagen de marca e impulsar up-selling.", "foot": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "anatomy",
+      "title": "Anatomía de E-commerce",
+      "notes": "La página de producto en un E-commerce tiene elementos muy específicos para generar confianza y conversión, como reseñas, galería, CTA y copys.",
+      "slots": {
+        "TAG_LEFT": "ESTRUCTURA",
+        "TITLE": "Página de Producto",
+        "TAG_RIGHT": "2.2",
+        "SPEC_TITLE": "Elementos Esenciales de E-commerce",
+        "FIELDS": [
+          { "key": "01", "value": "Galería de imágenes", "highlight": "hi" },
+          { "key": "02", "value": "Título y Descripción Larga", "highlight": "" },
+          { "key": "03", "value": "Valoraciones y testimonios", "highlight": "hi" },
+          { "key": "04", "value": "Reductores de ansiedad", "highlight": "" },
+          { "key": "05", "value": "Técnicas de Cross-selling", "highlight": "" }
+        ],
+        "NOTES": [
+          { "n": "1", "title": "Confianza", "text": "Los testimonios y reductores de ansiedad son vitales." },
+          { "n": "2", "title": "Ticket", "text": "Productos relacionados aumentan el ticket de compra." }
+        ]
+      }
+    },
+    {
+      "archetype": "dodont",
+      "title": "Buenas vs Malas prácticas",
+      "notes": "Comparativa de usabilidad técnica. Un sitio rápido y accesible es fundamental.",
+      "slots": {
+        "TAG_LEFT": "USABILIDAD",
+        "TITLE": "Diseño Efectivo",
+        "TAG_RIGHT": "2.3",
+        "BAD_TITLE": "Lo que ahuyenta al usuario",
+        "BAD_SNIPPET": "&lt;img src='hero.jpg'&gt;\n&lt;font color='red'&gt;Página pesada&lt;/font&gt;",
+        "GOOD_TITLE": "Lo que retiene al usuario",
+        "GOOD_SNIPPET": "&lt;img src='hero.webp' alt='Descripción'&gt;\n&lt;div class='responsive'&gt;",
+        "WHY_LABEL": "Por qué es importante",
+        "WHY": "Los usuarios abandonan páginas lentas y las personas con discapacidades necesitan estructura y contraste adecuados.",
+        "BAD_POINTS": [
+          { "text": "Tiempos de carga eternos sin caché." },
+          { "text": "Ignorar la legibilidad y el contraste." },
+          { "text": "Cero uso de etiquetas 'alt' en imágenes." },
+          { "text": "Sitio que solo funciona en PC de escritorio." }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Optimización de imágenes y scripts." },
+          { "text": "Diseño 100% responsivo para móviles." },
+          { "text": "Uso de espacio en blanco para dar respiro." },
+          { "text": "Jerarquía tipográfica y de colores clara." }
+        ]
+      }
+    },
+    {
+      "archetype": "quiz",
+      "title": "Verificar comprensión web",
+      "notes": "Pregunta de validación sobre diseño responsivo y optimización.",
+      "slots": {
+        "TAG_LEFT": "REPASO",
+        "TITLE": "Prueba de estructuras",
+        "TAG_RIGHT": "Q2",
+        "BADGE": "Pregunta 2",
+        "QUESTION": "¿Qué técnica es un reductor de ansiedad en E-Commerce?",
+        "COLS": "1",
+        "EXPLANATION_LABEL": "Respuesta correcta",
+        "EXPLANATION": "Mostrar garantías, pago seguro y envíos gratuitos reduce la fricción y la incertidumbre del comprador.",
+        "OPTIONS": [
+          { "key": "A", "text": "Esconder el precio final.", "correct": "" },
+          { "key": "B", "text": "Mensajes de 'Pago Seguro' y 'Envío Gratuito'.", "correct": "true" },
+          { "key": "C", "text": "Añadir pop-ups intrusivos sin cesar.", "correct": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 3: Fundamentos Frontend",
+      "notes": "Entramos a la parte técnica: las tecnologías que dan vida al Front-End. HTML, CSS y JS.",
+      "slots": {
+        "PART_LABEL": "BLOQUE 03",
+        "TITLE": "Tecnologías Frontend",
+        "SUBTITLE": "Las bases fundamentales: HTML, CSS y JavaScript.",
+        "AGENDA": [
+          { "label": "3.1", "text": "La Trinidad Web" },
+          { "label": "3.2", "text": "Semántica HTML" },
+          { "label": "3.3", "text": "Sintaxis CSS y JavaScript" }
+        ]
+      }
+    },
+    {
+      "archetype": "concept-cards",
+      "title": "La Trinidad Web",
+      "notes": "HTML define la estructura, CSS la presentación, y JS la interactividad. Juntos construyen la experiencia frontend.",
+      "slots": {
+        "TAG_LEFT": "STACK",
+        "TITLE": "Los Pilares del Frontend",
+        "TAG_RIGHT": "3.1",
+        "COLS": "3",
+        "CARDS": [
+          { "badge": "Estructura", "title": "HTML", "body": "HyperText Markup Language. Define los elementos estructurales.", "note_label": "Huesos", "note": "La base del sitio." },
+          { "badge": "Estilos", "title": "CSS", "body": "Cascading Style Sheets. Define el diseño visual, colores y disposición.", "note_label": "Piel", "note": "La apariencia." },
+          { "badge": "Interactividad", "title": "JavaScript", "body": "Lenguaje para validar formularios y crear cambios dinámicos.", "note_label": "Músculos", "note": "El comportamiento." }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Fundamentos de HTML",
+      "notes": "Explicación básica de cómo estructurar un documento HTML.",
+      "slots": {
+        "TAG_LEFT": "LENGUAJES",
+        "TITLE": "HTML: La Estructura",
+        "TAG_RIGHT": "3.2",
+        "SPLIT": "1fr 1.2fr",
+        "LEAD": "Las etiquetas HTML le dan significado al contenido (semántica).",
+        "CALLOUT_LABEL": "Nota",
+        "CALLOUT": "Toda página web moderna debe comenzar con la declaración de <!DOCTYPE html>.",
+        "FILENAME": "index.html",
+        "CODE": "&lt;!DOCTYPE html&gt;\n&lt;html&gt;\n  &lt;head&gt;\n    &lt;title&gt;Mi Sitio&lt;/title&gt;\n  &lt;/head&gt;\n  &lt;body&gt;\n    &lt;h1&gt;Hola Mundo&lt;/h1&gt;\n    &lt;p&gt;Este es un párrafo.&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;",
+        "STEPS": [
+          { "n": "01", "text": "&lt;html&gt; define la raíz del documento." },
+          { "n": "02", "text": "&lt;head&gt; contiene metadatos y enlaces a estilos." },
+          { "n": "03", "text": "&lt;body&gt; envuelve el contenido visible para el usuario." },
+          { "n": "04", "text": "Las etiquetas suelen abrirse y cerrarse (&lt;p&gt;...&lt;/p&gt;)." }
+        ]
+      }
+    },
+    {
+      "archetype": "code-criteria",
+      "title": "Estructura de Código Limpio",
+      "notes": "La organización del código HTML afecta el SEO y la mantenibilidad. Debemos indentar bien y usar semántica.",
+      "slots": {
+        "TAG_LEFT": "SINTAXIS",
+        "TITLE": "Código Limpio HTML",
+        "TAG_RIGHT": "3.3",
+        "KICKER": "MANTENIBILIDAD",
+        "CODE_TITLE": "index.html",
+        "CODE": "&lt;header&gt;\n  &lt;nav class=\"c-kw\"&gt;Menú Principal&lt;/nav&gt;\n&lt;/header&gt;\n&lt;main&gt;\n  &lt;section id=\"hero\"&gt;\n    &lt;h1 class=\"c-fn\"&gt;Servicios&lt;/h1&gt;\n  &lt;/section&gt;\n&lt;/main&gt;",
+        "PANEL_TITLE": "Criterios de Calidad",
+        "WHY_TITLE": "¿Por qué importa?",
+        "WHY": "Una estructura bien organizada mejora la velocidad, el SEO y facilita enormemente el mantenimiento.",
+        "CRITERIA": [
+          { "letter": "S", "name": "Semántica", "meta": "Usar main, header, section", "highlight": "hi" },
+          { "letter": "I", "name": "Indentación", "meta": "Facilita la lectura", "highlight": "" },
+          { "letter": "N", "name": "Nomenclatura", "meta": "IDs y clases claras", "highlight": "" },
+          { "letter": "C", "name": "Comentarios", "meta": "Solo donde sean necesarios", "highlight": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Fundamentos de CSS",
+      "notes": "Explicación de selectores y reglas de CSS.",
+      "slots": {
+        "TAG_LEFT": "LENGUAJES",
+        "TITLE": "CSS: La Presentación",
+        "TAG_RIGHT": "3.4",
+        "SPLIT": "1fr 1.2fr",
+        "LEAD": "El estilo en cascada separa la lógica visual del contenido HTML.",
+        "CALLOUT_LABEL": "Tip",
+        "CALLOUT": "Prefiere usar clases (.) en lugar de IDs (#) para aplicar estilos reutilizables.",
+        "FILENAME": "style.css",
+        "CODE": "/* Selector de clase */\n.caja-destacada {\n  background-color: #f4f4f4;\n  color: #333333;\n  padding: 20px;\n  border-radius: 8px;\n}\n\n/* Pseudo-clase */\n.caja-destacada:hover {\n  background-color: #cccccc;\n}",
+        "STEPS": [
+          { "n": "01", "text": "Los selectores apuntan a qué elemento HTML modificar." },
+          { "n": "02", "text": "Las propiedades definen aspectos como color, margen y fuente." },
+          { "n": "03", "text": "Se usan llaves {} para encapsular los estilos." },
+          { "n": "04", "text": "Las pseudo-clases (:hover) definen estados interactivos." }
+        ]
+      }
+    },
+    {
+      "archetype": "code",
+      "title": "Fundamentos de JavaScript",
+      "notes": "Interactividad básica con DOM y eventos.",
+      "slots": {
+        "TAG_LEFT": "LENGUAJES",
+        "TITLE": "JS: La Interactividad",
+        "TAG_RIGHT": "3.5",
+        "SPLIT": "1fr 1.2fr",
+        "LEAD": "Agrega lógica, maneja eventos y manipula el DOM dinámicamente.",
+        "CALLOUT_LABEL": "Alerta",
+        "CALLOUT": "Evita el uso de var. Utiliza let para variables mutables y const para constantes.",
+        "FILENAME": "script.js",
+        "CODE": "const boton = document.querySelector('.btn-enviar');\n\nboton.addEventListener('click', function(evento) {\n  evento.preventDefault();\n  const nombre = document.getElementById('name').value;\n  \n  if (nombre !== '') {\n    alert('¡Bienvenido ' + nombre + '!');\n  }\n});",
+        "STEPS": [
+          { "n": "01", "text": "querySelector selecciona elementos del HTML (DOM)." },
+          { "n": "02", "text": "addEventListener escucha acciones como clics o teclado." },
+          { "n": "03", "text": "preventDefault() evita recargar la página." },
+          { "n": "04", "text": "La lógica condicional (if) toma decisiones en tiempo real." }
+        ]
+      }
+    },
+    {
+      "archetype": "section",
+      "title": "Bloque 4: Ecosistema y Evaluación",
+      "notes": "Frameworks como Bootstrap, comparativas y cierre práctico.",
+      "slots": {
+        "PART_LABEL": "BLOQUE 04",
+        "TITLE": "Ecosistema Frontend",
+        "SUBTITLE": "Herramientas de trabajo y cierre práctico.",
+        "AGENDA": [
+          { "label": "4.1", "text": "El Framework Bootstrap" },
+          { "label": "4.2", "text": "Comparativa de Herramientas" },
+          { "label": "4.3", "text": "Evaluación: Taller Práctico" }
+        ]
+      }
+    },
+    {
+      "archetype": "bento",
+      "title": "Bootstrap Framework",
+      "notes": "Introducción al framework más utilizado para maquetar rápido.",
+      "slots": {
+        "TAG_LEFT": "FRAMEWORKS",
+        "TITLE": "Bootstrap: Diseño Veloz",
+        "TAG_RIGHT": "4.1",
+        "TILES": [
+          { "variant": "card", "col": "1 / 5", "row": "1 / 4", "icon": "nocovwne", "tag": "Sistema", "stat": "", "unit": "", "title": "Grid de 12 Columnas", "body": "Permite crear layouts responsivos dividiendo la pantalla en 12 fracciones alineables.", "foot": "" },
+          { "variant": "stat", "col": "5 / 7", "row": "1 / 4", "icon": "qhgmphtg", "tag": "Enfoque", "stat": "Mobile", "unit": "", "title": "First", "body": "Diseñado para móviles por defecto.", "foot": "" },
+          { "variant": "card", "col": "1 / 4", "row": "4 / 7", "icon": "wxnxiano", "tag": "Clases", "stat": "", "unit": "", "title": "Utility Classes", "body": "Clases de un solo propósito (ej. mt-3, text-center) que evitan escribir CSS custom.", "foot": "" },
+          { "variant": "card", "col": "4 / 7", "row": "4 / 7", "icon": "egiwmiit", "tag": "UI", "stat": "", "unit": "", "title": "Componentes Base", "body": "Botones, modales, alertas y barras de navegación listas para usar.", "foot": "" }
+        ]
+      }
+    },
+    {
+      "archetype": "feature-matrix",
+      "title": "Frameworks y Bibliotecas",
+      "notes": "Comparativa corregida con etiquetas HTML en las celdas.",
+      "slots": {
+        "TAG_LEFT": "ECOSISTEMA",
+        "TITLE": "Herramientas Modernas",
+        "TAG_RIGHT": "4.2",
+        "LEAD": "Comparativa rápida de los ecosistemas Frontend más populares.",
+        "HEADERS": "<th>Herramienta</th><th>Rol</th><th>Curva</th><th class=\"best\">Uso Laboral</th>",
+        "NOTE_LABEL": "Tendencia",
+        "NOTE": "React sigue siendo el líder en adopción laboral.",
+        "ROWS": [
+          { "cells": "<td>Bootstrap</td><td>CSS Framework</td><td>Baja</td><td class=\"best\"><span class=\"mk yes\">✓</span> Alta</td>" },
+          { "cells": "<td>React</td><td>JS Library</td><td>Media</td><td class=\"best\"><span class=\"mk yes\">✓</span> Extrema</td>" },
+          { "cells": "<td>Vue.js</td><td>JS Framework</td><td>Baja</td><td class=\"best\"><span class=\"mk part\">~</span> Media</td>" },
+          { "cells": "<td>Svelte</td><td>JS Compiler</td><td>Media</td><td class=\"best\"><span class=\"mk part\">~</span> Creciente</td>" }
+        ]
+      }
+    },
+    {
+      "archetype": "quote",
+      "title": "Cita usabilidad",
+      "notes": "Respiro para recordar que la estética no es nada sin funcionalidad.",
+      "slots": {
+        "QUOTE": "La primera impresión cuenta, pero la usabilidad y la investigación son lo que retiene al usuario.",
+        "AUTHOR": "Principios UX",
+        "ROLE": "Investigación Frontend",
+        "CONTEXT_LABEL": "FOCO",
+        "CONTEXT": "Nunca sacrifiques la funcionalidad ni invalides el research por un diseño bonito."
+      }
+    },
+    {
+      "archetype": "activity",
+      "title": "Actividad: Formulario",
+      "notes": "Ejercicio práctico para los estudiantes, según los requerimientos de su evaluación.",
+      "slots": {
+        "TAG_LEFT": "TALLER",
+        "TITLE": "Creación de Formulario",
+        "TAG_RIGHT": "4.3",
+        "ICON": "wzwygmng",
+        "ACTIVITY_NAME": "Página de Contacto",
+        "INSTRUCTIONS": "Construye un mockup y HTML responsivo para el formulario de la consultora 'Con Ingenio'.",
+        "COLS": "3",
+        "META": [
+          { "label": "Grupal (2)" },
+          { "label": "HTML/CSS" },
+          { "label": "Validación JS" }
+        ],
+        "CASES": [
+          { "num": "01", "title": "Diseño y Mockups", "desc": "Definir versión Día y Noche para móviles y escritorio.", "challenge_label": "Entregable", "challenge": "PDF de mockups" },
+          { "num": "02", "title": "Estructura HTML", "desc": "Maquetar inputs, labels y selectores usando Bootstrap.", "challenge_label": "Requisito", "challenge": "Responsive design" },
+          { "num": "03", "title": "Interactividad JS", "desc": "Validar campos y mostrar valores en consola.", "challenge_label": "Objetivo", "challenge": "Eventos JS" }
+        ]
+      }
+    },
+    {
+      "archetype": "resources",
+      "title": "Herramientas recomendadas",
+      "notes": "Enlaces a recursos útiles mencionados en el material.",
+      "slots": {
+        "TAG_LEFT": "TOOLING",
+        "TITLE": "Recursos de Diseño Web",
+        "TAG_RIGHT": "LINKS",
+        "LIST_TITLE": "Herramientas de evaluación y diseño",
+        "QR_LABEL": "Escanear para acceder",
+        "QR_DATA": "https://wave.webaim.org/",
+        "QR_ALT": "WAVE Tool",
+        "QR_CAPTION": "WAVE Web Accessibility",
+        "NEXT_LABEL": "Práctica",
+        "NEXT": "Instalar Figma y revisar Bootstrap.",
+        "RESOURCES": [
+          { "icon": "kjkiqtxg", "title": "Adobe XD / Figma", "desc": "Crear prototipos y maquetas responsivas.", "url": "#" },
+          { "icon": "msoeawqm", "title": "Google PageSpeed", "desc": "Evalúa el rendimiento de tu sitio.", "url": "#" },
+          { "icon": "egiwmiit", "title": "WAVE Evaluation Tool", "desc": "Validador automático de accesibilidad WCAG.", "url": "#" }
+        ]
+      }
+    },
+    {
+      "archetype": "closing",
+      "title": "Cierre",
+      "notes": "Fin de la presentación.",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "Resumen de la Unidad 1",
+        "TAG_RIGHT": "FIN",
+        "ICON": "egiwmiit",
+        "HERO_TITLE": "El Frontend es Multidisciplinario",
+        "HERO_TEXT": "Une el diseño centrado en el usuario, la investigación rigurosa, y una buena arquitectura de código.",
+        "LEFT_PANEL_TITLE": "Takeaways",
+        "RIGHT_PANEL_TITLE": "Próximos Pasos",
+        "NEXT_LABEL": "Evaluación",
+        "NEXT": "Entregar mockups y HTML del formulario.",
+        "TAKEAWAYS": [
+          { "n": "1", "text": "Investigar evita el diseño basado en asunciones." },
+          { "n": "2", "text": "El diseño siempre debe ser responsivo." },
+          { "n": "3", "text": "HTML, CSS y JS tienen roles bien delimitados." }
+        ],
+        "NEXT_STEPS": [
+          { "n": "1", "text": "Repasar sintaxis básica de etiquetas HTML." },
+          { "n": "2", "text": "Diseñar los mockups en Figma." },
+          { "n": "3", "text": "Maquetar la página con Bootstrap." }
+        ]
+      }
+    }
+  ]
+}

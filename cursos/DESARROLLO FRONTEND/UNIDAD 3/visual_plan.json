@@ -1,0 +1,343 @@
+{
+  "pack": "cyberpunk_neon",
+  "title": "Unidad 3 — Desarrollo Frontend Colaborativo y Despliegue",
+  "slides": [
+    {
+      "archetype": "cover",
+      "slots": {
+        "EYEBROW": "PROYECTO INTEGRADOR",
+        "TITLE": "Desarrollo Colaborativo y Despliegue API",
+        "SUBTITLE": "Lleva la Landing Page del Centro de Negocios SERCOTEC al siguiente nivel. Aprenderás a consumir Endpoints, optimizar rendimiento, trabajar con Git y asegurar tus aplicaciones.",
+        "BG_IMAGE": "",
+        "CHIPS": [
+          { "label": "EVALUACIÓN SUMATIVA 3", "accent": "a1" },
+          { "label": "API & CMS", "accent": "a2" },
+          { "label": "GIT Y RENDIMIENTO", "accent": "a3" }
+        ]
+      },
+      "speaker_notes": "Bienvenidos a la última unidad. Hoy vamos a unir todas las piezas del rompecabezas Frontend para entregar un producto profesional, seguro y rápido para SERCOTEC."
+    },
+    {
+      "archetype": "toc",
+      "slots": {
+        "TAG_LEFT": "AGENDA",
+        "TITLE": "¿Qué construiremos hoy?",
+        "TAG_RIGHT": "U3",
+        "ROWS": "2",
+        "COLS": "3",
+        "ITEMS": [
+          { "num": "01", "icon": "wxnxiano", "title": "SERCOTEC", "desc": "Contexto y requerimientos del proyecto final.", "chips": "" },
+          { "num": "02", "icon": "gqdnbnwt", "title": "Git & Github", "desc": "Trabajo colaborativo, ramas y Pull Requests.", "chips": "" },
+          { "num": "03", "icon": "dxjqoygy", "title": "UI Avanzada", "desc": "Tarjetas dinámicas y Carruseles accesibles.", "chips": "" },
+          { "num": "04", "icon": "msoeawqm", "title": "API & Fetch", "desc": "Consumo de Endpoints (CMS) y renderizado.", "chips": "" },
+          { "num": "05", "icon": "usownftb", "title": "Seguridad", "desc": "Protección de formularios y validaciones.", "chips": "" },
+          { "num": "06", "icon": "qhgmphtg", "title": "Optimización", "desc": "Lazy loading, compresión de assets y buenas prácticas.", "chips": "" }
+        ]
+      },
+      "speaker_notes": "Esta agenda cubre paso a paso los 13 indicadores de la rúbrica de evaluación sumativa."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 1",
+        "TITLE": "El Cliente: SERCOTEC",
+        "SUBTITLE": "Revisemos las necesidades empresariales y la organización técnica del equipo.",
+        "AGENDA": [
+          { "label": "1.1", "text": "El Desafío (Indicadores 7, 9)" },
+          { "label": "1.2", "text": "Git Colaborativo (Indicador 6)" },
+          { "label": "1.3", "text": "Documentación README (Ind. 12)" }
+        ]
+      },
+      "speaker_notes": "Para construir algo útil, primero debemos entender el negocio y organizar nuestro repositorio."
+    },
+    {
+      "archetype": "callouts",
+      "slots": {
+        "TAG_LEFT": "PROYECTO FINAL",
+        "TITLE": "Centro de Negocios Santiago",
+        "TAG_RIGHT": "1.1",
+        "LEAD": "SERCOTEC requiere modernizar su presencia web. Como agencia, deberán construir una Landing Page escalable usando React y buenas prácticas.",
+        "CALLOUTS": [
+          { "kind": "note", "icon": "dxjqoygy", "title": "La Necesidad", "text": "Interfaz atractiva, accesible (WCAG) y altamente responsiva que consolide 'Nosotros', 'Servicios' y 'Preguntas Frecuentes'." },
+          { "kind": "tip", "icon": "wxnxiano", "title": "Interactividad Obligatoria", "text": "Se requieren componentes dinámicos: Tarjetas de servicio reutilizables y un Carrusel de Testimonios fluido." },
+          { "kind": "danger", "icon": "inrunzby", "title": "Administrable (CMS)", "text": "El contenido no puede estar 'harcodeado'. Se debe consumir información desde una API o archivo JSON usando Postman como apoyo." }
+        ]
+      },
+      "speaker_notes": "No es una simple página estática. Deben conectar el Frontend con datos dinámicos, es decir, preparar el terreno para el CMS."
+    },
+    {
+      "archetype": "timeline",
+      "slots": {
+        "TAG_LEFT": "TRABAJO EN EQUIPO",
+        "TITLE": "Flujo Git Profesional (Indicador 6)",
+        "TAG_RIGHT": "1.2",
+        "LEAD": "Eviten el 'yo te paso el código por WhatsApp'. El evaluador revisará su historial de commits, ramas y Pull Requests.",
+        "COLS": "4",
+        "STEPS": [
+          { "n": "01", "phase": "Setup", "title": "Main", "desc": "El líder crea el repositorio inicial con Vite y protege la rama main.", "output": "git init" },
+          { "n": "02", "phase": "Desarrollo", "title": "Branching", "desc": "Cada estudiante crea una rama para su tarea (ej: `feature/carrusel`).", "output": "git checkout -b" },
+          { "n": "03", "phase": "Control", "title": "Commits", "desc": "Commits atómicos, pequeños y descriptivos de los avances.", "output": "git commit -m" },
+          { "n": "04", "phase": "Integración", "title": "Pull Request", "desc": "Se solicita integrar a main en GitHub. Otro miembro debe revisar.", "output": "Code Review" }
+        ]
+      },
+      "speaker_notes": "Si el profesor entra al Github y ve un solo commit gigante llamado 'proyecto final', tendrán 0 puntos en el Indicador 6."
+    },
+    {
+      "archetype": "code-criteria",
+      "slots": {
+        "TAG_LEFT": "DOCUMENTACIÓN",
+        "TITLE": "El Archivo README.md (Ind. 12)",
+        "TAG_RIGHT": "1.3",
+        "KICKER": "ENTREGABLE CLAVE",
+        "CODE_TITLE": "Estructura del README.md",
+        "CODE": "# SERCOTEC Landing Page\n\n## 1. Descripción\nProyecto para el Centro de Negocios Santiago, desarrollado en React.\n\n## 2. Instalación\n`npm install` luego `npm run dev`\n\n## 3. Arquitectura\n- `/components`: Tarjetas y Carrusel\n- `/services`: Llamadas a la API\n\n## 4. Guía de Uso (Componentes)\nPara usar la ServiceCard, pasar las props: `{ title, img, desc }`",
+        "PANEL_TITLE": "Formato de Entrega",
+        "WHY_TITLE": "¿Por qué es importante?",
+        "WHY": "El README es la carta de presentación de cualquier repositorio profesional. Demuestra difusión de conocimiento.",
+        "CRITERIA": [
+          { "letter": "A", "name": "Zip Final", "meta": "Nombrar", "highlight": "Eval_U3A_EQUIPO" },
+          { "letter": "B", "name": "Instrucciones", "meta": "Claras para", "highlight": "desplegar" },
+          { "letter": "C", "name": "Git Public", "meta": "Repositorio", "highlight": "Accesible" }
+        ]
+      },
+      "speaker_notes": "No olviden incluir la documentación. Sin ella, el proyecto no es replicable y reprueba el Indicador 12."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 2",
+        "TITLE": "Componentes UI Avanzados",
+        "SUBTITLE": "Construyendo interfaces dinámicas, responsivas y reutilizables.",
+        "AGENDA": [
+          { "label": "2.1", "text": "Tarjetas Reutilizables (Ind. 1)" },
+          { "label": "2.2", "text": "Carrusel de Testimonios" },
+          { "label": "2.3", "text": "Accesibilidad (Ind. 3)" }
+        ]
+      },
+      "speaker_notes": "Pasemos a escribir el código de las vistas exigidas por el cliente."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "REACT",
+        "TITLE": "Tarjetas de Servicio (Indicador 1)",
+        "TAG_RIGHT": "2.1",
+        "SPLIT": "50",
+        "LEAD": "El requerimiento 1 exige un componente reutilizable para los servicios.",
+        "CALLOUT_LABEL": "Patrón de Componentes",
+        "CALLOUT": "Utilizamos `props` para que una misma tarjeta pinte múltiples servicios distintos. (Asesoría, Taller, etc.)",
+        "FILENAME": "src/components/ServiceCard.jsx",
+        "CODE": "const ServiceCard = ({ imgUrl, titulo, descripcion }) =&gt; {\n  \n  const irAFormulario = () =&gt; {\n    // Lógica para pre-llenar el formulario\n    window.location.href = `/contacto?servicio=${titulo}`;\n  };\n\n  return (\n    &lt;article className=\"card-container\"&gt;\n      &lt;img src={imgUrl} alt={`Imagen representativa de ${titulo}`} /&gt;\n      &lt;div className=\"card-body\"&gt;\n        &lt;h3&gt;{titulo}&lt;/h3&gt;\n        &lt;p&gt;{descripcion}&lt;/p&gt;\n        &lt;button onClick={irAFormulario} className=\"btn-primary\"&gt;\n          Contáctanos\n        &lt;/button&gt;\n      &lt;/div&gt;\n    &lt;/article&gt;\n  );\n};\nexport default ServiceCard;",
+        "STEPS": [
+          { "n": "01", "text": "Las Props definen el contenido dinámico." },
+          { "n": "02", "text": "El botón 'Contáctanos' redirige o abre un modal seteando el servicio." },
+          { "n": "03", "text": "Alt descriptivo en la imagen garantiza Accesibilidad." }
+        ]
+      },
+      "speaker_notes": "Esto resuelve la petición número 1 de la evaluación. La tarjeta es un componente presentacional."
+    },
+    {
+      "archetype": "feature-matrix",
+      "slots": {
+        "TAG_LEFT": "UI",
+        "TITLE": "Carrusel de Testimonios (Requisito 2)",
+        "TAG_RIGHT": "2.2",
+        "LEAD": "Construir un carrusel táctil desde cero es complejo. Utilizaremos librerías externas validadas.",
+        "HEADERS": "<th>Librería</th><th>Soporte Táctil</th><th class=\"best\">Recomendación</th>",
+        "NOTE_LABEL": "Implementación:",
+        "NOTE": "El framework UI elegido dictará qué usar. Si usan MUI, pueden usar *React Swipeable Views*.",
+        "ROWS": [
+          { "cells": "<td>Swiper.js (React)</td><td>Sí, nativo y muy fluido.</td><td class=\"best\">Altamente Recomendado</td>" },
+          { "cells": "<td>React Slick</td><td>Sí.</td><td class=\"best\">Buena alternativa legacy</td>" },
+          { "cells": "<td>Bootstrap Carousel</td><td>Sí.</td><td class=\"best\">Solo si usan Bootstrap</td>" },
+          { "cells": "<td>MUI Stepper</td><td>Requiere código extra.</td><td class=\"best\">Para usuarios avanzados MUI</td>" }
+        ]
+      },
+      "speaker_notes": "Les recomiendo instalar 'swiper' vía npm. Es profesional y móvil-first."
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "ACCESIBILIDAD",
+        "TITLE": "Diseño Inclusivo (Indicador 3)",
+        "TAG_RIGHT": "2.3",
+        "BAD_TITLE": "Prácticas No Accesibles",
+        "BAD_SNIPPET": "&lt;div class=\"btn\" onClick={submit}&gt;Enviar&lt;/div&gt;\n\n&lt;img src=\"grafico1.png\" /&gt;\n\n&lt;span style={{color: '#999', background: '#ccc'}}&gt;\n  Aviso Legal\n&lt;/span&gt;",
+        "GOOD_TITLE": "Prácticas Accesibles (WCAG)",
+        "GOOD_SNIPPET": "&lt;button onClick={submit}&gt;Enviar&lt;/button&gt;\n\n&lt;img src=\"grafico1.png\" alt=\"Crecimiento anual ventas\" /&gt;\n\n&lt;span style={{color: '#111', background: '#eee'}}&gt;\n  Aviso Legal\n&lt;/span&gt;",
+        "WHY_LABEL": "Usabilidad e Inclusión",
+        "WHY": "El evaluador probará su interfaz. Deben garantizar buen contraste, uso de etiquetas nativas HTML5 y atributos descriptivos.",
+        "BAD_POINTS": [
+          { "text": "Divs que fingen ser botones (No leíbles por teclado)." },
+          { "text": "Contraste de color deficiente." }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Etiqueta nativa <button> es focusable." },
+          { "text": "Imágenes tienen texto alternativo contextual." }
+        ]
+      },
+      "speaker_notes": "Un diseño hermoso que nadie puede leer es un mal diseño. Revisen el contraste."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 3",
+        "TITLE": "APIs y Conexión de Datos",
+        "SUBTITLE": "Consumiendo Endpoints para poblar la vista (Indicadores 4 y 10).",
+        "AGENDA": [
+          { "label": "3.1", "text": "¿Qué es un Endpoint?" },
+          { "label": "3.2", "text": "Simulando API (Postman / MockAPI)" },
+          { "label": "3.3", "text": "Consumo Asíncrono (Fetch)" },
+          { "label": "3.4", "text": "Renderizado Condicional (Cargando...)" }
+        ]
+      },
+      "speaker_notes": "La rúbrica exige que 'Nosotros', 'Servicios' y 'FAQ' vengan desde una API."
+    },
+    {
+      "archetype": "concept-cards",
+      "slots": {
+        "TAG_LEFT": "ARQUITECTURA",
+        "TITLE": "El concepto de Endpoint (Ind. 10)",
+        "TAG_RIGHT": "3.1",
+        "COLS": "2",
+        "CARDS": [
+          { "badge": "kjkiqtxg", "title": "API (Application Prog. Interface)", "body": "Es el sistema completo (el servidor, las reglas, las rutas) que permite que el Frontend y la Base de Datos se comuniquen.", "note_label": "Ejemplo", "note": "El Banco entero." },
+          { "badge": "xtzvywzp", "title": "Endpoint", "body": "Es una dirección web específica (URL) dentro de esa API donde se solicita una funcionalidad o dato particular usando un método HTTP.", "note_label": "Ejemplo", "note": "La ventanilla N°3 del banco." }
+        ]
+      },
+      "speaker_notes": "El evaluador les pedirá en persona que expliquen la diferencia entre API y Endpoint. Esta diapositiva es su salvavidas."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "CE10",
+        "TITLE": "Consumo de API con Fetch",
+        "TAG_RIGHT": "3.2",
+        "SPLIT": "50",
+        "LEAD": "Así conectamos el Frontend con los datos. Usaremos `fetch` dentro de un `useEffect`.",
+        "CALLOUT_LABEL": "Manejo de Errores",
+        "CALLOUT": "Es crucial utilizar bloques `try/catch` o `.catch()` para atrapar errores si el servidor falla (Indicador 2 - Resolviendo problemas complejos).",
+        "FILENAME": "src/services/api.js",
+        "CODE": "import { useState, useEffect } from 'react';\n\nconst useServicios = () =&gt; {\n  const [servicios, setServicios] = useState([]);\n  const [error, setError] = useState(null);\n\n  useEffect(() =&gt; {\n    // Usar la URL de su MockAPI, JSONBin o backend\n    fetch('https://api.fake.com/sercotec/servicios')\n      .then(res =&gt; {\n        if (!res.ok) throw new Error(\"Fallo en la red\");\n        return res.json();\n      })\n      .then(data =&gt; setServicios(data))\n      .catch(err =&gt; setError(err.message));\n  }, []);\n\n  return { servicios, error };\n};",
+        "STEPS": [
+          { "n": "01", "text": "Endpoint: URL a la que hacemos la petición GET." },
+          { "n": "02", "text": "Validación res.ok para confirmar el código HTTP 200." },
+          { "n": "03", "text": "Manejo de errores si el servidor rechaza la conexión." }
+        ]
+      },
+      "speaker_notes": "Este es un custom hook. Exportan los datos y el componente de la vista simplemente hace el `.map()` que vimos en la U2."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 4",
+        "TITLE": "Optimización y Seguridad",
+        "SUBTITLE": "Protegiendo y acelerando nuestro aplicativo web (Indicadores 8 y 11).",
+        "AGENDA": [
+          { "label": "4.1", "text": "Rendimiento Avanzado (Imágenes)" },
+          { "label": "4.2", "text": "Lazy Loading en React" },
+          { "label": "4.3", "text": "Seguridad en Formularios" },
+          { "label": "4.4", "text": "Prevención de Inyecciones/Robots" }
+        ]
+      },
+      "speaker_notes": "Cualquiera puede hacer una página, pero pocos hacen páginas rápidas y seguras."
+    },
+    {
+      "archetype": "dodont",
+      "slots": {
+        "TAG_LEFT": "RENDIMIENTO",
+        "TITLE": "Optimización de Imágenes (Ind. 8)",
+        "TAG_RIGHT": "4.1",
+        "BAD_TITLE": "Imágenes Pesadas (Puntaje Bajo)",
+        "BAD_SNIPPET": "&lt;img \n  src=\"/assets/foto_equipo_original.png\" \n  width=\"100%\" \n/&gt;\n\n// Peso del archivo: 4.5 MB",
+        "GOOD_TITLE": "Imágenes Optimizadas (Puntaje Alto)",
+        "GOOD_SNIPPET": "&lt;img \n  src=\"/assets/foto_equipo.webp\" \n  loading=\"lazy\"\n  alt=\"Equipo de Sercotec\"\n  width=\"800\" height=\"600\"\n/&gt;\n\n// Peso del archivo: 150 KB",
+        "WHY_LABEL": "Impacto SEO y UX",
+        "WHY": "El formato WebP es un 80% más ligero que PNG sin perder calidad. El atributo `loading=\"lazy\"` retrasa la descarga hasta que el usuario hace scroll.",
+        "BAD_POINTS": [
+          { "text": "La página tarda 10 segundos en celulares." },
+          { "text": "Consume el plan de datos del usuario móvil." }
+        ],
+        "GOOD_POINTS": [
+          { "text": "Carga instantánea (Excelente métrica Lighthouse)." },
+          { "text": "Lazy loading no penaliza la carga inicial." }
+        ]
+      },
+      "speaker_notes": "Convertir todas las imágenes de SERCOTEC a .webp o .avif. Es un truco rápido que asombrará al evaluador."
+    },
+    {
+      "archetype": "code",
+      "slots": {
+        "TAG_LEFT": "SEGURIDAD",
+        "TITLE": "Seguridad en Landing Page (Ind. 11)",
+        "TAG_RIGHT": "4.2",
+        "SPLIT": "50",
+        "LEAD": "El requisito 10 exige protección contra ataques y robots en el formulario de contacto.",
+        "CALLOUT_LABEL": "Validación Dual",
+        "CALLOUT": "El Frontend DEBE validar longitud y expresiones regulares. Adicionalmente, se recomienda inyectar un Google reCAPTCHA para bloquear spam bots.",
+        "FILENAME": "src/components/ContactForm.jsx",
+        "CODE": "import ReCAPTCHA from \"react-google-recaptcha\";\n\nconst [captchaValido, setCaptchaValido] = useState(false);\n\nconst handleSubmit = (e) =&gt; {\n  e.preventDefault();\n  \n  // Validación de Seguridad Front-end\n  if (form.mensaje.length &lt; 20 || form.mensaje.includes(\"&lt;script&gt;\")) {\n    alert(\"Mensaje no cumple políticas de seguridad.\");\n    return;\n  }\n  \n  // Validación Anti-Bots\n  if (!captchaValido) {\n    alert(\"Por favor verifique que es humano\");\n    return;\n  }\n\n  enviarServidor(form);\n};\n\n// Renderizado del componente:\n&lt;ReCAPTCHA \n  sitekey=\"YOUR_RECAPTCHA_KEY\"\n  onChange={() =&gt; setCaptchaValido(true)}\n/&gt;",
+        "STEPS": [
+          { "n": "01", "text": "Validación de longitud previene envíos masivos inútiles." },
+          { "n": "02", "text": "Sanitización básica rechaza texto que contenga etiquetas `<script>` (XSS)." },
+          { "n": "03", "text": "Integración de un widget externo (reCAPTCHA)." }
+        ]
+      },
+      "speaker_notes": "Si implementan el paquete react-google-recaptcha, aseguran la nota perfecta en el Indicador 11 de seguridad."
+    },
+    {
+      "archetype": "section",
+      "slots": {
+        "PART_LABEL": "MÓDULO 5",
+        "TITLE": "Metodología y Entrega",
+        "SUBTITLE": "Liderazgo, retrospectiva y formato final (Indicadores 5 y 13).",
+        "AGENDA": [
+          { "label": "5.1", "text": "Guía de Buenas Prácticas" },
+          { "label": "5.2", "text": "Sesión de Retrospectiva" },
+          { "label": "5.3", "text": "Formato de Empaquetado" }
+        ]
+      },
+      "speaker_notes": "El código está listo, ahora a documentar y reflexionar sobre nuestro trabajo como equipo."
+    },
+    {
+      "archetype": "bento",
+      "slots": {
+        "TAG_LEFT": "MEJORA CONTINUA",
+        "TITLE": "La Sesión de Retrospectiva (Ind. 13)",
+        "TAG_RIGHT": "5.1",
+        "TILES": [
+          { "variant": "accent", "col": "1 / 4", "row": "1 / 4", "icon": "egiwmiit", "tag": "LIDERAZGO", "stat": "", "unit": "", "title": "¿Qué hicimos bien?", "body": "Documenten las fortalezas del equipo. Ej: Buena comunicación, uso efectivo de Git.", "foot": "" },
+          { "variant": "", "col": "4 / 7", "row": "1 / 4", "icon": "inrunzby", "tag": "ANÁLISIS", "stat": "", "unit": "", "title": "¿Qué falló?", "body": "Sean honestos. Problemas con los conflictos de Git, dificultades integrando la API, etc.", "foot": "" },
+          { "variant": "feature", "col": "1 / 7", "row": "4 / 6", "icon": "msoeawqm", "tag": "MEJORA", "stat": "", "unit": "", "title": "Plan de Acción Futuro", "body": "Basado en los errores, ¿cómo mejorarán en el siguiente proyecto? (Ej: Estableceremos una rama DEV intermedia, usaremos TypeScript para evitar errores de tipeo, etc).", "foot": "" }
+        ]
+      },
+      "speaker_notes": "La rúbrica evalúa su capacidad crítica. Agreguen esto al documento Word final."
+    },
+    {
+      "archetype": "closing",
+      "slots": {
+        "TAG_LEFT": "CIERRE",
+        "TITLE": "Lista de Verificación Final",
+        "TAG_RIGHT": "FINAL",
+        "ICON": "lupuorrc",
+        "HERO_TITLE": "¡A Desplegar!",
+        "HERO_TEXT": "Asegúrense de cumplir con cada detalle técnico y procedimental exigido por la Rúbrica.",
+        "LEFT_PANEL_TITLE": "EL ARCHIVO ZIP",
+        "RIGHT_PANEL_TITLE": "LA NUBE (GITHUB)",
+        "NEXT_LABEL": "Entrega",
+        "NEXT": "Mucho éxito a todos.",
+        "TAKEAWAYS": [
+          { "n": "1", "text": "Comprimir código fuente SIN node_modules." },
+          { "n": "2", "text": "Formato: `Eval_U3A_NOMBREEQUIPO.zip`." },
+          { "n": "3", "text": "Incluir el documento con la retrospectiva." }
+        ],
+        "NEXT_STEPS": [
+          { "n": "1", "text": "Verificar enlace público de GitHub." },
+          { "n": "2", "text": "Revisar que README.md esté completo." },
+          { "n": "3", "text": "Asegurar ramas y Pull Requests visibles." }
+        ]
+      },
+      "speaker_notes": "¡Con esto finalizamos la asignatura de Desarrollo Frontend! Ha sido un placer acompañarlos. Éxito en su entrega."
+    }
+  ]
+}

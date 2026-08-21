@@ -19,6 +19,7 @@
       fontFamily: 'Inter' 
     }
   });
+  setTimeout(async () => { try { await mermaid.run({ querySelector: '.mermaid' }); } catch(e){} }, 200);
 </script>
 <style>
 :root {
